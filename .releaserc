@@ -1,4 +1,6 @@
 {
+  "repositoryUrl": "https://github.com/RouHim/jaudiotagger.git",
+  "tagFormat": "${version}",
   "branches": [
     "main"
   ],
