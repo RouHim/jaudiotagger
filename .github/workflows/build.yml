@@ -1,10 +1,11 @@
-name: Java CI with Maven
+name: CI/CD
 
 on:
   push:
-    branches: [ "main" ]
   pull_request:
-    branches: [ "main" ]
+    types:
+      - opened
+  workflow_dispatch: # allow manual execution
 
 jobs:
   build:
