@@ -25,7 +25,7 @@ Add this repository to your pom.xml:
 And then this dependency:
 ```xml
 <dependency>
-    <groupId>com.github.Adonai</groupId>
+    <groupId>com.github.RouHim</groupId>
     <artifactId>jaudiotagger</artifactId>
     <version>...</version>
 </dependency>
