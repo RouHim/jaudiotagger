@@ -27,6 +27,6 @@ And then this dependency:
 <dependency>
     <groupId>com.github.Adonai</groupId>
     <artifactId>jaudiotagger</artifactId>
-    <version><latest release></version>
+    <version>...</version>
 </dependency>
 ```
