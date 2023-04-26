@@ -1,3 +1,10 @@
+# [1.1.0](https://github.com/RouHim/jaudiotagger/compare/1.0.0...1.1.0) (2023-04-26)
+
+
+### Features
+
+* fix wrong dependency in README ([ff51d67](https://github.com/RouHim/jaudiotagger/commit/ff51d679b01571b596ef29ef38dcdafc4b2a6bc7))
+
 # 1.0.0 (2023-04-26)
 
 
