@@ -12,7 +12,7 @@ Jaudiotagger is a Java library for reading and writing audio metadata. It suppor
 * Added: github actions, renovate, semantic releases
 
 ## Motivation
-Mainly I forked the repository because I want to use a maintained version of jaudiotaggger in my [own software](https://github.com/RouHim/jaudiotagger/disCoverJ).
+Mainly I forked the repository because I want to use a maintained version of jaudiotaggger in my [own software](https://github.com/RouHim/disCoverJ).
 
 ## Usage
 Add this repository to your pom.xml:
