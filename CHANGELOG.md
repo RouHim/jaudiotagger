@@ -1,3 +1,10 @@
+# [1.2.0](https://github.com/RouHim/jaudiotagger/compare/1.1.1...1.2.0) (2023-04-26)
+
+
+### Features
+
+* **logging:** migrate to slf4j2 ([1b063fc](https://github.com/RouHim/jaudiotagger/commit/1b063fcfac9aa7820103e9b6f3137c61197c6cae))
+
 ## [1.1.1](https://github.com/RouHim/jaudiotagger/compare/1.1.0...1.1.1) (2023-04-26)
 
 # [1.1.0](https://github.com/RouHim/jaudiotagger/compare/1.0.0...1.1.0) (2023-04-26)
