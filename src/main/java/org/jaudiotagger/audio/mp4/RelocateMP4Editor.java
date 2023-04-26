@@ -7,11 +7,12 @@ import org.jcodec.containers.mp4.MP4Util.Atom;
 import org.jcodec.containers.mp4.boxes.Box;
 import org.jcodec.containers.mp4.boxes.Header;
 import org.jcodec.containers.mp4.boxes.MovieBox;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.nio.channels.FileChannel;
-import java.util.logging.Logger;
 
 /**
  * Parses MP4 file, applies the edit and saves the result in a new file.
@@ -22,7 +23,7 @@ import java.util.logging.Logger;
  */
 public class RelocateMP4Editor {
 
-    public static Logger logger = Logger.getLogger("org.jaudiotagger.audio.mp4.writer");
+    private static final Logger logger = LoggerFactory.getLogger("org.jaudiotagger.audio.mp4.writer");
 
     public void modifyOrRelocate(FileChannel src, MovieBox edit) throws IOException {
         boolean modify = new InplaceMP4Editor().modify(src, edit);

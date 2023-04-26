@@ -20,6 +20,8 @@ package org.jaudiotagger.audio.generic;
 
 import org.jaudiotagger.audio.AudioFile;
 import org.jaudiotagger.utils.FileTypeUtil;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.*;
 import java.nio.ByteBuffer;
@@ -31,8 +33,6 @@ import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  * Contains various frequently used static functions in the different tag formats.
@@ -43,7 +43,7 @@ public class Utils {
     public static int BITS_IN_BYTE_MULTIPLIER = 8;
     public static int KILOBYTE_MULTIPLIER = 1000;
 
-    private static final Logger logger = Logger.getLogger("org.jaudiotagger.audio.generic.utils");
+    private static final Logger logger = LoggerFactory.getLogger("org.jaudiotagger.audio.generic.utils");
     private static final int MAX_BASE_TEMP_FILENAME_LENGTH = 20;
 
     /**
@@ -340,10 +340,10 @@ public class Utils {
      * @return
      */
     public static boolean rename(final File fromFile, final File toFile) {
-        logger.log(Level.CONFIG, "Renaming From:" + fromFile.getAbsolutePath() + " to " + toFile.getAbsolutePath());
+        logger.debug("Renaming From:" + fromFile.getAbsolutePath() + " to " + toFile.getAbsolutePath());
 
         if (toFile.exists()) {
-            logger.log(Level.SEVERE, "Destination File:" + toFile + " already exists");
+            logger.error("Destination File:" + toFile + " already exists");
             return false;
         }
 
@@ -356,7 +356,7 @@ public class Utils {
                 //so we need to delete the file we have just created
                 boolean deleteResult = fromFile.delete();
                 if (!deleteResult) {
-                    logger.log(Level.SEVERE, "Unable to delete File:" + fromFile);
+                    logger.error("Unable to delete File:" + fromFile);
                     toFile.delete();
                     return false;
                 }

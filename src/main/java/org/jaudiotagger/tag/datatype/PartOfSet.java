@@ -6,6 +6,8 @@ import org.jaudiotagger.tag.id3.AbstractTagFrameBody;
 import org.jaudiotagger.tag.id3.valuepair.TextEncoding;
 import org.jaudiotagger.tag.options.PadNumberOption;
 import org.jaudiotagger.utils.EqualsUtil;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.nio.ByteBuffer;
 import java.nio.CharBuffer;
@@ -28,6 +30,8 @@ import java.util.regex.Pattern;
  */
 @SuppressWarnings({"EmptyCatchBlock"})
 public class PartOfSet extends AbstractString {
+    private static final Logger logger = LoggerFactory.getLogger(PartOfSet.class);
+
     /**
      * Creates a new empty  PartOfSet datatype.
      *
@@ -52,11 +56,9 @@ public class PartOfSet extends AbstractString {
             return true;
         }
 
-        if (!(obj instanceof PartOfSet)) {
+        if (!(obj instanceof PartOfSet that)) {
             return false;
         }
-
-        PartOfSet that = (PartOfSet) obj;
 
         return EqualsUtil.areEqual(value, that.value);
     }
@@ -76,7 +78,7 @@ public class PartOfSet extends AbstractString {
      * @throws IndexOutOfBoundsException
      */
     public void readByteArray(byte[] arr, int offset) throws InvalidDataTypeException {
-        logger.finest("Reading from array from offset:" + offset);
+        logger.debug("Reading from array from offset:" + offset);
 
         //Get the Specified Decoder
         CharsetDecoder decoder = getTextEncodingCharSet().newDecoder();
@@ -87,7 +89,7 @@ public class PartOfSet extends AbstractString {
         decoder.reset();
         CoderResult coderResult = decoder.decode(inBuffer, outBuffer, true);
         if (coderResult.isError()) {
-            logger.warning("Decoding error:" + coderResult);
+            logger.warn("Decoding error:" + coderResult);
         }
         decoder.flush(outBuffer);
         outBuffer.flip();
@@ -98,7 +100,7 @@ public class PartOfSet extends AbstractString {
 
         //SetSize, important this is correct for finding the next datatype
         setSize(arr.length - offset);
-        logger.config("Read SizeTerminatedString:" + value + " size:" + size);
+        logger.debug("Read SizeTerminatedString:" + value + " size:" + size);
     }
 
     /**
@@ -143,7 +145,7 @@ public class PartOfSet extends AbstractString {
         }
         //Should never happen so if does throw a RuntimeException
         catch (CharacterCodingException ce) {
-            logger.severe(ce.getMessage());
+            logger.error(ce.getMessage());
             throw new RuntimeException(ce);
         }
         setSize(data.length);
@@ -160,7 +162,7 @@ public class PartOfSet extends AbstractString {
     protected Charset getTextEncodingCharSet() {
         final byte textEncoding = this.getBody().getTextEncoding();
         final Charset charset = TextEncoding.getInstanceOf().getCharsetForId(textEncoding);
-        logger.finest("text encoding:" + textEncoding + " charset:" + charset.name());
+        logger.debug("text encoding:" + textEncoding + " charset:" + charset.name());
         return charset;
     }
 
@@ -408,11 +410,9 @@ public class PartOfSet extends AbstractString {
                 return true;
             }
 
-            if (!(obj instanceof PartOfSetValue)) {
+            if (!(obj instanceof PartOfSetValue that)) {
                 return false;
             }
-
-            PartOfSetValue that = (PartOfSetValue) obj;
 
             return EqualsUtil.areEqual(getCount(), that.getCount())
                     && EqualsUtil.areEqual(getTotal(), that.getTotal());

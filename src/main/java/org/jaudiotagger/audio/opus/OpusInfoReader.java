@@ -6,23 +6,24 @@ import org.jaudiotagger.audio.ogg.util.OggPageHeader;
 import org.jaudiotagger.audio.opus.util.OpusVorbisIdentificationHeader;
 import org.jaudiotagger.logging.ErrorMessage;
 import org.jaudiotagger.tag.id3.AbstractID3v2Tag;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.io.RandomAccessFile;
 import java.util.Arrays;
-import java.util.logging.Logger;
 
 /**
  * Read encoding info, only implemented for vorbis streams
  */
 public class OpusInfoReader {
 
-    public static Logger logger = Logger.getLogger("org.jaudiotagger.audio.opus.atom");
+    private static final Logger logger = LoggerFactory.getLogger("org.jaudiotagger.audio.opus.atom");
 
     public GenericAudioHeader read(RandomAccessFile raf) throws CannotReadException, IOException {
         long start = raf.getFilePointer();
         GenericAudioHeader info = new GenericAudioHeader();
-        logger.fine("Started");
+        logger.debug("Started");
 
         //Check start of file does it have Ogg pattern
         byte[] b = new byte[OggPageHeader.CAPTURE_PATTERN.length];

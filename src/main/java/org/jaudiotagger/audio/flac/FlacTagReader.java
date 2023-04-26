@@ -26,21 +26,21 @@ import org.jaudiotagger.tag.InvalidFrameException;
 import org.jaudiotagger.tag.flac.FlacTag;
 import org.jaudiotagger.tag.vorbiscomment.VorbisCommentReader;
 import org.jaudiotagger.tag.vorbiscomment.VorbisCommentTag;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.nio.channels.FileChannel;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  * Read Flac Tag
  */
 public class FlacTagReader {
     // Logger Object
-    public static Logger logger = Logger.getLogger("org.jaudiotagger.audio.flac");
+    private static final Logger logger = LoggerFactory.getLogger("org.jaudiotagger.audio.flac");
 
     private final VorbisCommentReader vorbisCommentReader = new VorbisCommentReader();
 
@@ -56,8 +56,8 @@ public class FlacTagReader {
         //Seems like we have a valid stream
         boolean isLastBlock = false;
         while (!isLastBlock) {
-            if (logger.isLoggable(Level.CONFIG)) {
-                logger.config(path + " Looking for MetaBlockHeader at:" + fc.position());
+            if (logger.isDebugEnabled()) {
+                logger.debug(path + " Looking for MetaBlockHeader at:" + fc.position());
             }
 
             //Read the header
@@ -66,8 +66,8 @@ public class FlacTagReader {
                 break;
             }
 
-            if (logger.isLoggable(Level.CONFIG)) {
-                logger.config(path + " Reading MetadataBlockHeader:" + mbh + " ending at " + fc.position());
+            if (logger.isDebugEnabled()) {
+                logger.debug(path + " Reading MetadataBlockHeader:" + mbh + " ending at " + fc.position());
             }
 
             //Is it one containing some sort of metadata, therefore interested in it?
@@ -87,17 +87,17 @@ public class FlacTagReader {
                             MetadataBlockDataPicture mbdp = new MetadataBlockDataPicture(mbh, fc);
                             images.add(mbdp);
                         } catch (IOException ioe) {
-                            logger.warning(path + "Unable to read picture metablock, ignoring:" + ioe.getMessage());
+                            logger.warn(path + "Unable to read picture metablock, ignoring:" + ioe.getMessage());
                         } catch (InvalidFrameException ive) {
-                            logger.warning(path + "Unable to read picture metablock, ignoring" + ive.getMessage());
+                            logger.warn(path + "Unable to read picture metablock, ignoring" + ive.getMessage());
                         }
 
                         break;
 
                     //This is not a metadata block we are interested in so we skip to next block
                     default:
-                        if (logger.isLoggable(Level.CONFIG)) {
-                            logger.config(path + "Ignoring MetadataBlock:" + mbh.getBlockType());
+                        if (logger.isDebugEnabled()) {
+                            logger.debug(path + "Ignoring MetadataBlock:" + mbh.getBlockType());
                         }
                         fc.position(fc.position() + mbh.getDataLength());
                         break;
@@ -105,7 +105,7 @@ public class FlacTagReader {
             }
             isLastBlock = mbh.isLastBlock();
         }
-        logger.config("Audio should start at:" + Hex.asHex(fc.position()));
+        logger.debug("Audio should start at:" + Hex.asHex(fc.position()));
 
         //Note there may not be either a tag or any images, no problem this is valid however to make it easier we
         //just initialize Flac with an empty VorbisTag

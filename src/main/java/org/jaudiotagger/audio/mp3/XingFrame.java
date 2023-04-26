@@ -1,6 +1,8 @@
 package org.jaudiotagger.audio.mp3;
 
 import org.jaudiotagger.audio.exceptions.InvalidAudioFrameException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.nio.ByteBuffer;
 import java.util.Arrays;
@@ -24,6 +26,7 @@ import java.util.Arrays;
  * It my then contain a Lame Frame ( a Lame frame is in essence an extended Xing Frame
  */
 public class XingFrame {
+    private static final Logger logger = LoggerFactory.getLogger(XingFrame.class);
 
     //The offset into first frame varies based on the MPEG frame properties
     private static final int MPEG_VERSION_1_MODE_MONO_OFFSET = 21;
@@ -113,7 +116,7 @@ public class XingFrame {
         byte[] identifier = new byte[XING_IDENTIFIER_BUFFER_SIZE];
         header.get(identifier);
         if (Arrays.equals(identifier, XING_VBR_ID)) {
-            MP3File.logger.finest("Is Vbr");
+            logger.debug("Is Vbr");
             vbr = true;
         }
     }
@@ -218,7 +221,7 @@ public class XingFrame {
         if ((!Arrays.equals(identifier, XING_VBR_ID)) && (!Arrays.equals(identifier, XING_CBR_ID))) {
             return null;
         }
-        MP3File.logger.finest("Found Xing Frame");
+        logger.debug("Found Xing Frame");
         return header;
     }
 

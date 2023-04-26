@@ -25,6 +25,8 @@ import org.jaudiotagger.tag.Tag;
 import org.jaudiotagger.tag.TagOptionSingleton;
 import org.jaudiotagger.tag.flac.FlacTag;
 import org.jaudiotagger.utils.DirectByteBufferUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
@@ -36,8 +38,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Queue;
 import java.util.concurrent.LinkedBlockingQueue;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 import static org.jaudiotagger.utils.PrimitiveUtils.safeLongToInt;
 
@@ -47,7 +47,7 @@ import static org.jaudiotagger.utils.PrimitiveUtils.safeLongToInt;
  */
 public class FlacTagWriter {
     // Logger Object
-    public static Logger logger = Logger.getLogger("org.jaudiotagger.audio.flac");
+    private static final Logger logger = LoggerFactory.getLogger("org.jaudiotagger.audio.flac");
     private final FlacTagCreator tc = new FlacTagCreator();
 
     /**
@@ -77,7 +77,7 @@ public class FlacTagWriter {
      * @throws CannotWriteException
      */
     public void write(Tag tag, FileChannel fc, final String fileName) throws CannotWriteException {
-        logger.config(fileName + " Writing tag");
+        logger.debug(fileName + " Writing tag");
         try {
             MetadataBlockInfo blockInfo = new MetadataBlockInfo();
 
@@ -153,12 +153,12 @@ public class FlacTagWriter {
             //Go to start of Flac within file
             fc.position(flacStream.getStartOfFlacInFile());
 
-            logger.config(fileName + ":Writing tag available bytes:" + availableRoom + ":needed bytes:" + neededRoom);
+            logger.debug(fileName + ":Writing tag available bytes:" + availableRoom + ":needed bytes:" + neededRoom);
 
             //There is enough room to fit the tag without moving the audio just need to
             //adjust padding accordingly need to allow space for padding header if padding required
             if ((availableRoom == neededRoom) || (availableRoom > neededRoom + MetadataBlockHeader.HEADER_LENGTH)) {
-                logger.config(fileName + " Room to Rewrite");
+                logger.debug(fileName + " Room to Rewrite");
                 //Jump over Id3 (if exists) and flac header
                 fc.position(flacStream.getStartOfFlacInFile() + FlacStreamReader.FLAC_STREAM_IDENTIFIER_LENGTH);
 
@@ -170,12 +170,12 @@ public class FlacTagWriter {
             }
             //Need to move audio
             else {
-                logger.config(fileName + ":Audio must be shifted " + "NewTagSize:" + newTagSize + ":AvailableRoom:" + availableRoom + ":MinimumAdditionalRoomRequired:" + (neededRoom - availableRoom));
+                logger.debug(fileName + ":Audio must be shifted " + "NewTagSize:" + newTagSize + ":AvailableRoom:" + availableRoom + ":MinimumAdditionalRoomRequired:" + (neededRoom - availableRoom));
                 //As we are having to both anyway may as well put in the default padding
                 insertUsingChunks(fileName, tag, fc, blockInfo, flacStream, neededRoom + FlacTagCreator.DEFAULT_PADDING, availableRoom);
             }
         } catch (IOException ioe) {
-            logger.log(Level.SEVERE, ioe.getMessage(), ioe);
+            logger.error(ioe.getMessage(), ioe);
             throw new CannotWriteException(fileName + ":" + ioe.getMessage());
         }
     }
@@ -250,7 +250,7 @@ public class FlacTagWriter {
 
         //Extra Space Required for larger metadata block
         int extraSpaceRequired = neededRoom - availableRoom;
-        logger.config(file + " Audio needs shifting:" + extraSpaceRequired);
+        logger.debug(file + " Audio needs shifting:" + extraSpaceRequired);
 
         //ChunkSize must be at least as large as the extra space required to write the metadata
         int chunkSize = (int) TagOptionSingleton.getInstance().getWriteChunkSize();
@@ -329,7 +329,7 @@ public class FlacTagWriter {
             if (mappedFile == null) {
                 insertUsingChunks(fileName, tag, fc, blockInfo, flacStream, neededRoom + FlacTagCreator.DEFAULT_PADDING, availableRoom);
             } else {
-                logger.log(Level.SEVERE, ioe.getMessage(), ioe);
+                logger.error(ioe.getMessage(), ioe);
                 throw ioe;
             }
         }

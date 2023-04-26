@@ -22,10 +22,11 @@ package org.jaudiotagger.tag.vorbiscomment;
 import org.jaudiotagger.audio.exceptions.CannotReadException;
 import org.jaudiotagger.audio.generic.Utils;
 import org.jaudiotagger.logging.ErrorMessage;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
-import java.util.logging.Logger;
 
 /**
  * Create the VorbisCommentTag by reading from the raw packet data
@@ -50,7 +51,7 @@ import java.util.logging.Logger;
  */
 public class VorbisCommentReader {
     // Logger Object
-    public static Logger logger = Logger.getLogger("org.jaudiotagger.tag.vorbiscomment.VorbisCommentReader");
+    private static final Logger logger = LoggerFactory.getLogger("org.jaudiotagger.tag.vorbiscomment.VorbisCommentReader");
 
     public static final int FIELD_VENDOR_LENGTH_POS = 0;
     public static final int FIELD_VENDOR_STRING_POS = 4;
@@ -89,14 +90,14 @@ public class VorbisCommentReader {
         System.arraycopy(rawdata, pos, b, 0, vendorStringLength);
         pos += vendorStringLength;
         tag.setVendor(new String(b, StandardCharsets.UTF_8));
-        logger.config("Vendor is:" + tag.getVendor());
+        logger.debug("Vendor is:" + tag.getVendor());
 
         b = new byte[FIELD_USER_COMMENT_LIST_LENGTH];
         System.arraycopy(rawdata, pos, b, 0, FIELD_USER_COMMENT_LIST_LENGTH);
         pos += FIELD_USER_COMMENT_LIST_LENGTH;
 
         int userComments = Utils.getIntLE(b);
-        logger.config("Number of user comments:" + userComments);
+        logger.debug("Number of user comments:" + userComments);
 
         for (int i = 0; i < userComments; i++) {
             b = new byte[FIELD_COMMENT_LENGTH_LENGTH];
@@ -104,13 +105,13 @@ public class VorbisCommentReader {
             pos += FIELD_COMMENT_LENGTH_LENGTH;
 
             int commentLength = Utils.getIntLE(b);
-            logger.config("Next Comment Length:" + commentLength);
+            logger.debug("Next Comment Length:" + commentLength);
 
             if (commentLength > JAUDIOTAGGER_MAX_COMMENT_LENGTH) {
-                logger.warning(ErrorMessage.VORBIS_COMMENT_LENGTH_TOO_LARGE.getMsg(commentLength));
+                logger.warn(ErrorMessage.VORBIS_COMMENT_LENGTH_TOO_LARGE.getMsg(commentLength));
                 break;
             } else if (commentLength > rawdata.length) {
-                logger.warning(ErrorMessage.VORBIS_COMMENT_LENGTH_LARGE_THAN_HEADER.getMsg(commentLength, rawdata.length));
+                logger.warn(ErrorMessage.VORBIS_COMMENT_LENGTH_LARGE_THAN_HEADER.getMsg(commentLength, rawdata.length));
                 break;
             } else {
                 b = new byte[commentLength];
@@ -118,7 +119,7 @@ public class VorbisCommentReader {
                 pos += commentLength;
 
                 VorbisCommentTagField fieldComment = new VorbisCommentTagField(b);
-                logger.config("Adding:" + fieldComment.getId());
+                logger.debug("Adding:" + fieldComment.getId());
                 tag.addField(fieldComment);
             }
         }

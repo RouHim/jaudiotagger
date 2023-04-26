@@ -24,12 +24,16 @@ package org.jaudiotagger.tag.datatype;
 
 import org.jaudiotagger.tag.InvalidDataTypeException;
 import org.jaudiotagger.tag.id3.AbstractTagFrameBody;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Represents a stream of bytes, continuing until the end of the buffer. Usually used for binary data or where
  * we havent yet mapped the data to a better fitting type.
  */
 public class ByteArraySizeTerminated extends AbstractDataType {
+    private static final Logger logger = LoggerFactory.getLogger(ByteArraySizeTerminated.class);
+
     public ByteArraySizeTerminated(String identifier, AbstractTagFrameBody frameBody) {
         super(identifier, frameBody);
     }
@@ -100,7 +104,7 @@ public class ByteArraySizeTerminated extends AbstractDataType {
      * @return a byte array that that contians the data that should be perisisted to file
      */
     public byte[] writeByteArray() {
-        logger.config("Writing byte array" + this.getIdentifier());
+        logger.debug("Writing byte array" + this.getIdentifier());
         return (byte[]) value;
     }
 }

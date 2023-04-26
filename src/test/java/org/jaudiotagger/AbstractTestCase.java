@@ -23,7 +23,6 @@ import java.io.*;
 import java.util.EnumMap;
 import java.util.regex.Pattern;
 
-import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**

@@ -123,11 +123,9 @@ public class Lyrics3Image extends AbstractDataType {
      * @return
      */
     public boolean equals(Object obj) {
-        if (!(obj instanceof Lyrics3Image)) {
+        if (!(obj instanceof Lyrics3Image object)) {
             return false;
         }
-
-        Lyrics3Image object = (Lyrics3Image) obj;
 
         if (!this.description.equals(object.description)) {
             return false;

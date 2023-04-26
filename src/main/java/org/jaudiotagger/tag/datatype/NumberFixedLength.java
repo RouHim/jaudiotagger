@@ -26,6 +26,8 @@ package org.jaudiotagger.tag.datatype;
 import org.jaudiotagger.tag.InvalidDataTypeException;
 import org.jaudiotagger.tag.id3.AbstractTagFrameBody;
 import org.jaudiotagger.tag.id3.ID3Tags;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 
 /**
@@ -37,6 +39,8 @@ import org.jaudiotagger.tag.id3.ID3Tags;
  * In ID3Specification would be denoted as $xx xx this denotes exactly two bytes required
  */
 public class NumberFixedLength extends AbstractDataType {
+    private static final Logger logger = LoggerFactory.getLogger(NumberFixedLength.class);
+
     /**
      * Creates a new ObjectNumberFixedLength datatype.
      *
@@ -93,10 +97,9 @@ public class NumberFixedLength extends AbstractDataType {
      * @return true if obj equivalent to this
      */
     public boolean equals(Object obj) {
-        if (!(obj instanceof NumberFixedLength)) {
+        if (!(obj instanceof NumberFixedLength object)) {
             return false;
         }
-        NumberFixedLength object = (NumberFixedLength) obj;
         return this.size == object.size && super.equals(obj);
     }
 
@@ -127,7 +130,7 @@ public class NumberFixedLength extends AbstractDataType {
             lvalue += (arr[i] & 0xff);
         }
         value = lvalue;
-        logger.config("Read NumberFixedlength:" + value);
+        logger.debug("Read NumberFixedlength:" + value);
     }
 
 

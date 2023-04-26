@@ -151,11 +151,9 @@ public class FieldFrameBodyIMG extends AbstractLyrics3v2FieldFrameBody {
      * @return
      */
     public boolean equals(Object obj) {
-        if (!(obj instanceof FieldFrameBodyIMG)) {
+        if (!(obj instanceof FieldFrameBodyIMG object)) {
             return false;
         }
-
-        FieldFrameBodyIMG object = (FieldFrameBodyIMG) obj;
 
         return this.images.equals(object.images) && super.equals(obj);
 

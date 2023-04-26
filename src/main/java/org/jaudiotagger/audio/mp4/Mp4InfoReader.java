@@ -24,10 +24,11 @@ import org.jaudiotagger.audio.generic.GenericAudioHeader;
 import org.jaudiotagger.logging.ErrorMessage;
 import org.jcodec.containers.mp4.MP4Util;
 import org.jcodec.containers.mp4.boxes.*;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.io.RandomAccessFile;
-import java.util.logging.Logger;
 
 /**
  * Read audio info from file.
@@ -54,7 +55,7 @@ import java.util.logging.Logger;
  */
 public class Mp4InfoReader {
     // Logger Object
-    public static Logger logger = Logger.getLogger("org.jaudiotagger.audio.mp4.atom");
+    private static final Logger logger = LoggerFactory.getLogger("org.jaudiotagger.audio.mp4.atom");
 
     public GenericAudioHeader read(RandomAccessFile raf) throws CannotReadException, IOException {
         MP4Util.Movie mp4 = MP4Util.parseFullMovieChannel(raf.getChannel());
@@ -192,7 +193,7 @@ public class Mp4InfoReader {
             info.setEncodingType(EncoderType.AAC.getDescription());
         }
 
-        logger.config(info.toString());
+        logger.debug(info.toString());
 
         //Level 2-Searching for others "trak" within "moov", if we find any traks containing video
         //then reject it if no track if not video then we allow it because many encoders seem to contain all sorts

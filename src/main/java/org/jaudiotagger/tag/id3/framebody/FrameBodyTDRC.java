@@ -27,6 +27,8 @@ import org.jaudiotagger.tag.datatype.DataTypes;
 import org.jaudiotagger.tag.id3.ID3v23Frames;
 import org.jaudiotagger.tag.id3.ID3v24Frames;
 import org.jaudiotagger.tag.id3.valuepair.TextEncoding;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.nio.ByteBuffer;
 import java.text.ParseException;
@@ -35,10 +37,10 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
-import java.util.logging.Level;
 
 
 public class FrameBodyTDRC extends AbstractFrameBodyTextInfo implements ID3v24FrameBody {
+    private static final Logger logger = LoggerFactory.getLogger(FrameBodyTDRC.class);
     /**
      * Used when converting from v3 tags , these fields should ALWAYS hold the v23 value
      */
@@ -134,7 +136,7 @@ public class FrameBodyTDRC extends AbstractFrameBodyTextInfo implements ID3v24Fr
             String result = formatDate.format(date);
             return result;
         } catch (ParseException e) {
-            logger.warning("Unable to parse:" + text);
+            logger.warn("Unable to parse:" + text);
         }
         return "";
     }
@@ -167,18 +169,18 @@ public class FrameBodyTDRC extends AbstractFrameBodyTextInfo implements ID3v24Fr
     }
 
     public void setYear(String year) {
-        logger.finest("Setting year to" + year);
+        logger.debug("Setting year to" + year);
         this.year = year;
     }
 
     public void setTime(String time) {
-        logger.finest("Setting time to:" + time);
+        logger.debug("Setting time to:" + time);
         this.time = time;
     }
 
 
     public void setDate(String date) {
-        logger.finest("Setting date to:" + date);
+        logger.debug("Setting date to:" + date);
         this.date = date;
     }
 
@@ -288,7 +290,7 @@ public class FrameBodyTDRC extends AbstractFrameBodyTextInfo implements ID3v24Fr
                 //Do nothing;
             } catch (NumberFormatException nfe) {
                 //Do nothing except log warning because not really expecting this to happen
-                logger.log(Level.WARNING, "Date Formatter:" + formatters.get(i).toPattern() + "failed to parse:" + getText() + "with " + nfe.getMessage(), nfe);
+                logger.warn("Date Formatter:" + formatters.get(i).toPattern() + "failed to parse:" + getText() + "with " + nfe.getMessage(), nfe);
             }
         }
     }
@@ -338,7 +340,7 @@ public class FrameBodyTDRC extends AbstractFrameBodyTextInfo implements ID3v24Fr
     //TODO currently if user has entered Year and Month, we only store in v23, should we store month with 
     //first day
     private void extractID3v23Formats(final Date dateRecord, final int precision) {
-        logger.fine("Precision is:" + precision + "for date:" + dateRecord.toString());
+        logger.debug("Precision is:" + precision + "for date:" + dateRecord.toString());
         Date d = dateRecord;
 
         //Precision Year

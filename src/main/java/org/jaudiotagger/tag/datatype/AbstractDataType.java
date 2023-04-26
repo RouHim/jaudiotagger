@@ -23,11 +23,12 @@ package org.jaudiotagger.tag.datatype;
 import org.jaudiotagger.audio.mp3.MP3File;
 import org.jaudiotagger.tag.InvalidDataTypeException;
 import org.jaudiotagger.tag.id3.AbstractTagFrameBody;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.LinkedList;
-import java.util.logging.Logger;
 
 /**
  * Represents a field/data type that can be held within a frames body, these map loosely onto
@@ -37,7 +38,7 @@ public abstract class AbstractDataType {
     protected static final String TYPE_ELEMENT = "element";
 
     //Logger
-    public static Logger logger = Logger.getLogger("org.jaudiotagger.tag.datatype");
+    private static final Logger logger = LoggerFactory.getLogger("org.jaudiotagger.tag.datatype");
 
     /**
      * Holds the data
@@ -224,10 +225,9 @@ public abstract class AbstractDataType {
             return true;
         }
 
-        if (!(obj instanceof AbstractDataType)) {
+        if (!(obj instanceof AbstractDataType object)) {
             return false;
         }
-        AbstractDataType object = (AbstractDataType) obj;
         if (!this.identifier.equals(object.identifier)) {
             return false;
         }

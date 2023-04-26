@@ -1,6 +1,8 @@
 package org.jcodec.containers.mp4.boxes;
 
 import org.jaudiotagger.audio.generic.Utils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -8,7 +10,6 @@ import java.io.InputStream;
 import java.nio.ByteBuffer;
 import java.nio.channels.FileChannel;
 import java.nio.charset.StandardCharsets;
-import java.util.logging.Logger;
 
 /**
  * This class is part of JCodec ( www.jcodec.org ) This software is distributed
@@ -20,7 +21,7 @@ import java.util.logging.Logger;
  */
 public class Header {
 
-    private static final Logger LOGGER = Logger.getLogger(Header.class.getCanonicalName());
+    private static final Logger logger = LoggerFactory.getLogger(Header.class.getCanonicalName());
 
     public static final byte[] FOURCC_FREE = new byte[]{'f', 'r', 'e', 'e'};
     private static final long MAX_UNSIGNED_INT = 0x100000000L;
@@ -50,7 +51,7 @@ public class Header {
         while (input.remaining() >= 4 && (size = Utils.u(input.getInt())) == 0)
             ;
         if (input.remaining() < 4 || size < 8 && size != 1) {
-            LOGGER.severe("Broken atom of size " + size);
+            logger.error("Broken atom of size " + size);
             return null;
         }
 
@@ -61,7 +62,7 @@ public class Header {
                 lng = true;
                 size = input.getLong();
             } else {
-                LOGGER.severe("Broken atom of size " + size);
+                logger.error("Broken atom of size " + size);
                 return null;
             }
         }

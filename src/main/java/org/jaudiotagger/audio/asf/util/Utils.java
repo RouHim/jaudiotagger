@@ -44,7 +44,7 @@ public class Utils {
     /**
      * Stores the default line separator of the current underlying system.
      */
-    public final static String LINE_SEPARATOR = System.getProperty("line.separator");  
+    public final static String LINE_SEPARATOR = System.getProperty("line.separator");
     /**
      *
      */
@@ -289,7 +289,7 @@ public class Utils {
         }
         while (character != 0 || (result.length() + 1) > strLen);
         if (strLen != (result.length() + 1)) {
-            throw new IllegalStateException("Invalid Data for current interpretation");  
+            throw new IllegalStateException("Invalid Data for current interpretation");
         }
         return result.toString();
     }
@@ -339,7 +339,7 @@ public class Utils {
      */
     public static GUID readGUID(InputStream stream) throws IOException {
         if (stream == null) {
-            throw new IllegalArgumentException("Argument must not be null");  
+            throw new IllegalArgumentException("Argument must not be null");
         }
         int[] binaryGuid = new int[GUID.GUID_LENGTH];
         for (int i = 0; i < binaryGuid.length; i++) {
@@ -425,7 +425,7 @@ public class Utils {
             }
             return new String(buf, AsfHeader.ASF_CHARSET);
         }
-        throw new IllegalStateException("Invalid Data for current interpretation");  
+        throw new IllegalStateException("Invalid Data for current interpretation");
     }
 
     /**
@@ -437,7 +437,7 @@ public class Utils {
      */
     public static void writeUINT16(int number, OutputStream out) throws IOException {
         if (number < 0) {
-            throw new IllegalArgumentException("positive value expected.");  
+            throw new IllegalArgumentException("positive value expected.");
         }
         byte[] toWrite = new byte[2];
         for (int i = 0; i <= 8; i += 8) {
@@ -455,7 +455,7 @@ public class Utils {
      */
     public static void writeUINT32(long number, OutputStream out) throws IOException {
         if (number < 0) {
-            throw new IllegalArgumentException("positive value expected.");  
+            throw new IllegalArgumentException("positive value expected.");
         }
         byte[] toWrite = new byte[4];
         for (int i = 0; i <= 24; i += 8) {
@@ -473,7 +473,7 @@ public class Utils {
      */
     public static void writeUINT64(long number, OutputStream out) throws IOException {
         if (number < 0) {
-            throw new IllegalArgumentException("positive value expected.");  
+            throw new IllegalArgumentException("positive value expected.");
         }
         byte[] toWrite = new byte[8];
         for (int i = 0; i <= 56; i += 8) {

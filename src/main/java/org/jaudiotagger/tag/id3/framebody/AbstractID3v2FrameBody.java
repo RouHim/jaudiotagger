@@ -29,6 +29,8 @@ import org.jaudiotagger.tag.InvalidFrameException;
 import org.jaudiotagger.tag.InvalidTagException;
 import org.jaudiotagger.tag.datatype.AbstractDataType;
 import org.jaudiotagger.tag.id3.AbstractTagFrameBody;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -38,6 +40,7 @@ import java.nio.ByteBuffer;
  * Contains the content for an ID3v2 frame, (the header is held directly within the frame
  */
 public abstract class AbstractID3v2FrameBody extends AbstractTagFrameBody {
+    private static final Logger logger = LoggerFactory.getLogger("org.jaudiotagger.tag.id3");
     protected static final String TYPE_BODY = "body";
 
 
@@ -140,7 +143,7 @@ public abstract class AbstractID3v2FrameBody extends AbstractTagFrameBody {
     //and providing extra work for the garbage collector.
     public void read(ByteBuffer byteBuffer) throws InvalidTagException {
         int size = getSize();
-        logger.config("Reading body for" + this.getIdentifier() + ":" + size);
+        logger.debug("Reading body for" + this.getIdentifier() + ":" + size);
 
         //Allocate a buffer to the size of the Frame Body and read from file
         byte[] buffer = new byte[size];
@@ -155,12 +158,12 @@ public abstract class AbstractID3v2FrameBody extends AbstractTagFrameBody {
         for (AbstractDataType object : objectList)
         //correct dataType.
         {
-            logger.finest("offset:" + offset);
+            logger.debug("offset:" + offset);
 
             //The read has extended further than the defined frame size (ok to extend upto
             //size because the next datatype may be of length 0.)
             if (offset > (size)) {
-                logger.warning("Invalid Size for FrameBody");
+                logger.warn("Invalid Size for FrameBody");
                 throw new InvalidFrameException("Invalid size for Frame Body");
             }
 
@@ -169,7 +172,7 @@ public abstract class AbstractID3v2FrameBody extends AbstractTagFrameBody {
             try {
                 object.readByteArray(buffer, offset);
             } catch (InvalidDataTypeException e) {
-                logger.warning("Problem reading datatype within Frame Body:" + e.getMessage());
+                logger.warn("Problem reading datatype within Frame Body:" + e.getMessage());
                 throw e;
             }
             //Increment Offset to start of next datatype.
@@ -183,7 +186,7 @@ public abstract class AbstractID3v2FrameBody extends AbstractTagFrameBody {
      * @param tagBuffer
      */
     public void write(ByteArrayOutputStream tagBuffer) {
-        logger.config("Writing frame body for" + this.getIdentifier() + ":Est Size:" + size);
+        logger.debug("Writing frame body for" + this.getIdentifier() + ":Est Size:" + size);
         //Write the various fields to file in order
         for (AbstractDataType object : objectList) {
             byte[] objectData = object.writeByteArray();
@@ -197,7 +200,7 @@ public abstract class AbstractID3v2FrameBody extends AbstractTagFrameBody {
             }
         }
         setSize();
-        logger.config("Written frame body for" + this.getIdentifier() + ":Real Size:" + size);
+        logger.debug("Written frame body for" + this.getIdentifier() + ":Real Size:" + size);
 
     }
 

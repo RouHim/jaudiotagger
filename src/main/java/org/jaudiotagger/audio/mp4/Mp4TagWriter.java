@@ -25,11 +25,12 @@ import org.jaudiotagger.tag.Tag;
 import org.jaudiotagger.tag.mp4.Mp4TagCreator;
 import org.jcodec.containers.mp4.MP4Util;
 import org.jcodec.containers.mp4.boxes.*;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.io.RandomAccessFile;
 import java.nio.channels.FileChannel;
-import java.util.logging.Logger;
 
 
 /**
@@ -96,7 +97,7 @@ import java.util.logging.Logger;
  */
 public class Mp4TagWriter {
     // Logger Object
-    public static Logger logger = Logger.getLogger("org.jaudiotagger.tag.mp4");
+    private static final Logger logger = LoggerFactory.getLogger("org.jaudiotagger.tag.mp4");
 
     private final Mp4TagCreator tc = new Mp4TagCreator();
 
@@ -110,7 +111,7 @@ public class Mp4TagWriter {
      * @throws IOException
      */
     public void write(AudioFile af, RandomAccessFile raf, RandomAccessFile rafTemp) throws CannotWriteException, IOException {
-        logger.config("Started writing tag data");
+        logger.debug("Started writing tag data");
         try (FileChannel fi = raf.getChannel();
              FileChannel fo = rafTemp.getChannel()) {
             MP4Util.Movie mp4 = MP4Util.parseFullMovieChannel(fi);

@@ -3,6 +3,8 @@ package org.jaudiotagger.tag.datatype;
 import org.jaudiotagger.tag.InvalidDataTypeException;
 import org.jaudiotagger.tag.TagOptionSingleton;
 import org.jaudiotagger.tag.id3.AbstractTagFrameBody;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.nio.ByteBuffer;
 import java.nio.CharBuffer;
@@ -26,6 +28,7 @@ import java.util.List;
  * iTunes write null terminators characters after the String even though it only writes a single value.
  */
 public class TextEncodedStringSizeTerminated extends AbstractString {
+    private static final Logger logger = LoggerFactory.getLogger(TextEncodedStringSizeTerminated.class);
 
     /**
      * Creates a new empty TextEncodedStringSizeTerminated datatype.
@@ -69,7 +72,7 @@ public class TextEncodedStringSizeTerminated extends AbstractString {
      * @throws IndexOutOfBoundsException
      */
     public void readByteArray(byte[] arr, int offset) throws InvalidDataTypeException {
-        logger.finest("Reading from array from offset:" + offset);
+        logger.debug("Reading from array from offset:" + offset);
 
 
         //Decode sliced inBuffer
@@ -89,7 +92,7 @@ public class TextEncodedStringSizeTerminated extends AbstractString {
         CharsetDecoder decoder = getCorrectDecoder(inBuffer);
         CoderResult coderResult = decoder.decode(inBuffer, outBuffer, true);
         if (coderResult.isError()) {
-            logger.warning("Decoding error:" + coderResult);
+            logger.warn("Decoding error:" + coderResult);
         }
         decoder.flush(outBuffer);
         outBuffer.flip();
@@ -103,7 +106,7 @@ public class TextEncodedStringSizeTerminated extends AbstractString {
         }
         //SetSize, important this is correct for finding the next datatype
         setSize(arr.length - offset);
-        logger.finest("Read SizeTerminatedString:" + value + " size:" + size);
+        logger.debug("Read SizeTerminatedString:" + value + " size:" + size);
 
     }
 
@@ -282,7 +285,7 @@ public class TextEncodedStringSizeTerminated extends AbstractString {
         }
         //https://bitbucket.org/ijabz/jaudiotagger/issue/1/encoding-metadata-to-utf-16-can-fail-if
         catch (CharacterCodingException ce) {
-            logger.severe(ce.getMessage() + ":" + charset + ":" + value);
+            logger.error(ce.getMessage() + ":" + charset + ":" + value);
             throw new RuntimeException(ce);
         }
         return data;

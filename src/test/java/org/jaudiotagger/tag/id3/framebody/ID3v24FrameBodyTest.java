@@ -2,14 +2,16 @@ package org.jaudiotagger.tag.id3.framebody;
 
 import org.jaudiotagger.tag.id3.ID3v24Frames;
 import org.junit.jupiter.api.Test;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
-import java.util.logging.Logger;
+
 
 public class ID3v24FrameBodyTest {
 
-    protected final Logger log = Logger.getLogger(getClass().getSimpleName());
+    private static final Logger log = LoggerFactory.getLogger(ID3v24FrameBodyTest.class);
 
     @Test
     public void testBodyImplementationsAreComplete() throws Exception {
@@ -28,9 +30,9 @@ public class ID3v24FrameBodyTest {
             }
         }
         if (success) {
-            log.config("Test was successful.");
+            log.debug("Test was successful.");
         } else {
-            log.config("Test was not successful. Errors haven been reported above.");
+            log.debug("Test was not successful. Errors haven been reported above.");
         }
     }
 
@@ -38,7 +40,7 @@ public class ID3v24FrameBodyTest {
         boolean compatible = true;
         if (!superType.isAssignableFrom(subType)) {
             compatible = false;
-            log.severe(subType.getName() + " does not implement "
+            log.error(subType.getName() + " does not implement "
                     + superType.getName());
         }
         return compatible;

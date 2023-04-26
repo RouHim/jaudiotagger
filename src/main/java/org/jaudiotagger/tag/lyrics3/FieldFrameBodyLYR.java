@@ -204,11 +204,9 @@ public class FieldFrameBodyLYR extends AbstractLyrics3v2FieldFrameBody {
      * @return
      */
     public boolean equals(Object obj) {
-        if (!(obj instanceof FieldFrameBodyLYR)) {
+        if (!(obj instanceof FieldFrameBodyLYR object)) {
             return false;
         }
-
-        FieldFrameBodyLYR object = (FieldFrameBodyLYR) obj;
 
         return this.lines.equals(object.lines) && super.equals(obj);
 

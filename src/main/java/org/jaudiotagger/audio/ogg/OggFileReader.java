@@ -24,11 +24,12 @@ import org.jaudiotagger.audio.generic.GenericAudioHeader;
 import org.jaudiotagger.audio.ogg.util.OggInfoReader;
 import org.jaudiotagger.audio.ogg.util.OggPageHeader;
 import org.jaudiotagger.tag.Tag;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.File;
 import java.io.IOException;
 import java.io.RandomAccessFile;
-import java.util.logging.Logger;
 
 /**
  * Read Ogg File Tag and Encoding information
@@ -37,7 +38,7 @@ import java.util.logging.Logger;
  */
 public class OggFileReader extends AudioFileReader {
     // Logger Object
-    public static Logger logger = Logger.getLogger("org.jaudiotagger.audio.ogg");
+    private static final Logger logger = LoggerFactory.getLogger("org.jaudiotagger.audio.ogg");
 
     private final OggInfoReader ir;
     private final OggVorbisTagReader vtr;

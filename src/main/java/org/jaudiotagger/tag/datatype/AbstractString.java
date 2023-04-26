@@ -24,6 +24,8 @@ package org.jaudiotagger.tag.datatype;
 
 import org.jaudiotagger.tag.id3.AbstractTagFrameBody;
 import org.jaudiotagger.tag.id3.valuepair.TextEncoding;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.nio.ByteBuffer;
 import java.nio.charset.Charset;
@@ -35,6 +37,8 @@ import java.nio.charset.StandardCharsets;
  * A partial implementation for String based ID3 fields
  */
 public abstract class AbstractString extends AbstractDataType {
+    private static final Logger logger = LoggerFactory.getLogger(AbstractString.class);
+
     /**
      * Creates a new  datatype
      *
@@ -111,7 +115,7 @@ public abstract class AbstractString extends AbstractDataType {
         if (encoder.canEncode((String) value)) {
             return true;
         } else {
-            logger.finest("Failed Trying to decode" + value + "with" + encoder);
+            logger.debug("Failed Trying to decode" + value + "with" + encoder);
             return false;
         }
     }
@@ -163,7 +167,7 @@ public abstract class AbstractString extends AbstractDataType {
     protected Charset getTextEncodingCharSet() {
         final byte textEncoding = this.getBody().getTextEncoding();
         final Charset charSetName = TextEncoding.getInstanceOf().getCharsetForId(textEncoding);
-        logger.finest("text encoding:" + textEncoding + " charset:" + charSetName.name());
+        logger.debug("text encoding:" + textEncoding + " charset:" + charSetName.name());
         return charSetName;
     }
 }

@@ -21,6 +21,8 @@ package org.jaudiotagger.audio.asf.data;
 import org.jaudiotagger.audio.asf.util.Utils;
 import org.jaudiotagger.logging.ErrorMessage;
 import org.jaudiotagger.tag.TagOptionSingleton;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -28,7 +30,6 @@ import java.io.OutputStream;
 import java.math.BigInteger;
 import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
-import java.util.logging.Logger;
 
 /**
  * This structure represents metadata objects in ASF {@link MetadataContainer}.<br>
@@ -54,7 +55,7 @@ public class MetadataDescriptor implements Comparable<MetadataDescriptor>, Clone
     /**
      * Logger instance.
      */
-    private static final Logger LOGGER = Logger.getLogger("org.jaudiotagger.audio.asf.data");
+    private static final Logger logger = LoggerFactory.getLogger("org.jaudiotagger.audio.asf.data");
 
     /**
      * The maximum language index allowed. (exclusive)
@@ -327,7 +328,7 @@ public class MetadataDescriptor implements Comparable<MetadataDescriptor>, Clone
         try {
             writeInto(result, this.containerType);
         } catch (final IOException e) {
-            LOGGER.warning(e.getMessage());
+            logger.warn(e.getMessage());
         }
         return result.toByteArray();
     }

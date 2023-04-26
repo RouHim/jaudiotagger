@@ -28,6 +28,8 @@ import org.jaudiotagger.tag.id3.framebody.FrameBodyUnsupported;
 import org.jaudiotagger.tag.id3.framebody.ID3v23FrameBody;
 import org.jaudiotagger.tag.id3.valuepair.TextEncoding;
 import org.jaudiotagger.utils.EqualsUtil;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -45,6 +47,7 @@ import java.util.regex.Pattern;
  * @version $Id$
  */
 public class ID3v23Frame extends AbstractID3v2Frame {
+    private static final Logger logger = LoggerFactory.getLogger(ID3v23Frame.class);
     private static final Pattern validFrameIdentifier = Pattern.compile("[A-Z][0-9A-Z]{3}");
 
     protected static final int FRAME_ID_SIZE = 4;
@@ -133,7 +136,7 @@ public class ID3v23Frame extends AbstractID3v2Frame {
      * @throws org.jaudiotagger.tag.InvalidFrameException
      */
     public ID3v23Frame(AbstractID3v2Frame frame) throws InvalidFrameException {
-        logger.finer("Creating frame from a frame of a different version");
+        logger.debug("Creating frame from a frame of a different version");
         if (frame instanceof ID3v23Frame) {
             throw new UnsupportedOperationException("Copy Constructor not called. Please type cast the argument");
         } else if (frame instanceof ID3v22Frame) {
@@ -150,7 +153,7 @@ public class ID3v23Frame extends AbstractID3v2Frame {
                 this.frameBody = new FrameBodyUnsupported((FrameBodyUnsupported) frame.getBody());
                 this.frameBody.setHeader(this);
                 identifier = frame.getIdentifier();
-                logger.config("UNKNOWN:Orig id is:" + frame.getIdentifier() + ":New id is:" + identifier);
+                logger.debug("UNKNOWN:Orig id is:" + frame.getIdentifier() + ":New id is:" + identifier);
                 return;
             }
             // Deprecated frame for v24
@@ -161,7 +164,7 @@ public class ID3v23Frame extends AbstractID3v2Frame {
                     this.frameBody.setHeader(this);
                     this.frameBody.setTextEncoding(ID3TextEncodingConversion.getTextEncoding(this, this.frameBody.getTextEncoding()));
                     identifier = frame.getIdentifier();
-                    logger.config("DEPRECATED:Orig id is:" + frame.getIdentifier() + ":New id is:" + identifier);
+                    logger.debug("DEPRECATED:Orig id is:" + frame.getIdentifier() + ":New id is:" + identifier);
                 }
                 //or was it still deprecated, if so leave as is
                 else {
@@ -170,15 +173,15 @@ public class ID3v23Frame extends AbstractID3v2Frame {
                     this.frameBody.setTextEncoding(ID3TextEncodingConversion.getTextEncoding(this, this.frameBody.getTextEncoding()));
 
                     identifier = frame.getIdentifier();
-                    logger.config("DEPRECATED:Orig id is:" + frame.getIdentifier() + ":New id is:" + identifier);
+                    logger.debug("DEPRECATED:Orig id is:" + frame.getIdentifier() + ":New id is:" + identifier);
                     return;
                 }
             } else if (ID3Tags.isID3v24FrameIdentifier(frame.getIdentifier())) {
-                logger.finer("isID3v24FrameIdentifier");
+                logger.debug("isID3v24FrameIdentifier");
                 //Version between v4 and v3
                 identifier = ID3Tags.convertFrameID24To23(frame.getIdentifier());
                 if (identifier != null) {
-                    logger.finer("V4:Orig id is:" + frame.getIdentifier() + ":New id is:" + identifier);
+                    logger.debug("V4:Orig id is:" + frame.getIdentifier() + ":New id is:" + identifier);
                     this.frameBody = (AbstractTagFrameBody) ID3Tags.copyObject(frame.getBody());
                     this.frameBody.setHeader(this);
                     this.frameBody.setTextEncoding(ID3TextEncodingConversion.getTextEncoding(this, this.frameBody.getTextEncoding()));
@@ -187,7 +190,7 @@ public class ID3v23Frame extends AbstractID3v2Frame {
                     //Is it a known v4 frame which needs forcing to v3 frame e.g. TDRC - TYER,TDAT
                     identifier = ID3Tags.forceFrameID24To23(frame.getIdentifier());
                     if (identifier != null) {
-                        logger.finer("V4:Orig id is:" + frame.getIdentifier() + ":New id is:" + identifier);
+                        logger.debug("V4:Orig id is:" + frame.getIdentifier() + ":New id is:" + identifier);
                         this.frameBody = this.readBody(identifier, (AbstractID3v2FrameBody) frame.getBody());
                         this.frameBody.setHeader(this);
                         this.frameBody.setTextEncoding(ID3TextEncodingConversion.getTextEncoding(this, this.frameBody.getTextEncoding()));
@@ -203,21 +206,21 @@ public class ID3v23Frame extends AbstractID3v2Frame {
                         identifier = frame.getIdentifier();
                         this.frameBody = new FrameBodyUnsupported(identifier, baos.toByteArray());
                         this.frameBody.setHeader(this);
-                        logger.finer("V4:Orig id is:" + frame.getIdentifier() + ":New Id Unsupported is:" + identifier);
+                        logger.debug("V4:Orig id is:" + frame.getIdentifier() + ":New Id Unsupported is:" + identifier);
                         return;
                     }
                 }
             }
             // Unable to find a suitable frameBody, this should not happen
             else {
-                logger.severe("Orig id is:" + frame.getIdentifier() + "Unable to create Frame Body");
+                logger.error("Orig id is:" + frame.getIdentifier() + "Unable to create Frame Body");
                 throw new InvalidFrameException("Orig id is:" + frame.getIdentifier() + "Unable to create Frame Body");
             }
         } else if (frame instanceof ID3v22Frame) {
             if (ID3Tags.isID3v22FrameIdentifier(frame.getIdentifier())) {
                 identifier = ID3Tags.convertFrameID22To23(frame.getIdentifier());
                 if (identifier != null) {
-                    logger.config("V3:Orig id is:" + frame.getIdentifier() + ":New id is:" + identifier);
+                    logger.debug("V3:Orig id is:" + frame.getIdentifier() + ":New id is:" + identifier);
                     this.frameBody = (AbstractTagFrameBody) ID3Tags.copyObject(frame.getBody());
                     this.frameBody.setHeader(this);
                     return;
@@ -227,7 +230,7 @@ public class ID3v23Frame extends AbstractID3v2Frame {
                     //Force v2 to v3
                     identifier = ID3Tags.forceFrameID22To23(frame.getIdentifier());
                     if (identifier != null) {
-                        logger.config("V22Orig id is:" + frame.getIdentifier() + "New id is:" + identifier);
+                        logger.debug("V22Orig id is:" + frame.getIdentifier() + "New id is:" + identifier);
                         this.frameBody = this.readBody(identifier, (AbstractID3v2FrameBody) frame.getBody());
                         this.frameBody.setHeader(this);
                         return;
@@ -237,7 +240,7 @@ public class ID3v23Frame extends AbstractID3v2Frame {
                         this.frameBody = new FrameBodyDeprecated((AbstractID3v2FrameBody) frame.getBody());
                         this.frameBody.setHeader(this);
                         identifier = frame.getIdentifier();
-                        logger.config("Deprecated:V22:orig id id is:" + frame.getIdentifier() + ":New id is:" + identifier);
+                        logger.debug("Deprecated:V22:orig id id is:" + frame.getIdentifier() + ":New id is:" + identifier);
                         return;
                     }
                 }
@@ -247,12 +250,12 @@ public class ID3v23Frame extends AbstractID3v2Frame {
                 this.frameBody = new FrameBodyUnsupported((FrameBodyUnsupported) frame.getBody());
                 this.frameBody.setHeader(this);
                 identifier = frame.getIdentifier();
-                logger.config("UNKNOWN:Orig id is:" + frame.getIdentifier() + ":New id is:" + identifier);
+                logger.debug("UNKNOWN:Orig id is:" + frame.getIdentifier() + ":New id is:" + identifier);
                 return;
             }
         }
 
-        logger.warning("Frame is unknown version:" + frame.getClass());
+        logger.warn("Frame is unknown version:" + frame.getClass());
     }
 
     /**
@@ -300,10 +303,9 @@ public class ID3v23Frame extends AbstractID3v2Frame {
     public boolean equals(Object obj) {
         if (this == obj) return true;
 
-        if (!(obj instanceof ID3v23Frame)) {
+        if (!(obj instanceof ID3v23Frame that)) {
             return false;
         }
-        ID3v23Frame that = (ID3v23Frame) obj;
 
 
         return
@@ -322,24 +324,24 @@ public class ID3v23Frame extends AbstractID3v2Frame {
     public void read(ByteBuffer byteBuffer) throws InvalidFrameException, InvalidDataTypeException {
         String identifier = readIdentifier(byteBuffer);
         if (!isValidID3v2FrameIdentifier(identifier)) {
-            logger.config(getLoggingFilename() + ":Invalid identifier:" + identifier);
+            logger.debug(getLoggingFilename() + ":Invalid identifier:" + identifier);
             byteBuffer.position(byteBuffer.position() - (getFrameIdSize() - 1));
             throw new InvalidFrameIdentifierException(getLoggingFilename() + ":" + identifier + ":is not a valid ID3v2.30 frame");
         }
         //Read the size field (as Big Endian Int - byte buffers always initialised to Big Endian order)
         frameSize = byteBuffer.getInt();
         if (frameSize < 0) {
-            logger.warning(getLoggingFilename() + ":Invalid Frame Size:" + frameSize + ":" + identifier);
+            logger.warn(getLoggingFilename() + ":Invalid Frame Size:" + frameSize + ":" + identifier);
             throw new InvalidFrameException(identifier + " is invalid frame:" + frameSize);
         } else if (frameSize == 0) {
-            logger.warning(getLoggingFilename() + ":Empty Frame Size:" + identifier);
+            logger.warn(getLoggingFilename() + ":Empty Frame Size:" + identifier);
             //We don't process this frame or add to frameMap because contains no useful information
             //Skip the two flag bytes so in correct position for subsequent frames
             byteBuffer.get();
             byteBuffer.get();
             throw new EmptyFrameException(identifier + " is empty frame");
         } else if (frameSize > byteBuffer.remaining()) {
-            logger.warning(getLoggingFilename() + ":Invalid Frame size of " + frameSize + " larger than size of" + byteBuffer.remaining() + " before mp3 audio:" + identifier);
+            logger.warn(getLoggingFilename() + ":Invalid Frame size of " + frameSize + " larger than size of" + byteBuffer.remaining() + " before mp3 audio:" + identifier);
             throw new InvalidFrameException(identifier + " is invalid frame:" + frameSize + " larger than size of" + byteBuffer.remaining() + " before mp3 audio:" + identifier);
         }
 
@@ -363,7 +365,7 @@ public class ID3v23Frame extends AbstractID3v2Frame {
                 id = UNSUPPORTED_ID;
             }
         }
-        logger.fine(getLoggingFilename() + ":Identifier was:" + identifier + " reading using:" + id + "with frame size:" + frameSize);
+        logger.debug(getLoggingFilename() + ":Identifier was:" + identifier + " reading using:" + id + "with frame size:" + frameSize);
 
         //Read extra bits appended to frame header for various encodings
         //These are not included in header size but are included in frame size but won't be read when we actually
@@ -375,7 +377,7 @@ public class ID3v23Frame extends AbstractID3v2Frame {
             //Read the Decompressed Size
             decompressedFrameSize = byteBuffer.getInt();
             extraHeaderBytesCount = FRAME_COMPRESSION_UNCOMPRESSED_SIZE;
-            logger.fine(getLoggingFilename() + ":Decompressed frame size is:" + decompressedFrameSize);
+            logger.debug(getLoggingFilename() + ":Decompressed frame size is:" + decompressedFrameSize);
         }
 
         if (((EncodingFlags) encodingFlags).isEncryption()) {
@@ -392,7 +394,7 @@ public class ID3v23Frame extends AbstractID3v2Frame {
 
         if (((EncodingFlags) encodingFlags).isNonStandardFlags()) {
             //Probably corrupt so treat as a standard frame
-            logger.severe(getLoggingFilename() + ":InvalidEncodingFlags:" + Hex.asHex(encodingFlags.getFlags()));
+            logger.error(getLoggingFilename() + ":InvalidEncodingFlags:" + Hex.asHex(encodingFlags.getFlags()));
         }
 
         if (((EncodingFlags) encodingFlags).isCompression()) {
@@ -432,7 +434,7 @@ public class ID3v23Frame extends AbstractID3v2Frame {
             //it should be deprecated, but what about if somehow a V24Frame has been put into a V23 Tag, shouldn't
             //it then be created as FrameBodyUnsupported
             if (!(frameBody instanceof ID3v23FrameBody)) {
-                logger.config(getLoggingFilename() + ":Converted frameBody with:" + identifier + " to deprecated frameBody");
+                logger.debug(getLoggingFilename() + ":Converted frameBody with:" + identifier + " to deprecated frameBody");
                 frameBody = new FrameBodyDeprecated((AbstractID3v2FrameBody) frameBody);
             }
         } finally {
@@ -445,7 +447,7 @@ public class ID3v23Frame extends AbstractID3v2Frame {
      * Write the frame to bufferOutputStream
      */
     public void write(ByteArrayOutputStream tagBuffer) {
-        logger.config("Writing frame to buffer:" + getIdentifier());
+        logger.debug("Writing frame to buffer:" + getIdentifier());
         //This is where we will write header, move position to where we can
         //write body
         ByteBuffer headerBuffer = ByteBuffer.allocate(FRAME_HEADER_SIZE);
@@ -460,7 +462,7 @@ public class ID3v23Frame extends AbstractID3v2Frame {
         headerBuffer.put(getIdentifier().getBytes(StandardCharsets.ISO_8859_1), 0, FRAME_ID_SIZE);
         //Write Frame Size
         int size = frameBody.getSize();
-        logger.fine("Frame Size Is:" + size);
+        logger.debug("Frame Size Is:" + size);
         headerBuffer.putInt(frameBody.getSize());
 
         //Write the Flags
@@ -657,7 +659,7 @@ public class ID3v23Frame extends AbstractID3v2Frame {
 
         public void unsetNonStandardFlags() {
             if (isNonStandardFlags()) {
-                logger.warning(getLoggingFilename() + ":" + getIdentifier() + ":Unsetting Unknown Encoding Flags:" + Hex.asHex(flags));
+                logger.warn(getLoggingFilename() + ":" + getIdentifier() + ":Unsetting Unknown Encoding Flags:" + Hex.asHex(flags));
                 flags &= (byte) ~FileConstants.BIT4;
                 flags &= (byte) ~FileConstants.BIT3;
                 flags &= (byte) ~FileConstants.BIT2;
@@ -669,18 +671,18 @@ public class ID3v23Frame extends AbstractID3v2Frame {
 
         public void logEnabledFlags() {
             if (isNonStandardFlags()) {
-                logger.warning(getLoggingFilename() + ":" + identifier + ":Unknown Encoding Flags:" + Hex.asHex(flags));
+                logger.warn(getLoggingFilename() + ":" + identifier + ":Unknown Encoding Flags:" + Hex.asHex(flags));
             }
             if (isCompression()) {
-                logger.warning(getLoggingFilename() + ":" + identifier + " is compressed");
+                logger.warn(getLoggingFilename() + ":" + identifier + " is compressed");
             }
 
             if (isEncryption()) {
-                logger.warning(getLoggingFilename() + ":" + identifier + " is encrypted");
+                logger.warn(getLoggingFilename() + ":" + identifier + " is encrypted");
             }
 
             if (isGrouping()) {
-                logger.warning(getLoggingFilename() + ":" + identifier + " is grouped");
+                logger.warn(getLoggingFilename() + ":" + identifier + " is grouped");
             }
         }
 

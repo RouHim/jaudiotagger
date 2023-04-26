@@ -40,7 +40,7 @@ public class UtilsTest {
      */
     public void testCheckStringLengthNullSafe() {
         Utils.checkStringLengthNullSafe(null);
-        Utils.checkStringLengthNullSafe("AllOk");  
+        Utils.checkStringLengthNullSafe("AllOk");
         StringBuffer buffer = new StringBuffer();
         for (int i = 0; i < 65532 / 2; i++) {
             buffer.append("a");
@@ -72,11 +72,11 @@ public class UtilsTest {
      */
     public void testIsBlank() {
         assertTrue(Utils.isBlank(null));
-        assertTrue(Utils.isBlank(""));  
-        assertTrue(Utils.isBlank(" 		"));  
-        assertFalse(Utils.isBlank("a"));  
-        assertFalse(Utils.isBlank("   a"));  
-        assertFalse(Utils.isBlank("		a"));  
+        assertTrue(Utils.isBlank(""));
+        assertTrue(Utils.isBlank(" 		"));
+        assertFalse(Utils.isBlank("a"));
+        assertFalse(Utils.isBlank("   a"));
+        assertFalse(Utils.isBlank("		a"));
     }
 
     /**
@@ -100,7 +100,7 @@ public class UtilsTest {
      */
     public void testReadCharacterSizedStringInputStream() throws IOException {
         ByteArrayOutputStream bos = new ByteArrayOutputStream();
-        String charSized = "This is a TestValue";  
+        String charSized = "This is a TestValue";
         bos.write(Utils.getBytes(charSized.length() + 1, 2));
         bos.write(Utils.getBytes(charSized, AsfHeader.ASF_CHARSET));
         bos.write(AsfHeader.ZERO_TERM);
@@ -169,7 +169,7 @@ public class UtilsTest {
      */
     public void testReadUTF16LEStrInputStream() throws IOException {
         ByteArrayOutputStream bos = new ByteArrayOutputStream();
-        String testValue = "Testvalue";  
+        String testValue = "Testvalue";
         // Test with zero term
         Utils.writeUINT16(testValue.length() * 2 + 2, bos);
         bos.write(Utils.getBytes(testValue, AsfHeader.ASF_CHARSET));
@@ -187,12 +187,12 @@ public class UtilsTest {
         Utils.writeUINT16(2, bos);
         bos.write(AsfHeader.ZERO_TERM);
         string = Utils.readUTF16LEStr(new ByteArrayInputStream(bos.toByteArray()));
-        assertEquals("", string);  
+        assertEquals("", string);
         bos.reset();
         // Test zero length
         Utils.writeUINT16(0, bos);
         string = Utils.readUTF16LEStr(new ByteArrayInputStream(bos.toByteArray()));
-        assertEquals("", string);  
+        assertEquals("", string);
     }
 
     /**

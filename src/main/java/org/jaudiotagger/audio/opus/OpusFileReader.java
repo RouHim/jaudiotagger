@@ -5,18 +5,19 @@ import org.jaudiotagger.audio.generic.AudioFileReader;
 import org.jaudiotagger.audio.generic.GenericAudioHeader;
 import org.jaudiotagger.audio.ogg.util.OggPageHeader;
 import org.jaudiotagger.tag.Tag;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.File;
 import java.io.IOException;
 import java.io.RandomAccessFile;
-import java.util.logging.Logger;
 
 /**
  * Read Ogg Opus File Tag and Encoding information
  */
 public class OpusFileReader extends AudioFileReader {
 
-    public static Logger logger = Logger.getLogger(OpusFileReader.class.getPackage().getName());
+    private static final Logger logger = LoggerFactory.getLogger(OpusFileReader.class.getPackage().getName());
 
     private final OpusInfoReader ir;
     private final OpusVorbisTagReader vtr;

@@ -16,6 +16,8 @@ package org.jaudiotagger.tag.datatype;
 import org.jaudiotagger.tag.InvalidDataTypeException;
 import org.jaudiotagger.tag.id3.AbstractTagFrameBody;
 import org.jaudiotagger.tag.id3.valuepair.EventTimingTypes;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * A single event timing code. Part of a list of timing codes ({@link EventTimingCodeList}), that are contained in
@@ -25,7 +27,7 @@ import org.jaudiotagger.tag.id3.valuepair.EventTimingTypes;
  * @version $Id:$
  */
 public class EventTimingCode extends AbstractDataType implements Cloneable {
-
+    private static final Logger logger = LoggerFactory.getLogger(AbstractDataType.class);
     private static final int SIZE = 5;
     private final NumberHashMap type = new NumberHashMap(DataTypes.OBJ_TYPE_OF_EVENT, null, 1);
     private final NumberFixedLength timestamp = new NumberFixedLength(DataTypes.OBJ_DATETIME, null, 4);
@@ -80,12 +82,12 @@ public class EventTimingCode extends AbstractDataType implements Cloneable {
         int localOffset = originalOffset;
         int size = getSize();
 
-        logger.finest("offset:" + localOffset);
+        logger.debug("offset:" + localOffset);
 
         //The read has extended further than the defined frame size (ok to extend upto
         //size because the next datatype may be of length 0.)
         if (originalOffset > buffer.length - size) {
-            logger.warning("Invalid size for FrameBody");
+            logger.warn("Invalid size for FrameBody");
             throw new InvalidDataTypeException("Invalid size for FrameBody");
         }
 

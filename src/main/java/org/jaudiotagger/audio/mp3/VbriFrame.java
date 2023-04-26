@@ -1,6 +1,8 @@
 package org.jaudiotagger.audio.mp3;
 
 import org.jaudiotagger.audio.exceptions.InvalidAudioFrameException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.nio.ByteBuffer;
 import java.util.Arrays;
@@ -32,6 +34,8 @@ import java.util.Arrays;
  * 26 						TOC entries for seeking as Big-Endian integral. From size per table entry and number of entries, you can calculate the length of this field.
  */
 public class VbriFrame {
+
+    private static final Logger logger = LoggerFactory.getLogger(VbriFrame.class);
 
     //The offset into frame
     private static final int VBRI_OFFSET = MPEGFrameHeader.HEADER_SIZE + 32;
@@ -133,7 +137,7 @@ public class VbriFrame {
 
         //We store this so can return here after scanning through buffer
         int startPosition = bb.position();
-        MP3File.logger.finest("Checking VBRI Frame at" + startPosition);
+        logger.debug("Checking VBRI Frame at" + startPosition);
 
         bb.position(startPosition + VBRI_OFFSET);
 
@@ -149,7 +153,7 @@ public class VbriFrame {
         if ((!Arrays.equals(identifier, VBRI_VBR_ID))) {
             return null;
         }
-        MP3File.logger.finest("Found VBRI Frame");
+        logger.debug("Found VBRI Frame");
         return header;
     }
 

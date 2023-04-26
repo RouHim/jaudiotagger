@@ -5,13 +5,14 @@ package org.jaudiotagger.audio.generic;
 //import java.nio.file.Path;
 //import java.nio.file.attribute.*;
 
-import java.util.logging.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Outputs permissions to try and identify why we dont have permissions to read/write file
  */
 public class Permissions {
-    public static Logger logger = Logger.getLogger("org.jaudiotagger.audio.generic");
+    private static final Logger logger = LoggerFactory.getLogger("org.jaudiotagger.audio.generic");
 
     // ==Android==
 //    /**
@@ -55,7 +56,7 @@ public class Permissions {
 //                    }
 //                }
 //            } catch (IOException ioe) {
-//                logger.severe("Unable to read permissions for:" + path.toString());
+//                logger.error("Unable to read permissions for:" + path.toString());
 //            }
 //            return sb.toString();
 //        }

@@ -29,6 +29,8 @@ import org.jaudiotagger.audio.wav.chunk.WavInfoIdentifier;
 import org.jaudiotagger.tag.*;
 import org.jaudiotagger.tag.wav.WavInfoTag;
 import org.jaudiotagger.tag.wav.WavTag;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -40,7 +42,6 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.Iterator;
 import java.util.List;
-import java.util.logging.Logger;
 
 import static org.jaudiotagger.audio.iff.IffHeaderChunk.SIGNATURE_LENGTH;
 import static org.jaudiotagger.audio.iff.IffHeaderChunk.SIZE_LENGTH;
@@ -57,7 +58,7 @@ public class WavTagWriter {
     }
 
     // Logger Object
-    public static Logger logger = Logger.getLogger("org.jaudiotagger.audio.wav");
+    private static final Logger logger = LoggerFactory.getLogger("org.jaudiotagger.audio.wav");
 
     /**
      * Read existing metadata
@@ -264,7 +265,7 @@ public class WavTagWriter {
         }
         //Truncate the file after the last chunk
         final long newLength = fc.size() - lengthTagChunk;
-        logger.config(loggingName + " Setting new length to:" + newLength);
+        logger.debug(loggingName + " Setting new length to:" + newLength);
         fc.truncate(newLength);
     }
 
@@ -274,7 +275,7 @@ public class WavTagWriter {
      * @throws CannotWriteException
      */
     public void write(final Tag tag, FileChannel fc) throws CannotWriteException {
-        logger.config(loggingName + " Writing tag to file:start");
+        logger.debug(loggingName + " Writing tag to file:start");
 
         WavSaveOptions wso = TagOptionSingleton.getInstance().getWavSaveOptions();
         WavTag existingTag = null;
@@ -434,7 +435,7 @@ public class WavTagWriter {
                 TagTextField next = (TagTextField) nextField;
                 WavInfoIdentifier wii = WavInfoIdentifier.getByByFieldKey(FieldKey.valueOf(next.getId()));
                 baos.write(wii.getCode().getBytes(StandardCharsets.US_ASCII));
-                logger.config(loggingName + " Writing:" + wii.getCode() + ":" + next.getContent());
+                logger.debug(loggingName + " Writing:" + wii.getCode() + ":" + next.getContent());
 
                 //TODO Is UTF8 allowed format
                 byte[] contentConvertedToBytes = next.getContent().getBytes(StandardCharsets.UTF_8);
@@ -450,7 +451,7 @@ public class WavTagWriter {
                 if (wii == WavInfoIdentifier.TRACKNO) {
                     if (TagOptionSingleton.getInstance().isWriteWavForTwonky()) {
                         baos.write(WavInfoIdentifier.TWONKY_TRACKNO.getCode().getBytes(StandardCharsets.US_ASCII));
-                        logger.config(loggingName + " Writing:" + WavInfoIdentifier.TWONKY_TRACKNO.getCode() + ":" + next.getContent());
+                        logger.debug(loggingName + " Writing:" + WavInfoIdentifier.TWONKY_TRACKNO.getCode() + ":" + next.getContent());
 
                         baos.write(Utils.getSizeLEInt32(contentConvertedToBytes.length));
                         baos.write(contentConvertedToBytes);
@@ -468,7 +469,7 @@ public class WavTagWriter {
             while (ti.hasNext()) {
                 TagTextField next = ti.next();
                 baos.write(next.getId().getBytes(StandardCharsets.US_ASCII));
-                logger.config(loggingName + " Writing:" + next.getId() + ":" + next.getContent());
+                logger.debug(loggingName + " Writing:" + next.getId() + ":" + next.getContent());
                 byte[] contentConvertedToBytes = next.getContent().getBytes(StandardCharsets.UTF_8);
                 baos.write(Utils.getSizeLEInt32(contentConvertedToBytes.length));
                 baos.write(contentConvertedToBytes);
@@ -901,12 +902,12 @@ public class WavTagWriter {
         ChunkSummary precedingChunk = WavChunkSummary.getChunkBeforeFirstMetadataTag(existingTag);
         //Preceding chunk ends on odd boundary
         if (!Utils.isOddLength(precedingChunk.getEndLocation())) {
-            logger.severe(loggingName + " Truncating corrupted metadata tags from:" + (existingTag.getInfoTag().getStartLocationInFile() - 1));
+            logger.error(loggingName + " Truncating corrupted metadata tags from:" + (existingTag.getInfoTag().getStartLocationInFile() - 1));
             fc.truncate(existingTag.getInfoTag().getStartLocationInFile() - 1);
         }
         //Preceding chunk ends on even boundary
         else {
-            logger.severe(loggingName + " Truncating corrupted metadata tags from:" + (existingTag.getInfoTag().getStartLocationInFile()));
+            logger.error(loggingName + " Truncating corrupted metadata tags from:" + (existingTag.getInfoTag().getStartLocationInFile()));
             fc.truncate(existingTag.getInfoTag().getStartLocationInFile());
         }
     }

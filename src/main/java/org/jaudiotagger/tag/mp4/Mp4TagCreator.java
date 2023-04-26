@@ -77,8 +77,7 @@ public class Mp4TagCreator extends AbstractTagCreator<IListBox> {
             Iterator<TagField> it = tag.getFields();
             while (it.hasNext()) {
                 TagField frame = it.next();
-                if (frame instanceof Mp4TagField) {
-                    Mp4TagField mp4Frame = (Mp4TagField) frame;
+                if (frame instanceof Mp4TagField mp4Frame) {
                     Mp4FieldKey key = Mp4FieldKey.byFieldName(frame.getId());
                     DataBox data = DataBox.createDataBox(mp4Frame.getFieldType().getFileClassId(), 0, mp4Frame.getDataBytes());
                     if (key.isReverseDnsType()) {

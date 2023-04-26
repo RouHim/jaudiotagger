@@ -34,6 +34,6 @@ public class AsfCodeCheckTest {
     @Test
     public void testConstants() {
         // UTF16-LE by specification
-        assertEquals( "UTF-16LE", AsfHeader.ASF_CHARSET.name(), "ONLY \"UTF-16LE\" text encoding specified");  
+        assertEquals("UTF-16LE", AsfHeader.ASF_CHARSET.name(), "ONLY \"UTF-16LE\" text encoding specified");
     }
 }

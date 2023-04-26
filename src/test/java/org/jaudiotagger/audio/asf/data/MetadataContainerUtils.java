@@ -1,8 +1,10 @@
 package org.jaudiotagger.audio.asf.data;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.util.Collections;
 import java.util.List;
-import java.util.logging.Logger;
 
 /**
  * This class provides methods for working with {@link MetadataContainer}
@@ -13,8 +15,7 @@ import java.util.logging.Logger;
 public final class MetadataContainerUtils {
 
     // Logger Object
-    public static Logger logger = Logger
-            .getLogger("org.jaudiotagger.audio.asf");
+    private static final Logger logger = LoggerFactory.getLogger("org.jaudiotagger.audio.asf");
 
     public static boolean equals(List<MetadataDescriptor> l1,
                                  List<MetadataDescriptor> l2) {
@@ -24,7 +25,7 @@ public final class MetadataContainerUtils {
         for (int i = 0; result && i < l1.size(); i++) {
             result &= MetadataDescriptorUtils.equals(l1.get(i), l2.get(i));
             if (!result) {
-                logger.warning("Unequal descriptors: " + l1.get(i) + " -> "
+                logger.warn("Unequal descriptors: " + l1.get(i) + " -> "
                         + l2.get(i));
             }
         }

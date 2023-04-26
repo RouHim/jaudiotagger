@@ -8,27 +8,28 @@ import org.jaudiotagger.audio.iff.Chunk;
 import org.jaudiotagger.audio.iff.ChunkHeader;
 import org.jaudiotagger.audio.iff.IffHeaderChunk;
 import org.jaudiotagger.logging.Hex;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.nio.ByteOrder;
 import java.nio.channels.FileChannel;
-import java.util.logging.Logger;
 
 /**
  * Read Aiff chunks, except the ID3 chunk.
  */
 public class AiffInfoReader extends AiffChunkReader {
-    public static Logger logger = Logger.getLogger("org.jaudiotagger.audio.aiff");
+    private static final Logger logger = LoggerFactory.getLogger("org.jaudiotagger.audio.aiff");
 
 
     protected GenericAudioHeader read(FileChannel fc, final String fileName) throws CannotReadException, IOException {
-        logger.config(fileName + " Reading AIFF file size:" + Hex.asDecAndHex(fc.size()));
+        logger.debug(fileName + " Reading AIFF file size:" + Hex.asDecAndHex(fc.size()));
         AiffAudioHeader aiffAudioHeader = new AiffAudioHeader();
         final AiffFileHeader fileHeader = new AiffFileHeader();
         long noOfBytes = fileHeader.readHeader(fc, aiffAudioHeader, fileName);
         while (fc.position() < fc.size()) {
             if (!readChunk(fc, aiffAudioHeader, fileName)) {
-                logger.severe(fileName + " UnableToReadProcessChunk");
+                logger.error(fileName + " UnableToReadProcessChunk");
                 break;
             }
         }
@@ -54,25 +55,25 @@ public class AiffInfoReader extends AiffChunkReader {
      * @return {@code false}, if we were not able to read a valid chunk id
      */
     private boolean readChunk(FileChannel fc, AiffAudioHeader aiffAudioHeader, String fileName) throws IOException, CannotReadException {
-        logger.config(fileName + " Reading Info Chunk");
+        logger.debug(fileName + " Reading Info Chunk");
         final Chunk chunk;
         final ChunkHeader chunkHeader = new ChunkHeader(ByteOrder.BIG_ENDIAN);
         if (!chunkHeader.readHeader(fc)) {
             return false;
         }
 
-        logger.config(fileName + "Reading Next Chunk:" + chunkHeader.getID() + ":starting at:" + chunkHeader.getStartLocationInFile() + ":sizeIncHeader:" + (chunkHeader.getSize() + ChunkHeader.CHUNK_HEADER_SIZE));
+        logger.debug(fileName + "Reading Next Chunk:" + chunkHeader.getID() + ":starting at:" + chunkHeader.getStartLocationInFile() + ":sizeIncHeader:" + (chunkHeader.getSize() + ChunkHeader.CHUNK_HEADER_SIZE));
         chunk = createChunk(fc, chunkHeader, aiffAudioHeader);
         if (chunk != null) {
             if (!chunk.readChunk()) {
-                logger.severe(fileName + "ChunkReadFail:" + chunkHeader.getID());
+                logger.error(fileName + "ChunkReadFail:" + chunkHeader.getID());
                 return false;
             }
         } else {
             if (chunkHeader.getSize() < 0) {
                 String msg = fileName + " Not a valid header, unable to read a sensible size:Header"
                         + chunkHeader.getID() + "Size:" + chunkHeader.getSize();
-                logger.severe(msg);
+                logger.error(msg);
                 throw new CannotReadException(msg);
             }
             fc.position(fc.position() + chunkHeader.getSize());

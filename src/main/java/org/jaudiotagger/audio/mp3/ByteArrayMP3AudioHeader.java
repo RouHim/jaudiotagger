@@ -1,10 +1,13 @@
 package org.jaudiotagger.audio.mp3;
 
 import org.jaudiotagger.audio.exceptions.InvalidAudioFrameException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.nio.ByteBuffer;
 
 public class ByteArrayMP3AudioHeader extends MP3AudioHeader {
+    private static final Logger logger = LoggerFactory.getLogger(ByteArrayMP3AudioHeader.class);
 
     public ByteArrayMP3AudioHeader(byte[] fileBytes) {
         //References to Xing Header
@@ -75,10 +78,10 @@ public class ByteArrayMP3AudioHeader extends MP3AudioHeader {
         if (MPEGFrameHeader.isMPEGFrame(bb)) {
             try {
                 MPEGFrameHeader.parseMPEGHeader(bb);
-                MP3AudioHeader.logger.finer("Check next frame confirms is an audio header ");
+                logger.debug("Check next frame confirms is an audio header ");
                 result = true;
             } catch (InvalidAudioFrameException ex) {
-                MP3AudioHeader.logger.finer("Check next frame has identified this is not an audio header");
+                logger.debug("Check next frame has identified this is not an audio header");
                 result = false;
             }
         }

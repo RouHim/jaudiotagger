@@ -2,11 +2,12 @@ package org.jcodec.containers.mp4.boxes;
 
 import org.jaudiotagger.audio.generic.Utils;
 import org.jcodec.containers.mp4.IBoxFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.lang.reflect.Array;
 import java.nio.ByteBuffer;
 import java.util.*;
-import java.util.logging.Logger;
 
 /**
  * This class is part of JCodec ( www.jcodec.org ) This software is distributed
@@ -19,15 +20,14 @@ import java.util.logging.Logger;
  * @author The JCodec project
  */
 public class NodeBox extends Box {
-
-    private static final Logger LOGGER = Logger.getLogger(NodeBox.class.getCanonicalName());
+    private static final Logger logger = LoggerFactory.getLogger(NodeBox.class.getCanonicalName());
 
     protected List<Box> boxes;
     protected IBoxFactory factory;
 
     public NodeBox(Header atom) {
         super(atom);
-        this.boxes = new LinkedList<Box>();
+        this.boxes = new LinkedList<>();
     }
 
     public void setFactory(IBoxFactory factory) {
@@ -149,8 +149,7 @@ public class NodeBox extends Box {
             storage.add((T) box);
             return;
         }
-        if (box instanceof NodeBox) {
-            NodeBox nb = (NodeBox) box;
+        if (box instanceof NodeBox nb) {
             for (Box candidate : nb.getBoxes()) {
                 findDeepInner(candidate, class1, name, storage);
             }
@@ -183,7 +182,7 @@ public class NodeBox extends Box {
                 try {
                     it.set(Box.asBox(class1, next));
                 } catch (Exception e) {
-                    LOGGER.warning("Failed to reinterpret box: " + next.getFourcc() + " as: " + class1.getName() + "."
+                    logger.warn("Failed to reinterpret box: " + next.getFourcc() + " as: " + class1.getName() + "."
                             + e.getMessage());
                     it.remove();
                 }
@@ -196,8 +195,7 @@ public class NodeBox extends Box {
 
         if (path.size() > 0) {
             String head = path.remove(0);
-            if (root instanceof NodeBox) {
-                NodeBox nb = (NodeBox) root;
+            if (root instanceof NodeBox nb) {
                 for (Box candidate : nb.getBoxes()) {
                     if (head == null || head.equals(candidate.header.getFourcc())) {
                         findBox(candidate, path, result);

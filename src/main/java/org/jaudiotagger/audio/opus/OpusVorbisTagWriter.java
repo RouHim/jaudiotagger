@@ -8,6 +8,8 @@ import org.jaudiotagger.audio.ogg.util.OggPage;
 import org.jaudiotagger.audio.ogg.util.OggPageHeader;
 import org.jaudiotagger.tag.Tag;
 import org.jaudiotagger.tag.vorbiscomment.VorbisCommentTag;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.io.RandomAccessFile;
@@ -15,7 +17,6 @@ import java.nio.ByteBuffer;
 import java.nio.channels.FileChannel;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Logger;
 
 /**
  * Write Vorbis Tag within an ogg
@@ -24,7 +25,7 @@ import java.util.logging.Logger;
  */
 public class OpusVorbisTagWriter {
 
-    public static Logger logger = Logger.getLogger("org.jaudiotagger.audio.opus");
+    private static final Logger logger = LoggerFactory.getLogger("org.jaudiotagger.audio.opus");
 
     private final OggVorbisCommentTagCreator tc = new OggVorbisCommentTagCreator(new byte[0], OpusHeader.TAGS_CAPTURE_PATTERN_AS_BYTES, false);
     private final OpusVorbisTagReader reader = new OpusVorbisTagReader();
@@ -45,13 +46,13 @@ public class OpusVorbisTagWriter {
     }
 
     public void write(Tag tag, RandomAccessFile raf, RandomAccessFile rafTemp) throws CannotReadException, CannotWriteException, IOException {
-        logger.config("Starting to write file: " + raf);
+        logger.debug("Starting to write file: " + raf);
 
         FileChannel fi = raf.getChannel();
         FileChannel fo = rafTemp.getChannel();
 
         //1st Page:Identification Header
-        logger.fine("Read 1st Page: identificationHeader");
+        logger.debug("Read 1st Page: identificationHeader");
         List<OggPage> originalHeaders = readPages(fi);
 
         //Convert the OggVorbisComment header to raw packet data

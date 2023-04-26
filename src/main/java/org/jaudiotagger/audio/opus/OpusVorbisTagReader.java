@@ -6,6 +6,8 @@ import org.jaudiotagger.audio.ogg.util.OggPageHeader;
 import org.jaudiotagger.tag.Tag;
 import org.jaudiotagger.tag.vorbiscomment.VorbisCommentReader;
 import org.jaudiotagger.tag.vorbiscomment.VorbisCommentTag;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -13,6 +15,7 @@ import java.io.RandomAccessFile;
 import java.nio.charset.StandardCharsets;
 
 public class OpusVorbisTagReader extends OggVorbisTagReader {
+    private static final Logger logger = LoggerFactory.getLogger(OpusVorbisTagReader.class);
 
     private final VorbisCommentReader tagReader = new VorbisCommentReader();
 
@@ -27,12 +30,12 @@ public class OpusVorbisTagReader extends OggVorbisTagReader {
      * @throws IOException
      */
     public Tag read(RandomAccessFile raf) throws CannotReadException, IOException {
-        logger.config("Starting to read ogg vorbis tag from file:");
+        logger.debug("Starting to read ogg vorbis tag from file:");
         byte[] rawVorbisCommentData = readRawPacketData(raf);
 
         //Begin tag reading
         VorbisCommentTag tag = tagReader.read(rawVorbisCommentData, false);
-        logger.fine("CompletedReadCommentTag");
+        logger.debug("CompletedReadCommentTag");
         return tag;
     }
 
@@ -45,13 +48,13 @@ public class OpusVorbisTagReader extends OggVorbisTagReader {
      * @throws IOException
      */
     public byte[] readRawPacketData(RandomAccessFile raf) throws CannotReadException, IOException {
-        logger.fine("Read 1st page");
+        logger.debug("Read 1st page");
         //1st page = codec infos
         OggPageHeader pageHeader = OggPageHeader.read(raf);
         //Skip over data to end of page header 1
         raf.seek(raf.getFilePointer() + pageHeader.getPageLength());
 
-        logger.fine("Read 2nd page");
+        logger.debug("Read 2nd page");
         //2nd page = comment, may extend to additional pages or not , may also have setup header
         pageHeader = OggPageHeader.read(raf);
 
@@ -81,7 +84,7 @@ public class OpusVorbisTagReader extends OggVorbisTagReader {
 
         //The VorbisComment can extend to the next page, so carry on reading pages until we get to the end of comment
         while (true) {
-            logger.config("Reading comment page");
+            logger.debug("Reading comment page");
             OggPageHeader nextPageHeader = OggPageHeader.read(raf);
             packet = new byte[nextPageHeader.getPacketList().get(0).getLength()];
             raf.read(packet);
@@ -90,13 +93,13 @@ public class OpusVorbisTagReader extends OggVorbisTagReader {
             //Because there is at least one other packet (SetupHeaderPacket) this means the Comment Packet has finished
             //on this page so that's all we need and we can return
             if (nextPageHeader.getPacketList().size() > 1) {
-                logger.config("Comments finish on Page because there is another packet on this page");
+                logger.debug("Comments finish on Page because there is another packet on this page");
                 return baos.toByteArray();
             }
 
             //There is only the VorbisComment packet on page if it has completed on this page we can return
             if (!nextPageHeader.isLastPacketIncomplete()) {
-                logger.config("Comments finish on Page because this packet is complete");
+                logger.debug("Comments finish on Page because this packet is complete");
                 return baos.toByteArray();
             }
         }

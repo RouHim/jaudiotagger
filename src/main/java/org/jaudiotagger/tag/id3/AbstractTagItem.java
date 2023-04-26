@@ -27,9 +27,10 @@
 package org.jaudiotagger.tag.id3;
 
 import org.jaudiotagger.tag.TagException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.nio.ByteBuffer;
-import java.util.logging.Logger;
 
 
 /**
@@ -41,7 +42,7 @@ import java.util.logging.Logger;
 public abstract class AbstractTagItem {
 
     //Logger
-    public static Logger logger = Logger.getLogger("org.jaudiotagger.tag.id3");
+    private static final Logger logger = LoggerFactory.getLogger("org.jaudiotagger.tag.id3");
 
 
     public AbstractTagItem() {

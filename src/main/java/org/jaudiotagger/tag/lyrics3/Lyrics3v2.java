@@ -76,8 +76,7 @@ public class Lyrics3v2 extends AbstractLyrics3 {
             // upgrade the tag to lyrics3v2
             if (mp3tag instanceof Lyrics3v2) {
                 throw new UnsupportedOperationException("Copy Constructor not called. Please type cast the argument");
-            } else if (mp3tag instanceof Lyrics3v1) {
-                Lyrics3v1 lyricOld = (Lyrics3v1) mp3tag;
+            } else if (mp3tag instanceof Lyrics3v1 lyricOld) {
                 Lyrics3v2Field newField;
                 newField = new Lyrics3v2Field(new FieldFrameBodyLYR(lyricOld.getLyric()));
                 fieldMap.put(newField.getIdentifier(), newField);
@@ -168,11 +167,9 @@ public class Lyrics3v2 extends AbstractLyrics3 {
      * @return
      */
     public boolean equals(Object obj) {
-        if (!(obj instanceof Lyrics3v2)) {
+        if (!(obj instanceof Lyrics3v2 object)) {
             return false;
         }
-
-        Lyrics3v2 object = (Lyrics3v2) obj;
 
         return this.fieldMap.equals(object.fieldMap) && super.equals(obj);
 
@@ -381,9 +378,9 @@ public class Lyrics3v2 extends AbstractLyrics3 {
         size = file.getFilePointer() - filePointer;
 
         if (this.getSize() != size) {
-            //logger.config("Lyrics3v2 size didn't match up while writing.");
-            //logger.config("this.getsize()     = " + this.getSize());
-            //logger.config("size (filePointer) = " + size);
+            //logger.debug("Lyrics3v2 size didn't match up while writing.");
+            //logger.debug("this.getsize()     = " + this.getSize());
+            //logger.debug("size (filePointer) = " + size);
         }
 
         str = Long.toString(size);

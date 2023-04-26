@@ -3,11 +3,12 @@ package org.jaudiotagger.audio.aiff;
 import org.jaudiotagger.audio.exceptions.CannotReadException;
 import org.jaudiotagger.audio.generic.Utils;
 import org.jaudiotagger.logging.Hex;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.nio.channels.FileChannel;
-import java.util.logging.Logger;
 
 import static java.nio.ByteOrder.BIG_ENDIAN;
 import static org.jaudiotagger.audio.aiff.AiffType.AIFC;
@@ -28,7 +29,7 @@ import static org.jaudiotagger.audio.iff.IffHeaderChunk.TYPE_LENGTH;
  */
 public class AiffFileHeader {
     private static final String FORM = "FORM";
-    private static final Logger logger = Logger.getLogger("org.jaudiotagger.audio.aiff.AudioFileHeader");
+    private static final Logger logger = LoggerFactory.getLogger("org.jaudiotagger.audio.aiff.AudioFileHeader");
 
     /**
      * Reads the file header and registers the data (file type) with the given header.
@@ -54,7 +55,7 @@ public class AiffFileHeader {
         if (FORM.equals(signature)) {
             // read chunk size
             final long chunkSize = headerData.getInt();
-            logger.severe(fileName + " Reading AIFF header size:" + Hex.asDecAndHex(chunkSize));
+            logger.error(fileName + " Reading AIFF header size:" + Hex.asDecAndHex(chunkSize));
 
             readFileType(headerData, aiffAudioHeader);
             // subtract the file type length from the chunk size to get remaining number of bytes

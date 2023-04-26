@@ -30,17 +30,18 @@ import org.jaudiotagger.logging.Hex;
 import org.jaudiotagger.tag.TagOptionSingleton;
 import org.jaudiotagger.tag.wav.WavInfoTag;
 import org.jaudiotagger.tag.wav.WavTag;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.nio.ByteOrder;
 import java.nio.channels.FileChannel;
-import java.util.logging.Logger;
 
 /**
  * Read the Wav file chunks, until finds WavFormatChunk and then generates AudioHeader from it
  */
 public class WavTagReader {
-    public static Logger logger = Logger.getLogger("org.jaudiotagger.audio.wav");
+    private static final Logger logger = LoggerFactory.getLogger("org.jaudiotagger.audio.wav");
 
     private final String loggingName;
 
@@ -58,7 +59,7 @@ public class WavTagReader {
      * @throws IOException
      */
     public WavTag read(FileChannel fc) throws CannotReadException, IOException {
-        logger.config(loggingName + " Read Tag:start");
+        logger.debug(loggingName + " Read Tag:start");
         WavTag tag = new WavTag(TagOptionSingleton.getInstance().getWavOptions());
         if (WavRIFFHeader.isValidHeader(fc)) {
             while (fc.position() < fc.size()) {
@@ -70,7 +71,7 @@ public class WavTagReader {
             throw new CannotReadException(loggingName + " Wav RIFF Header not valid");
         }
         createDefaultMetadataTagsIfMissing(tag);
-        logger.config(loggingName + " Read Tag:end");
+        logger.debug(loggingName + " Read Tag:end");
         return tag;
     }
 
@@ -106,7 +107,7 @@ public class WavTagReader {
         }
 
         String id = chunkHeader.getID();
-        logger.config(loggingName + " Next Id is:" + id + ":FileLocation:" + fc.position() + ":Size:" + chunkHeader.getSize());
+        logger.debug(loggingName + " Next Id is:" + id + ":FileLocation:" + fc.position() + ":Size:" + chunkHeader.getSize());
         final WavChunkType chunkType = WavChunkType.get(id);
         if (chunkType != null) {
             switch (chunkType) {
@@ -118,14 +119,14 @@ public class WavTagReader {
                             return false;
                         }
                     } else {
-                        logger.warning(loggingName + " Ignoring LIST chunk because already have one:" + chunkHeader.getID()
+                        logger.warn(loggingName + " Ignoring LIST chunk because already have one:" + chunkHeader.getID()
                                 + ":" + Hex.asDecAndHex(chunkHeader.getStartLocationInFile() - 1)
                                 + ":sizeIncHeader:" + (chunkHeader.getSize() + ChunkHeader.CHUNK_HEADER_SIZE));
                     }
                     break;
 
                 case CORRUPT_LIST:
-                    logger.severe(loggingName + " Found Corrupt LIST Chunk, starting at Odd Location:" + chunkHeader.getID() + ":" + chunkHeader.getSize());
+                    logger.error(loggingName + " Found Corrupt LIST Chunk, starting at Odd Location:" + chunkHeader.getID() + ":" + chunkHeader.getSize());
 
                     if (tag.getInfoTag() == null && tag.getID3Tag() == null) {
                         tag.setIncorrectlyAlignedTag(true);
@@ -141,14 +142,14 @@ public class WavTagReader {
                             return false;
                         }
                     } else {
-                        logger.warning(loggingName + " Ignoring id3 chunk because already have one:" + chunkHeader.getID() + ":"
+                        logger.warn(loggingName + " Ignoring id3 chunk because already have one:" + chunkHeader.getID() + ":"
                                 + Hex.asDecAndHex(chunkHeader.getStartLocationInFile())
                                 + ":sizeIncHeader:" + (chunkHeader.getSize() + ChunkHeader.CHUNK_HEADER_SIZE));
                     }
                     break;
 
                 case CORRUPT_ID3_EARLY:
-                    logger.severe(loggingName + " Found Corrupt id3 chunk, starting at Odd Location:" + chunkHeader.getID() + ":" + chunkHeader.getSize());
+                    logger.error(loggingName + " Found Corrupt id3 chunk, starting at Odd Location:" + chunkHeader.getID() + ":" + chunkHeader.getSize());
                     if (tag.getInfoTag() == null && tag.getID3Tag() == null) {
                         tag.setIncorrectlyAlignedTag(true);
                     }
@@ -156,7 +157,7 @@ public class WavTagReader {
                     return true;
 
                 case CORRUPT_ID3_LATE:
-                    logger.severe(loggingName + " Found Corrupt id3 chunk, starting at Odd Location:" + chunkHeader.getID() + ":" + chunkHeader.getSize());
+                    logger.error(loggingName + " Found Corrupt id3 chunk, starting at Odd Location:" + chunkHeader.getID() + ":" + chunkHeader.getSize());
                     if (tag.getInfoTag() == null && tag.getID3Tag() == null) {
                         tag.setIncorrectlyAlignedTag(true);
                     }
@@ -173,15 +174,15 @@ public class WavTagReader {
             if (chunkHeader.getSize() < 0) {
                 String msg = loggingName + " Not a valid header, unable to read a sensible size:Header"
                         + chunkHeader.getID() + "Size:" + chunkHeader.getSize();
-                logger.severe(msg);
+                logger.error(msg);
                 throw new CannotReadException(msg);
             }
-            logger.config(loggingName + " Skipping chunk bytes:" + chunkHeader.getSize() + "for" + chunkHeader.getID());
+            logger.debug(loggingName + " Skipping chunk bytes:" + chunkHeader.getSize() + "for" + chunkHeader.getID());
             fc.position(fc.position() + chunkHeader.getSize());
             if (fc.position() > fc.size()) {
                 String msg = loggingName + " Failed to move to invalid position to " + fc.position() + " because file length is only " + fc.size()
                         + " indicates invalid chunk";
-                logger.severe(msg);
+                logger.error(msg);
                 throw new CannotReadException(msg);
             }
         }

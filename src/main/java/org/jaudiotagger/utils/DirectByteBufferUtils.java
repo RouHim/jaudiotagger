@@ -1,12 +1,13 @@
 package org.jaudiotagger.utils;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.nio.Buffer;
 import java.nio.ByteBuffer;
 import java.nio.MappedByteBuffer;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  * Utilities for direct {@link ByteBuffer}s.
@@ -23,7 +24,7 @@ import java.util.logging.Logger;
  */
 public class DirectByteBufferUtils {
 
-    public static final Logger LOGGER = Logger.getLogger(DirectByteBufferUtils.class.getName());
+    private static final Logger logger = LoggerFactory.getLogger(DirectByteBufferUtils.class.getName());
 
     private static final ReleaseStrategy releaseStrategy;
 
@@ -73,13 +74,13 @@ public class DirectByteBufferUtils {
                     if (viewedBuffer != null) {
                         release((Buffer) viewedBuffer);
                     } else {
-                        LOGGER.log(Level.WARNING, "Can't release direct buffer as neither cleaner nor viewedBuffer were available on:" + bb.getClass());
+                        logger.warn("Can't release direct buffer as neither cleaner nor viewedBuffer were available on:" + bb.getClass());
                     }
                 }
             } catch (IllegalAccessException e) {
-                LOGGER.log(Level.WARNING, "Authorisation failed to invoke release on: " + bb, e);
+                logger.warn("Authorisation failed to invoke release on: " + bb, e);
             } catch (InvocationTargetException e) {
-                LOGGER.log(Level.WARNING, "Failed to release: " + bb, e);
+                logger.warn("Failed to release: " + bb, e);
             }
         }
 
@@ -105,12 +106,12 @@ public class DirectByteBufferUtils {
                 try {
                     freeMethod.invoke(bb);
                 } catch (IllegalAccessException e) {
-                    LOGGER.log(Level.WARNING, "Authorisation failed to invoke release on: " + bb, e);
+                    logger.warn("Authorisation failed to invoke release on: " + bb, e);
                 } catch (InvocationTargetException e) {
-                    LOGGER.log(Level.WARNING, "Failed to release: " + bb, e);
+                    logger.warn("Failed to release: " + bb, e);
                 }
             } else {
-                LOGGER.log(Level.WARNING, "Can't release direct buffer as free method weren't available on: " + bb);
+                logger.warn("Can't release direct buffer as free method weren't available on: " + bb);
             }
         }
 
@@ -124,7 +125,7 @@ public class DirectByteBufferUtils {
 
         @Override
         public void release(Buffer bb) {
-            LOGGER.log(Level.WARNING, "Can't release direct buffer as this JVM is unsupported.");
+            logger.warn("Can't release direct buffer as this JVM is unsupported.");
         }
     }
 
@@ -142,7 +143,7 @@ public class DirectByteBufferUtils {
         } else if (javaVendor.equals("The Android Project")) {
             return AndroidReleaseStrategy.INSTANCE;
         } else {
-            LOGGER.log(Level.WARNING, "Won't be able to release direct buffers as this JVM is unsupported: " + javaVendor);
+            logger.warn("Won't be able to release direct buffers as this JVM is unsupported: " + javaVendor);
             return UnsupportedJvmReleaseStrategy.INSTANCE;
         }
     }

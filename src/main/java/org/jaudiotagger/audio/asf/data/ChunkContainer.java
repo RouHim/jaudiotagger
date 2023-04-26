@@ -74,10 +74,10 @@ public class ChunkContainer extends Chunk {
     public void addChunk(final Chunk toAdd) {
         final List<Chunk> list = assertChunkList(toAdd.getGuid());
         if (!list.isEmpty() && !MULTI_CHUNKS.contains(toAdd.getGuid())) {
-            throw new IllegalArgumentException("The GUID of the given chunk indicates, that there is no more instance allowed.");  
+            throw new IllegalArgumentException("The GUID of the given chunk indicates, that there is no more instance allowed.");
         }
         list.add(toAdd);
-        assert chunkstartsUnique(this) : "Chunk has equal start position like an already inserted one.";  
+        assert chunkstartsUnique(this) : "Chunk has equal start position like an already inserted one.";
     }
 
     /**

@@ -16,6 +16,8 @@ package org.jaudiotagger.tag.datatype;
 import org.jaudiotagger.tag.InvalidDataTypeException;
 import org.jaudiotagger.tag.id3.AbstractTagFrameBody;
 import org.jaudiotagger.tag.id3.valuepair.EventTimingTypes;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * A single synchronized tempo code. Part of a list of temnpo codes ({@link org.jaudiotagger.tag.datatype.SynchronisedTempoCodeList}), that are contained in
@@ -25,6 +27,7 @@ import org.jaudiotagger.tag.id3.valuepair.EventTimingTypes;
  * @version $Id:$
  */
 public class SynchronisedTempoCode extends AbstractDataType implements Cloneable {
+    private static final Logger logger = LoggerFactory.getLogger(SynchronisedTempoCode.class);
 
     private final TempoCode tempo = new TempoCode(DataTypes.OBJ_SYNCHRONISED_TEMPO_DATA, null, 1);
     private final NumberFixedLength timestamp = new NumberFixedLength(DataTypes.OBJ_DATETIME, null, 4);
@@ -81,12 +84,12 @@ public class SynchronisedTempoCode extends AbstractDataType implements Cloneable
         int localOffset = originalOffset;
         int size = getSize();
 
-        logger.finest("offset:" + localOffset);
+        logger.debug("offset:" + localOffset);
 
         //The read has extended further than the defined frame size (ok to extend upto
         //size because the next datatype may be of length 0.)
         if (originalOffset > buffer.length - size) {
-            logger.warning("Invalid size for FrameBody");
+            logger.warn("Invalid size for FrameBody");
             throw new InvalidDataTypeException("Invalid size for FrameBody");
         }
 

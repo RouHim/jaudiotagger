@@ -70,8 +70,7 @@ public class MetaBox extends NodeBox {
                 continue;
 
             for (Box box : entry.getValue()) {
-                if (box instanceof DataBox) {
-                    DataBox db = (DataBox) box;
+                if (box instanceof DataBox db) {
                     MetaValue value = MetaValue.createOtherWithLocale(db.getType(), db.getLocale(), db.getData());
                     if (result.containsKey(index)) {
                         result.get(index).add(value);

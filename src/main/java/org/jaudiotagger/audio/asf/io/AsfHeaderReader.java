@@ -188,10 +188,10 @@ public class AsfHeaderReader extends ChunkContainerReader<AsfHeader> {
          * 0x02.
          */
         if (stream.read() != 1) {
-            throw new IOException("No ASF");  
+            throw new IOException("No ASF");
         }
         if (stream.read() != 2) {
-            throw new IOException("No ASF");  
+            throw new IOException("No ASF");
         }
         /*
          * Creating the resulting object

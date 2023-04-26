@@ -21,6 +21,8 @@ package org.jaudiotagger.tag.mp4.field;
 import org.jaudiotagger.logging.ErrorMessage;
 import org.jaudiotagger.tag.id3.valuepair.ImageFormats;
 import org.jaudiotagger.tag.mp4.Mp4FieldKey;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.UnsupportedEncodingException;
 
@@ -32,6 +34,7 @@ import java.io.UnsupportedEncodingException;
  * a more complex conversion has to be done then for other fields when writing multiple images back to file.
  */
 public class Mp4TagCoverField extends Mp4TagBinaryField {
+    private static final Logger logger = LoggerFactory.getLogger(Mp4TagCoverField.class);
 
     //Type
     private Mp4FieldType imageType;
@@ -76,7 +79,7 @@ public class Mp4TagCoverField extends Mp4TagBinaryField {
         } else if (ImageFormats.binaryDataIsBmpFormat(data)) {
             imageType = Mp4FieldType.COVERART_BMP;
         } else {
-            logger.warning(ErrorMessage.GENERAL_UNIDENITIFED_IMAGE_FORMAT.getMsg());
+            logger.warn(ErrorMessage.GENERAL_UNIDENITIFED_IMAGE_FORMAT.getMsg());
             imageType = Mp4FieldType.COVERART_PNG;
         }
     }

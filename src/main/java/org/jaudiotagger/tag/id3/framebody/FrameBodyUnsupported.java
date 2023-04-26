@@ -118,11 +118,10 @@ public class FrameBodyUnsupported extends AbstractID3v2FrameBody implements ID3v
      * @return whether obj is equivalent to this object
      */
     public boolean equals(Object obj) {
-        if (!(obj instanceof FrameBodyUnsupported)) {
+        if (!(obj instanceof FrameBodyUnsupported object)) {
             return false;
         }
 
-        FrameBodyUnsupported object = (FrameBodyUnsupported) obj;
         return this.identifier.equals(object.identifier) && super.equals(obj);
     }
 

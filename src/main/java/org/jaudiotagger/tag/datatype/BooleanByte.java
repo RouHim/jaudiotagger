@@ -75,11 +75,9 @@ public class BooleanByte extends AbstractDataType {
      * @return
      */
     public boolean equals(Object obj) {
-        if (!(obj instanceof BooleanByte)) {
+        if (!(obj instanceof BooleanByte object)) {
             return false;
         }
-
-        BooleanByte object = (BooleanByte) obj;
 
         return this.bitPosition == object.bitPosition && super.equals(obj);
 

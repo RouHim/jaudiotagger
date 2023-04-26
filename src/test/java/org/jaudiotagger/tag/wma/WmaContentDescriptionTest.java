@@ -17,7 +17,7 @@ public class WmaContentDescriptionTest extends WmaTestCase {
     /**
      * Testfile to use as source.
      */
-    public final static String TEST_FILE = "test1.wma";  
+    public final static String TEST_FILE = "test1.wma";
 
     /**
      * Creates an instance.

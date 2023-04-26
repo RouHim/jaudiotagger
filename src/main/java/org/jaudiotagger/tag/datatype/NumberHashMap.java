@@ -29,6 +29,8 @@ import org.jaudiotagger.tag.id3.valuepair.*;
 import org.jaudiotagger.tag.reference.GenreTypes;
 import org.jaudiotagger.tag.reference.PictureTypes;
 import org.jaudiotagger.utils.EqualsUtil;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.Iterator;
 import java.util.Map;
@@ -38,6 +40,7 @@ import java.util.TreeSet;
  * Represents a number thats acts as a key into an enumeration of values
  */
 public class NumberHashMap extends NumberFixedLength implements HashMapInterface<Integer, String> {
+    private static final Logger logger = LoggerFactory.getLogger(NumberHashMap.class);
 
     /**
      * key to value map
@@ -152,11 +155,9 @@ public class NumberHashMap extends NumberFixedLength implements HashMapInterface
             return true;
         }
 
-        if (!(obj instanceof NumberHashMap)) {
+        if (!(obj instanceof NumberHashMap that)) {
             return false;
         }
-
-        NumberHashMap that = (NumberHashMap) obj;
 
         return
                 EqualsUtil.areEqual(hasEmptyValue, that.hasEmptyValue) &&
@@ -199,7 +200,7 @@ public class NumberHashMap extends NumberFixedLength implements HashMapInterface
             if (!hasEmptyValue) {
                 throw new InvalidDataTypeException(ErrorMessage.MP3_REFERENCE_KEY_INVALID.getMsg(identifier, intValue));
             } else if (identifier.equals(DataTypes.OBJ_PICTURE_TYPE)) {
-                logger.warning(ErrorMessage.MP3_PICTURE_TYPE_INVALID.getMsg(value));
+                logger.warn(ErrorMessage.MP3_PICTURE_TYPE_INVALID.getMsg(value));
             }
         }
     }

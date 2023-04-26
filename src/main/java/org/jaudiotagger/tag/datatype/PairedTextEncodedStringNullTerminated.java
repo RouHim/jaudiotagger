@@ -3,12 +3,13 @@ package org.jaudiotagger.tag.datatype;
 import org.jaudiotagger.tag.InvalidDataTypeException;
 import org.jaudiotagger.tag.id3.AbstractTagFrameBody;
 import org.jaudiotagger.utils.EqualsUtil;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Level;
 
 /**
  * Represents a data type that allow multiple Strings but they should be paired as key values, i.e should be 2,4,6..
@@ -16,6 +17,8 @@ import java.util.logging.Level;
  * such as two ENGINEER keys
  */
 public class PairedTextEncodedStringNullTerminated extends AbstractDataType {
+    private static final Logger logger = LoggerFactory.getLogger(PairedTextEncodedStringNullTerminated.class);
+
     public PairedTextEncodedStringNullTerminated(String identifier, AbstractTagFrameBody frameBody) {
         super(identifier, frameBody);
         value = new PairedTextEncodedStringNullTerminated.ValuePairs();
@@ -35,11 +38,9 @@ public class PairedTextEncodedStringNullTerminated extends AbstractDataType {
             return true;
         }
 
-        if (!(obj instanceof PairedTextEncodedStringNullTerminated)) {
+        if (!(obj instanceof PairedTextEncodedStringNullTerminated that)) {
             return false;
         }
-
-        PairedTextEncodedStringNullTerminated that = (PairedTextEncodedStringNullTerminated) obj;
 
         return EqualsUtil.areEqual(value, that.value);
     }
@@ -78,7 +79,7 @@ public class PairedTextEncodedStringNullTerminated extends AbstractDataType {
      * @throws InvalidDataTypeException if unable to find any null terminated Strings
      */
     public void readByteArray(byte[] arr, int offset) throws InvalidDataTypeException {
-        logger.finer("Reading PairTextEncodedStringNullTerminated from array from offset:" + offset);
+        logger.debug("Reading PairTextEncodedStringNullTerminated from array from offset:" + offset);
         //Continue until unable to read a null terminated String
         while (true) {
             try {
@@ -124,11 +125,11 @@ public class PairedTextEncodedStringNullTerminated extends AbstractDataType {
             }
 
             if (size == 0) {
-                logger.warning("No null terminated Strings found");
+                logger.warn("No null terminated Strings found");
                 throw new InvalidDataTypeException("No null terminated Strings found");
             }
         }
-        logger.finer("Read  PairTextEncodedStringNullTerminated:" + value + " size:" + size);
+        logger.debug("Read  PairTextEncodedStringNullTerminated:" + value + " size:" + size);
     }
 
 
@@ -138,7 +139,7 @@ public class PairedTextEncodedStringNullTerminated extends AbstractDataType {
      * @return byteBuffer that should be written to file to persist this dataType.
      */
     public byte[] writeByteArray() {
-        logger.finer("Writing PairTextEncodedStringNullTerminated");
+        logger.debug("Writing PairTextEncodedStringNullTerminated");
 
         int localSize = 0;
         ByteArrayOutputStream buffer = new ByteArrayOutputStream();
@@ -157,14 +158,14 @@ public class PairedTextEncodedStringNullTerminated extends AbstractDataType {
             }
         } catch (IOException ioe) {
             //This should never happen because the write is internal with the JVM it is not to a file
-            logger.log(Level.SEVERE, "IOException in MultipleTextEncodedStringNullTerminated when writing byte array", ioe);
+            logger.error("IOException in MultipleTextEncodedStringNullTerminated when writing byte array", ioe);
             throw new RuntimeException(ioe);
         }
 
         //Update size member variable
         size = localSize;
 
-        logger.finer("Written PairTextEncodedStringNullTerminated");
+        logger.debug("Written PairTextEncodedStringNullTerminated");
         return buffer.toByteArray();
     }
 
@@ -240,11 +241,9 @@ public class PairedTextEncodedStringNullTerminated extends AbstractDataType {
                 return true;
             }
 
-            if (!(obj instanceof ValuePairs)) {
+            if (!(obj instanceof ValuePairs that)) {
                 return false;
             }
-
-            ValuePairs that = (ValuePairs) obj;
 
             return EqualsUtil.areEqual(getNumberOfValues(), that.getNumberOfValues());
         }

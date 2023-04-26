@@ -2,6 +2,8 @@ package org.jcodec.containers.mp4;
 
 import org.jaudiotagger.audio.generic.Utils;
 import org.jcodec.containers.mp4.boxes.*;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -14,7 +16,6 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.logging.Logger;
 
 /**
  * This class is part of JCodec ( www.jcodec.org ) This software is distributed
@@ -24,7 +25,7 @@ import java.util.logging.Logger;
  */
 public class MP4Util {
 
-    private static final Logger LOGGER = Logger.getLogger(MP4Util.class.getCanonicalName());
+    private static final Logger logger = LoggerFactory.getLogger(MP4Util.class.getCanonicalName());
 
     public static class Movie {
         private final FileTypeBox ftyp;
@@ -230,7 +231,7 @@ public class MP4Util {
 
     public static void doWriteMovieToChannel(FileChannel out, MovieBox movie, int additionalSize) throws IOException {
         int sizeHint = estimateMoovBoxSize(movie) + additionalSize;
-        LOGGER.fine("Using " + sizeHint + " bytes for MOOV box");
+        logger.debug("Using " + sizeHint + " bytes for MOOV box");
 
         ByteBuffer buf = ByteBuffer.allocate(sizeHint * 4);
         movie.write(buf);
@@ -266,7 +267,7 @@ public class MP4Util {
 
     public static void doWriteFullMovieToChannel(FileChannel out, Movie movie, int additionalSize) throws IOException {
         int sizeHint = estimateMoovBoxSize(movie.getMoov()) + additionalSize;
-        LOGGER.fine("Using " + sizeHint + " bytes for MOOV box");
+        logger.debug("Using " + sizeHint + " bytes for MOOV box");
 
         ByteBuffer buf = ByteBuffer.allocate(sizeHint + 128);
         movie.getFtyp().write(buf);

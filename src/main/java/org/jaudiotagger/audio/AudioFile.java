@@ -27,11 +27,12 @@ import org.jaudiotagger.tag.id3.ID3v22Tag;
 import org.jaudiotagger.tag.id3.ID3v23Tag;
 import org.jaudiotagger.tag.id3.ID3v24Tag;
 import org.jaudiotagger.tag.reference.ID3V2Version;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.RandomAccessFile;
-import java.util.logging.Logger;
 
 /**
  * <p>This is the main object manipulated by the user representing an audiofile, its properties and its tag.
@@ -47,7 +48,7 @@ import java.util.logging.Logger;
  */
 public class AudioFile {
     //Logger
-    public static Logger logger = Logger.getLogger("org.jaudiotagger.audio");
+    private static final Logger logger = LoggerFactory.getLogger("org.jaudiotagger.audio");
 
     /**
      * The physical file that this instance represents.
@@ -207,9 +208,9 @@ public class AudioFile {
      * @throws FileNotFoundException if file not found
      */
     public void checkFileExists(File file) throws FileNotFoundException {
-        logger.config("Reading file:" + "path" + file.getPath() + ":abs:" + file.getAbsolutePath());
+        logger.debug("Reading file:" + "path" + file.getPath() + ":abs:" + file.getAbsolutePath());
         if (!file.exists()) {
-            logger.severe("Unable to find:" + file.getPath());
+            logger.error("Unable to find:" + file.getPath());
             throw new FileNotFoundException(ErrorMessage.UNABLE_TO_FIND_FILE.getMsg(file.getPath()));
         }
     }
@@ -231,15 +232,15 @@ public class AudioFile {
         checkFileExists(file);
         if (readOnly) {
             if (!file.canRead()) {
-                logger.severe("Unable to read file:" + file);
-//                    logger.severe(Permissions.displayPermissions(path));
+                logger.error("Unable to read file:" + file);
+//                    logger.error(Permissions.displayPermissions(path));
                 throw new NoReadPermissionsException(ErrorMessage.GENERAL_READ_FAILED_DO_NOT_HAVE_PERMISSION_TO_READ_FILE.getMsg(file));
             }
             newFile = new RandomAccessFile(file, "r");
         } else {
             if (TagOptionSingleton.getInstance().isCheckIsWritable() && file.canWrite()) {
-                logger.severe("Unable to write file:" + file);
-//                    logger.severe(Permissions.displayPermissions(path));
+                logger.error("Unable to write file:" + file);
+//                    logger.error(Permissions.displayPermissions(path));
                 throw new ReadOnlyFileException(ErrorMessage.NO_PERMISSIONS_TO_WRITE_TO_FILE.getMsg(file));
             }
             newFile = new RandomAccessFile(file, "rw");

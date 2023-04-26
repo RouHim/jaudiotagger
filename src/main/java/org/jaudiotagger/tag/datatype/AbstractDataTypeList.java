@@ -18,6 +18,8 @@ package org.jaudiotagger.tag.datatype;
 
 import org.jaudiotagger.tag.InvalidDataTypeException;
 import org.jaudiotagger.tag.id3.AbstractTagFrameBody;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -29,6 +31,7 @@ import java.util.List;
  * @version $Id:$
  */
 public abstract class AbstractDataTypeList<T extends AbstractDataType> extends AbstractDataType {
+    private static final Logger logger = LoggerFactory.getLogger(AbstractDataTypeList.class);
 
     public AbstractDataTypeList(final String identifier, final AbstractTagFrameBody frameBody) {
         super(identifier, frameBody);
@@ -113,7 +116,7 @@ public abstract class AbstractDataTypeList<T extends AbstractDataType> extends A
      * @return a byte array that that contains the data that should be persisted to file
      */
     public byte[] writeByteArray() {
-        logger.config("Writing DataTypeList " + this.getIdentifier());
+        logger.debug("Writing DataTypeList " + this.getIdentifier());
         final byte[] buffer = new byte[getSize()];
         int offset = 0;
         for (final AbstractDataType data : getValue()) {

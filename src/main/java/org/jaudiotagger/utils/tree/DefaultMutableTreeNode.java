@@ -1289,7 +1289,7 @@ public class DefaultMutableTreeNode implements Cloneable,
     }
 
     final class PreorderEnumeration implements Enumeration<TreeNode> {
-        private Stack stack;
+        private final Stack stack;
 
         public PreorderEnumeration(TreeNode rootNode) {
             super();
@@ -1358,7 +1358,7 @@ public class DefaultMutableTreeNode implements Cloneable,
 
 
     final class BreadthFirstEnumeration implements Enumeration<TreeNode> {
-        private Queue queue;
+        private final Queue queue;
 
         public BreadthFirstEnumeration(TreeNode rootNode) {
             super();
@@ -1446,7 +1446,7 @@ public class DefaultMutableTreeNode implements Cloneable,
 
 
     final class PathBetweenNodesEnumeration implements Enumeration<TreeNode> {
-        private Stack<TreeNode> stack;
+        private final Stack<TreeNode> stack;
 
         public PathBetweenNodesEnumeration(TreeNode ancestor,
                                            TreeNode descendant) {

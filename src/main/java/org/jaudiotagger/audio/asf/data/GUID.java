@@ -325,8 +325,7 @@ public final class GUID {
     @Override
     public boolean equals(final Object obj) {
         boolean result = false;
-        if (obj instanceof GUID) {
-            final GUID other = (GUID) obj;
+        if (obj instanceof GUID other) {
             result = Arrays.equals(this.getGUID(), other.getGUID());
         }
         return result;

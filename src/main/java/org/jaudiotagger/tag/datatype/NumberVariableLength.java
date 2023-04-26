@@ -120,11 +120,9 @@ public class NumberVariableLength extends AbstractDataType {
      * @return
      */
     public boolean equals(Object obj) {
-        if (!(obj instanceof NumberVariableLength)) {
+        if (!(obj instanceof NumberVariableLength object)) {
             return false;
         }
-
-        NumberVariableLength object = (NumberVariableLength) obj;
 
         return this.minLength == object.minLength && super.equals(obj);
 

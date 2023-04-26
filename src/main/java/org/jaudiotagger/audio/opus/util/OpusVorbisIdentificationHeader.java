@@ -2,9 +2,10 @@ package org.jaudiotagger.audio.opus.util;
 
 import org.jaudiotagger.audio.generic.Utils;
 import org.jaudiotagger.audio.opus.OpusHeader;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.nio.ByteBuffer;
-import java.util.logging.Logger;
 
 /**
  * - Magic signature: "OpusHead" (64 bits)
@@ -27,7 +28,7 @@ import java.util.logging.Logger;
  */
 public class OpusVorbisIdentificationHeader {
 
-    public static Logger logger = Logger.getLogger("org.jaudiotagger.audio.ogg.opus");
+    private static final Logger logger = LoggerFactory.getLogger("org.jaudiotagger.audio.ogg.opus");
 
     private boolean isValid = false;
 

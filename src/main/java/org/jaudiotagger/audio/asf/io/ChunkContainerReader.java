@@ -4,12 +4,13 @@ import org.jaudiotagger.audio.asf.data.Chunk;
 import org.jaudiotagger.audio.asf.data.ChunkContainer;
 import org.jaudiotagger.audio.asf.data.GUID;
 import org.jaudiotagger.audio.asf.util.Utils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.math.BigInteger;
 import java.util.*;
-import java.util.logging.Logger;
 
 /**
  * This class represents a reader implementation, which is able to read ASF
@@ -20,11 +21,12 @@ import java.util.logging.Logger;
  * @author Christian Laireiter
  */
 abstract class ChunkContainerReader<ChunkType extends ChunkContainer> implements ChunkReader {
+    private static final Logger logger = LoggerFactory.getLogger(ChunkContainerReader.class);
 
     /**
      * Logger
      */
-    protected static final Logger LOGGER = Logger.getLogger("org.jaudiotabgger.audio");  
+    protected static final Logger LOGGER = LoggerFactory.getLogger("org.jaudiotabgger.audio");
 
     /**
      * Within this range, a {@link ChunkReader} should be aware if it fails.
@@ -197,9 +199,9 @@ abstract class ChunkContainerReader<ChunkType extends ChunkContainer> implements
                 this.readerMap.put(curr, reader);
             }
         } catch (InstantiationException e) {
-            LOGGER.severe(e.getMessage());
+            logger.error(e.getMessage());
         } catch (IllegalAccessException e) {
-            LOGGER.severe(e.getMessage());
+            logger.error(e.getMessage());
         }
     }
 

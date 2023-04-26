@@ -27,6 +27,8 @@ import org.jaudiotagger.audio.mp3.MP3File;
 import org.jaudiotagger.logging.ErrorMessage;
 import org.jaudiotagger.tag.*;
 import org.jaudiotagger.tag.id3.framebody.*;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.io.RandomAccessFile;
@@ -37,7 +39,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
-import java.util.logging.Level;
 import java.util.regex.Matcher;
 
 /**
@@ -47,6 +48,7 @@ import java.util.regex.Matcher;
  * @author : Paul Taylor
  */
 public class ID3v11Tag extends ID3v1Tag {
+    private static final Logger logger = LoggerFactory.getLogger(ID3v11Tag.class);
 
     //For writing output
     protected static final String TYPE_TRACK = "track";
@@ -118,12 +120,11 @@ public class ID3v11Tag extends ID3v1Tag {
      */
     public ID3v11Tag(AbstractTag mp3tag) {
         if (mp3tag != null) {
-            if (mp3tag instanceof ID3v1Tag) {
+            if (mp3tag instanceof ID3v1Tag id3old) {
                 if (mp3tag instanceof ID3v11Tag) {
                     throw new UnsupportedOperationException("Copy Constructor not called. Please type cast the argument");
                 }
                 // id3v1_1 objects are also id3v1 objects
-                ID3v1Tag id3old = (ID3v1Tag) mp3tag;
                 this.title = id3old.title;
                 this.artist = id3old.artist;
                 this.album = id3old.album;
@@ -176,7 +177,7 @@ public class ID3v11Tag extends ID3v1Tag {
                     try {
                         this.genre = (byte) ID3Tags.findNumber(text);
                     } catch (TagException ex) {
-                        logger.log(Level.WARNING, getLoggingFilename() + ":" + "Unable to convert TCON frame to format suitable for v11 tag", ex);
+                        logger.warn(getLoggingFilename() + ":" + "Unable to convert TCON frame to format suitable for v11 tag", ex);
                         this.genre = (byte) ID3v1Tag.GENRE_UNDEFINED;
                     }
                 }
@@ -377,10 +378,9 @@ public class ID3v11Tag extends ID3v1Tag {
      * @return
      */
     public boolean equals(Object obj) {
-        if (!(obj instanceof ID3v11Tag)) {
+        if (!(obj instanceof ID3v11Tag object)) {
             return false;
         }
-        ID3v11Tag object = (ID3v11Tag) obj;
         return this.track == object.track && super.equals(obj);
     }
 
@@ -420,7 +420,7 @@ public class ID3v11Tag extends ID3v1Tag {
         if (!seek(byteBuffer)) {
             throw new TagNotFoundException("ID3v1 tag not found");
         }
-        logger.finer("Reading v1.1 tag");
+        logger.debug("Reading v1.1 tag");
 
         //Do single file read of data to cut down on file reads
         byte[] dataBuffer = new byte[TAG_LENGTH];
@@ -463,7 +463,7 @@ public class ID3v11Tag extends ID3v1Tag {
      * @throws IOException thrown if there were problems writing to the file
      */
     public void write(RandomAccessFile file) throws IOException {
-        logger.config("Saving ID3v11 tag to file");
+        logger.debug("Saving ID3v11 tag to file");
         byte[] buffer = new byte[TAG_LENGTH];
         int i;
         String str;
@@ -513,7 +513,7 @@ public class ID3v11Tag extends ID3v1Tag {
         }
         file.write(buffer);
 
-        logger.config("Saved ID3v11 tag to file");
+        logger.debug("Saved ID3v11 tag to file");
     }
 
 

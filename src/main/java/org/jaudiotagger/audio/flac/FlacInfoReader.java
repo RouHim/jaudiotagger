@@ -23,23 +23,24 @@ import org.jaudiotagger.audio.flac.metadatablock.BlockType;
 import org.jaudiotagger.audio.flac.metadatablock.MetadataBlockDataStreamInfo;
 import org.jaudiotagger.audio.flac.metadatablock.MetadataBlockHeader;
 import org.jaudiotagger.audio.generic.Utils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.File;
 import java.io.IOException;
 import java.io.RandomAccessFile;
 import java.nio.channels.FileChannel;
-import java.util.logging.Logger;
 
 /**
  * Read info from Flac file
  */
 public class FlacInfoReader {
     // Logger Object
-    public static Logger logger = Logger.getLogger("org.jaudiotagger.audio.flac");
+    private static final Logger logger = LoggerFactory.getLogger("org.jaudiotagger.audio.flac");
 
 
     public FlacAudioHeader read(FileChannel fc, final String fileName) throws CannotReadException, IOException {
-        logger.config(fileName + ":start");
+        logger.debug(fileName + ":start");
         FlacStreamReader flacStream = new FlacStreamReader(fc, fileName + " ");
         flacStream.findStream();
 
@@ -108,7 +109,7 @@ public class FlacInfoReader {
             int count = 0;
             while (!isLastBlock) {
                 MetadataBlockHeader mbh = MetadataBlockHeader.readHeader(fc);
-                logger.config(f + ":Found block:" + mbh.getBlockType());
+                logger.debug(f + ":Found block:" + mbh.getBlockType());
                 fc.position(fc.position() + mbh.getDataLength());
                 isLastBlock = mbh.isLastBlock();
                 count++;

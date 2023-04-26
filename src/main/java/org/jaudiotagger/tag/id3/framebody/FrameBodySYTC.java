@@ -19,6 +19,8 @@ import org.jaudiotagger.tag.InvalidTagException;
 import org.jaudiotagger.tag.datatype.*;
 import org.jaudiotagger.tag.id3.ID3v24Frames;
 import org.jaudiotagger.tag.id3.valuepair.EventTimingTimestampTypes;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.nio.ByteBuffer;
 import java.util.*;
@@ -69,6 +71,7 @@ import java.util.*;
  * @version $Id$
  */
 public class FrameBodySYTC extends AbstractID3v2FrameBody implements ID3v24FrameBody, ID3v23FrameBody {
+    private static final Logger logger = LoggerFactory.getLogger(FrameBodySYTC.class);
     public static final int MPEG_FRAMES = 1;
     public static final int MILLISECONDS = 2;
 
@@ -228,7 +231,7 @@ public class FrameBodySYTC extends AbstractID3v2FrameBody implements ID3v24Frame
         long lastTimestamp = 0;
         for (final SynchronisedTempoCode code : codes) {
             if (code.getTimestamp() < lastTimestamp) {
-                logger.warning("Synchronised tempo codes are not in chronological order. " + lastTimestamp + " is followed by " + code.getTimestamp() + ".");
+                logger.warn("Synchronised tempo codes are not in chronological order. " + lastTimestamp + " is followed by " + code.getTimestamp() + ".");
                 // throw exception???
             }
             lastTimestamp = code.getTimestamp();

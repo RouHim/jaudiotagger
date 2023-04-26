@@ -25,6 +25,8 @@ import org.jaudiotagger.tag.mp4.Mp4Tag;
 import org.jaudiotagger.tag.mp4.field.*;
 import org.jcodec.containers.mp4.MP4Util;
 import org.jcodec.containers.mp4.boxes.*;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.io.RandomAccessFile;
@@ -32,7 +34,6 @@ import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.util.List;
 import java.util.Map;
-import java.util.logging.Logger;
 
 /**
  * Reads metadata from mp4,
@@ -70,7 +71,7 @@ import java.util.logging.Logger;
 public class Mp4TagReader {
 
     // Logger Object
-    public static Logger logger = Logger.getLogger("org.jaudiotagger.tag.mp4");
+    private static final Logger logger = LoggerFactory.getLogger("org.jaudiotagger.tag.mp4");
 
     /*
      * The metadata is stored in the box under the hierachy moov.udta.meta.ilst
@@ -98,7 +99,7 @@ public class Mp4TagReader {
             //Level 3-Searching for "meta" within udta
             meta = udta.meta();
             if (meta == null) {
-                logger.warning(ErrorMessage.MP4_FILE_HAS_NO_METADATA.getMsg());
+                logger.warn(ErrorMessage.MP4_FILE_HAS_NO_METADATA.getMsg());
                 return tag;
             }
 
@@ -106,7 +107,7 @@ public class Mp4TagReader {
             ilst = NodeBox.findFirst(meta, IListBox.class, "ilst");
             //This file does not actually contain a tag
             if (ilst == null) {
-                logger.warning(ErrorMessage.MP4_FILE_HAS_NO_METADATA.getMsg());
+                logger.warn(ErrorMessage.MP4_FILE_HAS_NO_METADATA.getMsg());
                 return tag;
             }
         } else {
@@ -114,7 +115,7 @@ public class Mp4TagReader {
             // This is the so-called apple-specific "keyed meta"
             meta = NodeBox.findFirst(moov, MetaBox.class, "meta");
             if (meta == null) {
-                logger.warning(ErrorMessage.MP4_FILE_HAS_NO_METADATA.getMsg());
+                logger.warn(ErrorMessage.MP4_FILE_HAS_NO_METADATA.getMsg());
                 return tag;
             }
 
@@ -122,7 +123,7 @@ public class Mp4TagReader {
             ilst = NodeBox.findFirst(meta, IListBox.class, "ilst");
             //This file does not actually contain a tag
             if (ilst == null) {
-                logger.warning(ErrorMessage.MP4_FILE_HAS_NO_METADATA.getMsg());
+                logger.warn(ErrorMessage.MP4_FILE_HAS_NO_METADATA.getMsg());
                 return tag;
             }
         }

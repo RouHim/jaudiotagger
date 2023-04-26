@@ -24,7 +24,7 @@ public class WmaDescriptionLocationTest extends WmaTestCase {
     /**
      * Test file to use as source.
      */
-    public final static String TEST_FILE = "test1.wma";  
+    public final static String TEST_FILE = "test1.wma";
 
     /**
      * Will hold a tag instance for writing some values.

@@ -24,6 +24,8 @@ import org.jaudiotagger.logging.ErrorMessage;
 import org.jaudiotagger.tag.InvalidTagException;
 import org.jaudiotagger.tag.datatype.DataTypes;
 import org.jaudiotagger.tag.datatype.StringSizeTerminated;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.ByteArrayOutputStream;
 import java.io.UnsupportedEncodingException;
@@ -36,6 +38,7 @@ import java.nio.charset.StandardCharsets;
  * Abstract super class of all URL Frames
  */
 public abstract class AbstractFrameBodyUrlLink extends AbstractID3v2FrameBody {
+    private static final Logger logger = LoggerFactory.getLogger(AbstractFrameBodyUrlLink.class);
 
     /**
      * Creates a new FrameBodyUrlLink datatype.
@@ -111,12 +114,12 @@ public abstract class AbstractFrameBodyUrlLink extends AbstractID3v2FrameBody {
 
             //We still cant convert so just set log error and set to blank to allow save to continue
             if (!encoder.canEncode(getUrlLink())) {
-                logger.warning(ErrorMessage.MP3_UNABLE_TO_ENCODE_URL.getMsg(origUrl));
+                logger.warn(ErrorMessage.MP3_UNABLE_TO_ENCODE_URL.getMsg(origUrl));
                 setUrlLink("");
             }
             //it was ok, just note the modification made
             else {
-                logger.warning(ErrorMessage.MP3_URL_SAVED_ENCODED.getMsg(origUrl, getUrlLink()));
+                logger.warn(ErrorMessage.MP3_URL_SAVED_ENCODED.getMsg(origUrl, getUrlLink()));
             }
         }
         super.write(tagBuffer);
@@ -136,18 +139,11 @@ public abstract class AbstractFrameBodyUrlLink extends AbstractID3v2FrameBody {
      * @return
      */
     private String encodeURL(String url) {
-        try {
-            final String[] splitURL = url.split("(?<!/)/(?!/)", -1);
-            final StringBuffer sb = new StringBuffer(splitURL[0]);
-            for (int i = 1; i < splitURL.length; i++) {
-                sb.append("/").append(URLEncoder.encode(splitURL[i], "utf-8"));
-            }
-            return sb.toString();
-        } catch (UnsupportedEncodingException uee) {
-            //Should never happen as utf-8 is always availablebut in case it does we just return the utl
-            //unmodified
-            logger.warning("Uable to url encode because utf-8 charset not available:" + uee.getMessage());
-            return url;
+        final String[] splitURL = url.split("(?<!/)/(?!/)", -1);
+        final StringBuffer sb = new StringBuffer(splitURL[0]);
+        for (int i = 1; i < splitURL.length; i++) {
+            sb.append("/").append(URLEncoder.encode(splitURL[i], StandardCharsets.UTF_8));
         }
+        return sb.toString();
     }
 }

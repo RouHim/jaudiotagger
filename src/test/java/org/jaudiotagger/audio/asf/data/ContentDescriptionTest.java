@@ -1,13 +1,11 @@
 package org.jaudiotagger.audio.asf.data;
 
-import org.jaudiotagger.logging.ErrorMessage;
 import org.junit.jupiter.api.Test;
 
 import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
 
 public class ContentDescriptionTest extends AbstractMetadataContainer<ContentDescription> {
@@ -98,7 +96,7 @@ public class ContentDescriptionTest extends AbstractMetadataContainer<ContentDes
                     .createAString(MetadataDescriptor.WORD_MAXVALUE + 1));
             fail("Exception expected");
         } catch (IllegalArgumentException ignored) {
-                    }
+        }
     }
 
     /**

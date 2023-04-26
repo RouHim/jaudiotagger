@@ -22,7 +22,7 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 
 public class M4aWriteTagTest {
     private static final int TEST_FILE1_SIZE = 3883555;
-    private static final int TEST_FILE2_SIZE = 3884506;
+    private static final int TEST_FILE2_SIZE = 3884503;
     private static final int TEST_FILE5_SIZE = 119472;
 
     /**

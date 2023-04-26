@@ -25,6 +25,8 @@ package org.jaudiotagger.tag.datatype;
 import org.jaudiotagger.tag.InvalidDataTypeException;
 import org.jaudiotagger.tag.id3.AbstractTagFrameBody;
 import org.jaudiotagger.tag.id3.valuepair.TextEncoding;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.nio.ByteBuffer;
 import java.nio.CharBuffer;
@@ -36,6 +38,8 @@ import java.nio.charset.*;
  * will be encoded based upon the text encoding of the frame that it belongs to.
  */
 public class StringFixedLength extends AbstractString {
+    private static final Logger logger = LoggerFactory.getLogger(StringFixedLength.class);
+
     /**
      * Creates a new ObjectStringFixedsize datatype.
      *
@@ -62,10 +66,9 @@ public class StringFixedLength extends AbstractString {
      * @return if obj is equivalent to this
      */
     public boolean equals(Object obj) {
-        if (!(obj instanceof StringFixedLength)) {
+        if (!(obj instanceof StringFixedLength object)) {
             return false;
         }
-        StringFixedLength object = (StringFixedLength) obj;
         return this.size == object.size && super.equals(obj);
     }
 
@@ -76,13 +79,13 @@ public class StringFixedLength extends AbstractString {
      * @param offset this is where to start reading in the buffer for this field
      */
     public void readByteArray(byte[] arr, int offset) throws InvalidDataTypeException {
-        logger.config("Reading from array from offset:" + offset);
+        logger.debug("Reading from array from offset:" + offset);
         try {
             final CharsetDecoder decoder = getTextEncodingCharSet().newDecoder();
 
             //Decode buffer if runs into problems should through exception which we
             //catch and then set value to empty string.
-            logger.finest("Array length is:" + arr.length + "offset is:" + offset + "Size is:" + size);
+            logger.debug("Array length is:" + arr.length + "offset is:" + offset + "Size is:" + size);
 
 
             if (arr.length - offset < size) {
@@ -94,10 +97,10 @@ public class StringFixedLength extends AbstractString {
             }
             value = str;
         } catch (CharacterCodingException ce) {
-            logger.severe(ce.getMessage());
+            logger.error(ce.getMessage());
             value = "";
         }
-        logger.config("Read StringFixedLength:" + value);
+        logger.debug("Read StringFixedLength:" + value);
     }
 
     /**
@@ -115,7 +118,7 @@ public class StringFixedLength extends AbstractString {
 
         //Create with a series of empty of spaces to try and ensure integrity of field
         if (value == null) {
-            logger.warning("Value of StringFixedlength Field is null using default value instead");
+            logger.warn("Value of StringFixedlength Field is null using default value instead");
             data = new byte[size];
             for (int i = 0; i < size; i++) {
                 data[i] = ' ';
@@ -135,7 +138,7 @@ public class StringFixedLength extends AbstractString {
                 dataBuffer = encoder.encode(CharBuffer.wrap((String) value));
             }
         } catch (CharacterCodingException ce) {
-            logger.warning("There was a problem writing the following StringFixedlength Field:" + value + ":" + ce.getMessage() + "using default value instead");
+            logger.warn("There was a problem writing the following StringFixedlength Field:" + value + ":" + ce.getMessage() + "using default value instead");
             data = new byte[size];
             for (int i = 0; i < size; i++) {
                 data[i] = ' ';
@@ -154,14 +157,14 @@ public class StringFixedLength extends AbstractString {
             }
             //There is more data available than allowed for this field strip
             else if (dataBuffer.limit() > size) {
-                logger.warning("There was a problem writing the following StringFixedlength Field:" + value + " when converted to bytes has length of:" + dataBuffer.limit() + " but field was defined with length of:" + size + " too long so stripping extra length");
+                logger.warn("There was a problem writing the following StringFixedlength Field:" + value + " when converted to bytes has length of:" + dataBuffer.limit() + " but field was defined with length of:" + size + " too long so stripping extra length");
                 data = new byte[size];
                 dataBuffer.get(data, 0, size);
                 return data;
             }
             //There is not enough data
             else {
-                logger.warning("There was a problem writing the following StringFixedlength Field:" + value + " when converted to bytes has length of:" + dataBuffer.limit() + " but field was defined with length of:" + size + " too short so padding with spaces to make up extra length");
+                logger.warn("There was a problem writing the following StringFixedlength Field:" + value + " when converted to bytes has length of:" + dataBuffer.limit() + " but field was defined with length of:" + size + " too short so padding with spaces to make up extra length");
 
                 data = new byte[size];
                 dataBuffer.get(data, 0, dataBuffer.limit());
@@ -172,7 +175,7 @@ public class StringFixedLength extends AbstractString {
                 return data;
             }
         } else {
-            logger.warning("There was a serious problem writing the following StringFixedlength Field:" + value + ":" + "using default value instead");
+            logger.warn("There was a serious problem writing the following StringFixedlength Field:" + value + ":" + "using default value instead");
             data = new byte[size];
             for (int i = 0; i < size; i++) {
                 data[i] = ' ';
@@ -187,7 +190,7 @@ public class StringFixedLength extends AbstractString {
     protected Charset getTextEncodingCharSet() {
         final byte textEncoding = this.getBody().getTextEncoding();
         final Charset charset = TextEncoding.getInstanceOf().getCharsetForId(textEncoding);
-        logger.finest("text encoding:" + textEncoding + " charset:" + charset.name());
+        logger.debug("text encoding:" + textEncoding + " charset:" + charset.name());
         return charset;
     }
 }

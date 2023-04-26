@@ -23,7 +23,8 @@
  */
 package org.jaudiotagger.tag.id3;
 
-import java.util.logging.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * This is the abstract base class for all ID3 tags.
@@ -33,7 +34,7 @@ import java.util.logging.Logger;
  */
 public abstract class AbstractID3Tag extends AbstractTag {
     //Logger
-    public static Logger logger = Logger.getLogger("org.jaudiotagger.tag.id3");
+    private static final Logger logger = LoggerFactory.getLogger("org.jaudiotagger.tag.id3");
 
     public AbstractID3Tag() {
     }

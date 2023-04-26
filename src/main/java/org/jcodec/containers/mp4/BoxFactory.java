@@ -36,8 +36,7 @@ public class BoxFactory implements IBoxFactory {
         if (claz == null)
             return new Box.LeafBox(header);
         Box box = Utils.newInstance(claz, new Object[]{header});
-        if (box instanceof NodeBox) {
-            NodeBox nodebox = (NodeBox) box;
+        if (box instanceof NodeBox nodebox) {
             if (nodebox instanceof SampleDescriptionBox) {
                 nodebox.setFactory(sample);
             } else if (nodebox instanceof AudioSampleEntry) {
