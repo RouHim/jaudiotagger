@@ -10,7 +10,12 @@
         {"type": "chore", "release": "patch"}
       ]
     }],
-    "@semantic-release/release-notes-generator",
+    ["@semantic-release/release-notes-generator", {
+      "preset": "conventionalcommits",
+      "releaseRules": [
+        {"type": "chore", "release": "patch"}
+      ]
+    }],
     "@semantic-release/changelog",
     "@semantic-release/git",
     "@semantic-release/github"
