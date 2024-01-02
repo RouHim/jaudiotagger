@@ -1,3 +1,5 @@
+## [1.2.24](https://github.com/RouHim/jaudiotagger/compare/1.2.23...1.2.24) (2024-01-02)
+
 ## [1.2.23](https://github.com/RouHim/jaudiotagger/compare/1.2.22...1.2.23) (2023-12-30)
 
 ## [1.2.22](https://github.com/RouHim/jaudiotagger/compare/1.2.21...1.2.22) (2023-12-26)
