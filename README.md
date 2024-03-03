@@ -1,4 +1,4 @@
-This is a fork of [Kaned1as/jaudiotagger](https://github.com/Kaned1as/jaudiotagger).
+This is a maintained fork of [Kaned1as/jaudiotagger](https://github.com/Kaned1as/jaudiotagger).
 
 # Jaudiotagger
 
