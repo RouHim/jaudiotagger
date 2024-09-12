@@ -40,7 +40,7 @@
         <dependency>
             <groupId>com.squareup.okio</groupId>
             <artifactId>okio</artifactId>
-            <version>3.9.0</version>
+            <version>3.9.1</version>
         </dependency>
 
         <!-- JSON processing -->
