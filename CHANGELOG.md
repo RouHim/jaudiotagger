@@ -1,3 +1,9 @@
+## [1.3.0](https://github.com/RouHim/jaudiotagger/compare/1.2.43...1.3.0) (2024-10-06)
+
+### Features
+
+* migrate to java 21 and fix unit test ([8b0d407](https://github.com/RouHim/jaudiotagger/commit/8b0d407697b35678aa6d37859ca00b163e5800ce))
+
 ## [1.2.43](https://github.com/RouHim/jaudiotagger/compare/1.2.42...1.2.43) (2024-10-06)
 
 ## [1.2.42](https://github.com/RouHim/jaudiotagger/compare/1.2.41...1.2.42) (2024-09-29)
