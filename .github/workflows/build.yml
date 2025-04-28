@@ -10,7 +10,10 @@ on:
 jobs:
   build:
     name: Build
-    runs-on: ubuntu-latest
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ ubuntu-latest, windows-latest ]
 
     steps:
       - uses: actions/checkout@v4
@@ -24,7 +27,6 @@ jobs:
 
       - name: Build with Maven
         run: mvn clean package
-
 
   release:
     name: Release
