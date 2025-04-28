@@ -93,29 +93,23 @@ public abstract class AudioFileReader {
             throw new CannotReadException(ErrorMessage.GENERAL_READ_FAILED_FILE_TOO_SMALL.getMsg(f.getAbsolutePath()));
         }
 
-        RandomAccessFile raf = null;
-        try {
-            raf = new RandomAccessFile(f, "r");
-            raf.seek(0);
-
-            GenericAudioHeader info = getEncodingInfo(raf);
-            raf.seek(0);
-            Tag tag = getTag(raf);
-            return new AudioFile(f, info, tag);
-
-        } catch (CannotReadException cre) {
-            throw cre;
-        } catch (Exception e) {
-            logger.error(ErrorMessage.GENERAL_READ.getMsg(f.getAbsolutePath()), e);
-            throw new CannotReadException(f.getAbsolutePath() + ":" + e.getMessage(), e);
-        } finally {
+        try (RandomAccessFile raf = new RandomAccessFile(f, "r")) {
             try {
-                if (raf != null) {
-                    raf.close();
-                }
-            } catch (Exception ex) {
-                logger.warn(ErrorMessage.GENERAL_READ_FAILED_UNABLE_TO_CLOSE_RANDOM_ACCESS_FILE.getMsg(f.getAbsolutePath()));
+                raf.seek(0);
+
+                GenericAudioHeader info = getEncodingInfo(raf);
+                raf.seek(0);
+                Tag tag = getTag(raf);
+                return new AudioFile(f, info, tag);
+            } catch (CannotReadException cre) {
+                throw cre;
+            } catch (Exception e) {
+                logger.error(ErrorMessage.GENERAL_READ.getMsg(f.getAbsolutePath()), e);
+                throw new CannotReadException(f.getAbsolutePath() + ":" + e.getMessage(), e);
             }
+        } catch (Exception ex) {
+            logger.warn(ErrorMessage.GENERAL_READ_FAILED_UNABLE_TO_CLOSE_RANDOM_ACCESS_FILE.getMsg(f.getAbsolutePath()));
+            throw new CannotReadException(ErrorMessage.GENERAL_READ_FAILED_UNABLE_TO_CLOSE_RANDOM_ACCESS_FILE.getMsg(f.getAbsolutePath()), ex);
         }
     }
 }

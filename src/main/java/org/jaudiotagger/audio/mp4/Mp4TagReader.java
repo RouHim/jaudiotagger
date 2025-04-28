@@ -80,56 +80,47 @@ public class Mp4TagReader {
 
      */
     public Mp4Tag read(RandomAccessFile raf) throws CannotReadException, IOException {
-        MP4Util.Movie mp4 = MP4Util.parseFullMovieChannel(raf.getChannel());
-        Mp4Tag tag = new Mp4Tag();
+            MP4Util.Movie mp4 = MP4Util.parseFullMovieChannel(raf.getChannel());
+            Mp4Tag tag = new Mp4Tag();
 
-        //Get to the facts everything we are interested in is within the moov box, so just load data from file
-        //once so no more file I/O needed
+            //Get to the facts everything we are interested in is within the moov box, so just load data from file
+            //once so no more file I/O needed
 
-        if (mp4 == null || mp4.getMoov() == null) {
-            throw new CannotReadException(ErrorMessage.MP4_FILE_NOT_CONTAINER.getMsg());
-        }
-        MovieBox moov = mp4.getMoov();
+            if (mp4 == null || mp4.getMoov() == null) {
+                throw new CannotReadException(ErrorMessage.MP4_FILE_NOT_CONTAINER.getMsg());
+            }
+            MovieBox moov = mp4.getMoov();
 
-        //Level 2-Searching for "udta" within "moov"
-        UdtaBox udta = NodeBox.findFirst(moov, UdtaBox.class, "udta");
-        MetaBox meta;
-        IListBox ilst;
-        if (udta != null) {
-            //Level 3-Searching for "meta" within udta
-            meta = udta.meta();
+            //Level 2-Searching for "udta" within "moov"
+            UdtaBox udta = NodeBox.findFirst(moov, UdtaBox.class, "udta");
+            MetaBox meta;
+            IListBox ilst;
+            if (udta != null) {
+                //Level 3-Searching for "meta" within udta
+                meta = udta.meta();
+
+                // Level 4- Search for "ilst" within meta
+                //This file does not actually contain a tag
+            } else {
+                // Level 2-Searching for "meta" not within udta
+                // This is the so-called apple-specific "keyed meta"
+                meta = NodeBox.findFirst(moov, MetaBox.class, "meta");
+
+                // Level 3- Search for "ilst" within meta
+                //This file does not actually contain a tag
+            }
             if (meta == null) {
                 logger.warn(ErrorMessage.MP4_FILE_HAS_NO_METADATA.getMsg());
                 return tag;
             }
-
-            // Level 4- Search for "ilst" within meta
             ilst = NodeBox.findFirst(meta, IListBox.class, "ilst");
-            //This file does not actually contain a tag
             if (ilst == null) {
                 logger.warn(ErrorMessage.MP4_FILE_HAS_NO_METADATA.getMsg());
                 return tag;
             }
-        } else {
-            // Level 2-Searching for "meta" not within udta
-            // This is the so-called apple-specific "keyed meta"
-            meta = NodeBox.findFirst(moov, MetaBox.class, "meta");
-            if (meta == null) {
-                logger.warn(ErrorMessage.MP4_FILE_HAS_NO_METADATA.getMsg());
-                return tag;
-            }
 
-            // Level 3- Search for "ilst" within meta
-            ilst = NodeBox.findFirst(meta, IListBox.class, "ilst");
-            //This file does not actually contain a tag
-            if (ilst == null) {
-                logger.warn(ErrorMessage.MP4_FILE_HAS_NO_METADATA.getMsg());
-                return tag;
-            }
-        }
-
-        createMp4Field(tag, meta, ilst);
-        return tag;
+            createMp4Field(tag, meta, ilst);
+            return tag;
     }
 
     /**

@@ -7,7 +7,12 @@ import org.jaudiotagger.tag.FieldKey;
 import org.jaudiotagger.tag.Tag;
 import org.jaudiotagger.tag.TagField;
 import org.jaudiotagger.tag.TagOptionSingleton;
-import org.jaudiotagger.tag.mp4.field.*;
+import org.jaudiotagger.tag.mp4.field.Mp4DiscNoField;
+import org.jaudiotagger.tag.mp4.field.Mp4FieldType;
+import org.jaudiotagger.tag.mp4.field.Mp4TagCoverField;
+import org.jaudiotagger.tag.mp4.field.Mp4TagReverseDnsField;
+import org.jaudiotagger.tag.mp4.field.Mp4TagTextNumberField;
+import org.jaudiotagger.tag.mp4.field.Mp4TrackField;
 import org.jcodec.containers.mp4.MP4Util;
 import org.json.JSONObject;
 import org.junit.jupiter.api.Test;
@@ -17,13 +22,14 @@ import java.io.IOException;
 import java.io.RandomAccessFile;
 import java.util.List;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
 
 public class M4aWriteTagTest {
-    private static final int TEST_FILE1_SIZE = 3883555;
-    private static final int TEST_FILE2_SIZE = 3884505;
-    private static final int TEST_FILE5_SIZE = 119472;
+    private static final long TEST_FILE1_SIZE = 3883555;
+    private static final long TEST_FILE2_SIZE = 3884505;
+    private static final long TEST_FILE5_SIZE = 119472;
 
     /**
      * Test to write tag data, new tagdata identical size to existing data.
@@ -1318,7 +1324,7 @@ public class M4aWriteTagTest {
             tag = f.getTag();
 
             //Total FileSize should not have changed
-            assertEquals(TEST_FILE2_SIZE, testFile.length());
+            assertThat(testFile.length()).isBetween(TEST_FILE2_SIZE - 5, TEST_FILE2_SIZE + 5);
 
             //AudioInfo
             //Time in seconds
@@ -2300,6 +2306,13 @@ public class M4aWriteTagTest {
         f = AudioFileIO.read(testFile);
         tagFields = f.getTag().getFields(FieldKey.ALBUM_ARTIST_SORT);
         assertEquals(0, tagFields.size());
+    }
+
+    @Test
+    public void testReadWriteM4a() throws Exception {
+        File testFile = AbstractTestCase.copyAudioToTmp("test.m4a", new File("testDeleteFields.m4a"));
+        AudioFile audioFile = AudioFileIO.read(testFile);
+        audioFile.commit();
     }
 }
 

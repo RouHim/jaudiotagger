@@ -7,6 +7,7 @@ import org.junit.jupiter.api.Test;
 
 import java.io.File;
 
+import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -19,14 +20,10 @@ public class Issue183Test extends AbstractTestCase {
             return;
         }
 
-        Exception ex = null;
-        try {
-            File testFile = AbstractTestCase.copyAudioToTmp("test508.ogg");
-            AudioFileIO.read(testFile);
-        } catch (Exception e) {
-            assertTrue(e instanceof CannotReadException);
-            ex = e;
-        }
-        assertNotNull(ex);
+        File testFile = AbstractTestCase.copyAudioToTmp("test508.ogg");
+
+        assertThatExceptionOfType(CannotReadException.class)
+                .isThrownBy(() -> AudioFileIO.read(testFile))
+                .withMessageContaining(""); // You can specify an expected message substring if needed
     }
 }

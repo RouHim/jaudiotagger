@@ -207,6 +207,4 @@ public class Mp4InfoReader {
         //Build AtomTree to ensure it is valid, this means we can detect any problems early on
         return info;
     }
-
-
 }

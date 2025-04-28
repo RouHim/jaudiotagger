@@ -859,7 +859,7 @@ public class TagOptionSingleton {
         padNumberTotalLength = PadNumberOption.PAD_ONE_ZERO;
         id3v2Version = ID3V2Version.ID3_V23;
         checkIsWritable = false;
-        preserveFileIdentity = false;
+        preserveFileIdentity = true;
         //default all lyrics3 fields to save. id3v1 fields are individual
         // settings. id3v2 fields are always looked at to save.
         Iterator<String> iterator = Lyrics3v2Fields.getInstanceOf().getIdToValueMap().keySet().iterator();

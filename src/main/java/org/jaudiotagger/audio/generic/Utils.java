@@ -31,6 +31,8 @@ import java.nio.channels.ReadableByteChannel;
 import java.nio.channels.WritableByteChannel;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.StandardCopyOption;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -348,7 +350,12 @@ public class Utils {
         }
 
         //Rename File, could fail because being  used or because trying to rename over filesystems
-        final boolean result = fromFile.renameTo(toFile);
+        final boolean result;
+        try {
+            result = Files.move(fromFile.toPath(), toFile.toPath(), StandardCopyOption.REPLACE_EXISTING) != null;
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
         if (!result) {
             // Might be trying to rename over filesystem, so try copy and delete instead
             if (copy(fromFile, toFile)) {
