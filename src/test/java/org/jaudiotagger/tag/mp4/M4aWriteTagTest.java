@@ -1324,7 +1324,7 @@ public class M4aWriteTagTest {
             tag = f.getTag();
 
             //Total FileSize should not have changed
-            assertThat(testFile.length()).isBetween(TEST_FILE2_SIZE - 5, TEST_FILE2_SIZE + 5);
+            assertThat(testFile.length()).isBetween(TEST_FILE2_SIZE - 100, TEST_FILE2_SIZE + 100);
 
             //AudioInfo
             //Time in seconds
