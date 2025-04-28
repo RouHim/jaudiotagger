@@ -1,3 +1,12 @@
+## [1.4.0](https://github.com/RouHim/jaudiotagger/compare/1.3.9...1.4.0) (2025-04-28)
+
+### Features
+
+* add Maven Wrapper for easier project setup ([0c9ebfa](https://github.com/RouHim/jaudiotagger/commit/0c9ebfa367e7a4d36433ec843f5dbd0c1f6b4112))
+* add Maven Wrapper for easier project setup ([7be1e99](https://github.com/RouHim/jaudiotagger/commit/7be1e99f9bb20237fb6c7ae1c047ce82a0bf73c6))
+* add Maven Wrapper for easier project setup ([e06c351](https://github.com/RouHim/jaudiotagger/commit/e06c3513ee80878ed84be4a328536a42af179f7c))
+* add Maven Wrapper for easier project setup ([b280016](https://github.com/RouHim/jaudiotagger/commit/b28001691f3afe7014d7ae81ba9ee119fdcae0ec))
+
 ## [1.3.9](https://github.com/RouHim/jaudiotagger/compare/1.3.8...1.3.9) (2025-01-23)
 
 ## [1.3.8](https://github.com/RouHim/jaudiotagger/compare/1.3.7...1.3.8) (2025-01-11)
