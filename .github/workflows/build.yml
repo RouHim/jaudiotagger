@@ -26,15 +26,13 @@ jobs:
           cache: maven
 
       - name: Build with Maven
-        shell: bash
         run: |
-          if [ "$RUNNER_OS" == "Windows" ]; then
-            ./mvnw.cmd clean package
+          if [ "${{ runner.os }}" == "Windows" ]; then
+            mvnw.cmd clean package
           else
             ./mvnw clean package
           fi
-        env:
-          RUNNER_OS: ${{ runner.os }}
+        shell: bash
 
 
   release:
