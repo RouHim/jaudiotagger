@@ -25,13 +25,14 @@ jobs:
           distribution: 'temurin'
           cache: maven
 
-      - name: Build with Maven
-        run: |
-          if [ "${{ runner.os }}" == "Windows" ]; then
-            mvnw.cmd clean package
-          else
-            ./mvnw clean package
-          fi
+      - name: Build with Maven (Windows)
+        if: runner.os == 'Windows'
+        run: .\mvnw.cmd clean package
+        shell: cmd
+
+      - name: Build with Maven (Non-Windows)
+        if: runner.os != 'Windows'
+        run: ./mvnw clean package
         shell: bash
 
 
