@@ -1,3 +1,5 @@
+## [1.4.31](https://github.com/RouHim/jaudiotagger/compare/1.4.30...1.4.31) (2025-10-01)
+
 ## [1.4.30](https://github.com/RouHim/jaudiotagger/compare/1.4.29...1.4.30) (2025-09-30)
 
 ## [1.4.29](https://github.com/RouHim/jaudiotagger/compare/1.4.28...1.4.29) (2025-09-30)
