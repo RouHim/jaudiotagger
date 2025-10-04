@@ -1,3 +1,22 @@
+## [2.0.0](https://github.com/RouHim/jaudiotagger/compare/1.4.31...2.0.0) (2025-10-04)
+
+### ⚠ BREAKING CHANGES
+
+* Migrate from Java 21 to Java 25 LTS. Projects depending on this library must update their Java runtime to version 25 or later.
+
+- Update pom.xml to use Java 25 as compile target
+- Upgrade maven-javadoc-plugin from 2.10.4 to 3.11.2 for Java 25 compatibility
+- Update GitHub Actions workflow to build with JDK 25
+- Update CLAUDE.md documentation
+- Add @Deprecated annotations to match javadoc @deprecated tags
+- Fix varargs warnings by explicit null casting in tests
+- Migrate from JUnit 4 to JUnit 5 (all 1186 tests passing)
+- Format all Java source files with prettier for consistency
+
+### Features
+
+* migrate project to Java 25 LTS ([5f684af](https://github.com/RouHim/jaudiotagger/commit/5f684af2428d1edda7116e9a557cbfa38b67280f))
+
 ## [1.4.31](https://github.com/RouHim/jaudiotagger/compare/1.4.30...1.4.31) (2025-10-01)
 
 ## [1.4.30](https://github.com/RouHim/jaudiotagger/compare/1.4.29...1.4.30) (2025-09-30)
