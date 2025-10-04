@@ -13,76 +13,76 @@ import java.io.OutputStream;
  */
 public class CountingOutputstream extends OutputStream {
 
-    /**
-     * Stores the amount of bytes written.
-     */
-    private long count = 0;
+  /**
+   * Stores the amount of bytes written.
+   */
+  private long count = 0;
 
-    /**
-     * The stream to forward the write calls.
-     */
-    private final OutputStream wrapped;
+  /**
+   * The stream to forward the write calls.
+   */
+  private final OutputStream wrapped;
 
-    /**
-     * Creates an instance which will delegate the write calls to the given
-     * output stream.
-     *
-     * @param outputStream stream to wrap.
-     */
-    public CountingOutputstream(final OutputStream outputStream) {
-        super();
-        assert outputStream != null;
-        this.wrapped = outputStream;
-    }
+  /**
+   * Creates an instance which will delegate the write calls to the given
+   * output stream.
+   *
+   * @param outputStream stream to wrap.
+   */
+  public CountingOutputstream(final OutputStream outputStream) {
+    super();
+    assert outputStream != null;
+    this.wrapped = outputStream;
+  }
 
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void close() throws IOException {
-        this.wrapped.close();
-    }
+  /**
+   * {@inheritDoc}
+   */
+  @Override
+  public void close() throws IOException {
+    this.wrapped.close();
+  }
 
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void flush() throws IOException {
-        this.wrapped.flush();
-    }
+  /**
+   * {@inheritDoc}
+   */
+  @Override
+  public void flush() throws IOException {
+    this.wrapped.flush();
+  }
 
-    /**
-     * @return the count
-     */
-    public long getCount() {
-        return this.count;
-    }
+  /**
+   * @return the count
+   */
+  public long getCount() {
+    return this.count;
+  }
 
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void write(final byte[] bytes) throws IOException {
-        this.wrapped.write(bytes);
-        this.count += bytes.length;
-    }
+  /**
+   * {@inheritDoc}
+   */
+  @Override
+  public void write(final byte[] bytes) throws IOException {
+    this.wrapped.write(bytes);
+    this.count += bytes.length;
+  }
 
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void write(final byte[] bytes, final int off, final int len) throws IOException {
-        this.wrapped.write(bytes, off, len);
-        this.count += len;
-    }
+  /**
+   * {@inheritDoc}
+   */
+  @Override
+  public void write(final byte[] bytes, final int off, final int len)
+    throws IOException {
+    this.wrapped.write(bytes, off, len);
+    this.count += len;
+  }
 
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void write(final int toWrite) throws IOException {
-        this.wrapped.write(toWrite);
-        this.count++;
-    }
-
+  /**
+   * {@inheritDoc}
+   */
+  @Override
+  public void write(final int toWrite) throws IOException {
+    this.wrapped.write(toWrite);
+    this.count++;
+  }
 }

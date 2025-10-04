@@ -7,6 +7,6 @@ package org.jaudiotagger.audio.wav;
  * may be required to better support data in legacy applications
  */
 public enum WavSaveOrder {
-    INFO_THEN_ID3,
-    ID3_THEN_INFO
+  INFO_THEN_ID3,
+  ID3_THEN_INFO,
 }

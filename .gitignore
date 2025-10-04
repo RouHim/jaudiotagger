@@ -5,3 +5,7 @@
 .idea/
 
 /testV1.mp3
+CLAUDE.md
+node_modules/
+package-lock.json
+package.json

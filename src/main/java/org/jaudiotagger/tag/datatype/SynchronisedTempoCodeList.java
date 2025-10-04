@@ -21,24 +21,28 @@ import org.jaudiotagger.tag.id3.framebody.FrameBodySYTC;
  * @author <a href="mailto:hs@tagtraum.com">Hendrik Schreiber</a>
  * @version $Id:$
  */
-public class SynchronisedTempoCodeList extends AbstractDataTypeList<SynchronisedTempoCode> {
+public class SynchronisedTempoCodeList
+  extends AbstractDataTypeList<SynchronisedTempoCode> {
 
-    /**
-     * Mandatory, concretely-typed copy constructor, as required by
-     * {@link org.jaudiotagger.tag.datatype.AbstractDataTypeList#AbstractDataTypeList(org.jaudiotagger.tag.datatype.AbstractDataTypeList)}.
-     *
-     * @param copy instance to copy
-     */
-    public SynchronisedTempoCodeList(final SynchronisedTempoCodeList copy) {
-        super(copy);
-    }
+  /**
+   * Mandatory, concretely-typed copy constructor, as required by
+   * {@link org.jaudiotagger.tag.datatype.AbstractDataTypeList#AbstractDataTypeList(org.jaudiotagger.tag.datatype.AbstractDataTypeList)}.
+   *
+   * @param copy instance to copy
+   */
+  public SynchronisedTempoCodeList(final SynchronisedTempoCodeList copy) {
+    super(copy);
+  }
 
-    public SynchronisedTempoCodeList(final FrameBodySYTC body) {
-        super(DataTypes.OBJ_SYNCHRONISED_TEMPO_LIST, body);
-    }
+  public SynchronisedTempoCodeList(final FrameBodySYTC body) {
+    super(DataTypes.OBJ_SYNCHRONISED_TEMPO_LIST, body);
+  }
 
-    @Override
-    protected SynchronisedTempoCode createListElement() {
-        return new SynchronisedTempoCode(DataTypes.OBJ_SYNCHRONISED_TEMPO, frameBody);
-    }
+  @Override
+  protected SynchronisedTempoCode createListElement() {
+    return new SynchronisedTempoCode(
+      DataTypes.OBJ_SYNCHRONISED_TEMPO,
+      frameBody
+    );
+  }
 }

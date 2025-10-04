@@ -12,7 +12,8 @@ package org.jaudiotagger.audio.exceptions;
  * Thrown if portion of file thought to be an AudioFrame is found to not be.
  */
 public class InvalidAudioFrameException extends Exception {
-    public InvalidAudioFrameException(String message) {
-        super(message);
-    }
+
+  public InvalidAudioFrameException(String message) {
+    super(message);
+  }
 }

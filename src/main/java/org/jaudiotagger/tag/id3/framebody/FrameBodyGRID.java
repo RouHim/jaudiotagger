@@ -15,14 +15,13 @@
  */
 package org.jaudiotagger.tag.id3.framebody;
 
+import java.nio.ByteBuffer;
 import org.jaudiotagger.tag.InvalidTagException;
 import org.jaudiotagger.tag.datatype.ByteArraySizeTerminated;
 import org.jaudiotagger.tag.datatype.DataTypes;
 import org.jaudiotagger.tag.datatype.NumberFixedLength;
 import org.jaudiotagger.tag.datatype.StringNullTerminated;
 import org.jaudiotagger.tag.id3.ID3v24Frames;
-
-import java.nio.ByteBuffer;
 
 /**
  * Group identification registration frame.
@@ -59,92 +58,95 @@ import java.nio.ByteBuffer;
  * @author : Eric Farng
  * @version $Id$
  */
-public class FrameBodyGRID extends AbstractID3v2FrameBody implements ID3v24FrameBody, ID3v23FrameBody {
-    /**
-     * Creates a new FrameBodyGRID datatype.
-     */
-    public FrameBodyGRID() {
-        //        this.setObject(ObjectTypes.OBJ_OWNER, "");
-        //        this.setObject("Group Symbol", new Byte((byte) 0));
-        //        this.setObject("Group Dependent Data", new byte[0]);
-    }
+public class FrameBodyGRID
+  extends AbstractID3v2FrameBody
+  implements ID3v24FrameBody, ID3v23FrameBody {
 
-    public FrameBodyGRID(FrameBodyGRID body) {
-        super(body);
-    }
+  /**
+   * Creates a new FrameBodyGRID datatype.
+   */
+  public FrameBodyGRID() {
+    //        this.setObject(ObjectTypes.OBJ_OWNER, "");
+    //        this.setObject("Group Symbol", new Byte((byte) 0));
+    //        this.setObject("Group Dependent Data", new byte[0]);
+  }
 
-    /**
-     * Creates a new FrameBodyGRID datatype.
-     *
-     * @param owner
-     * @param groupSymbol
-     * @param data
-     */
-    public FrameBodyGRID(String owner, byte groupSymbol, byte[] data) {
-        this.setObjectValue(DataTypes.OBJ_OWNER, owner);
-        this.setObjectValue(DataTypes.OBJ_GROUP_SYMBOL, groupSymbol);
-        this.setObjectValue(DataTypes.OBJ_GROUP_DATA, data);
-    }
+  public FrameBodyGRID(FrameBodyGRID body) {
+    super(body);
+  }
 
-    /**
-     * Creates a new FrameBodyGRID datatype.
-     *
-     * @param byteBuffer
-     * @param frameSize
-     * @throws InvalidTagException if unable to create framebody from buffer
-     */
-    public FrameBodyGRID(ByteBuffer byteBuffer, int frameSize) throws InvalidTagException {
-        super(byteBuffer, frameSize);
-    }
+  /**
+   * Creates a new FrameBodyGRID datatype.
+   *
+   * @param owner
+   * @param groupSymbol
+   * @param data
+   */
+  public FrameBodyGRID(String owner, byte groupSymbol, byte[] data) {
+    this.setObjectValue(DataTypes.OBJ_OWNER, owner);
+    this.setObjectValue(DataTypes.OBJ_GROUP_SYMBOL, groupSymbol);
+    this.setObjectValue(DataTypes.OBJ_GROUP_DATA, data);
+  }
 
-    /**
-     * @param textEncoding
-     */
-    public void setGroupSymbol(byte textEncoding) {
-        setObjectValue(DataTypes.OBJ_GROUP_SYMBOL, textEncoding);
-    }
+  /**
+   * Creates a new FrameBodyGRID datatype.
+   *
+   * @param byteBuffer
+   * @param frameSize
+   * @throws InvalidTagException if unable to create framebody from buffer
+   */
+  public FrameBodyGRID(ByteBuffer byteBuffer, int frameSize)
+    throws InvalidTagException {
+    super(byteBuffer, frameSize);
+  }
 
-    /**
-     * @return
-     */
-    public byte getGroupSymbol() {
-        if (getObjectValue(DataTypes.OBJ_GROUP_SYMBOL) != null) {
-            return ((Long) getObjectValue(DataTypes.OBJ_GROUP_SYMBOL)).byteValue();
-        } else {
-            return (byte) 0;
-        }
-    }
+  /**
+   * @param textEncoding
+   */
+  public void setGroupSymbol(byte textEncoding) {
+    setObjectValue(DataTypes.OBJ_GROUP_SYMBOL, textEncoding);
+  }
 
-    /**
-     * The ID3v2 frame identifier
-     *
-     * @return the ID3v2 frame identifier  for this frame type
-     */
-    public String getIdentifier() {
-        return ID3v24Frames.FRAME_ID_GROUP_ID_REG;
+  /**
+   * @return
+   */
+  public byte getGroupSymbol() {
+    if (getObjectValue(DataTypes.OBJ_GROUP_SYMBOL) != null) {
+      return ((Long) getObjectValue(DataTypes.OBJ_GROUP_SYMBOL)).byteValue();
+    } else {
+      return (byte) 0;
     }
+  }
 
+  /**
+   * The ID3v2 frame identifier
+   *
+   * @return the ID3v2 frame identifier  for this frame type
+   */
+  public String getIdentifier() {
+    return ID3v24Frames.FRAME_ID_GROUP_ID_REG;
+  }
 
-    /**
-     * @param owner
-     */
-    public void setOwner(String owner) {
-        setObjectValue(DataTypes.OBJ_OWNER, owner);
-    }
+  /**
+   * @param owner
+   */
+  public void setOwner(String owner) {
+    setObjectValue(DataTypes.OBJ_OWNER, owner);
+  }
 
-    /**
-     * @return
-     */
-    public String getOwner() {
-        return (String) getObjectValue(DataTypes.OBJ_OWNER);
-    }
+  /**
+   * @return
+   */
+  public String getOwner() {
+    return (String) getObjectValue(DataTypes.OBJ_OWNER);
+  }
 
-    /**
-     *
-     */
-    protected void setupObjectList() {
-        objectList.add(new StringNullTerminated(DataTypes.OBJ_OWNER, this));
-        objectList.add(new NumberFixedLength(DataTypes.OBJ_GROUP_SYMBOL, this, 1));
-        objectList.add(new ByteArraySizeTerminated(DataTypes.OBJ_GROUP_DATA, this));
-    }
+  /**
+   *
+   */
+  protected void setupObjectList() {
+    objectList.add(new StringNullTerminated(DataTypes.OBJ_OWNER, this));
+    objectList.add(new NumberFixedLength(DataTypes.OBJ_GROUP_SYMBOL, this, 1));
+    objectList.add(new ByteArraySizeTerminated(DataTypes.OBJ_GROUP_DATA, this));
+  }
 }

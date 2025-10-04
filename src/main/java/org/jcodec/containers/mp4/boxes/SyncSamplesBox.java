@@ -11,41 +11,41 @@ import java.nio.ByteBuffer;
  * @author The JCodec project
  */
 public class SyncSamplesBox extends FullBox {
-    public static final String STSS = "stss";
-    protected int[] syncSamples;
 
-    public static SyncSamplesBox createSyncSamplesBox(int[] array) {
-        SyncSamplesBox stss = new SyncSamplesBox(new Header(STSS));
-        stss.syncSamples = array;
-        return stss;
-    }
+  public static final String STSS = "stss";
+  protected int[] syncSamples;
 
-    public SyncSamplesBox(Header header) {
-        super(header);
-    }
+  public static SyncSamplesBox createSyncSamplesBox(int[] array) {
+    SyncSamplesBox stss = new SyncSamplesBox(new Header(STSS));
+    stss.syncSamples = array;
+    return stss;
+  }
 
-    public void parse(ByteBuffer input) {
-        super.parse(input);
-        int len = input.getInt();
-        syncSamples = new int[len];
-        for (int i = 0; i < len; i++) {
-            syncSamples[i] = input.getInt();
-        }
-    }
+  public SyncSamplesBox(Header header) {
+    super(header);
+  }
 
-    protected void doWrite(ByteBuffer out) {
-        super.doWrite(out);
-        out.putInt(syncSamples.length);
-        for (int i = 0; i < syncSamples.length; i++)
-            out.putInt(syncSamples[i]);
+  public void parse(ByteBuffer input) {
+    super.parse(input);
+    int len = input.getInt();
+    syncSamples = new int[len];
+    for (int i = 0; i < len; i++) {
+      syncSamples[i] = input.getInt();
     }
+  }
 
-    @Override
-    public int estimateSize() {
-        return 16 + syncSamples.length * 4;
-    }
+  protected void doWrite(ByteBuffer out) {
+    super.doWrite(out);
+    out.putInt(syncSamples.length);
+    for (int i = 0; i < syncSamples.length; i++) out.putInt(syncSamples[i]);
+  }
 
-    public int[] getSyncSamples() {
-        return syncSamples;
-    }
+  @Override
+  public int estimateSize() {
+    return 16 + syncSamples.length * 4;
+  }
+
+  public int[] getSyncSamples() {
+    return syncSamples;
+  }
 }

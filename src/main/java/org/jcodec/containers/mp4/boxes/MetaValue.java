@@ -11,175 +11,179 @@ import java.nio.charset.StandardCharsets;
  * @author The JCodec project
  */
 public class MetaValue {
-    // All data types below are Big Endian
-    public static final int TYPE_STRING_UTF16 = 2;
-    public static final int TYPE_STRING_UTF8 = 1;
-    public static final int TYPE_FLOAT_64 = 24;
-    public static final int TYPE_FLOAT_32 = 23;
-    public static final int TYPE_INT_32 = 67;
-    public static final int TYPE_INT_16 = 66;
-    public static final int TYPE_INT_8 = 65;
-    public static final int TYPE_INT_V = 22;
-    public static final int TYPE_UINT_V = 21;
-    public static final int TYPE_JPEG = 13;
-    public static final int TYPE_PNG = 13;
-    public static final int TYPE_BMP = 27;
 
-    private final int type;
-    private final int locale;
-    private final byte[] data;
+  // All data types below are Big Endian
+  public static final int TYPE_STRING_UTF16 = 2;
+  public static final int TYPE_STRING_UTF8 = 1;
+  public static final int TYPE_FLOAT_64 = 24;
+  public static final int TYPE_FLOAT_32 = 23;
+  public static final int TYPE_INT_32 = 67;
+  public static final int TYPE_INT_16 = 66;
+  public static final int TYPE_INT_8 = 65;
+  public static final int TYPE_INT_V = 22;
+  public static final int TYPE_UINT_V = 21;
+  public static final int TYPE_JPEG = 13;
+  public static final int TYPE_PNG = 13;
+  public static final int TYPE_BMP = 27;
 
-    private MetaValue(int type, int locale, byte[] data) {
-        this.type = type;
-        this.locale = locale;
-        this.data = data;
+  private final int type;
+  private final int locale;
+  private final byte[] data;
+
+  private MetaValue(int type, int locale, byte[] data) {
+    this.type = type;
+    this.locale = locale;
+    this.data = data;
+  }
+
+  public static MetaValue createInt(int value) {
+    return new MetaValue(21, 0, fromInt(value));
+  }
+
+  public static MetaValue createFloat(float value) {
+    return new MetaValue(23, 0, fromFloat(value));
+  }
+
+  public static MetaValue createString(String value) {
+    return new MetaValue(1, 0, value.getBytes(StandardCharsets.US_ASCII));
+  }
+
+  public static MetaValue createOther(int type, byte[] data) {
+    return new MetaValue(type, 0, data);
+  }
+
+  public static MetaValue createOtherWithLocale(
+    int type,
+    int locale,
+    byte[] data
+  ) {
+    return new MetaValue(type, locale, data);
+  }
+
+  public static MetaValue createOtherWithLocale(DataBox box) {
+    return new MetaValue(box.getType(), box.getLocale(), box.getData());
+  }
+
+  public int getInt() {
+    if (type == TYPE_UINT_V || type == TYPE_INT_V) {
+      switch (data.length) {
+        case 1:
+          return data[0];
+        case 2:
+          return toInt16(data);
+        case 3:
+          return toInt24(data);
+        case 4:
+          return toInt32(data);
+      }
     }
+    if (type == TYPE_INT_8) return data[0];
+    if (type == TYPE_INT_16) return toInt16(data);
+    if (type == TYPE_INT_32) return toInt32(data);
+    return 0;
+  }
 
-    public static MetaValue createInt(int value) {
-        return new MetaValue(21, 0, fromInt(value));
-    }
+  public double getFloat() {
+    if (type == TYPE_FLOAT_32) return toFloat(data);
+    if (type == TYPE_FLOAT_64) return toDouble(data);
+    return 0;
+  }
 
-    public static MetaValue createFloat(float value) {
-        return new MetaValue(23, 0, fromFloat(value));
+  public String getString() {
+    if (type == TYPE_STRING_UTF8) return new String(
+      data,
+      StandardCharsets.UTF_8
+    );
+    if (type == TYPE_STRING_UTF16) {
+      return new String(data, StandardCharsets.UTF_16BE);
     }
+    return null;
+  }
 
-    public static MetaValue createString(String value) {
-        return new MetaValue(1, 0, value.getBytes(StandardCharsets.US_ASCII));
-    }
+  public boolean isInt() {
+    return (
+      type == TYPE_UINT_V ||
+      type == TYPE_INT_V ||
+      type == TYPE_INT_8 ||
+      type == TYPE_INT_16 ||
+      type == TYPE_INT_32
+    );
+  }
 
-    public static MetaValue createOther(int type, byte[] data) {
-        return new MetaValue(type, 0, data);
-    }
+  public boolean isString() {
+    return type == TYPE_STRING_UTF8 || type == TYPE_STRING_UTF16;
+  }
 
-    public static MetaValue createOtherWithLocale(int type, int locale, byte[] data) {
-        return new MetaValue(type, locale, data);
-    }
+  public boolean isFloat() {
+    return type == TYPE_FLOAT_32 || type == TYPE_FLOAT_64;
+  }
 
-    public static MetaValue createOtherWithLocale(DataBox box) {
-        return new MetaValue(box.getType(), box.getLocale(), box.getData());
-    }
+  public String toString() {
+    if (isInt()) return String.valueOf(getInt());
+    else if (isFloat()) return String.valueOf(getFloat());
+    else if (isString()) return String.valueOf(getString());
+    else return "BLOB";
+  }
 
-    public int getInt() {
-        if (type == TYPE_UINT_V || type == TYPE_INT_V) {
-            switch (data.length) {
-                case 1:
-                    return data[0];
-                case 2:
-                    return toInt16(data);
-                case 3:
-                    return toInt24(data);
-                case 4:
-                    return toInt32(data);
-            }
-        }
-        if (type == TYPE_INT_8)
-            return data[0];
-        if (type == TYPE_INT_16)
-            return toInt16(data);
-        if (type == TYPE_INT_32)
-            return toInt32(data);
-        return 0;
-    }
+  public int getType() {
+    return type;
+  }
 
-    public double getFloat() {
-        if (type == TYPE_FLOAT_32)
-            return toFloat(data);
-        if (type == TYPE_FLOAT_64)
-            return toDouble(data);
-        return 0;
-    }
+  public int getLocale() {
+    return locale;
+  }
 
-    public String getString() {
-        if (type == TYPE_STRING_UTF8)
-            return new String(data, StandardCharsets.UTF_8);
-        if (type == TYPE_STRING_UTF16) {
-            return new String(data, StandardCharsets.UTF_16BE);
-        }
-        return null;
-    }
+  public byte[] getData() {
+    return data;
+  }
 
-    public boolean isInt() {
-        return type == TYPE_UINT_V || type == TYPE_INT_V || type == TYPE_INT_8 || type == TYPE_INT_16 || type == TYPE_INT_32;
-    }
+  private static byte[] fromFloat(float floatValue) {
+    byte[] bytes = new byte[4];
+    ByteBuffer bb = ByteBuffer.wrap(bytes);
+    bb.order(ByteOrder.BIG_ENDIAN);
+    bb.putFloat(floatValue);
+    return bytes;
+  }
 
-    public boolean isString() {
-        return type == TYPE_STRING_UTF8 || type == TYPE_STRING_UTF16;
-    }
+  private static byte[] fromInt(int value) {
+    byte[] bytes = new byte[4];
+    ByteBuffer bb = ByteBuffer.wrap(bytes);
+    bb.order(ByteOrder.BIG_ENDIAN);
+    bb.putInt(value);
+    return bytes;
+  }
 
-    public boolean isFloat() {
-        return type == TYPE_FLOAT_32 || type == TYPE_FLOAT_64;
-    }
+  private int toInt16(byte[] data) {
+    ByteBuffer bb = ByteBuffer.wrap(data);
+    bb.order(ByteOrder.BIG_ENDIAN);
+    return bb.getShort();
+  }
 
-    public String toString() {
-        if (isInt())
-            return String.valueOf(getInt());
-        else if (isFloat())
-            return String.valueOf(getFloat());
-        else if (isString())
-            return String.valueOf(getString());
-        else
-            return "BLOB";
-    }
+  private int toInt24(byte[] data) {
+    ByteBuffer bb = ByteBuffer.wrap(data);
+    bb.order(ByteOrder.BIG_ENDIAN);
+    return ((bb.getShort() & 0xffff) << 8) | (bb.get() & 0xff);
+  }
 
-    public int getType() {
-        return type;
-    }
+  private int toInt32(byte[] data) {
+    ByteBuffer bb = ByteBuffer.wrap(data);
+    bb.order(ByteOrder.BIG_ENDIAN);
+    return bb.getInt();
+  }
 
-    public int getLocale() {
-        return locale;
-    }
+  private float toFloat(byte[] data) {
+    ByteBuffer bb = ByteBuffer.wrap(data);
+    bb.order(ByteOrder.BIG_ENDIAN);
+    return bb.getFloat();
+  }
 
-    public byte[] getData() {
-        return data;
-    }
+  private double toDouble(byte[] data) {
+    ByteBuffer bb = ByteBuffer.wrap(data);
+    bb.order(ByteOrder.BIG_ENDIAN);
+    return bb.getDouble();
+  }
 
-    private static byte[] fromFloat(float floatValue) {
-        byte[] bytes = new byte[4];
-        ByteBuffer bb = ByteBuffer.wrap(bytes);
-        bb.order(ByteOrder.BIG_ENDIAN);
-        bb.putFloat(floatValue);
-        return bytes;
-    }
-
-    private static byte[] fromInt(int value) {
-        byte[] bytes = new byte[4];
-        ByteBuffer bb = ByteBuffer.wrap(bytes);
-        bb.order(ByteOrder.BIG_ENDIAN);
-        bb.putInt(value);
-        return bytes;
-    }
-
-    private int toInt16(byte[] data) {
-        ByteBuffer bb = ByteBuffer.wrap(data);
-        bb.order(ByteOrder.BIG_ENDIAN);
-        return bb.getShort();
-    }
-
-    private int toInt24(byte[] data) {
-        ByteBuffer bb = ByteBuffer.wrap(data);
-        bb.order(ByteOrder.BIG_ENDIAN);
-        return ((bb.getShort() & 0xffff) << 8) | (bb.get() & 0xff);
-    }
-
-    private int toInt32(byte[] data) {
-        ByteBuffer bb = ByteBuffer.wrap(data);
-        bb.order(ByteOrder.BIG_ENDIAN);
-        return bb.getInt();
-    }
-
-    private float toFloat(byte[] data) {
-        ByteBuffer bb = ByteBuffer.wrap(data);
-        bb.order(ByteOrder.BIG_ENDIAN);
-        return bb.getFloat();
-    }
-
-    private double toDouble(byte[] data) {
-        ByteBuffer bb = ByteBuffer.wrap(data);
-        bb.order(ByteOrder.BIG_ENDIAN);
-        return bb.getDouble();
-    }
-
-    public boolean isBlob() {
-        return !isFloat() && !isInt() && !isString();
-    }
+  public boolean isBlob() {
+    return !isFloat() && !isInt() && !isString();
+  }
 }

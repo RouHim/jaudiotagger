@@ -1,8 +1,7 @@
 package org.jcodec.containers.mp4.boxes;
 
-import org.jaudiotagger.audio.generic.Utils;
-
 import java.nio.ByteBuffer;
+import org.jaudiotagger.audio.generic.Utils;
 
 /**
  * This class is part of JCodec ( www.jcodec.org ) This software is distributed
@@ -14,72 +13,77 @@ import java.nio.ByteBuffer;
  */
 public class TimecodeSampleEntry extends SampleEntry {
 
-    private static final String TMCD = "tmcd";
+  private static final String TMCD = "tmcd";
 
-    //@formatter:off
-    public static final int FLAG_DROPFRAME = 0x1;
-    public static final int FLAG_24HOURMAX = 0x2;
-    public static final int FLAG_NEGATIVETIMEOK = 0x4;
-    public static final int FLAG_COUNTER = 0x8;
-    //@formatter:on
+  //@formatter:off
+  public static final int FLAG_DROPFRAME = 0x1;
+  public static final int FLAG_24HOURMAX = 0x2;
+  public static final int FLAG_NEGATIVETIMEOK = 0x4;
+  public static final int FLAG_COUNTER = 0x8;
 
-    public static TimecodeSampleEntry createTimecodeSampleEntry(int flags, int timescale, int frameDuration,
-                                                                int numFrames) {
-        TimecodeSampleEntry tmcd = new TimecodeSampleEntry(new Header(TMCD));
-        tmcd.flags = flags;
-        tmcd.timescale = timescale;
-        tmcd.frameDuration = frameDuration;
-        tmcd.numFrames = (byte) numFrames;
-        return tmcd;
-    }
+  //@formatter:on
 
-    private int flags;
-    private int timescale;
-    private int frameDuration;
-    private byte numFrames;
+  public static TimecodeSampleEntry createTimecodeSampleEntry(
+    int flags,
+    int timescale,
+    int frameDuration,
+    int numFrames
+  ) {
+    TimecodeSampleEntry tmcd = new TimecodeSampleEntry(new Header(TMCD));
+    tmcd.flags = flags;
+    tmcd.timescale = timescale;
+    tmcd.frameDuration = frameDuration;
+    tmcd.numFrames = (byte) numFrames;
+    return tmcd;
+  }
 
-    public TimecodeSampleEntry(Header header) {
-        super(header);
-    }
+  private int flags;
+  private int timescale;
+  private int frameDuration;
+  private byte numFrames;
 
-    public void parse(ByteBuffer input) {
-        super.parse(input);
+  public TimecodeSampleEntry(Header header) {
+    super(header);
+  }
 
-        Utils.skip(input, 4);
-        flags = input.getInt();
-        timescale = input.getInt();
-        frameDuration = input.getInt();
-        numFrames = input.get();
-        Utils.skip(input, 1);
-    }
+  public void parse(ByteBuffer input) {
+    super.parse(input);
 
-    protected void doWrite(ByteBuffer out) {
-        super.doWrite(out);
-        out.putInt(0);
-        out.putInt(flags);
-        out.putInt(timescale);
-        out.putInt(frameDuration);
-        out.put(numFrames);
-        out.put((byte) 207);
-    }
+    Utils.skip(input, 4);
+    flags = input.getInt();
+    timescale = input.getInt();
+    frameDuration = input.getInt();
+    numFrames = input.get();
+    Utils.skip(input, 1);
+  }
 
-    public int getFlags() {
-        return flags;
-    }
+  protected void doWrite(ByteBuffer out) {
+    super.doWrite(out);
+    out.putInt(0);
+    out.putInt(flags);
+    out.putInt(timescale);
+    out.putInt(frameDuration);
+    out.put(numFrames);
+    out.put((byte) 207);
+  }
 
-    public int getTimescale() {
-        return timescale;
-    }
+  public int getFlags() {
+    return flags;
+  }
 
-    public int getFrameDuration() {
-        return frameDuration;
-    }
+  public int getTimescale() {
+    return timescale;
+  }
 
-    public byte getNumFrames() {
-        return numFrames;
-    }
+  public int getFrameDuration() {
+    return frameDuration;
+  }
 
-    public boolean isDropFrame() {
-        return (flags & FLAG_DROPFRAME) != 0;
-    }
+  public byte getNumFrames() {
+    return numFrames;
+  }
+
+  public boolean isDropFrame() {
+    return (flags & FLAG_DROPFRAME) != 0;
+  }
 }

@@ -15,10 +15,9 @@
  */
 package org.jaudiotagger.tag.id3.framebody;
 
+import java.nio.ByteBuffer;
 import org.jaudiotagger.tag.InvalidTagException;
 import org.jaudiotagger.tag.id3.ID3v24Frames;
-
-import java.nio.ByteBuffer;
 
 /**
  * Part of a set Text information frame.
@@ -37,84 +36,86 @@ import java.nio.ByteBuffer;
  * @author : Eric Farng
  * @version $Id$
  */
-public class FrameBodyTPOS extends AbstractFrameBodyNumberTotal implements ID3v23FrameBody, ID3v24FrameBody {
-    /**
-     * Creates a new FrameBodyTRCK datatype.
-     */
-    public FrameBodyTPOS() {
-        super();
-    }
+public class FrameBodyTPOS
+  extends AbstractFrameBodyNumberTotal
+  implements ID3v23FrameBody, ID3v24FrameBody {
 
-    public FrameBodyTPOS(FrameBodyTPOS body) {
-        super(body);
-    }
+  /**
+   * Creates a new FrameBodyTRCK datatype.
+   */
+  public FrameBodyTPOS() {
+    super();
+  }
 
-    /**
-     * Creates a new FrameBodyTRCK datatype, the value is parsed literally
-     *
-     * @param textEncoding
-     * @param text
-     */
-    public FrameBodyTPOS(byte textEncoding, String text) {
-        super(textEncoding, text);
-    }
+  public FrameBodyTPOS(FrameBodyTPOS body) {
+    super(body);
+  }
 
-    public FrameBodyTPOS(byte textEncoding, Integer discNo, Integer discTotal) {
-        super(textEncoding, discNo, discTotal);
-    }
+  /**
+   * Creates a new FrameBodyTRCK datatype, the value is parsed literally
+   *
+   * @param textEncoding
+   * @param text
+   */
+  public FrameBodyTPOS(byte textEncoding, String text) {
+    super(textEncoding, text);
+  }
 
-    /**
-     * Creates a new FrameBodyTRCK datatype.
-     *
-     * @param byteBuffer
-     * @param frameSize
-     * @throws java.io.IOException
-     * @throws InvalidTagException
-     */
-    public FrameBodyTPOS(ByteBuffer byteBuffer, int frameSize) throws InvalidTagException {
-        super(byteBuffer, frameSize);
-    }
+  public FrameBodyTPOS(byte textEncoding, Integer discNo, Integer discTotal) {
+    super(textEncoding, discNo, discTotal);
+  }
 
-    /**
-     * The ID3v2 frame identifier
-     *
-     * @return the ID3v2 frame identifier  for this frame type
-     */
-    public String getIdentifier() {
-        return ID3v24Frames.FRAME_ID_SET;
-    }
+  /**
+   * Creates a new FrameBodyTRCK datatype.
+   *
+   * @param byteBuffer
+   * @param frameSize
+   * @throws java.io.IOException
+   * @throws InvalidTagException
+   */
+  public FrameBodyTPOS(ByteBuffer byteBuffer, int frameSize)
+    throws InvalidTagException {
+    super(byteBuffer, frameSize);
+  }
 
-    public Integer getDiscNo() {
-        return getNumber();
-    }
+  /**
+   * The ID3v2 frame identifier
+   *
+   * @return the ID3v2 frame identifier  for this frame type
+   */
+  public String getIdentifier() {
+    return ID3v24Frames.FRAME_ID_SET;
+  }
 
-    public String getDiscNoAsText() {
-        return getNumberAsText();
-    }
+  public Integer getDiscNo() {
+    return getNumber();
+  }
 
-    public void setDiscNo(Integer discNo) {
-        setNumber(discNo);
-    }
+  public String getDiscNoAsText() {
+    return getNumberAsText();
+  }
 
-    public void setDiscNo(String discNo) {
-        setNumber(discNo);
-    }
+  public void setDiscNo(Integer discNo) {
+    setNumber(discNo);
+  }
 
+  public void setDiscNo(String discNo) {
+    setNumber(discNo);
+  }
 
-    public Integer getDiscTotal() {
-        return getTotal();
-    }
+  public Integer getDiscTotal() {
+    return getTotal();
+  }
 
-    public String getDiscTotalAsText() {
-        return getTotalAsText();
-    }
+  public String getDiscTotalAsText() {
+    return getTotalAsText();
+  }
 
-    public void setDiscTotal(Integer discTotal) {
-        setTotal(discTotal);
-    }
+  public void setDiscTotal(Integer discTotal) {
+    setTotal(discTotal);
+  }
 
-    public void setDiscTotal(String discTotal) {
-        setTotal(discTotal);
-    }
-
+  public void setDiscTotal(String discTotal) {
+    setTotal(discTotal);
+  }
 }

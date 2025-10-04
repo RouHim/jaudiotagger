@@ -12,82 +12,85 @@ import java.nio.ByteBuffer;
  */
 public class TimeToSampleBox extends FullBox {
 
-    public TimeToSampleBox(Header atom) {
-        super(atom);
+  public TimeToSampleBox(Header atom) {
+    super(atom);
+  }
+
+  public static class TimeToSampleEntry {
+
+    int sampleCount;
+    int sampleDuration;
+
+    public TimeToSampleEntry(int sampleCount, int sampleDuration) {
+      this.sampleCount = sampleCount;
+      this.sampleDuration = sampleDuration;
     }
 
-    public static class TimeToSampleEntry {
-        int sampleCount;
-        int sampleDuration;
-
-        public TimeToSampleEntry(int sampleCount, int sampleDuration) {
-            this.sampleCount = sampleCount;
-            this.sampleDuration = sampleDuration;
-        }
-
-        public int getSampleCount() {
-            return sampleCount;
-        }
-
-        public int getSampleDuration() {
-            return sampleDuration;
-        }
-
-        public void setSampleDuration(int sampleDuration) {
-            this.sampleDuration = sampleDuration;
-        }
-
-        public void setSampleCount(int sampleCount) {
-            this.sampleCount = sampleCount;
-        }
-
-        public long getSegmentDuration() {
-            return (long) sampleCount * sampleDuration;
-        }
+    public int getSampleCount() {
+      return sampleCount;
     }
 
-    public static String fourcc() {
-        return "stts";
+    public int getSampleDuration() {
+      return sampleDuration;
     }
 
-    public static TimeToSampleBox createTimeToSampleBox(TimeToSampleEntry[] timeToSamples) {
-        TimeToSampleBox box = new TimeToSampleBox(new Header(fourcc()));
-        box.entries = timeToSamples;
-        return box;
+    public void setSampleDuration(int sampleDuration) {
+      this.sampleDuration = sampleDuration;
     }
 
-    private TimeToSampleEntry[] entries;
-
-    public void parse(ByteBuffer input) {
-        super.parse(input);
-        int foo = input.getInt();
-        entries = new TimeToSampleEntry[foo];
-        for (int i = 0; i < foo; i++) {
-            entries[i] = new TimeToSampleEntry(input.getInt(), input.getInt());
-        }
+    public void setSampleCount(int sampleCount) {
+      this.sampleCount = sampleCount;
     }
 
-    public TimeToSampleEntry[] getEntries() {
-        return entries;
+    public long getSegmentDuration() {
+      return (long) sampleCount * sampleDuration;
     }
+  }
 
-    @Override
-    public void doWrite(ByteBuffer out) {
-        super.doWrite(out);
-        out.putInt(entries.length);
-        for (int i = 0; i < entries.length; i++) {
-            TimeToSampleEntry timeToSampleEntry = entries[i];
-            out.putInt(timeToSampleEntry.getSampleCount());
-            out.putInt(timeToSampleEntry.getSampleDuration());
-        }
-    }
+  public static String fourcc() {
+    return "stts";
+  }
 
-    @Override
-    public int estimateSize() {
-        return 16 + entries.length * 8;
-    }
+  public static TimeToSampleBox createTimeToSampleBox(
+    TimeToSampleEntry[] timeToSamples
+  ) {
+    TimeToSampleBox box = new TimeToSampleBox(new Header(fourcc()));
+    box.entries = timeToSamples;
+    return box;
+  }
 
-    public void setEntries(TimeToSampleEntry[] entries) {
-        this.entries = entries;
+  private TimeToSampleEntry[] entries;
+
+  public void parse(ByteBuffer input) {
+    super.parse(input);
+    int foo = input.getInt();
+    entries = new TimeToSampleEntry[foo];
+    for (int i = 0; i < foo; i++) {
+      entries[i] = new TimeToSampleEntry(input.getInt(), input.getInt());
     }
+  }
+
+  public TimeToSampleEntry[] getEntries() {
+    return entries;
+  }
+
+  @Override
+  public void doWrite(ByteBuffer out) {
+    super.doWrite(out);
+    out.putInt(entries.length);
+    for (int i = 0; i < entries.length; i++) {
+      TimeToSampleEntry timeToSampleEntry = entries[i];
+      out.putInt(timeToSampleEntry.getSampleCount());
+      out.putInt(timeToSampleEntry.getSampleDuration());
+    }
+  }
+
+  @Override
+  public int estimateSize() {
+    return 16 + entries.length * 8;
+  }
+
+  public void setEntries(TimeToSampleEntry[] entries) {
+    this.entries = entries;
+  }
 }

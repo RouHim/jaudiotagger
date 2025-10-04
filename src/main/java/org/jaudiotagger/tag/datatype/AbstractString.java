@@ -22,152 +22,162 @@
  */
 package org.jaudiotagger.tag.datatype;
 
-import org.jaudiotagger.tag.id3.AbstractTagFrameBody;
-import org.jaudiotagger.tag.id3.valuepair.TextEncoding;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import java.nio.ByteBuffer;
 import java.nio.charset.Charset;
 import java.nio.charset.CharsetDecoder;
 import java.nio.charset.CharsetEncoder;
 import java.nio.charset.StandardCharsets;
+import org.jaudiotagger.tag.id3.AbstractTagFrameBody;
+import org.jaudiotagger.tag.id3.valuepair.TextEncoding;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * A partial implementation for String based ID3 fields
  */
 public abstract class AbstractString extends AbstractDataType {
-    private static final Logger logger = LoggerFactory.getLogger(AbstractString.class);
 
-    /**
-     * Creates a new  datatype
-     *
-     * @param identifier
-     * @param frameBody
-     */
-    protected AbstractString(String identifier, AbstractTagFrameBody frameBody) {
-        super(identifier, frameBody);
+  private static final Logger logger = LoggerFactory.getLogger(
+    AbstractString.class
+  );
+
+  /**
+   * Creates a new  datatype
+   *
+   * @param identifier
+   * @param frameBody
+   */
+  protected AbstractString(String identifier, AbstractTagFrameBody frameBody) {
+    super(identifier, frameBody);
+  }
+
+  /**
+   * Creates a new  datatype, with value
+   *
+   * @param identifier
+   * @param frameBody
+   * @param value
+   */
+  public AbstractString(
+    String identifier,
+    AbstractTagFrameBody frameBody,
+    String value
+  ) {
+    super(identifier, frameBody, value);
+  }
+
+  /**
+   * Copy constructor
+   *
+   * @param object
+   */
+  protected AbstractString(AbstractString object) {
+    super(object);
+  }
+
+  /**
+   * Return the size in bytes of this datatype as it was/is held in file this
+   * will be effected by the encoding type.
+   *
+   * @return the size
+   */
+  public int getSize() {
+    return size;
+  }
+
+  /**
+   * Sets the size in bytes of this data type.
+   * This is set after writing the data to allow us to recalculate the size for
+   * frame header.
+   *
+   * @param size
+   */
+  protected void setSize(int size) {
+    this.size = size;
+  }
+
+  /**
+   * Return String representation of data type
+   *
+   * @return a string representation of the value
+   */
+  public String toString() {
+    return (String) value;
+  }
+
+  /**
+   * Check the value can be encoded with the specified encoding
+   *
+   * @return
+   */
+  public boolean canBeEncoded() {
+    //Try and write to buffer using the CharSet defined by the textEncoding field (note if using UTF16 we dont
+    //need to worry about LE,BE at this point it makes no difference)
+    final byte textEncoding = this.getBody().getTextEncoding();
+    final TextEncoding encoding = TextEncoding.getInstanceOf();
+    final Charset charset = encoding.getCharsetForId(textEncoding);
+    CharsetEncoder encoder = charset.newEncoder();
+
+    if (encoder.canEncode((String) value)) {
+      return true;
+    } else {
+      logger.debug("Failed Trying to decode" + value + "with" + encoder);
+      return false;
+    }
+  }
+
+  /**
+   * If they have specified UTF-16 then decoder works out by looking at BOM
+   * but if missing we have to make an educated guess otherwise just use
+   * specified decoder
+   *
+   * @param inBuffer
+   * @return
+   */
+  protected CharsetDecoder getCorrectDecoder(ByteBuffer inBuffer) {
+    CharsetDecoder decoder = null;
+    if (inBuffer.remaining() <= 2) {
+      decoder = getTextEncodingCharSet().newDecoder();
+      decoder.reset();
+      return decoder;
     }
 
-    /**
-     * Creates a new  datatype, with value
-     *
-     * @param identifier
-     * @param frameBody
-     * @param value
-     */
-    public AbstractString(String identifier, AbstractTagFrameBody frameBody, String value) {
-        super(identifier, frameBody, value);
-    }
-
-    /**
-     * Copy constructor
-     *
-     * @param object
-     */
-    protected AbstractString(AbstractString object) {
-        super(object);
-    }
-
-    /**
-     * Return the size in bytes of this datatype as it was/is held in file this
-     * will be effected by the encoding type.
-     *
-     * @return the size
-     */
-    public int getSize() {
-        return size;
-    }
-
-    /**
-     * Sets the size in bytes of this data type.
-     * This is set after writing the data to allow us to recalculate the size for
-     * frame header.
-     *
-     * @param size
-     */
-    protected void setSize(int size) {
-        this.size = size;
-    }
-
-    /**
-     * Return String representation of data type
-     *
-     * @return a string representation of the value
-     */
-    public String toString() {
-        return (String) value;
-    }
-
-    /**
-     * Check the value can be encoded with the specified encoding
-     *
-     * @return
-     */
-    public boolean canBeEncoded() {
-        //Try and write to buffer using the CharSet defined by the textEncoding field (note if using UTF16 we dont
-        //need to worry about LE,BE at this point it makes no difference)
-        final byte textEncoding = this.getBody().getTextEncoding();
-        final TextEncoding encoding = TextEncoding.getInstanceOf();
-        final Charset charset = encoding.getCharsetForId(textEncoding);
-        CharsetEncoder encoder = charset.newEncoder();
-
-        if (encoder.canEncode((String) value)) {
-            return true;
+    if (getTextEncodingCharSet() == StandardCharsets.UTF_16) {
+      if (inBuffer.getChar(0) == 0xfffe || inBuffer.getChar(0) == 0xfeff) {
+        //Get the Specified Decoder
+        decoder = getTextEncodingCharSet().newDecoder();
+        decoder.reset();
+      } else {
+        if (inBuffer.get(0) == 0) {
+          decoder = StandardCharsets.UTF_16BE.newDecoder();
+          decoder.reset();
         } else {
-            logger.debug("Failed Trying to decode" + value + "with" + encoder);
-            return false;
+          decoder = StandardCharsets.UTF_16LE.newDecoder();
+          decoder.reset();
         }
+      }
+    } else {
+      decoder = getTextEncodingCharSet().newDecoder();
+      decoder.reset();
     }
+    return decoder;
+  }
 
-    /**
-     * If they have specified UTF-16 then decoder works out by looking at BOM
-     * but if missing we have to make an educated guess otherwise just use
-     * specified decoder
-     *
-     * @param inBuffer
-     * @return
-     */
-    protected CharsetDecoder getCorrectDecoder(ByteBuffer inBuffer) {
-        CharsetDecoder decoder = null;
-        if (inBuffer.remaining() <= 2) {
-            decoder = getTextEncodingCharSet().newDecoder();
-            decoder.reset();
-            return decoder;
-        }
-
-        if (getTextEncodingCharSet() == StandardCharsets.UTF_16) {
-            if (inBuffer.getChar(0) == 0xfffe || inBuffer.getChar(0) == 0xfeff) {
-                //Get the Specified Decoder
-                decoder = getTextEncodingCharSet().newDecoder();
-                decoder.reset();
-            } else {
-                if (inBuffer.get(0) == 0) {
-                    decoder = StandardCharsets.UTF_16BE.newDecoder();
-                    decoder.reset();
-                } else {
-                    decoder = StandardCharsets.UTF_16LE.newDecoder();
-                    decoder.reset();
-                }
-            }
-        } else {
-            decoder = getTextEncodingCharSet().newDecoder();
-            decoder.reset();
-        }
-        return decoder;
-    }
-
-    /**
-     * Get the text encoding being used.
-     * <p>
-     * The text encoding is defined by the frame body that the text field belongs to.
-     *
-     * @return the text encoding charset
-     */
-    protected Charset getTextEncodingCharSet() {
-        final byte textEncoding = this.getBody().getTextEncoding();
-        final Charset charSetName = TextEncoding.getInstanceOf().getCharsetForId(textEncoding);
-        logger.debug("text encoding:" + textEncoding + " charset:" + charSetName.name());
-        return charSetName;
-    }
+  /**
+   * Get the text encoding being used.
+   * <p>
+   * The text encoding is defined by the frame body that the text field belongs to.
+   *
+   * @return the text encoding charset
+   */
+  protected Charset getTextEncodingCharSet() {
+    final byte textEncoding = this.getBody().getTextEncoding();
+    final Charset charSetName = TextEncoding.getInstanceOf().getCharsetForId(
+      textEncoding
+    );
+    logger.debug(
+      "text encoding:" + textEncoding + " charset:" + charSetName.name()
+    );
+    return charSetName;
+  }
 }

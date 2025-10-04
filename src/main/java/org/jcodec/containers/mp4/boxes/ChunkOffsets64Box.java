@@ -11,50 +11,53 @@ import java.nio.ByteBuffer;
  * @author The JCodec project
  */
 public class ChunkOffsets64Box extends FullBox {
-    private long[] chunkOffsets;
 
-    public static String fourcc() {
-        return "co64";
-    }
+  private long[] chunkOffsets;
 
-    public static ChunkOffsets64Box createChunkOffsets64Box(long[] offsets) {
-        ChunkOffsets64Box co64 = new ChunkOffsets64Box(Header.createHeader(fourcc(), 0));
-        co64.chunkOffsets = offsets;
-        return co64;
-    }
+  public static String fourcc() {
+    return "co64";
+  }
 
-    public ChunkOffsets64Box(Header atom) {
-        super(atom);
-    }
+  public static ChunkOffsets64Box createChunkOffsets64Box(long[] offsets) {
+    ChunkOffsets64Box co64 = new ChunkOffsets64Box(
+      Header.createHeader(fourcc(), 0)
+    );
+    co64.chunkOffsets = offsets;
+    return co64;
+  }
 
-    public void parse(ByteBuffer input) {
-        super.parse(input);
-        int length = input.getInt();
-        chunkOffsets = new long[length];
-        for (int i = 0; i < length; i++) {
-            chunkOffsets[i] = input.getLong();
-        }
-    }
+  public ChunkOffsets64Box(Header atom) {
+    super(atom);
+  }
 
-    protected void doWrite(ByteBuffer out) {
-        super.doWrite(out);
-        out.putInt(chunkOffsets.length);
-        for (int i = 0; i < chunkOffsets.length; i++) {
-            long offset = chunkOffsets[i];
-            out.putLong(offset);
-        }
+  public void parse(ByteBuffer input) {
+    super.parse(input);
+    int length = input.getInt();
+    chunkOffsets = new long[length];
+    for (int i = 0; i < length; i++) {
+      chunkOffsets[i] = input.getLong();
     }
+  }
 
-    @Override
-    public int estimateSize() {
-        return 12 + 4 + chunkOffsets.length * 8;
+  protected void doWrite(ByteBuffer out) {
+    super.doWrite(out);
+    out.putInt(chunkOffsets.length);
+    for (int i = 0; i < chunkOffsets.length; i++) {
+      long offset = chunkOffsets[i];
+      out.putLong(offset);
     }
+  }
 
-    public long[] getChunkOffsets() {
-        return chunkOffsets;
-    }
+  @Override
+  public int estimateSize() {
+    return 12 + 4 + chunkOffsets.length * 8;
+  }
 
-    public void setChunkOffsets(long[] chunkOffsets) {
-        this.chunkOffsets = chunkOffsets;
-    }
+  public long[] getChunkOffsets() {
+    return chunkOffsets;
+  }
+
+  public void setChunkOffsets(long[] chunkOffsets) {
+    this.chunkOffsets = chunkOffsets;
+  }
 }

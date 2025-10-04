@@ -9,34 +9,35 @@ import org.jcodec.containers.mp4.IBoxFactory;
  * @author The JCodec project
  */
 public class UdtaBox extends NodeBox {
-    private static final String FOURCC = "udta";
 
-    public static UdtaBox createUdtaBox() {
-        return new UdtaBox(Header.createHeader(fourcc(), 0));
-    }
+  private static final String FOURCC = "udta";
 
-    @Override
-    public void setFactory(final IBoxFactory _factory) {
-        factory = header -> {
-            if (header.getFourcc().equals(UdtaMetaBox.fourcc())) {
-                UdtaMetaBox box = new UdtaMetaBox(header);
-                box.setFactory(_factory);
-                return box;
-            }
+  public static UdtaBox createUdtaBox() {
+    return new UdtaBox(Header.createHeader(fourcc(), 0));
+  }
 
-            return _factory.newBox(header);
-        };
-    }
+  @Override
+  public void setFactory(final IBoxFactory _factory) {
+    factory = header -> {
+      if (header.getFourcc().equals(UdtaMetaBox.fourcc())) {
+        UdtaMetaBox box = new UdtaMetaBox(header);
+        box.setFactory(_factory);
+        return box;
+      }
 
-    public UdtaBox(Header atom) {
-        super(atom);
-    }
+      return _factory.newBox(header);
+    };
+  }
 
-    public MetaBox meta() {
-        return NodeBox.findFirst(this, MetaBox.class, MetaBox.fourcc());
-    }
+  public UdtaBox(Header atom) {
+    super(atom);
+  }
 
-    public static String fourcc() {
-        return FOURCC;
-    }
+  public MetaBox meta() {
+    return NodeBox.findFirst(this, MetaBox.class, MetaBox.fourcc());
+  }
+
+  public static String fourcc() {
+    return FOURCC;
+  }
 }

@@ -31,19 +31,21 @@ import java.nio.channels.FileChannel;
  * purpose cueing mechanism for playback
  */
 public class MetadataBlockDataCueSheet implements MetadataBlockData {
-    private final ByteBuffer data;
 
-    public MetadataBlockDataCueSheet(MetadataBlockHeader header, FileChannel fc) throws IOException {
-        data = ByteBuffer.allocate(header.getDataLength());
-        fc.read(data);
-        data.flip();
-    }
+  private final ByteBuffer data;
 
-    public ByteBuffer getBytes() {
-        return data;
-    }
+  public MetadataBlockDataCueSheet(MetadataBlockHeader header, FileChannel fc)
+    throws IOException {
+    data = ByteBuffer.allocate(header.getDataLength());
+    fc.read(data);
+    data.flip();
+  }
 
-    public int getLength() {
-        return data.limit();
-    }
+  public ByteBuffer getBytes() {
+    return data;
+  }
+
+  public int getLength() {
+    return data.limit();
+  }
 }

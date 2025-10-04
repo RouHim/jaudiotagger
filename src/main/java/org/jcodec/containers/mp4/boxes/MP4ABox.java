@@ -10,22 +10,22 @@ import java.nio.ByteBuffer;
  */
 public class MP4ABox extends Box {
 
-    public MP4ABox(Header header) {
-        super(header);
-    }
+  public MP4ABox(Header header) {
+    super(header);
+  }
 
-    private int val;
+  private int val;
 
-    protected void doWrite(ByteBuffer out) {
-        out.putInt(val);
-    }
+  protected void doWrite(ByteBuffer out) {
+    out.putInt(val);
+  }
 
-    public void parse(ByteBuffer input) {
-        val = input.getInt();
-    }
+  public void parse(ByteBuffer input) {
+    val = input.getInt();
+  }
 
-    @Override
-    public int estimateSize() {
-        return 12;
-    }
+  @Override
+  public int estimateSize() {
+    return 12;
+  }
 }

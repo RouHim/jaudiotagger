@@ -18,14 +18,13 @@
  */
 package org.jaudiotagger.tag.wav;
 
+import java.util.ArrayList;
+import java.util.EnumSet;
+import java.util.List;
 import org.jaudiotagger.audio.generic.GenericTag;
 import org.jaudiotagger.audio.iff.ChunkHeader;
 import org.jaudiotagger.logging.Hex;
 import org.jaudiotagger.tag.*;
-
-import java.util.ArrayList;
-import java.util.EnumSet;
-import java.util.List;
 
 /**
  * Represent wav metadata found in the LISTINFO Chunk
@@ -36,85 +35,92 @@ import java.util.List;
  * Any Wavc editors now instead/addtionally add data with an ID3tag
  */
 public class WavInfoTag extends GenericTag {
-    //We dont use these fields but we need to read them so they can be written back if user modifies
-    private final List<TagTextField> unrecognisedFields = new ArrayList<>();
 
-    private Long startLocationInFile = null;
+  //We dont use these fields but we need to read them so they can be written back if user modifies
+  private final List<TagTextField> unrecognisedFields = new ArrayList<>();
 
-    //End location of this chunk
-    private Long endLocationInFile = null;
+  private Long startLocationInFile = null;
 
+  //End location of this chunk
+  private Long endLocationInFile = null;
 
-    static {
-        supportedKeys = EnumSet.of(
+  static {
+    supportedKeys = EnumSet.of(
+      FieldKey.ALBUM,
+      FieldKey.ARTIST,
+      FieldKey.ALBUM_ARTIST,
+      FieldKey.TITLE,
+      FieldKey.TRACK,
+      FieldKey.GENRE,
+      FieldKey.COMMENT,
+      FieldKey.YEAR,
+      FieldKey.RECORD_LABEL,
+      FieldKey.ISRC,
+      FieldKey.COMPOSER,
+      FieldKey.LYRICIST,
+      FieldKey.ENCODER,
+      FieldKey.CONDUCTOR,
+      FieldKey.RATING
+    );
+  }
 
-                FieldKey.ALBUM,
-                FieldKey.ARTIST,
-                FieldKey.ALBUM_ARTIST,
-                FieldKey.TITLE,
-                FieldKey.TRACK,
-                FieldKey.GENRE,
-                FieldKey.COMMENT,
-                FieldKey.YEAR,
-                FieldKey.RECORD_LABEL,
-                FieldKey.ISRC,
-                FieldKey.COMPOSER,
-                FieldKey.LYRICIST,
-                FieldKey.ENCODER,
-                FieldKey.CONDUCTOR,
-                FieldKey.RATING);
+  public String toString() {
+    StringBuilder output = new StringBuilder("Wav Info Tag:\n");
+    if (getStartLocationInFile() != null) {
+      output.append(
+        "\tstartLocation:" + Hex.asDecAndHex(getStartLocationInFile()) + "\n"
+      );
     }
-
-    public String toString() {
-        StringBuilder output = new StringBuilder("Wav Info Tag:\n");
-        if (getStartLocationInFile() != null) {
-            output.append("\tstartLocation:" + Hex.asDecAndHex(getStartLocationInFile()) + "\n");
-        }
-        if (getEndLocationInFile() != null) {
-            output.append("\tendLocation:" + Hex.asDecAndHex(getEndLocationInFile()) + "\n");
-        }
-        output.append(super.toString());
-        if (unrecognisedFields.size() > 0) {
-            output.append("\nUnrecognized Tags:\n");
-            for (TagTextField next : unrecognisedFields) {
-                output.append("\t" + next.getId() + ":" + next.getContent() + "\n");
-            }
-        }
-        return output.toString();
+    if (getEndLocationInFile() != null) {
+      output.append(
+        "\tendLocation:" + Hex.asDecAndHex(getEndLocationInFile()) + "\n"
+      );
     }
-
-    public TagField createCompilationField(boolean value) throws KeyNotFoundException, FieldDataInvalidException {
-        return createField(FieldKey.IS_COMPILATION, String.valueOf(value));
+    output.append(super.toString());
+    if (unrecognisedFields.size() > 0) {
+      output.append("\nUnrecognized Tags:\n");
+      for (TagTextField next : unrecognisedFields) {
+        output.append("\t" + next.getId() + ":" + next.getContent() + "\n");
+      }
     }
+    return output.toString();
+  }
 
-    public Long getStartLocationInFile() {
-        return startLocationInFile;
-    }
+  public TagField createCompilationField(boolean value)
+    throws KeyNotFoundException, FieldDataInvalidException {
+    return createField(FieldKey.IS_COMPILATION, String.valueOf(value));
+  }
 
-    public void setStartLocationInFile(long startLocationInFile) {
-        this.startLocationInFile = startLocationInFile;
-    }
+  public Long getStartLocationInFile() {
+    return startLocationInFile;
+  }
 
-    public Long getEndLocationInFile() {
-        return endLocationInFile;
-    }
+  public void setStartLocationInFile(long startLocationInFile) {
+    this.startLocationInFile = startLocationInFile;
+  }
 
-    public void setEndLocationInFile(long endLocationInFile) {
-        this.endLocationInFile = endLocationInFile;
-    }
+  public Long getEndLocationInFile() {
+    return endLocationInFile;
+  }
 
-    public long getSizeOfTag() {
-        if (endLocationInFile == null || startLocationInFile == null) {
-            return 0;
-        }
-        return (endLocationInFile - startLocationInFile) - ChunkHeader.CHUNK_HEADER_SIZE;
-    }
+  public void setEndLocationInFile(long endLocationInFile) {
+    this.endLocationInFile = endLocationInFile;
+  }
 
-    public void addUnRecognizedField(String code, String contents) {
-        unrecognisedFields.add(new GenericTagTextField(code, contents));
+  public long getSizeOfTag() {
+    if (endLocationInFile == null || startLocationInFile == null) {
+      return 0;
     }
+    return (
+      (endLocationInFile - startLocationInFile) - ChunkHeader.CHUNK_HEADER_SIZE
+    );
+  }
 
-    public List<TagTextField> getUnrecognisedFields() {
-        return unrecognisedFields;
-    }
+  public void addUnRecognizedField(String code, String contents) {
+    unrecognisedFields.add(new GenericTagTextField(code, contents));
+  }
+
+  public List<TagTextField> getUnrecognisedFields() {
+    return unrecognisedFields;
+  }
 }

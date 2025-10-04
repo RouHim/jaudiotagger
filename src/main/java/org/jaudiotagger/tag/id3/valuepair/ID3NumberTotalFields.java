@@ -1,32 +1,35 @@
 package org.jaudiotagger.tag.id3.valuepair;
 
-import org.jaudiotagger.tag.FieldKey;
-
 import java.util.EnumSet;
+import org.jaudiotagger.tag.FieldKey;
 
 /**
  * Created by Paul on 09/11/2016.
  */
 public class ID3NumberTotalFields {
-    private static final EnumSet<FieldKey> numberField = EnumSet.noneOf(FieldKey.class);
-    private static final EnumSet<FieldKey> totalField = EnumSet.noneOf(FieldKey.class);
 
-    static {
-        numberField.add(FieldKey.TRACK);
-        numberField.add(FieldKey.DISC_NO);
-        numberField.add(FieldKey.MOVEMENT_NO);
+  private static final EnumSet<FieldKey> numberField = EnumSet.noneOf(
+    FieldKey.class
+  );
+  private static final EnumSet<FieldKey> totalField = EnumSet.noneOf(
+    FieldKey.class
+  );
 
-        totalField.add(FieldKey.TRACK_TOTAL);
-        totalField.add(FieldKey.DISC_TOTAL);
-        totalField.add(FieldKey.MOVEMENT_TOTAL);
-    }
+  static {
+    numberField.add(FieldKey.TRACK);
+    numberField.add(FieldKey.DISC_NO);
+    numberField.add(FieldKey.MOVEMENT_NO);
 
-    public static boolean isNumber(FieldKey fieldKey) {
-        return numberField.contains(fieldKey);
-    }
+    totalField.add(FieldKey.TRACK_TOTAL);
+    totalField.add(FieldKey.DISC_TOTAL);
+    totalField.add(FieldKey.MOVEMENT_TOTAL);
+  }
 
-    public static boolean isTotal(FieldKey fieldKey) {
-        return totalField.contains(fieldKey);
-    }
+  public static boolean isNumber(FieldKey fieldKey) {
+    return numberField.contains(fieldKey);
+  }
 
+  public static boolean isTotal(FieldKey fieldKey) {
+    return totalField.contains(fieldKey);
+  }
 }

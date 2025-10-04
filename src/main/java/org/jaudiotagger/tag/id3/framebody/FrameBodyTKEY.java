@@ -15,11 +15,10 @@
  */
 package org.jaudiotagger.tag.id3.framebody;
 
+import java.nio.ByteBuffer;
 import org.jaudiotagger.tag.InvalidTagException;
 import org.jaudiotagger.tag.id3.ID3v24Frames;
 import org.jaudiotagger.tag.reference.MusicalKey;
-
-import java.nio.ByteBuffer;
 
 /**
  * Initial key Text information frame.
@@ -36,52 +35,55 @@ import java.nio.ByteBuffer;
  * @author : Eric Farng
  * @version $Id$
  */
-public class FrameBodyTKEY extends AbstractFrameBodyTextInfo implements ID3v24FrameBody, ID3v23FrameBody {
-    /**
-     * Creates a new FrameBodyTKEY datatype.
-     */
-    public FrameBodyTKEY() {
-    }
+public class FrameBodyTKEY
+  extends AbstractFrameBodyTextInfo
+  implements ID3v24FrameBody, ID3v23FrameBody {
 
-    public FrameBodyTKEY(FrameBodyTKEY body) {
-        super(body);
-    }
+  /**
+   * Creates a new FrameBodyTKEY datatype.
+   */
+  public FrameBodyTKEY() {}
 
-    /**
-     * Creates a new FrameBodyTKEY datatype.
-     *
-     * @param textEncoding
-     * @param text
-     */
-    public FrameBodyTKEY(byte textEncoding, String text) {
-        super(textEncoding, text);
-    }
+  public FrameBodyTKEY(FrameBodyTKEY body) {
+    super(body);
+  }
 
-    /**
-     * Creates a new FrameBodyTKEY datatype.
-     *
-     * @param byteBuffer
-     * @param frameSize
-     * @throws java.io.IOException
-     * @throws InvalidTagException
-     */
-    public FrameBodyTKEY(ByteBuffer byteBuffer, int frameSize) throws InvalidTagException {
-        super(byteBuffer, frameSize);
-    }
+  /**
+   * Creates a new FrameBodyTKEY datatype.
+   *
+   * @param textEncoding
+   * @param text
+   */
+  public FrameBodyTKEY(byte textEncoding, String text) {
+    super(textEncoding, text);
+  }
 
-    /**
-     * The ID3v2 frame identifier
-     *
-     * @return the ID3v2 frame identifier  for this frame type
-     */
-    public String getIdentifier() {
-        return ID3v24Frames.FRAME_ID_INITIAL_KEY;
-    }
+  /**
+   * Creates a new FrameBodyTKEY datatype.
+   *
+   * @param byteBuffer
+   * @param frameSize
+   * @throws java.io.IOException
+   * @throws InvalidTagException
+   */
+  public FrameBodyTKEY(ByteBuffer byteBuffer, int frameSize)
+    throws InvalidTagException {
+    super(byteBuffer, frameSize);
+  }
 
-    /**
-     * @return true if text value is valid musical key notation
-     */
-    public boolean isValid() {
-        return MusicalKey.isValid(getFirstTextValue());
-    }
+  /**
+   * The ID3v2 frame identifier
+   *
+   * @return the ID3v2 frame identifier  for this frame type
+   */
+  public String getIdentifier() {
+    return ID3v24Frames.FRAME_ID_INITIAL_KEY;
+  }
+
+  /**
+   * @return true if text value is valid musical key notation
+   */
+  public boolean isValid() {
+    return MusicalKey.isValid(getFirstTextValue());
+  }
 }

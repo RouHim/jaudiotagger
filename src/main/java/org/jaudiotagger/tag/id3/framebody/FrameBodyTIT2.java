@@ -15,10 +15,9 @@
  */
 package org.jaudiotagger.tag.id3.framebody;
 
+import java.nio.ByteBuffer;
 import org.jaudiotagger.tag.InvalidTagException;
 import org.jaudiotagger.tag.id3.ID3v24Frames;
-
-import java.nio.ByteBuffer;
 
 /**
  * Title/Songname/Content description Text information frame.
@@ -33,44 +32,47 @@ import java.nio.ByteBuffer;
  * @author : Eric Farng
  * @version $Id$
  */
-public class FrameBodyTIT2 extends AbstractFrameBodyTextInfo implements ID3v24FrameBody, ID3v23FrameBody {
-    /**
-     * Creates a new FrameBodyTIT2 datatype.
-     */
-    public FrameBodyTIT2() {
-    }
+public class FrameBodyTIT2
+  extends AbstractFrameBodyTextInfo
+  implements ID3v24FrameBody, ID3v23FrameBody {
 
-    public FrameBodyTIT2(FrameBodyTIT2 body) {
-        super(body);
-    }
+  /**
+   * Creates a new FrameBodyTIT2 datatype.
+   */
+  public FrameBodyTIT2() {}
 
-    /**
-     * Creates a new FrameBodyTIT2 datatype.
-     *
-     * @param textEncoding
-     * @param text
-     */
-    public FrameBodyTIT2(byte textEncoding, String text) {
-        super(textEncoding, text);
-    }
+  public FrameBodyTIT2(FrameBodyTIT2 body) {
+    super(body);
+  }
 
-    /**
-     * Creates a new FrameBodyTIT2 datatype.
-     *
-     * @param byteBuffer
-     * @param frameSize
-     * @throws InvalidTagException
-     */
-    public FrameBodyTIT2(ByteBuffer byteBuffer, int frameSize) throws InvalidTagException {
-        super(byteBuffer, frameSize);
-    }
+  /**
+   * Creates a new FrameBodyTIT2 datatype.
+   *
+   * @param textEncoding
+   * @param text
+   */
+  public FrameBodyTIT2(byte textEncoding, String text) {
+    super(textEncoding, text);
+  }
 
-    /**
-     * The ID3v2 frame identifier
-     *
-     * @return the ID3v2 frame identifier  for this frame type
-     */
-    public String getIdentifier() {
-        return ID3v24Frames.FRAME_ID_TITLE;
-    }
+  /**
+   * Creates a new FrameBodyTIT2 datatype.
+   *
+   * @param byteBuffer
+   * @param frameSize
+   * @throws InvalidTagException
+   */
+  public FrameBodyTIT2(ByteBuffer byteBuffer, int frameSize)
+    throws InvalidTagException {
+    super(byteBuffer, frameSize);
+  }
+
+  /**
+   * The ID3v2 frame identifier
+   *
+   * @return the ID3v2 frame identifier  for this frame type
+   */
+  public String getIdentifier() {
+    return ID3v24Frames.FRAME_ID_TITLE;
+  }
 }

@@ -18,13 +18,12 @@
  */
 package org.jaudiotagger.tag.mp4;
 
+import java.io.UnsupportedEncodingException;
+import java.nio.charset.StandardCharsets;
 import org.jaudiotagger.tag.TagField;
 import org.jaudiotagger.tag.mp4.field.Mp4FieldType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import java.io.UnsupportedEncodingException;
-import java.nio.charset.StandardCharsets;
 
 /**
  * This abstract class represents a link between piece of data, and how it is stored as an mp4 atom
@@ -37,59 +36,67 @@ import java.nio.charset.StandardCharsets;
  * There are various subclasses that represent different types of fields
  */
 public abstract class Mp4TagField implements TagField {
-    // Logger Object
-    private static final Logger logger = LoggerFactory.getLogger("org.jaudiotagger.tag.mp4");
 
+  // Logger Object
+  private static final Logger logger = LoggerFactory.getLogger(
+    "org.jaudiotagger.tag.mp4"
+  );
 
-    protected String id;
+  protected String id;
 
-    protected Mp4TagField(String id) {
-        this.id = id;
-    }
+  protected Mp4TagField(String id) {
+    this.id = id;
+  }
 
-    /**
-     * @return field identifier
-     */
-    public String getId() {
-        return id;
-    }
+  /**
+   * @return field identifier
+   */
+  public String getId() {
+    return id;
+  }
 
-    public void isBinary(boolean b) {
-        /* One cannot choose if an arbitrary block can be binary or not */
-    }
+  public void isBinary(boolean b) {
+    /* One cannot choose if an arbitrary block can be binary or not */
+  }
 
-    public boolean isCommon() {
-        return id.equals(Mp4FieldKey.ARTIST.getFieldName()) || id.equals(Mp4FieldKey.ALBUM.getFieldName()) || id.equals(Mp4FieldKey.TITLE.getFieldName()) || id.equals(Mp4FieldKey.TRACK.getFieldName()) || id.equals(Mp4FieldKey.DAY.getFieldName()) || id.equals(Mp4FieldKey.COMMENT.getFieldName()) || id.equals(Mp4FieldKey.GENRE.getFieldName());
-    }
+  public boolean isCommon() {
+    return (
+      id.equals(Mp4FieldKey.ARTIST.getFieldName()) ||
+      id.equals(Mp4FieldKey.ALBUM.getFieldName()) ||
+      id.equals(Mp4FieldKey.TITLE.getFieldName()) ||
+      id.equals(Mp4FieldKey.TRACK.getFieldName()) ||
+      id.equals(Mp4FieldKey.DAY.getFieldName()) ||
+      id.equals(Mp4FieldKey.COMMENT.getFieldName()) ||
+      id.equals(Mp4FieldKey.GENRE.getFieldName())
+    );
+  }
 
-    /**
-     * @return field identifier as it will be held within the file
-     */
-    protected byte[] getIdBytes() {
-        return getId().getBytes(StandardCharsets.ISO_8859_1);
-    }
+  /**
+   * @return field identifier as it will be held within the file
+   */
+  protected byte[] getIdBytes() {
+    return getId().getBytes(StandardCharsets.ISO_8859_1);
+  }
 
-    /**
-     * @return the data as it is held on file
-     * @throws UnsupportedEncodingException
-     */
-    protected abstract byte[] getDataBytes() throws UnsupportedEncodingException;
+  /**
+   * @return the data as it is held on file
+   * @throws UnsupportedEncodingException
+   */
+  protected abstract byte[] getDataBytes() throws UnsupportedEncodingException;
 
+  /**
+   * @return the field type of this field
+   */
+  public abstract Mp4FieldType getFieldType();
 
-    /**
-     * @return the field type of this field
-     */
-    public abstract Mp4FieldType getFieldType();
-
-
-    /**
-     * Convert back to raw content, includes parent and data atom as views as one thing externally
-     *
-     * @return
-     * @throws UnsupportedEncodingException
-     */
-    public byte[] getRawContent() throws UnsupportedEncodingException {
-        logger.debug("Getting Raw data for:" + getId());
-        return getDataBytes();
-    }
+  /**
+   * Convert back to raw content, includes parent and data atom as views as one thing externally
+   *
+   * @return
+   * @throws UnsupportedEncodingException
+   */
+  public byte[] getRawContent() throws UnsupportedEncodingException {
+    logger.debug("Getting Raw data for:" + getId());
+    return getDataBytes();
+  }
 }

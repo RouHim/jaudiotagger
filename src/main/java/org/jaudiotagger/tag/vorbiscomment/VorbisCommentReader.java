@@ -19,14 +19,13 @@
  */
 package org.jaudiotagger.tag.vorbiscomment;
 
+import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import org.jaudiotagger.audio.exceptions.CannotReadException;
 import org.jaudiotagger.audio.generic.Utils;
 import org.jaudiotagger.logging.ErrorMessage;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import java.io.IOException;
-import java.nio.charset.StandardCharsets;
 
 /**
  * Create the VorbisCommentTag by reading from the raw packet data
@@ -50,87 +49,102 @@ import java.nio.charset.StandardCharsets;
  * </pre>
  */
 public class VorbisCommentReader {
-    // Logger Object
-    private static final Logger logger = LoggerFactory.getLogger("org.jaudiotagger.tag.vorbiscomment.VorbisCommentReader");
 
-    public static final int FIELD_VENDOR_LENGTH_POS = 0;
-    public static final int FIELD_VENDOR_STRING_POS = 4;
+  // Logger Object
+  private static final Logger logger = LoggerFactory.getLogger(
+    "org.jaudiotagger.tag.vorbiscomment.VorbisCommentReader"
+  );
 
-    public static final int FIELD_VENDOR_LENGTH_LENGTH = 4;
-    public static final int FIELD_USER_COMMENT_LIST_LENGTH = 4;
-    public static final int FIELD_COMMENT_LENGTH_LENGTH = 4;
+  public static final int FIELD_VENDOR_LENGTH_POS = 0;
+  public static final int FIELD_VENDOR_STRING_POS = 4;
 
-    /**
-     * max comment length that jaudiotagger can handle, this isnt the maximum column length allowed but we dont
-     * dont allow comments larger than this because of problem with allocating memory  (10MB shoudl be fine for all apps)
-     */
-    private static final int JAUDIOTAGGER_MAX_COMMENT_LENGTH = 10000000;
+  public static final int FIELD_VENDOR_LENGTH_LENGTH = 4;
+  public static final int FIELD_USER_COMMENT_LIST_LENGTH = 4;
+  public static final int FIELD_COMMENT_LENGTH_LENGTH = 4;
 
-    public VorbisCommentReader() {
+  /**
+   * max comment length that jaudiotagger can handle, this isnt the maximum column length allowed but we dont
+   * dont allow comments larger than this because of problem with allocating memory  (10MB shoudl be fine for all apps)
+   */
+  private static final int JAUDIOTAGGER_MAX_COMMENT_LENGTH = 10000000;
 
+  public VorbisCommentReader() {}
+
+  /**
+   * @param rawdata
+   * @param isFramingBit
+   * @return logical representation of VorbisCommentTag
+   * @throws IOException
+   * @throws CannotReadException
+   */
+  public VorbisCommentTag read(byte[] rawdata, boolean isFramingBit)
+    throws IOException, CannotReadException {
+    VorbisCommentTag tag = new VorbisCommentTag();
+
+    byte[] b = new byte[FIELD_VENDOR_LENGTH_LENGTH];
+    System.arraycopy(
+      rawdata,
+      FIELD_VENDOR_LENGTH_POS,
+      b,
+      FIELD_VENDOR_LENGTH_POS,
+      FIELD_VENDOR_LENGTH_LENGTH
+    );
+    int pos = FIELD_VENDOR_LENGTH_LENGTH;
+    int vendorStringLength = Utils.getIntLE(b);
+
+    b = new byte[vendorStringLength];
+    System.arraycopy(rawdata, pos, b, 0, vendorStringLength);
+    pos += vendorStringLength;
+    tag.setVendor(new String(b, StandardCharsets.UTF_8));
+    logger.debug("Vendor is:" + tag.getVendor());
+
+    b = new byte[FIELD_USER_COMMENT_LIST_LENGTH];
+    System.arraycopy(rawdata, pos, b, 0, FIELD_USER_COMMENT_LIST_LENGTH);
+    pos += FIELD_USER_COMMENT_LIST_LENGTH;
+
+    int userComments = Utils.getIntLE(b);
+    logger.debug("Number of user comments:" + userComments);
+
+    for (int i = 0; i < userComments; i++) {
+      b = new byte[FIELD_COMMENT_LENGTH_LENGTH];
+      System.arraycopy(rawdata, pos, b, 0, FIELD_COMMENT_LENGTH_LENGTH);
+      pos += FIELD_COMMENT_LENGTH_LENGTH;
+
+      int commentLength = Utils.getIntLE(b);
+      logger.debug("Next Comment Length:" + commentLength);
+
+      if (commentLength > JAUDIOTAGGER_MAX_COMMENT_LENGTH) {
+        logger.warn(
+          ErrorMessage.VORBIS_COMMENT_LENGTH_TOO_LARGE.getMsg(commentLength)
+        );
+        break;
+      } else if (commentLength > rawdata.length) {
+        logger.warn(
+          ErrorMessage.VORBIS_COMMENT_LENGTH_LARGE_THAN_HEADER.getMsg(
+            commentLength,
+            rawdata.length
+          )
+        );
+        break;
+      } else {
+        b = new byte[commentLength];
+        System.arraycopy(rawdata, pos, b, 0, commentLength);
+        pos += commentLength;
+
+        VorbisCommentTagField fieldComment = new VorbisCommentTagField(b);
+        logger.debug("Adding:" + fieldComment.getId());
+        tag.addField(fieldComment);
+      }
     }
 
-    /**
-     * @param rawdata
-     * @param isFramingBit
-     * @return logical representation of VorbisCommentTag
-     * @throws IOException
-     * @throws CannotReadException
-     */
-    public VorbisCommentTag read(byte[] rawdata, boolean isFramingBit) throws IOException, CannotReadException {
-
-        VorbisCommentTag tag = new VorbisCommentTag();
-
-        byte[] b = new byte[FIELD_VENDOR_LENGTH_LENGTH];
-        System.arraycopy(rawdata, FIELD_VENDOR_LENGTH_POS, b, FIELD_VENDOR_LENGTH_POS, FIELD_VENDOR_LENGTH_LENGTH);
-        int pos = FIELD_VENDOR_LENGTH_LENGTH;
-        int vendorStringLength = Utils.getIntLE(b);
-
-        b = new byte[vendorStringLength];
-        System.arraycopy(rawdata, pos, b, 0, vendorStringLength);
-        pos += vendorStringLength;
-        tag.setVendor(new String(b, StandardCharsets.UTF_8));
-        logger.debug("Vendor is:" + tag.getVendor());
-
-        b = new byte[FIELD_USER_COMMENT_LIST_LENGTH];
-        System.arraycopy(rawdata, pos, b, 0, FIELD_USER_COMMENT_LIST_LENGTH);
-        pos += FIELD_USER_COMMENT_LIST_LENGTH;
-
-        int userComments = Utils.getIntLE(b);
-        logger.debug("Number of user comments:" + userComments);
-
-        for (int i = 0; i < userComments; i++) {
-            b = new byte[FIELD_COMMENT_LENGTH_LENGTH];
-            System.arraycopy(rawdata, pos, b, 0, FIELD_COMMENT_LENGTH_LENGTH);
-            pos += FIELD_COMMENT_LENGTH_LENGTH;
-
-            int commentLength = Utils.getIntLE(b);
-            logger.debug("Next Comment Length:" + commentLength);
-
-            if (commentLength > JAUDIOTAGGER_MAX_COMMENT_LENGTH) {
-                logger.warn(ErrorMessage.VORBIS_COMMENT_LENGTH_TOO_LARGE.getMsg(commentLength));
-                break;
-            } else if (commentLength > rawdata.length) {
-                logger.warn(ErrorMessage.VORBIS_COMMENT_LENGTH_LARGE_THAN_HEADER.getMsg(commentLength, rawdata.length));
-                break;
-            } else {
-                b = new byte[commentLength];
-                System.arraycopy(rawdata, pos, b, 0, commentLength);
-                pos += commentLength;
-
-                VorbisCommentTagField fieldComment = new VorbisCommentTagField(b);
-                logger.debug("Adding:" + fieldComment.getId());
-                tag.addField(fieldComment);
-            }
-        }
-
-        //Check framing bit, only exists when vorbisComment used within OggVorbis       
-        if (isFramingBit) {
-            if ((rawdata[pos] & 0x01) != 1) {
-                throw new CannotReadException(ErrorMessage.OGG_VORBIS_NO_FRAMING_BIT.getMsg((rawdata[pos] & 0x01)));
-            }
-        }
-        return tag;
+    //Check framing bit, only exists when vorbisComment used within OggVorbis
+    if (isFramingBit) {
+      if ((rawdata[pos] & 0x01) != 1) {
+        throw new CannotReadException(
+          ErrorMessage.OGG_VORBIS_NO_FRAMING_BIT.getMsg((rawdata[pos] & 0x01))
+        );
+      }
     }
+    return tag;
+  }
 }
-

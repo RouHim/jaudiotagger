@@ -7,7 +7,8 @@ import java.io.IOException;
  * you dont have permission to write to the folder that it is in.
  */
 public class UnableToCreateFileException extends IOException {
-    public UnableToCreateFileException(String message) {
-        super(message);
-    }
+
+  public UnableToCreateFileException(String message) {
+    super(message);
+  }
 }

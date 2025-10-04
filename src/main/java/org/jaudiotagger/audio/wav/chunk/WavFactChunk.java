@@ -18,12 +18,11 @@
  */
 package org.jaudiotagger.audio.wav.chunk;
 
+import java.nio.ByteBuffer;
 import org.jaudiotagger.audio.generic.GenericAudioHeader;
 import org.jaudiotagger.audio.generic.Utils;
 import org.jaudiotagger.audio.iff.Chunk;
 import org.jaudiotagger.audio.iff.ChunkHeader;
-
-import java.nio.ByteBuffer;
 
 /**
  * Reads the fact header, this contains the information required for constructing Audio header
@@ -31,24 +30,28 @@ import java.nio.ByteBuffer;
  * 0 - 3   uint   totalNoSamples (Per channel ?)
  */
 public class WavFactChunk extends Chunk {
-    private final boolean isValid = false;
 
-    private final GenericAudioHeader info;
+  private final boolean isValid = false;
 
-    public WavFactChunk(ByteBuffer chunkData, ChunkHeader hdr, GenericAudioHeader info) {
-        super(chunkData, hdr);
-        this.info = info;
-    }
+  private final GenericAudioHeader info;
 
-    public boolean readChunk() {
-        info.setNoOfSamples(Utils.u(chunkData.getInt()));
-        return true;
-    }
+  public WavFactChunk(
+    ByteBuffer chunkData,
+    ChunkHeader hdr,
+    GenericAudioHeader info
+  ) {
+    super(chunkData, hdr);
+    this.info = info;
+  }
 
+  public boolean readChunk() {
+    info.setNoOfSamples(Utils.u(chunkData.getInt()));
+    return true;
+  }
 
-    public String toString() {
-        String out = "Fact Chunk:\n";
-        out += "Is valid?: " + isValid;
-        return out;
-    }
+  public String toString() {
+    String out = "Fact Chunk:\n";
+    out += "Is valid?: " + isValid;
+    return out;
+  }
 }

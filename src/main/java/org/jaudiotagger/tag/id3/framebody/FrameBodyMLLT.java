@@ -66,32 +66,32 @@ import org.jaudiotagger.tag.id3.ID3v24Frames;
  * @author : Eric Farng
  * @version $Id$
  */
-public class FrameBodyMLLT extends AbstractID3v2FrameBody implements ID3v24FrameBody, ID3v23FrameBody {
-    /**
-     * Creates a new FrameBodyMLLT datatype.
-     */
-    public FrameBodyMLLT() {
-    }
+public class FrameBodyMLLT
+  extends AbstractID3v2FrameBody
+  implements ID3v24FrameBody, ID3v23FrameBody {
 
-    public FrameBodyMLLT(FrameBodyMLLT body) {
-        super(body);
-    }
+  /**
+   * Creates a new FrameBodyMLLT datatype.
+   */
+  public FrameBodyMLLT() {}
 
-    /**
-     * The ID3v2 frame identifier
-     *
-     * @return the ID3v2 frame identifier  for this frame type
-     */
-    public String getIdentifier() {
-        return ID3v24Frames.FRAME_ID_MPEG_LOCATION_LOOKUP_TABLE;
-    }
+  public FrameBodyMLLT(FrameBodyMLLT body) {
+    super(body);
+  }
 
+  /**
+   * The ID3v2 frame identifier
+   *
+   * @return the ID3v2 frame identifier  for this frame type
+   */
+  public String getIdentifier() {
+    return ID3v24Frames.FRAME_ID_MPEG_LOCATION_LOOKUP_TABLE;
+  }
 
-    /**
-     * TODO:proper mapping
-     */
-    protected void setupObjectList() {
-        objectList.add(new ByteArraySizeTerminated(DataTypes.OBJ_DATA, this));
-    }
-
+  /**
+   * TODO:proper mapping
+   */
+  protected void setupObjectList() {
+    objectList.add(new ByteArraySizeTerminated(DataTypes.OBJ_DATA, this));
+  }
 }

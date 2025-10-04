@@ -12,86 +12,92 @@ import java.nio.ByteBuffer;
  */
 public class CompositionOffsetsBox extends FullBox {
 
-    private Entry[] entries;
+  private Entry[] entries;
 
-    public static class Entry {
-        public int count;
-        public int offset;
+  public static class Entry {
 
-        public Entry(int count, int offset) {
-            this.count = count;
-            this.offset = offset;
-        }
+    public int count;
+    public int offset;
 
-        public int getCount() {
-            return count;
-        }
-
-        public int getOffset() {
-            return offset;
-        }
+    public Entry(int count, int offset) {
+      this.count = count;
+      this.offset = offset;
     }
 
-    public static class LongEntry {
-        public long count;
-        public long offset;
-
-        public LongEntry(long count, long offset) {
-            this.count = count;
-            this.offset = offset;
-        }
-
-        public long getCount() {
-            return count;
-        }
-
-        public long getOffset() {
-            return offset;
-        }
+    public int getCount() {
+      return count;
     }
 
-    public CompositionOffsetsBox(Header header) {
-        super(header);
+    public int getOffset() {
+      return offset;
+    }
+  }
+
+  public static class LongEntry {
+
+    public long count;
+    public long offset;
+
+    public LongEntry(long count, long offset) {
+      this.count = count;
+      this.offset = offset;
     }
 
-    public static String fourcc() {
-        return "ctts";
+    public long getCount() {
+      return count;
     }
 
-    public static CompositionOffsetsBox createCompositionOffsetsBox(Entry[] entries) {
-        CompositionOffsetsBox ctts = new CompositionOffsetsBox(new Header(fourcc()));
-        ctts.entries = entries;
-        return ctts;
+    public long getOffset() {
+      return offset;
     }
+  }
 
-    @Override
-    public void parse(ByteBuffer input) {
-        super.parse(input);
-        int num = input.getInt();
+  public CompositionOffsetsBox(Header header) {
+    super(header);
+  }
 
-        entries = new Entry[num];
-        for (int i = 0; i < num; i++) {
-            entries[i] = new Entry(input.getInt(), input.getInt());
-        }
+  public static String fourcc() {
+    return "ctts";
+  }
+
+  public static CompositionOffsetsBox createCompositionOffsetsBox(
+    Entry[] entries
+  ) {
+    CompositionOffsetsBox ctts = new CompositionOffsetsBox(
+      new Header(fourcc())
+    );
+    ctts.entries = entries;
+    return ctts;
+  }
+
+  @Override
+  public void parse(ByteBuffer input) {
+    super.parse(input);
+    int num = input.getInt();
+
+    entries = new Entry[num];
+    for (int i = 0; i < num; i++) {
+      entries[i] = new Entry(input.getInt(), input.getInt());
     }
+  }
 
-    @Override
-    protected void doWrite(ByteBuffer out) {
-        super.doWrite(out);
+  @Override
+  protected void doWrite(ByteBuffer out) {
+    super.doWrite(out);
 
-        out.putInt(entries.length);
-        for (int i = 0; i < entries.length; i++) {
-            out.putInt(entries[i].count);
-            out.putInt(entries[i].offset);
-        }
+    out.putInt(entries.length);
+    for (int i = 0; i < entries.length; i++) {
+      out.putInt(entries[i].count);
+      out.putInt(entries[i].offset);
     }
+  }
 
-    @Override
-    public int estimateSize() {
-        return 12 + 4 + entries.length * 8;
-    }
+  @Override
+  public int estimateSize() {
+    return 12 + 4 + entries.length * 8;
+  }
 
-    public Entry[] getEntries() {
-        return entries;
-    }
+  public Entry[] getEntries() {
+    return entries;
+  }
 }

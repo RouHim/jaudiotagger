@@ -15,6 +15,7 @@
  */
 package org.jaudiotagger.tag.id3.framebody;
 
+import java.nio.ByteBuffer;
 import org.jaudiotagger.tag.InvalidTagException;
 import org.jaudiotagger.tag.datatype.*;
 import org.jaudiotagger.tag.id3.ID3v24Frames;
@@ -22,8 +23,6 @@ import org.jaudiotagger.tag.id3.valuepair.EventTimingTimestampTypes;
 import org.jaudiotagger.tag.id3.valuepair.SynchronisedLyricsContentType;
 import org.jaudiotagger.tag.id3.valuepair.TextEncoding;
 import org.jaudiotagger.tag.reference.Languages;
-
-import java.nio.ByteBuffer;
 
 /**
  * Synchronised lyrics/text frame.
@@ -113,122 +112,156 @@ import java.nio.ByteBuffer;
  * @author : Eric Farng
  * @version $Id$
  */
-public class FrameBodySYLT extends AbstractID3v2FrameBody implements ID3v24FrameBody, ID3v23FrameBody {
-    /**
-     * Creates a new FrameBodySYLT datatype.
-     */
-    public FrameBodySYLT() {
+public class FrameBodySYLT
+  extends AbstractID3v2FrameBody
+  implements ID3v24FrameBody, ID3v23FrameBody {
 
-    }
+  /**
+   * Creates a new FrameBodySYLT datatype.
+   */
+  public FrameBodySYLT() {}
 
-    /**
-     * Copy Constructor
-     *
-     * @param body
-     */
-    public FrameBodySYLT(FrameBodySYLT body) {
-        super(body);
-    }
+  /**
+   * Copy Constructor
+   *
+   * @param body
+   */
+  public FrameBodySYLT(FrameBodySYLT body) {
+    super(body);
+  }
 
-    /**
-     * Creates a new FrameBodySYLT datatype.
-     *
-     * @param textEncoding
-     * @param language
-     * @param timeStampFormat
-     * @param contentType
-     * @param description
-     * @param lyrics
-     */
-    public FrameBodySYLT(int textEncoding, String language, int timeStampFormat, int contentType, String description, byte[] lyrics) {
-        setObjectValue(DataTypes.OBJ_TEXT_ENCODING, textEncoding);
-        setObjectValue(DataTypes.OBJ_LANGUAGE, language);
-        setObjectValue(DataTypes.OBJ_TIME_STAMP_FORMAT, timeStampFormat);
-        setObjectValue(DataTypes.OBJ_CONTENT_TYPE, contentType);
-        setObjectValue(DataTypes.OBJ_DESCRIPTION, description);
-        setObjectValue(DataTypes.OBJ_DATA, lyrics);
-    }
+  /**
+   * Creates a new FrameBodySYLT datatype.
+   *
+   * @param textEncoding
+   * @param language
+   * @param timeStampFormat
+   * @param contentType
+   * @param description
+   * @param lyrics
+   */
+  public FrameBodySYLT(
+    int textEncoding,
+    String language,
+    int timeStampFormat,
+    int contentType,
+    String description,
+    byte[] lyrics
+  ) {
+    setObjectValue(DataTypes.OBJ_TEXT_ENCODING, textEncoding);
+    setObjectValue(DataTypes.OBJ_LANGUAGE, language);
+    setObjectValue(DataTypes.OBJ_TIME_STAMP_FORMAT, timeStampFormat);
+    setObjectValue(DataTypes.OBJ_CONTENT_TYPE, contentType);
+    setObjectValue(DataTypes.OBJ_DESCRIPTION, description);
+    setObjectValue(DataTypes.OBJ_DATA, lyrics);
+  }
 
-    /**
-     * Creates a new FrameBodySYLT datatype.
-     *
-     * @param byteBuffer
-     * @param frameSize
-     * @throws InvalidTagException if unable to create framebody from buffer
-     */
-    public FrameBodySYLT(ByteBuffer byteBuffer, int frameSize) throws InvalidTagException {
-        super(byteBuffer, frameSize);
-    }
+  /**
+   * Creates a new FrameBodySYLT datatype.
+   *
+   * @param byteBuffer
+   * @param frameSize
+   * @throws InvalidTagException if unable to create framebody from buffer
+   */
+  public FrameBodySYLT(ByteBuffer byteBuffer, int frameSize)
+    throws InvalidTagException {
+    super(byteBuffer, frameSize);
+  }
 
-    /**
-     * @return language code
-     */
-    public String getLanguage() {
-        return (String) getObjectValue(DataTypes.OBJ_LANGUAGE);
-    }
+  /**
+   * @return language code
+   */
+  public String getLanguage() {
+    return (String) getObjectValue(DataTypes.OBJ_LANGUAGE);
+  }
 
-    /**
-     * @return timestamp format key
-     */
-    public int getTimeStampFormat() {
-        return ((Number) getObjectValue(DataTypes.OBJ_TIME_STAMP_FORMAT)).intValue();
-    }
+  /**
+   * @return timestamp format key
+   */
+  public int getTimeStampFormat() {
+    return (
+      (Number) getObjectValue(DataTypes.OBJ_TIME_STAMP_FORMAT)
+    ).intValue();
+  }
 
-    /**
-     * @return content type key
-     */
-    public int getContentType() {
-        return ((Number) getObjectValue(DataTypes.OBJ_CONTENT_TYPE)).intValue();
-    }
+  /**
+   * @return content type key
+   */
+  public int getContentType() {
+    return ((Number) getObjectValue(DataTypes.OBJ_CONTENT_TYPE)).intValue();
+  }
 
-    /**
-     * @return description
-     */
-    public String getDescription() {
-        return (String) getObjectValue(DataTypes.OBJ_DESCRIPTION);
-    }
+  /**
+   * @return description
+   */
+  public String getDescription() {
+    return (String) getObjectValue(DataTypes.OBJ_DESCRIPTION);
+  }
 
-    /**
-     * @return frame identifier
-     */
-    public String getIdentifier() {
-        return ID3v24Frames.FRAME_ID_SYNC_LYRIC;
-    }
+  /**
+   * @return frame identifier
+   */
+  public String getIdentifier() {
+    return ID3v24Frames.FRAME_ID_SYNC_LYRIC;
+  }
 
+  /**
+   * Set lyrics
+   * <p>
+   * TODO:provide a more user friendly way of adding lyrics
+   *
+   * @param data
+   */
+  public void setLyrics(byte[] data) {
+    this.setObjectValue(DataTypes.OBJ_DATA, data);
+  }
 
-    /**
-     * Set lyrics
-     * <p>
-     * TODO:provide a more user friendly way of adding lyrics
-     *
-     * @param data
-     */
-    public void setLyrics(byte[] data) {
-        this.setObjectValue(DataTypes.OBJ_DATA, data);
-    }
+  /**
+   * Get lyrics
+   * <p>
+   * TODO:better format
+   *
+   * @return lyrics
+   */
+  public byte[] getLyrics() {
+    return (byte[]) this.getObjectValue(DataTypes.OBJ_DATA);
+  }
 
-    /**
-     * Get lyrics
-     * <p>
-     * TODO:better format
-     *
-     * @return lyrics
-     */
-    public byte[] getLyrics() {
-        return (byte[]) this.getObjectValue(DataTypes.OBJ_DATA);
-    }
+  /**
+   * Setup Object List
+   */
+  protected void setupObjectList() {
+    objectList.add(
+      new NumberHashMap(
+        DataTypes.OBJ_TEXT_ENCODING,
+        this,
+        TextEncoding.TEXT_ENCODING_FIELD_SIZE
+      )
+    );
+    objectList.add(
+      new StringHashMap(
+        DataTypes.OBJ_LANGUAGE,
+        this,
+        Languages.LANGUAGE_FIELD_SIZE
+      )
+    );
+    objectList.add(
+      new NumberHashMap(
+        DataTypes.OBJ_TIME_STAMP_FORMAT,
+        this,
+        EventTimingTimestampTypes.TIMESTAMP_KEY_FIELD_SIZE
+      )
+    );
+    objectList.add(
+      new NumberHashMap(
+        DataTypes.OBJ_CONTENT_TYPE,
+        this,
+        SynchronisedLyricsContentType.CONTENT_KEY_FIELD_SIZE
+      )
+    );
+    objectList.add(new StringNullTerminated(DataTypes.OBJ_DESCRIPTION, this));
 
-    /**
-     * Setup Object List
-     */
-    protected void setupObjectList() {
-        objectList.add(new NumberHashMap(DataTypes.OBJ_TEXT_ENCODING, this, TextEncoding.TEXT_ENCODING_FIELD_SIZE));
-        objectList.add(new StringHashMap(DataTypes.OBJ_LANGUAGE, this, Languages.LANGUAGE_FIELD_SIZE));
-        objectList.add(new NumberHashMap(DataTypes.OBJ_TIME_STAMP_FORMAT, this, EventTimingTimestampTypes.TIMESTAMP_KEY_FIELD_SIZE));
-        objectList.add(new NumberHashMap(DataTypes.OBJ_CONTENT_TYPE, this, SynchronisedLyricsContentType.CONTENT_KEY_FIELD_SIZE));
-        objectList.add(new StringNullTerminated(DataTypes.OBJ_DESCRIPTION, this));
-
-        //TODO:This hold the actual lyrics
-        objectList.add(new ByteArraySizeTerminated(DataTypes.OBJ_DATA, this));
-    }
+    //TODO:This hold the actual lyrics
+    objectList.add(new ByteArraySizeTerminated(DataTypes.OBJ_DATA, this));
+  }
 }

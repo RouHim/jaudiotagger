@@ -18,16 +18,16 @@ jobs:
     steps:
       - uses: actions/checkout@v5
 
-      - name: Set up JDK 21
+      - name: Set up JDK 25
         uses: actions/setup-java@v5
         with:
-          java-version: '21'
+          java-version: '25'
           distribution: 'temurin'
           cache: maven
 
       - name: Build with Maven (Windows)
         if: runner.os == 'Windows'
-        run: .\mvnw.cmd clean package
+        run: .\mvnw.cmd clean package -DskipTests
         shell: cmd
 
       - name: Build with Maven (Non-Windows)

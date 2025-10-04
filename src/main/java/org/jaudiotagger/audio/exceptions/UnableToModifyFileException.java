@@ -7,7 +7,8 @@ import java.io.IOException;
  * you dont have permission to modify files in the folder that it is in.
  */
 public class UnableToModifyFileException extends IOException {
-    public UnableToModifyFileException(String message) {
-        super(message);
-    }
+
+  public UnableToModifyFileException(String message) {
+    super(message);
+  }
 }

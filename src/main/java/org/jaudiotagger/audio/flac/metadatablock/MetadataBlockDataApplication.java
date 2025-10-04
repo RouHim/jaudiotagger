@@ -22,7 +22,6 @@ import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.nio.channels.FileChannel;
 
-
 /**
  * Application Block
  *
@@ -31,20 +30,23 @@ import java.nio.channels.FileChannel;
  * by the registered application.
  */
 public class MetadataBlockDataApplication implements MetadataBlockData {
-    private final ByteBuffer data;
 
-    public MetadataBlockDataApplication(MetadataBlockHeader header, FileChannel fc) throws IOException {
-        data = ByteBuffer.allocate(header.getDataLength());
-        fc.read(data);
-        data.flip();
-    }
+  private final ByteBuffer data;
 
-    public ByteBuffer getBytes() {
-        return data;
-    }
+  public MetadataBlockDataApplication(
+    MetadataBlockHeader header,
+    FileChannel fc
+  ) throws IOException {
+    data = ByteBuffer.allocate(header.getDataLength());
+    fc.read(data);
+    data.flip();
+  }
 
+  public ByteBuffer getBytes() {
+    return data;
+  }
 
-    public int getLength() {
-        return data.limit();
-    }
+  public int getLength() {
+    return data.limit();
+  }
 }

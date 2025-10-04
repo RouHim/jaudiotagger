@@ -11,23 +11,24 @@ import java.nio.ByteBuffer;
  * @author The JCodec project
  */
 public class UdtaMetaBox extends MetaBox {
-    public UdtaMetaBox(Header atom) {
-        super(atom);
-    }
 
-    public static UdtaMetaBox createUdtaMetaBox() {
-        return new UdtaMetaBox(Header.createHeader(fourcc(), 0));
-    }
+  public UdtaMetaBox(Header atom) {
+    super(atom);
+  }
 
-    @Override
-    public void parse(ByteBuffer input) {
-        input.getInt();
-        super.parse(input);
-    }
+  public static UdtaMetaBox createUdtaMetaBox() {
+    return new UdtaMetaBox(Header.createHeader(fourcc(), 0));
+  }
 
-    @Override
-    protected void doWrite(ByteBuffer out) {
-        out.putInt(0);
-        super.doWrite(out);
-    }
+  @Override
+  public void parse(ByteBuffer input) {
+    input.getInt();
+    super.parse(input);
+  }
+
+  @Override
+  protected void doWrite(ByteBuffer out) {
+    out.putInt(0);
+    super.doWrite(out);
+  }
 }

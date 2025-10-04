@@ -26,10 +26,9 @@
  */
 package org.jaudiotagger.tag.datatype;
 
-import org.jaudiotagger.tag.id3.AbstractTagFrameBody;
-
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
+import org.jaudiotagger.tag.id3.AbstractTagFrameBody;
 
 /**
  * Represents a String which is not delimited by null character with fixed text encoding.
@@ -40,25 +39,28 @@ import java.nio.charset.StandardCharsets;
  */
 public class StringSizeTerminated extends TextEncodedStringSizeTerminated {
 
-    /**
-     * Creates a new ObjectStringSizeTerminated datatype.
-     *
-     * @param identifier identifies the frame type
-     * @param frameBody
-     */
-    public StringSizeTerminated(String identifier, AbstractTagFrameBody frameBody) {
-        super(identifier, frameBody);
-    }
+  /**
+   * Creates a new ObjectStringSizeTerminated datatype.
+   *
+   * @param identifier identifies the frame type
+   * @param frameBody
+   */
+  public StringSizeTerminated(
+    String identifier,
+    AbstractTagFrameBody frameBody
+  ) {
+    super(identifier, frameBody);
+  }
 
-    public StringSizeTerminated(StringSizeTerminated object) {
-        super(object);
-    }
+  public StringSizeTerminated(StringSizeTerminated object) {
+    super(object);
+  }
 
-    public boolean equals(Object obj) {
-        return obj instanceof StringSizeTerminated && super.equals(obj);
-    }
+  public boolean equals(Object obj) {
+    return obj instanceof StringSizeTerminated && super.equals(obj);
+  }
 
-    protected Charset getTextEncodingCharSet() {
-        return StandardCharsets.ISO_8859_1;
-    }
+  protected Charset getTextEncodingCharSet() {
+    return StandardCharsets.ISO_8859_1;
+  }
 }

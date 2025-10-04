@@ -23,12 +23,11 @@
  */
 package org.jaudiotagger.tag.id3.framebody;
 
+import java.nio.ByteBuffer;
 import org.jaudiotagger.tag.InvalidFrameException;
 import org.jaudiotagger.tag.InvalidTagException;
 import org.jaudiotagger.tag.datatype.ByteArraySizeTerminated;
 import org.jaudiotagger.tag.datatype.DataTypes;
-
-import java.nio.ByteBuffer;
 
 /**
  * Represents a framebody for a frame identifier jaudiotagger has not implemented a framebody for.
@@ -38,110 +37,111 @@ import java.nio.ByteBuffer;
  * ID3v2ExtensionFrameBody Interface which should be implemented by frame bodies that are non standard such as
  * iTunes compilation frame (TCMP) but are commonly used.
  */
-public class FrameBodyUnsupported extends AbstractID3v2FrameBody implements ID3v24FrameBody, ID3v23FrameBody, ID3v22FrameBody {
-    /**
-     * Because used by any unknown frame identifier varies
-     */
-    private String identifier = "";
+public class FrameBodyUnsupported
+  extends AbstractID3v2FrameBody
+  implements ID3v24FrameBody, ID3v23FrameBody, ID3v22FrameBody {
 
-    /**
-     * @deprecated because no identifier set
-     */
-    public FrameBodyUnsupported() {
+  /**
+   * Because used by any unknown frame identifier varies
+   */
+  private String identifier = "";
 
+  /**
+   * @deprecated because no identifier set
+   */
+  @Deprecated
+  public FrameBodyUnsupported() {}
+
+  /**
+   * Creates a new FrameBodyUnsupported
+   *
+   * @param identifier
+   */
+  public FrameBodyUnsupported(String identifier) {
+    this.identifier = identifier;
+  }
+
+  /**
+   * Create a new FrameBodyUnsupported
+   *
+   * @param identifier
+   * @param value
+   */
+  public FrameBodyUnsupported(String identifier, byte[] value) {
+    this.identifier = identifier;
+    setObjectValue(DataTypes.OBJ_DATA, value);
+  }
+
+  /**
+   * Creates a new FrameBodyUnsupported datatype.
+   *
+   * @param value
+   * @deprecated because no identifier set
+   */
+  @Deprecated
+  public FrameBodyUnsupported(byte[] value) {
+    setObjectValue(DataTypes.OBJ_DATA, value);
+  }
+
+  /**
+   * Copy constructor
+   *
+   * @param copyObject a copy is made of this
+   */
+  public FrameBodyUnsupported(FrameBodyUnsupported copyObject) {
+    super(copyObject);
+    this.identifier = copyObject.identifier;
+  }
+
+  /**
+   * Creates a new FrameBodyUnsupported datatype.
+   *
+   * @param byteBuffer
+   * @param frameSize
+   * @throws InvalidFrameException                    if unable to create framebody from buffer
+   * @throws org.jaudiotagger.tag.InvalidTagException
+   */
+  public FrameBodyUnsupported(ByteBuffer byteBuffer, int frameSize)
+    throws InvalidTagException {
+    super(byteBuffer, frameSize);
+  }
+
+  /**
+   * Return the frame identifier
+   *
+   * @return the identifier
+   */
+  public String getIdentifier() {
+    return identifier;
+  }
+
+  /**
+   * @param obj
+   * @return whether obj is equivalent to this object
+   */
+  public boolean equals(Object obj) {
+    if (!(obj instanceof FrameBodyUnsupported object)) {
+      return false;
     }
 
-    /**
-     * Creates a new FrameBodyUnsupported
-     *
-     * @param identifier
-     */
-    public FrameBodyUnsupported(String identifier) {
-        this.identifier = identifier;
-    }
+    return this.identifier.equals(object.identifier) && super.equals(obj);
+  }
 
-    /**
-     * Create a new FrameBodyUnsupported
-     *
-     * @param identifier
-     * @param value
-     */
-    public FrameBodyUnsupported(String identifier, byte[] value) {
-        this.identifier = identifier;
-        setObjectValue(DataTypes.OBJ_DATA, value);
-    }
+  /**
+   * Because the contents of this frame are an array of bytes and could be large we just
+   * return the identifier.
+   *
+   * @return a string representation of this frame
+   */
+  public String toString() {
+    return getIdentifier();
+  }
 
-    /**
-     * Creates a new FrameBodyUnsupported datatype.
-     *
-     * @param value
-     * @deprecated because no identifier set
-     */
-    public FrameBodyUnsupported(byte[] value) {
-        setObjectValue(DataTypes.OBJ_DATA, value);
-    }
-
-    /**
-     * Copy constructor
-     *
-     * @param copyObject a copy is made of this
-     */
-    public FrameBodyUnsupported(FrameBodyUnsupported copyObject) {
-        super(copyObject);
-        this.identifier = copyObject.identifier;
-
-    }
-
-    /**
-     * Creates a new FrameBodyUnsupported datatype.
-     *
-     * @param byteBuffer
-     * @param frameSize
-     * @throws InvalidFrameException                    if unable to create framebody from buffer
-     * @throws org.jaudiotagger.tag.InvalidTagException
-     */
-    public FrameBodyUnsupported(ByteBuffer byteBuffer, int frameSize) throws InvalidTagException {
-        super(byteBuffer, frameSize);
-    }
-
-    /**
-     * Return the frame identifier
-     *
-     * @return the identifier
-     */
-    public String getIdentifier() {
-        return identifier;
-    }
-
-    /**
-     * @param obj
-     * @return whether obj is equivalent to this object
-     */
-    public boolean equals(Object obj) {
-        if (!(obj instanceof FrameBodyUnsupported object)) {
-            return false;
-        }
-
-        return this.identifier.equals(object.identifier) && super.equals(obj);
-    }
-
-
-    /**
-     * Because the contents of this frame are an array of bytes and could be large we just
-     * return the identifier.
-     *
-     * @return a string representation of this frame
-     */
-    public String toString() {
-        return getIdentifier();
-    }
-
-    /**
-     * Setup the Object List. A byte Array which will be read upto frame size
-     * bytes.
-     */
-    protected void setupObjectList() {
-        objectList.add(new ByteArraySizeTerminated(DataTypes.OBJ_DATA, this));
-    }
-
+  /**
+   * Setup the Object List. A byte Array which will be read upto frame size
+   * bytes.
+   */
+  protected void setupObjectList() {
+    objectList.add(new ByteArraySizeTerminated(DataTypes.OBJ_DATA, this));
+  }
 }

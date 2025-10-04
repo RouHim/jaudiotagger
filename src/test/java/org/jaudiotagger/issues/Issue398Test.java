@@ -1,5 +1,7 @@
 package org.jaudiotagger.issues;
 
+import static org.junit.jupiter.api.Assertions.*;
+
 import org.jaudiotagger.AbstractTestCase;
 import org.jaudiotagger.tag.FieldKey;
 import org.jaudiotagger.tag.Tag;
@@ -13,304 +15,321 @@ import org.jaudiotagger.tag.vorbiscomment.VorbisCommentFieldKey;
 import org.jaudiotagger.tag.vorbiscomment.VorbisCommentTag;
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.*;
-
 public class Issue398Test extends AbstractTestCase {
-    @Test
-    public void testID3v24() {
-        Exception caught = null;
-        try {
-            Tag tag = new ID3v24Tag();
-            assertFalse(tag.hasField(FieldKey.ARTIST));
-            assertFalse(tag.hasField("TPE1"));
-            assertFalse(((ID3v24Tag) tag).hasFrame("TPE1"));
-            tag.setField(FieldKey.ARTIST, "fred");
-            assertTrue(tag.hasField(FieldKey.ARTIST));
-            assertTrue(tag.hasField("TPE1"));
-            assertTrue(((ID3v24Tag) tag).hasFrame("TPE1"));
 
-            assertFalse(tag.hasField(FieldKey.TRACK));
-            assertFalse(tag.hasField(FieldKey.TRACK_TOTAL));
-            assertEquals("", tag.getFirst(FieldKey.TRACK));
-            assertEquals("", tag.getFirst(FieldKey.TRACK_TOTAL));
-            assertNull(tag.getFirstField(FieldKey.TRACK));
-            assertNull(tag.getFirstField(FieldKey.TRACK_TOTAL));
-            assertEquals(0, tag.getAll(FieldKey.TRACK).size());
-            assertEquals(0, tag.getAll(FieldKey.TRACK_TOTAL).size());
-            tag.setField(FieldKey.TRACK, "1");
-            tag.setField(FieldKey.TRACK, "1");
-            assertNotNull(tag.getFirstField(FieldKey.TRACK));
-            assertNull(tag.getFirstField(FieldKey.TRACK_TOTAL));
-            assertTrue(tag.hasField(FieldKey.TRACK));
-            assertFalse(tag.hasField(FieldKey.TRACK_TOTAL));
-            assertEquals(1, tag.getAll(FieldKey.TRACK).size());
-            assertEquals(0, tag.getAll(FieldKey.TRACK_TOTAL).size());
-            tag.setField(FieldKey.TRACK, "1");
-        } catch (Exception e) {
-            caught = e;
-            e.printStackTrace();
-        }
-        assertNull(caught);
+  @Test
+  public void testID3v24() {
+    Exception caught = null;
+    try {
+      Tag tag = new ID3v24Tag();
+      assertFalse(tag.hasField(FieldKey.ARTIST));
+      assertFalse(tag.hasField("TPE1"));
+      assertFalse(((ID3v24Tag) tag).hasFrame("TPE1"));
+      tag.setField(FieldKey.ARTIST, "fred");
+      assertTrue(tag.hasField(FieldKey.ARTIST));
+      assertTrue(tag.hasField("TPE1"));
+      assertTrue(((ID3v24Tag) tag).hasFrame("TPE1"));
+
+      assertFalse(tag.hasField(FieldKey.TRACK));
+      assertFalse(tag.hasField(FieldKey.TRACK_TOTAL));
+      assertEquals("", tag.getFirst(FieldKey.TRACK));
+      assertEquals("", tag.getFirst(FieldKey.TRACK_TOTAL));
+      assertNull(tag.getFirstField(FieldKey.TRACK));
+      assertNull(tag.getFirstField(FieldKey.TRACK_TOTAL));
+      assertEquals(0, tag.getAll(FieldKey.TRACK).size());
+      assertEquals(0, tag.getAll(FieldKey.TRACK_TOTAL).size());
+      tag.setField(FieldKey.TRACK, "1");
+      tag.setField(FieldKey.TRACK, "1");
+      assertNotNull(tag.getFirstField(FieldKey.TRACK));
+      assertNull(tag.getFirstField(FieldKey.TRACK_TOTAL));
+      assertTrue(tag.hasField(FieldKey.TRACK));
+      assertFalse(tag.hasField(FieldKey.TRACK_TOTAL));
+      assertEquals(1, tag.getAll(FieldKey.TRACK).size());
+      assertEquals(0, tag.getAll(FieldKey.TRACK_TOTAL).size());
+      tag.setField(FieldKey.TRACK, "1");
+    } catch (Exception e) {
+      caught = e;
+      e.printStackTrace();
     }
+    assertNull(caught);
+  }
 
-    @Test
-    public void testID3v23() {
-        Exception caught = null;
-        try {
-            Tag tag = new ID3v23Tag();
-            assertFalse(tag.hasField(FieldKey.ARTIST));
-            assertFalse(tag.hasField("TPE1"));
-            assertFalse(((AbstractID3v2Tag) tag).hasFrame("TPE1"));
-            tag.setField(FieldKey.ARTIST, "fred");
-            assertTrue(tag.hasField(FieldKey.ARTIST));
-            assertTrue(tag.hasField("TPE1"));
-            assertTrue(((ID3v23Tag) tag).hasFrame("TPE1"));
+  @Test
+  public void testID3v23() {
+    Exception caught = null;
+    try {
+      Tag tag = new ID3v23Tag();
+      assertFalse(tag.hasField(FieldKey.ARTIST));
+      assertFalse(tag.hasField("TPE1"));
+      assertFalse(((AbstractID3v2Tag) tag).hasFrame("TPE1"));
+      tag.setField(FieldKey.ARTIST, "fred");
+      assertTrue(tag.hasField(FieldKey.ARTIST));
+      assertTrue(tag.hasField("TPE1"));
+      assertTrue(((ID3v23Tag) tag).hasFrame("TPE1"));
 
-            assertFalse(tag.hasField(FieldKey.TRACK));
-            assertFalse(tag.hasField(FieldKey.TRACK_TOTAL));
-            assertEquals("", tag.getFirst(FieldKey.TRACK));
-            assertEquals("", tag.getFirst(FieldKey.TRACK_TOTAL));
-            assertNull(tag.getFirstField(FieldKey.TRACK));
-            assertNull(tag.getFirstField(FieldKey.TRACK_TOTAL));
-            tag.setField(FieldKey.TRACK, "1");
-            assertNotNull(tag.getFirstField(FieldKey.TRACK));
-            assertNull(tag.getFirstField(FieldKey.TRACK_TOTAL));
-            assertTrue(tag.hasField(FieldKey.TRACK));
-            assertFalse(tag.hasField(FieldKey.TRACK_TOTAL));
-        } catch (Exception e) {
-            caught = e;
-            e.printStackTrace();
-        }
-        assertNull(caught);
+      assertFalse(tag.hasField(FieldKey.TRACK));
+      assertFalse(tag.hasField(FieldKey.TRACK_TOTAL));
+      assertEquals("", tag.getFirst(FieldKey.TRACK));
+      assertEquals("", tag.getFirst(FieldKey.TRACK_TOTAL));
+      assertNull(tag.getFirstField(FieldKey.TRACK));
+      assertNull(tag.getFirstField(FieldKey.TRACK_TOTAL));
+      tag.setField(FieldKey.TRACK, "1");
+      assertNotNull(tag.getFirstField(FieldKey.TRACK));
+      assertNull(tag.getFirstField(FieldKey.TRACK_TOTAL));
+      assertTrue(tag.hasField(FieldKey.TRACK));
+      assertFalse(tag.hasField(FieldKey.TRACK_TOTAL));
+    } catch (Exception e) {
+      caught = e;
+      e.printStackTrace();
     }
+    assertNull(caught);
+  }
 
-    @Test
-    public void testID3v22() {
-        Exception caught = null;
-        try {
-            Tag tag = new ID3v22Tag();
-            assertFalse(tag.hasField(FieldKey.ARTIST));
-            assertFalse(tag.hasField("TP1"));
-            assertFalse(((ID3v22Tag) tag).hasFrame("TP1"));
-            tag.setField(FieldKey.ARTIST, "fred");
-            assertTrue(tag.hasField(FieldKey.ARTIST));
-            assertTrue(tag.hasField("TP1"));
-            assertTrue(((ID3v22Tag) tag).hasFrame("TP1"));
+  @Test
+  public void testID3v22() {
+    Exception caught = null;
+    try {
+      Tag tag = new ID3v22Tag();
+      assertFalse(tag.hasField(FieldKey.ARTIST));
+      assertFalse(tag.hasField("TP1"));
+      assertFalse(((ID3v22Tag) tag).hasFrame("TP1"));
+      tag.setField(FieldKey.ARTIST, "fred");
+      assertTrue(tag.hasField(FieldKey.ARTIST));
+      assertTrue(tag.hasField("TP1"));
+      assertTrue(((ID3v22Tag) tag).hasFrame("TP1"));
 
-            assertFalse(tag.hasField(FieldKey.TRACK));
-            assertFalse(tag.hasField(FieldKey.TRACK_TOTAL));
-            assertEquals("", tag.getFirst(FieldKey.TRACK));
-            assertEquals("", tag.getFirst(FieldKey.TRACK_TOTAL));
-            assertNull(tag.getFirstField(FieldKey.TRACK));
-            assertNull(tag.getFirstField(FieldKey.TRACK_TOTAL));
-            tag.setField(FieldKey.TRACK, "1");
-            assertNotNull(tag.getFirstField(FieldKey.TRACK));
-            assertNull(tag.getFirstField(FieldKey.TRACK_TOTAL));
-            assertTrue(tag.hasField(FieldKey.TRACK));
-            assertFalse(tag.hasField(FieldKey.TRACK_TOTAL));
-        } catch (Exception e) {
-            caught = e;
-            e.printStackTrace();
-        }
-        assertNull(caught);
+      assertFalse(tag.hasField(FieldKey.TRACK));
+      assertFalse(tag.hasField(FieldKey.TRACK_TOTAL));
+      assertEquals("", tag.getFirst(FieldKey.TRACK));
+      assertEquals("", tag.getFirst(FieldKey.TRACK_TOTAL));
+      assertNull(tag.getFirstField(FieldKey.TRACK));
+      assertNull(tag.getFirstField(FieldKey.TRACK_TOTAL));
+      tag.setField(FieldKey.TRACK, "1");
+      assertNotNull(tag.getFirstField(FieldKey.TRACK));
+      assertNull(tag.getFirstField(FieldKey.TRACK_TOTAL));
+      assertTrue(tag.hasField(FieldKey.TRACK));
+      assertFalse(tag.hasField(FieldKey.TRACK_TOTAL));
+    } catch (Exception e) {
+      caught = e;
+      e.printStackTrace();
     }
+    assertNull(caught);
+  }
 
-
-    @Test
-    public void testID3v1() {
-        Exception caught = null;
-        try {
-            Tag tag = new ID3v1Tag();
-            assertFalse(tag.hasField(FieldKey.ARTIST));
-            assertFalse(tag.hasField("aRTIST"));
-            tag.setField(FieldKey.ARTIST, "fred");
-            assertTrue(tag.hasField(FieldKey.ARTIST));
-            assertTrue(tag.hasField("ARTIST"));
-            assertTrue(tag.hasField("artist"));
-        } catch (Exception e) {
-            caught = e;
-            e.printStackTrace();
-        }
-        assertNull(caught);
+  @Test
+  public void testID3v1() {
+    Exception caught = null;
+    try {
+      Tag tag = new ID3v1Tag();
+      assertFalse(tag.hasField(FieldKey.ARTIST));
+      assertFalse(tag.hasField("aRTIST"));
+      tag.setField(FieldKey.ARTIST, "fred");
+      assertTrue(tag.hasField(FieldKey.ARTIST));
+      assertTrue(tag.hasField("ARTIST"));
+      assertTrue(tag.hasField("artist"));
+    } catch (Exception e) {
+      caught = e;
+      e.printStackTrace();
     }
+    assertNull(caught);
+  }
 
-    @Test
-    public void testMp4() {
-        Exception caught = null;
-        try {
-            Tag tag = new Mp4Tag();
-            assertFalse(tag.hasField(FieldKey.ARTIST));
-            assertFalse(tag.hasField("aRTIST"));
-            assertFalse(((Mp4Tag) tag).hasField(Mp4FieldKey.ARTIST));
-            tag.setField(FieldKey.ARTIST, "fred");
-            assertTrue(tag.hasField(FieldKey.ARTIST));
-            assertTrue(((Mp4Tag) tag).hasField(Mp4FieldKey.ARTIST));
-            assertTrue(tag.hasField("©ART"));
+  @Test
+  public void testMp4() {
+    Exception caught = null;
+    try {
+      Tag tag = new Mp4Tag();
+      assertFalse(tag.hasField(FieldKey.ARTIST));
+      assertFalse(tag.hasField("aRTIST"));
+      assertFalse(((Mp4Tag) tag).hasField(Mp4FieldKey.ARTIST));
+      tag.setField(FieldKey.ARTIST, "fred");
+      assertTrue(tag.hasField(FieldKey.ARTIST));
+      assertTrue(((Mp4Tag) tag).hasField(Mp4FieldKey.ARTIST));
+      assertTrue(tag.hasField("©ART"));
 
-            assertFalse(tag.hasField(FieldKey.TRACK));
-            assertFalse(tag.hasField(FieldKey.TRACK_TOTAL));
-            assertEquals("", tag.getFirst(FieldKey.TRACK));
-            assertEquals("", tag.getFirst(FieldKey.TRACK_TOTAL));
-            assertNull(tag.getFirstField(FieldKey.TRACK));
-            assertNull(tag.getFirstField(FieldKey.TRACK_TOTAL));
-            assertEquals(0, tag.getAll(FieldKey.TRACK).size());
-            assertEquals(0, tag.getAll(FieldKey.TRACK_TOTAL).size());
-            tag.setField(FieldKey.TRACK, "1");
-            assertNotNull(tag.getFirstField(FieldKey.TRACK));
-            assertTrue(tag.hasField(FieldKey.TRACK));
-            assertFalse(tag.hasField(FieldKey.TRACK_TOTAL));
-            assertEquals("1", tag.getFirst(FieldKey.TRACK));
-            assertEquals("", tag.getFirst(FieldKey.TRACK_TOTAL));
-            assertNull(tag.getFirstField(FieldKey.TRACK_TOTAL));
-            assertEquals(1, tag.getAll(FieldKey.TRACK).size());
-            assertEquals(0, tag.getAll(FieldKey.TRACK_TOTAL).size());
+      assertFalse(tag.hasField(FieldKey.TRACK));
+      assertFalse(tag.hasField(FieldKey.TRACK_TOTAL));
+      assertEquals("", tag.getFirst(FieldKey.TRACK));
+      assertEquals("", tag.getFirst(FieldKey.TRACK_TOTAL));
+      assertNull(tag.getFirstField(FieldKey.TRACK));
+      assertNull(tag.getFirstField(FieldKey.TRACK_TOTAL));
+      assertEquals(0, tag.getAll(FieldKey.TRACK).size());
+      assertEquals(0, tag.getAll(FieldKey.TRACK_TOTAL).size());
+      tag.setField(FieldKey.TRACK, "1");
+      assertNotNull(tag.getFirstField(FieldKey.TRACK));
+      assertTrue(tag.hasField(FieldKey.TRACK));
+      assertFalse(tag.hasField(FieldKey.TRACK_TOTAL));
+      assertEquals("1", tag.getFirst(FieldKey.TRACK));
+      assertEquals("", tag.getFirst(FieldKey.TRACK_TOTAL));
+      assertNull(tag.getFirstField(FieldKey.TRACK_TOTAL));
+      assertEquals(1, tag.getAll(FieldKey.TRACK).size());
+      assertEquals(0, tag.getAll(FieldKey.TRACK_TOTAL).size());
 
-            tag.setField(FieldKey.URL_DISCOGS_ARTIST_SITE, "fred");
-            assertTrue(tag.hasField(FieldKey.URL_DISCOGS_ARTIST_SITE));
-            assertFalse(tag.hasField(FieldKey.URL_DISCOGS_RELEASE_SITE));
-
-
-        } catch (Exception e) {
-            caught = e;
-            e.printStackTrace();
-        }
-        assertNull(caught);
+      tag.setField(FieldKey.URL_DISCOGS_ARTIST_SITE, "fred");
+      assertTrue(tag.hasField(FieldKey.URL_DISCOGS_ARTIST_SITE));
+      assertFalse(tag.hasField(FieldKey.URL_DISCOGS_RELEASE_SITE));
+    } catch (Exception e) {
+      caught = e;
+      e.printStackTrace();
     }
+    assertNull(caught);
+  }
 
-    /**
-     * Mp4 should only allow one track field
-     */
-    @Test
-    public void testMp4getValue() {
-        Exception caught = null;
-        try {
-            Tag tag = new Mp4Tag();
+  /**
+   * Mp4 should only allow one track field
+   */
+  @Test
+  public void testMp4getValue() {
+    Exception caught = null;
+    try {
+      Tag tag = new Mp4Tag();
 
-            assertFalse(tag.hasField(FieldKey.TRACK));
-            tag.setField(FieldKey.TRACK, "1");
-            tag.setField(FieldKey.TRACK_TOTAL, "15");
-            tag.addField(FieldKey.TRACK, "2");
-            tag.addField(FieldKey.TRACK_TOTAL, "10");
-            tag.addField(FieldKey.TRACK, "3");
-            assertEquals("3", tag.getFirst(FieldKey.TRACK));
-            assertNotNull(tag.getFirstField(FieldKey.TRACK));
-            assertEquals(1, tag.getAll(FieldKey.TRACK).size());
-        } catch (Exception e) {
-            caught = e;
-            e.printStackTrace();
-        }
-        assertNull(caught);
+      assertFalse(tag.hasField(FieldKey.TRACK));
+      tag.setField(FieldKey.TRACK, "1");
+      tag.setField(FieldKey.TRACK_TOTAL, "15");
+      tag.addField(FieldKey.TRACK, "2");
+      tag.addField(FieldKey.TRACK_TOTAL, "10");
+      tag.addField(FieldKey.TRACK, "3");
+      assertEquals("3", tag.getFirst(FieldKey.TRACK));
+      assertNotNull(tag.getFirstField(FieldKey.TRACK));
+      assertEquals(1, tag.getAll(FieldKey.TRACK).size());
+    } catch (Exception e) {
+      caught = e;
+      e.printStackTrace();
     }
+    assertNull(caught);
+  }
 
-    @Test
-    public void testVorbis() {
-        Exception caught = null;
-        try {
-            Tag tag = VorbisCommentTag.createNewTag();
-            assertFalse(tag.hasField(FieldKey.ARTIST));
-            assertFalse(tag.hasField("aRTIST"));
-            tag.setField(FieldKey.ARTIST, "fred");
-            assertTrue(tag.hasField(FieldKey.ARTIST));
-            assertTrue(tag.hasField("ARTIST"));
+  @Test
+  public void testVorbis() {
+    Exception caught = null;
+    try {
+      Tag tag = VorbisCommentTag.createNewTag();
+      assertFalse(tag.hasField(FieldKey.ARTIST));
+      assertFalse(tag.hasField("aRTIST"));
+      tag.setField(FieldKey.ARTIST, "fred");
+      assertTrue(tag.hasField(FieldKey.ARTIST));
+      assertTrue(tag.hasField("ARTIST"));
 
-            assertFalse(tag.hasField(FieldKey.MUSICBRAINZ_RELEASEARTISTID));
-            tag.setField(FieldKey.MUSICBRAINZ_RELEASEARTISTID, "releaseartistid");
-            assertTrue(tag.hasField(FieldKey.MUSICBRAINZ_RELEASEARTISTID));
-            assertTrue(((VorbisCommentTag) tag).hasField(VorbisCommentFieldKey.MUSICBRAINZ_ALBUMARTISTID));
+      assertFalse(tag.hasField(FieldKey.MUSICBRAINZ_RELEASEARTISTID));
+      tag.setField(FieldKey.MUSICBRAINZ_RELEASEARTISTID, "releaseartistid");
+      assertTrue(tag.hasField(FieldKey.MUSICBRAINZ_RELEASEARTISTID));
+      assertTrue(
+        ((VorbisCommentTag) tag).hasField(
+          VorbisCommentFieldKey.MUSICBRAINZ_ALBUMARTISTID
+        )
+      );
 
-            assertFalse(tag.hasField(FieldKey.MUSICBRAINZ_ORIGINAL_RELEASE_ID));
-            tag.setField(FieldKey.MUSICBRAINZ_ORIGINAL_RELEASE_ID, "originalreleaseid");
-            assertTrue(tag.hasField(FieldKey.MUSICBRAINZ_ORIGINAL_RELEASE_ID));
-            assertTrue(tag.hasField("MUSICBRAINZ_ORIGINALALBUMID"));
-            assertTrue(((VorbisCommentTag) tag).hasField(VorbisCommentFieldKey.MUSICBRAINZ_ORIGINAL_ALBUMID));
+      assertFalse(tag.hasField(FieldKey.MUSICBRAINZ_ORIGINAL_RELEASE_ID));
+      tag.setField(
+        FieldKey.MUSICBRAINZ_ORIGINAL_RELEASE_ID,
+        "originalreleaseid"
+      );
+      assertTrue(tag.hasField(FieldKey.MUSICBRAINZ_ORIGINAL_RELEASE_ID));
+      assertTrue(tag.hasField("MUSICBRAINZ_ORIGINALALBUMID"));
+      assertTrue(
+        ((VorbisCommentTag) tag).hasField(
+          VorbisCommentFieldKey.MUSICBRAINZ_ORIGINAL_ALBUMID
+        )
+      );
 
-            assertFalse(tag.hasField(FieldKey.TRACK));
-            assertFalse(tag.hasField(FieldKey.TRACK_TOTAL));
-            assertEquals("", tag.getFirst(FieldKey.TRACK));
-            assertEquals("", tag.getFirst(FieldKey.TRACK_TOTAL));
-            assertNull(tag.getFirstField(FieldKey.TRACK));
-            assertNull(tag.getFirstField(FieldKey.TRACK_TOTAL));
-            tag.setField(FieldKey.TRACK, "1");
-            assertNotNull(tag.getFirstField(FieldKey.TRACK));
-            assertNull(tag.getFirstField(FieldKey.TRACK_TOTAL));
-            assertTrue(tag.hasField(FieldKey.TRACK));
-            assertFalse(tag.hasField(FieldKey.TRACK_TOTAL));
-
-        } catch (Exception e) {
-            caught = e;
-            e.printStackTrace();
-        }
-        assertNull(caught);
+      assertFalse(tag.hasField(FieldKey.TRACK));
+      assertFalse(tag.hasField(FieldKey.TRACK_TOTAL));
+      assertEquals("", tag.getFirst(FieldKey.TRACK));
+      assertEquals("", tag.getFirst(FieldKey.TRACK_TOTAL));
+      assertNull(tag.getFirstField(FieldKey.TRACK));
+      assertNull(tag.getFirstField(FieldKey.TRACK_TOTAL));
+      tag.setField(FieldKey.TRACK, "1");
+      assertNotNull(tag.getFirstField(FieldKey.TRACK));
+      assertNull(tag.getFirstField(FieldKey.TRACK_TOTAL));
+      assertTrue(tag.hasField(FieldKey.TRACK));
+      assertFalse(tag.hasField(FieldKey.TRACK_TOTAL));
+    } catch (Exception e) {
+      caught = e;
+      e.printStackTrace();
     }
+    assertNull(caught);
+  }
 
-    @Test
-    public void testFlac() {
-        Exception caught = null;
-        try {
-            Tag tag = new FlacTag();
-            assertFalse(tag.hasField(FieldKey.ARTIST));
-            assertFalse(tag.hasField("aRTIST"));
-            tag.setField(FieldKey.ARTIST, "fred");
-            assertTrue(tag.hasField(FieldKey.ARTIST));
-            assertTrue(tag.hasField("ARTIST"));
+  @Test
+  public void testFlac() {
+    Exception caught = null;
+    try {
+      Tag tag = new FlacTag();
+      assertFalse(tag.hasField(FieldKey.ARTIST));
+      assertFalse(tag.hasField("aRTIST"));
+      tag.setField(FieldKey.ARTIST, "fred");
+      assertTrue(tag.hasField(FieldKey.ARTIST));
+      assertTrue(tag.hasField("ARTIST"));
 
-            assertFalse(tag.hasField(FieldKey.MUSICBRAINZ_RELEASEARTISTID));
-            tag.setField(FieldKey.MUSICBRAINZ_RELEASEARTISTID, "releaseartistid");
-            assertTrue(tag.hasField(FieldKey.MUSICBRAINZ_RELEASEARTISTID));
-            assertTrue(((FlacTag) tag).hasField(VorbisCommentFieldKey.MUSICBRAINZ_ALBUMARTISTID));
+      assertFalse(tag.hasField(FieldKey.MUSICBRAINZ_RELEASEARTISTID));
+      tag.setField(FieldKey.MUSICBRAINZ_RELEASEARTISTID, "releaseartistid");
+      assertTrue(tag.hasField(FieldKey.MUSICBRAINZ_RELEASEARTISTID));
+      assertTrue(
+        ((FlacTag) tag).hasField(
+          VorbisCommentFieldKey.MUSICBRAINZ_ALBUMARTISTID
+        )
+      );
 
-            assertFalse(tag.hasField(FieldKey.MUSICBRAINZ_ORIGINAL_RELEASE_ID));
-            tag.setField(FieldKey.MUSICBRAINZ_ORIGINAL_RELEASE_ID, "originalreleaseid");
-            assertTrue(tag.hasField(FieldKey.MUSICBRAINZ_ORIGINAL_RELEASE_ID));
-            assertTrue(tag.hasField("MUSICBRAINZ_ORIGINALALBUMID"));
-            assertTrue(((FlacTag) tag).hasField(VorbisCommentFieldKey.MUSICBRAINZ_ORIGINAL_ALBUMID));
+      assertFalse(tag.hasField(FieldKey.MUSICBRAINZ_ORIGINAL_RELEASE_ID));
+      tag.setField(
+        FieldKey.MUSICBRAINZ_ORIGINAL_RELEASE_ID,
+        "originalreleaseid"
+      );
+      assertTrue(tag.hasField(FieldKey.MUSICBRAINZ_ORIGINAL_RELEASE_ID));
+      assertTrue(tag.hasField("MUSICBRAINZ_ORIGINALALBUMID"));
+      assertTrue(
+        ((FlacTag) tag).hasField(
+          VorbisCommentFieldKey.MUSICBRAINZ_ORIGINAL_ALBUMID
+        )
+      );
 
-            assertFalse(tag.hasField(FieldKey.TRACK));
-            assertFalse(tag.hasField(FieldKey.TRACK_TOTAL));
-            assertEquals("", tag.getFirst(FieldKey.TRACK));
-            assertEquals("", tag.getFirst(FieldKey.TRACK_TOTAL));
-            assertNull(tag.getFirstField(FieldKey.TRACK));
-            assertNull(tag.getFirstField(FieldKey.TRACK_TOTAL));
-            tag.setField(FieldKey.TRACK, "1");
-            assertNotNull(tag.getFirstField(FieldKey.TRACK));
-            assertNull(tag.getFirstField(FieldKey.TRACK_TOTAL));
-            assertTrue(tag.hasField(FieldKey.TRACK));
-            assertFalse(tag.hasField(FieldKey.TRACK_TOTAL));
-        } catch (Exception e) {
-            caught = e;
-            e.printStackTrace();
-        }
-        assertNull(caught);
+      assertFalse(tag.hasField(FieldKey.TRACK));
+      assertFalse(tag.hasField(FieldKey.TRACK_TOTAL));
+      assertEquals("", tag.getFirst(FieldKey.TRACK));
+      assertEquals("", tag.getFirst(FieldKey.TRACK_TOTAL));
+      assertNull(tag.getFirstField(FieldKey.TRACK));
+      assertNull(tag.getFirstField(FieldKey.TRACK_TOTAL));
+      tag.setField(FieldKey.TRACK, "1");
+      assertNotNull(tag.getFirstField(FieldKey.TRACK));
+      assertNull(tag.getFirstField(FieldKey.TRACK_TOTAL));
+      assertTrue(tag.hasField(FieldKey.TRACK));
+      assertFalse(tag.hasField(FieldKey.TRACK_TOTAL));
+    } catch (Exception e) {
+      caught = e;
+      e.printStackTrace();
     }
+    assertNull(caught);
+  }
 
-    @Test
-    public void testWma() {
-        Exception caught = null;
-        try {
-            Tag tag = new AsfTag();
-            assertFalse(tag.hasField(FieldKey.ARTIST));
-            assertFalse(tag.hasField("aRTIST"));
-            assertFalse(((AsfTag) tag).hasField(AsfFieldKey.AUTHOR));
-            tag.setField(FieldKey.ARTIST, "fred");
-            assertTrue(tag.hasField(FieldKey.ARTIST));
-            assertTrue(((AsfTag) tag).hasField(AsfFieldKey.AUTHOR));
-            assertTrue(tag.hasField("AUTHOR"));
+  @Test
+  public void testWma() {
+    Exception caught = null;
+    try {
+      Tag tag = new AsfTag();
+      assertFalse(tag.hasField(FieldKey.ARTIST));
+      assertFalse(tag.hasField("aRTIST"));
+      assertFalse(((AsfTag) tag).hasField(AsfFieldKey.AUTHOR));
+      tag.setField(FieldKey.ARTIST, "fred");
+      assertTrue(tag.hasField(FieldKey.ARTIST));
+      assertTrue(((AsfTag) tag).hasField(AsfFieldKey.AUTHOR));
+      assertTrue(tag.hasField("AUTHOR"));
 
-            assertFalse(tag.hasField(FieldKey.TRACK));
-            assertFalse(tag.hasField(FieldKey.TRACK_TOTAL));
-            assertEquals("", tag.getFirst(FieldKey.TRACK));
-            assertEquals("", tag.getFirst(FieldKey.TRACK_TOTAL));
-            assertNull(tag.getFirstField(FieldKey.TRACK));
-            assertNull(tag.getFirstField(FieldKey.TRACK_TOTAL));
-            tag.setField(FieldKey.TRACK, "1");
-            assertNotNull(tag.getFirstField(FieldKey.TRACK));
-            assertNull(tag.getFirstField(FieldKey.TRACK_TOTAL));
-            assertTrue(tag.hasField(FieldKey.TRACK));
-            assertFalse(tag.hasField(FieldKey.TRACK_TOTAL));
-        } catch (Exception e) {
-            caught = e;
-            e.printStackTrace();
-        }
-        assertNull(caught);
+      assertFalse(tag.hasField(FieldKey.TRACK));
+      assertFalse(tag.hasField(FieldKey.TRACK_TOTAL));
+      assertEquals("", tag.getFirst(FieldKey.TRACK));
+      assertEquals("", tag.getFirst(FieldKey.TRACK_TOTAL));
+      assertNull(tag.getFirstField(FieldKey.TRACK));
+      assertNull(tag.getFirstField(FieldKey.TRACK_TOTAL));
+      tag.setField(FieldKey.TRACK, "1");
+      assertNotNull(tag.getFirstField(FieldKey.TRACK));
+      assertNull(tag.getFirstField(FieldKey.TRACK_TOTAL));
+      assertTrue(tag.hasField(FieldKey.TRACK));
+      assertFalse(tag.hasField(FieldKey.TRACK_TOTAL));
+    } catch (Exception e) {
+      caught = e;
+      e.printStackTrace();
     }
+    assertNull(caught);
+  }
 }

@@ -11,51 +11,52 @@ import java.nio.ByteBuffer;
  * @author The JCodec project
  */
 public class LoadSettingsBox extends Box {
-    private int preloadStartTime;
-    private int preloadDuration;
-    private int preloadFlags;
-    private int defaultHints;
 
-    public static String fourcc() {
-        return "load";
-    }
+  private int preloadStartTime;
+  private int preloadDuration;
+  private int preloadFlags;
+  private int defaultHints;
 
-    public LoadSettingsBox(Header header) {
-        super(header);
-    }
+  public static String fourcc() {
+    return "load";
+  }
 
-    public void parse(ByteBuffer input) {
-        preloadStartTime = input.getInt();
-        preloadDuration = input.getInt();
-        preloadFlags = input.getInt();
-        defaultHints = input.getInt();
-    }
+  public LoadSettingsBox(Header header) {
+    super(header);
+  }
 
-    protected void doWrite(ByteBuffer out) {
-        out.putInt(preloadStartTime);
-        out.putInt(preloadDuration);
-        out.putInt(preloadFlags);
-        out.putInt(defaultHints);
-    }
+  public void parse(ByteBuffer input) {
+    preloadStartTime = input.getInt();
+    preloadDuration = input.getInt();
+    preloadFlags = input.getInt();
+    defaultHints = input.getInt();
+  }
 
-    @Override
-    public int estimateSize() {
-        return 24;
-    }
+  protected void doWrite(ByteBuffer out) {
+    out.putInt(preloadStartTime);
+    out.putInt(preloadDuration);
+    out.putInt(preloadFlags);
+    out.putInt(defaultHints);
+  }
 
-    public int getPreloadStartTime() {
-        return preloadStartTime;
-    }
+  @Override
+  public int estimateSize() {
+    return 24;
+  }
 
-    public int getPreloadDuration() {
-        return preloadDuration;
-    }
+  public int getPreloadStartTime() {
+    return preloadStartTime;
+  }
 
-    public int getPreloadFlags() {
-        return preloadFlags;
-    }
+  public int getPreloadDuration() {
+    return preloadDuration;
+  }
 
-    public int getDefaultHints() {
-        return defaultHints;
-    }
+  public int getPreloadFlags() {
+    return preloadFlags;
+  }
+
+  public int getDefaultHints() {
+    return defaultHints;
+  }
 }

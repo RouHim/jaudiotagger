@@ -18,13 +18,12 @@
  */
 package org.jaudiotagger.tag.mp4.field;
 
-import org.jaudiotagger.tag.TagField;
-import org.jaudiotagger.tag.TagTextField;
-import org.jaudiotagger.tag.mp4.Mp4TagField;
-
 import java.io.UnsupportedEncodingException;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
+import org.jaudiotagger.tag.TagField;
+import org.jaudiotagger.tag.TagTextField;
+import org.jaudiotagger.tag.mp4.Mp4TagField;
 
 /**
  * Represents a single text field
@@ -48,69 +47,70 @@ import java.nio.charset.StandardCharsets;
  * getRawContent() contains the byte data for parent and child.
  */
 public class Mp4TagTextField extends Mp4TagField implements TagTextField {
-    protected int dataSize;
-    protected String content;
 
-    /**
-     * Construct new Field
-     *
-     * @param id      parent id
-     * @param content data atom data
-     */
-    public Mp4TagTextField(String id, String content) {
-        super(id);
-        this.content = content;
-    }
+  protected int dataSize;
+  protected String content;
 
-    @Override
-    public void copyContent(TagField field) {
-        if (field instanceof Mp4TagTextField) {
-            this.content = ((Mp4TagTextField) field).getContent();
-        }
-    }
+  /**
+   * Construct new Field
+   *
+   * @param id      parent id
+   * @param content data atom data
+   */
+  public Mp4TagTextField(String id, String content) {
+    super(id);
+    this.content = content;
+  }
 
-    @Override
-    public String getContent() {
-        return content;
+  @Override
+  public void copyContent(TagField field) {
+    if (field instanceof Mp4TagTextField) {
+      this.content = ((Mp4TagTextField) field).getContent();
     }
+  }
 
-    @Override
-    protected byte[] getDataBytes() throws UnsupportedEncodingException {
-        return content.getBytes(getEncoding());
-    }
+  @Override
+  public String getContent() {
+    return content;
+  }
 
-    @Override
-    public Mp4FieldType getFieldType() {
-        return Mp4FieldType.TEXT;
-    }
+  @Override
+  protected byte[] getDataBytes() throws UnsupportedEncodingException {
+    return content.getBytes(getEncoding());
+  }
 
-    @Override
-    public Charset getEncoding() {
-        return StandardCharsets.UTF_8;
-    }
+  @Override
+  public Mp4FieldType getFieldType() {
+    return Mp4FieldType.TEXT;
+  }
 
-    @Override
-    public boolean isBinary() {
-        return false;
-    }
+  @Override
+  public Charset getEncoding() {
+    return StandardCharsets.UTF_8;
+  }
 
-    @Override
-    public boolean isEmpty() {
-        return this.content.trim().equals("");
-    }
+  @Override
+  public boolean isBinary() {
+    return false;
+  }
 
-    @Override
-    public void setContent(String s) {
-        this.content = s;
-    }
+  @Override
+  public boolean isEmpty() {
+    return this.content.trim().equals("");
+  }
 
-    @Override
-    public void setEncoding(Charset s) {
-        /* Not allowed */
-    }
+  @Override
+  public void setContent(String s) {
+    this.content = s;
+  }
 
-    @Override
-    public String toString() {
-        return content;
-    }
+  @Override
+  public void setEncoding(Charset s) {
+    /* Not allowed */
+  }
+
+  @Override
+  public String toString() {
+    return content;
+  }
 }

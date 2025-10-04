@@ -5,33 +5,34 @@ package org.jaudiotagger.audio.exceptions;
  * files.
  */
 public class CannotReadVideoException extends CannotReadException {
-    /**
-     * Creates an instance.
-     */
-    public CannotReadVideoException() {
-        super();
-    }
 
-    public CannotReadVideoException(Throwable ex) {
-        super(ex);
-    }
+  /**
+   * Creates an instance.
+   */
+  public CannotReadVideoException() {
+    super();
+  }
 
-    /**
-     * Creates an instance.
-     *
-     * @param message The message.
-     */
-    public CannotReadVideoException(String message) {
-        super(message);
-    }
+  public CannotReadVideoException(Throwable ex) {
+    super(ex);
+  }
 
-    /**
-     * Creates an instance.
-     *
-     * @param message The error message.
-     * @param cause   The throwable causing this exception.
-     */
-    public CannotReadVideoException(String message, Throwable cause) {
-        super(message, cause);
-    }
+  /**
+   * Creates an instance.
+   *
+   * @param message The message.
+   */
+  public CannotReadVideoException(String message) {
+    super(message);
+  }
+
+  /**
+   * Creates an instance.
+   *
+   * @param message The error message.
+   * @param cause   The throwable causing this exception.
+   */
+  public CannotReadVideoException(String message, Throwable cause) {
+    super(message, cause);
+  }
 }

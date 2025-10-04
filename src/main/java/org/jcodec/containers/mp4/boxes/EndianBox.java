@@ -11,45 +11,45 @@ import java.nio.ByteOrder;
  */
 public class EndianBox extends Box {
 
-    private ByteOrder endian;
+  private ByteOrder endian;
 
-    public static String fourcc() {
-        return "enda";
-    }
+  public static String fourcc() {
+    return "enda";
+  }
 
-    public static EndianBox createEndianBox(ByteOrder endian) {
-        EndianBox endianBox = new EndianBox(new Header(fourcc()));
-        endianBox.endian = endian;
-        return endianBox;
-    }
+  public static EndianBox createEndianBox(ByteOrder endian) {
+    EndianBox endianBox = new EndianBox(new Header(fourcc()));
+    endianBox.endian = endian;
+    return endianBox;
+  }
 
-    public EndianBox(Header header) {
-        super(header);
-    }
+  public EndianBox(Header header) {
+    super(header);
+  }
 
-    public void parse(ByteBuffer input) {
-        long end = input.getShort();
-        if (end == 1) {
-            this.endian = ByteOrder.LITTLE_ENDIAN;
-        } else {
-            this.endian = ByteOrder.BIG_ENDIAN;
-        }
+  public void parse(ByteBuffer input) {
+    long end = input.getShort();
+    if (end == 1) {
+      this.endian = ByteOrder.LITTLE_ENDIAN;
+    } else {
+      this.endian = ByteOrder.BIG_ENDIAN;
     }
+  }
 
-    protected void doWrite(ByteBuffer out) {
-        out.putShort((short) (endian == ByteOrder.LITTLE_ENDIAN ? 1 : 0));
-    }
+  protected void doWrite(ByteBuffer out) {
+    out.putShort((short) (endian == ByteOrder.LITTLE_ENDIAN ? 1 : 0));
+  }
 
-    @Override
-    public int estimateSize() {
-        return 2 + 8;
-    }
+  @Override
+  public int estimateSize() {
+    return 2 + 8;
+  }
 
-    public ByteOrder getEndian() {
-        return endian;
-    }
+  public ByteOrder getEndian() {
+    return endian;
+  }
 
-    protected int calcSize() {
-        return 2;
-    }
+  protected int calcSize() {
+    return 2;
+  }
 }

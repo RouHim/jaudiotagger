@@ -10,36 +10,38 @@ import java.util.Map;
  * essentially an infinite list.
  */
 public enum StandardIPLSKey {
-    ENGINEER("engineer"),
-    MIXER("mix"),
-    DJMIXER("DJ-mix"),
-    PRODUCER("producer"),
-    ARRANGER("arranger"),
-    ;
+  ENGINEER("engineer"),
+  MIXER("mix"),
+  DJMIXER("DJ-mix"),
+  PRODUCER("producer"),
+  ARRANGER("arranger");
 
-    private final String key;
+  private final String key;
 
-    StandardIPLSKey(String key) {
-        this.key = key;
+  StandardIPLSKey(String key) {
+    this.key = key;
+  }
+
+  public String getKey() {
+    return key;
+  }
+
+  private static final Map<String, StandardIPLSKey> lookup = new HashMap<
+    String,
+    StandardIPLSKey
+  >();
+
+  static {
+    for (StandardIPLSKey s : EnumSet.allOf(StandardIPLSKey.class)) {
+      lookup.put(s.getKey(), s);
     }
+  }
 
-    public String getKey() {
-        return key;
-    }
+  public static StandardIPLSKey get(String key) {
+    return lookup.get(key);
+  }
 
-    private static final Map<String, StandardIPLSKey> lookup = new HashMap<String, StandardIPLSKey>();
-
-    static {
-        for (StandardIPLSKey s : EnumSet.allOf(StandardIPLSKey.class)) {
-            lookup.put(s.getKey(), s);
-        }
-    }
-
-    public static StandardIPLSKey get(String key) {
-        return lookup.get(key);
-    }
-
-    public static boolean isKey(String key) {
-        return get(key) != null;
-    }
+  public static boolean isKey(String key) {
+    return get(key) != null;
+  }
 }

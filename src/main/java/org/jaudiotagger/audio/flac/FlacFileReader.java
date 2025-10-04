@@ -18,27 +18,30 @@
  */
 package org.jaudiotagger.audio.flac;
 
+import java.io.IOException;
+import java.nio.channels.FileChannel;
 import org.jaudiotagger.audio.exceptions.CannotReadException;
 import org.jaudiotagger.audio.generic.AudioFileReader2;
 import org.jaudiotagger.audio.generic.GenericAudioHeader;
 import org.jaudiotagger.tag.Tag;
-
-import java.io.IOException;
-import java.nio.channels.FileChannel;
 
 /**
  * Read encoding and tag info for Flac file (open source lossless encoding)
  */
 public class FlacFileReader extends AudioFileReader2 {
 
-    private final FlacInfoReader ir = new FlacInfoReader();
-    private final FlacTagReader tr = new FlacTagReader();
+  private final FlacInfoReader ir = new FlacInfoReader();
+  private final FlacTagReader tr = new FlacTagReader();
 
-    protected GenericAudioHeader getEncodingInfo(FileChannel channel, final String fileName) throws CannotReadException, IOException {
-        return ir.read(channel, fileName);
-    }
+  protected GenericAudioHeader getEncodingInfo(
+    FileChannel channel,
+    final String fileName
+  ) throws CannotReadException, IOException {
+    return ir.read(channel, fileName);
+  }
 
-    protected Tag getTag(FileChannel channel, final String fileName) throws CannotReadException, IOException {
-        return tr.read(channel, fileName);
-    }
+  protected Tag getTag(FileChannel channel, final String fileName)
+    throws CannotReadException, IOException {
+    return tr.read(channel, fileName);
+  }
 }

@@ -15,12 +15,11 @@
  */
 package org.jaudiotagger.tag.id3.framebody;
 
+import java.nio.ByteBuffer;
 import org.jaudiotagger.tag.InvalidTagException;
 import org.jaudiotagger.tag.datatype.ByteArraySizeTerminated;
 import org.jaudiotagger.tag.datatype.DataTypes;
 import org.jaudiotagger.tag.id3.ID3v2ChapterFrames;
-
-import java.nio.ByteBuffer;
 
 /**
  * Table of content frame.
@@ -94,46 +93,49 @@ import java.nio.ByteBuffer;
  * @author Marc Gimpel, Horizon Wimba S.A.
  * @version $Id$
  */
-public class FrameBodyCTOC extends AbstractID3v2FrameBody implements ID3v2ChapterFrameBody {
-    /**
-     * Creates a new FrameBodyCTOC datatype.
-     */
-    public FrameBodyCTOC() {
-    }
+public class FrameBodyCTOC
+  extends AbstractID3v2FrameBody
+  implements ID3v2ChapterFrameBody {
 
-    /**
-     * Creates a new FrameBodyCTOC datatype.
-     *
-     * @param body
-     */
-    public FrameBodyCTOC(FrameBodyCTOC body) {
-        super(body);
-    }
+  /**
+   * Creates a new FrameBodyCTOC datatype.
+   */
+  public FrameBodyCTOC() {}
 
-    /**
-     * Creates a new FrameBodyCTOC datatype.
-     *
-     * @param byteBuffer
-     * @param frameSize
-     * @throws InvalidTagException if unable to create framebody from buffer
-     */
-    public FrameBodyCTOC(ByteBuffer byteBuffer, int frameSize) throws InvalidTagException {
-        super(byteBuffer, frameSize);
-    }
+  /**
+   * Creates a new FrameBodyCTOC datatype.
+   *
+   * @param body
+   */
+  public FrameBodyCTOC(FrameBodyCTOC body) {
+    super(body);
+  }
 
-    /**
-     * The ID3v2 frame identifier
-     *
-     * @return the ID3v2 frame identifier  for this frame type
-     */
-    public String getIdentifier() {
-        return ID3v2ChapterFrames.FRAME_ID_TABLE_OF_CONTENT;
-    }
+  /**
+   * Creates a new FrameBodyCTOC datatype.
+   *
+   * @param byteBuffer
+   * @param frameSize
+   * @throws InvalidTagException if unable to create framebody from buffer
+   */
+  public FrameBodyCTOC(ByteBuffer byteBuffer, int frameSize)
+    throws InvalidTagException {
+    super(byteBuffer, frameSize);
+  }
 
-    /**
-     * TODO:proper mapping
-     */
-    protected void setupObjectList() {
-        objectList.add(new ByteArraySizeTerminated(DataTypes.OBJ_DATA, this));
-    }
+  /**
+   * The ID3v2 frame identifier
+   *
+   * @return the ID3v2 frame identifier  for this frame type
+   */
+  public String getIdentifier() {
+    return ID3v2ChapterFrames.FRAME_ID_TABLE_OF_CONTENT;
+  }
+
+  /**
+   * TODO:proper mapping
+   */
+  protected void setupObjectList() {
+    objectList.add(new ByteArraySizeTerminated(DataTypes.OBJ_DATA, this));
+  }
 }
