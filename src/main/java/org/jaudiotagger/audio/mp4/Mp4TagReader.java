@@ -65,7 +65,7 @@ import org.slf4j.LoggerFactory;
  * |.................................... etc
  * |
  * |--- mdat
- * </pre
+ * </pre>
  */
 public class Mp4TagReader {
 

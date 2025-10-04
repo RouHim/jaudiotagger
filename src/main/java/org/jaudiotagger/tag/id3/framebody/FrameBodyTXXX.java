@@ -42,10 +42,10 @@ import org.jaudiotagger.tag.id3.valuepair.TextEncoding;
  * string, followed by the actual string. There may be more than one
  * "TXXX" frame in each tag, but only one with the same description.
  * <p>
- * <Header for 'User defined text information frame', ID: "TXXX">
+ * &lt;Header for 'User defined text information frame', ID: "TXXX"&gt;
  * Text encoding     $xx
- * Description       <text string according to encoding> $00 (00)
- * Value             <text string according to encoding>
+ * Description       &lt;text string according to encoding&gt; $00 (00)
+ * Value             &lt;text string according to encoding&gt;
  */
 public class FrameBodyTXXX
   extends AbstractFrameBodyTextInfo

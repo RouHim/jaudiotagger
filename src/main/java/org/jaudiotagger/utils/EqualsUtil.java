@@ -12,10 +12,10 @@ import java.util.Objects;
  * if ( !(aThat instanceof Car) ) return false;
  * Car that = (Car)aThat;
  * return
- * EqualsUtil.areEqual(this.fName, that.fName) &&
- * EqualsUtil.areEqual(this.fNumDoors, that.fNumDoors) &&
- * EqualsUtil.areEqual(this.fGasMileage, that.fGasMileage) &&
- * EqualsUtil.areEqual(this.fColor, that.fColor) &&
+ * EqualsUtil.areEqual(this.fName, that.fName) &amp;&amp;
+ * EqualsUtil.areEqual(this.fNumDoors, that.fNumDoors) &amp;&amp;
+ * EqualsUtil.areEqual(this.fGasMileage, that.fGasMileage) &amp;&amp;
+ * EqualsUtil.areEqual(this.fColor, that.fColor) &amp;&amp;
  * Arrays.equals(this.fMaintenanceChecks, that.fMaintenanceChecks); //array!
  * }
  * </pre>

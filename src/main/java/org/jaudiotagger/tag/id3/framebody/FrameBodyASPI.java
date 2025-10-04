@@ -32,7 +32,7 @@ import org.jaudiotagger.tag.id3.ID3v24Frames;
  * milliseconds. There may only be one 'audio seek point index' frame in
  * a tag.
  * <p>
- * <Header for 'Seek Point Index', ID: "ASPI">
+ * &lt;Header for 'Seek Point Index', ID: "ASPI"&gt;
  * Indexed data start (S)         $xx xx xx xx
  * Indexed data length (L)        $xx xx xx xx
  * Number of index points (N)     $xx xx

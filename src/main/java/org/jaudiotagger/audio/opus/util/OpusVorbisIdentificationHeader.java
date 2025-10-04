@@ -19,9 +19,9 @@ import org.slf4j.LoggerFactory;
  * --  1 = channels in vorbis spec order: mono or L,R stereo or ... or FL,C,FR,RL,RR,LFE, ...
  * --  2..254 = reserved (treat as 255)
  * --  255 = no defined channel meaning
- * If channel mapping family > 0
- * - Stream count 'N' (8 bits unsigned): MUST be > 0
- * - Two-channel stream count 'M' (8 bits unsigned): MUST satisfy M <= N, M+N <= 255
+ * If channel mapping family &gt; 0
+ * - Stream count 'N' (8 bits unsigned): MUST be &gt; 0
+ * - Two-channel stream count 'M' (8 bits unsigned): MUST satisfy M &lt;= N, M+N &lt;= 255
  * - Channel mapping (8*c bits)
  * -- one stream index (8 bits unsigned) per channel (255 means silent throughout the file)
  */

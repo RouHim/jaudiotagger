@@ -36,9 +36,9 @@ import org.jaudiotagger.tag.id3.ID3v24Frames;
  * more than one "EQU2" frame in each tag, but only one with the same
  * identification string.
  * <p>
- * <Header of 'Equalisation (2)', ID: "EQU2">
+ * &lt;Header of 'Equalisation (2)', ID: "EQU2"&gt;
  * Interpolation method  $xx
- * Identification        <text string> $00
+ * Identification        &lt;text string&gt; $00
  * <p>
  * The 'interpolation method' describes which method is preferred when
  * an interpolation between the adjustment point that follows. The

@@ -875,7 +875,8 @@ public class VorbisCommentTag extends AbstractTag {
   /**
    * Create and set artwork field
    *
-   * @return
+   * @param artwork the artwork to set
+   * @throws FieldDataInvalidException if the field data is invalid
    */
   @Override
   public void setField(Artwork artwork) throws FieldDataInvalidException {
@@ -909,7 +910,6 @@ public class VorbisCommentTag extends AbstractTag {
    *
    * @param data     raw image data
    * @param mimeType mimeType of data
-   * @return
    */
   @Deprecated
   public void setArtworkField(byte[] data, String mimeType) {

@@ -44,7 +44,7 @@ abstract class ChunkContainerReader<ChunkType extends ChunkContainer>
   protected final boolean eachChunkOnce;
 
   /**
-   * If <code>true</code> due to a {@linkplain #register(Class) registered}
+   * If <code>true</code> due to a registered
    * chunk reader, all {@link InputStream} objects passed to
    * {@link #read(GUID, InputStream, long)} must support mark/reset.
    */
@@ -116,7 +116,7 @@ abstract class ChunkContainerReader<ChunkType extends ChunkContainer>
    *
    * @param guid GUID which identifies the chunk to be read.
    * @return an appropriate reader implementation, <code>null</code> if not
-   * {@linkplain #register(Class) registered}.
+   * registered.
    */
   protected ChunkReader getReader(final GUID guid) {
     return this.readerMap.get(guid);

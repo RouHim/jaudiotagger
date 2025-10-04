@@ -67,7 +67,7 @@ import org.slf4j.LoggerFactory;
  * <tr><td>$0A    </td><td>variation start                     </td></tr>
  * <tr><td>$0B    </td><td>key change                          </td></tr>
  * <tr><td>$0C    </td><td>time change                         </td></tr>
- * <tr><td>$0D    </td><td>momentary unwanted noise (Snap, Crackle & Pop)</td></tr>
+ * <tr><td>$0D    </td><td>momentary unwanted noise (Snap, Crackle &amp; Pop)</td></tr>
  * <tr><td>$0E    </td><td>sustained noise                     </td></tr>
  * <tr><td>$0F    </td><td>sustained noise end                 </td></tr>
  * <tr><td>$10    </td><td>intro end                           </td></tr>
