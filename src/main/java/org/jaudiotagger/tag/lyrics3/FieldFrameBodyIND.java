@@ -22,72 +22,71 @@
  */
 package org.jaudiotagger.tag.lyrics3;
 
+import java.nio.ByteBuffer;
 import org.jaudiotagger.tag.InvalidTagException;
 import org.jaudiotagger.tag.datatype.BooleanString;
 
-import java.nio.ByteBuffer;
-
-
 public class FieldFrameBodyIND extends AbstractLyrics3v2FieldFrameBody {
-    /**
-     * Creates a new FieldBodyIND datatype.
-     */
-    public FieldFrameBodyIND() {
-        //        this.setObject("Lyrics Present", new Boolean(false));
-        //        this.setObject("Timestamp Present", new Boolean(false));
-    }
 
-    public FieldFrameBodyIND(FieldFrameBodyIND body) {
-        super(body);
-    }
+  /**
+   * Creates a new FieldBodyIND datatype.
+   */
+  public FieldFrameBodyIND() {
+    //        this.setObject("Lyrics Present", new Boolean(false));
+    //        this.setObject("Timestamp Present", new Boolean(false));
+  }
 
-    /**
-     * Creates a new FieldBodyIND datatype.
-     *
-     * @param lyricsPresent
-     * @param timeStampPresent
-     */
-    public FieldFrameBodyIND(boolean lyricsPresent, boolean timeStampPresent) {
-        this.setObjectValue("Lyrics Present", lyricsPresent);
-        this.setObjectValue("Timestamp Present", timeStampPresent);
-    }
+  public FieldFrameBodyIND(FieldFrameBodyIND body) {
+    super(body);
+  }
 
-    /**
-     * Creates a new FieldBodyIND datatype.
-     *
-     * @param byteBuffer
-     * @throws InvalidTagException
-     */
-    public FieldFrameBodyIND(ByteBuffer byteBuffer) throws InvalidTagException {
-        this.read(byteBuffer);
-    }
+  /**
+   * Creates a new FieldBodyIND datatype.
+   *
+   * @param lyricsPresent
+   * @param timeStampPresent
+   */
+  public FieldFrameBodyIND(boolean lyricsPresent, boolean timeStampPresent) {
+    this.setObjectValue("Lyrics Present", lyricsPresent);
+    this.setObjectValue("Timestamp Present", timeStampPresent);
+  }
 
-    /**
-     * @param author
-     */
-    public void setAuthor(String author) {
-        setObjectValue("Author", author);
-    }
+  /**
+   * Creates a new FieldBodyIND datatype.
+   *
+   * @param byteBuffer
+   * @throws InvalidTagException
+   */
+  public FieldFrameBodyIND(ByteBuffer byteBuffer) throws InvalidTagException {
+    this.read(byteBuffer);
+  }
 
-    /**
-     * @return
-     */
-    public String getAuthor() {
-        return (String) getObjectValue("Author");
-    }
+  /**
+   * @param author
+   */
+  public void setAuthor(String author) {
+    setObjectValue("Author", author);
+  }
 
-    /**
-     * @return
-     */
-    public String getIdentifier() {
-        return "IND";
-    }
+  /**
+   * @return
+   */
+  public String getAuthor() {
+    return (String) getObjectValue("Author");
+  }
 
-    /**
-     *
-     */
-    protected void setupObjectList() {
-        objectList.add(new BooleanString("Lyrics Present", this));
-        objectList.add(new BooleanString("Timestamp Present", this));
-    }
+  /**
+   * @return
+   */
+  public String getIdentifier() {
+    return "IND";
+  }
+
+  /**
+   *
+   */
+  protected void setupObjectList() {
+    objectList.add(new BooleanString("Lyrics Present", this));
+    objectList.add(new BooleanString("Timestamp Present", this));
+  }
 }

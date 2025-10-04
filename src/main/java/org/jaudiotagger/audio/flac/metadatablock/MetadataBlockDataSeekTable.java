@@ -22,7 +22,6 @@ import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.nio.channels.FileChannel;
 
-
 /**
  * SeekTable Block
  *
@@ -34,20 +33,21 @@ import java.nio.channels.FileChannel;
  * which can be used to reserve space for future seek point insertion.
  */
 public class MetadataBlockDataSeekTable implements MetadataBlockData {
-    private final ByteBuffer data;
 
-    public MetadataBlockDataSeekTable(MetadataBlockHeader header, FileChannel fc) throws IOException {
-        data = ByteBuffer.allocate(header.getDataLength());
-        fc.read(data);
-        data.flip();
-    }
+  private final ByteBuffer data;
 
-    public ByteBuffer getBytes() {
-        return data;
-    }
+  public MetadataBlockDataSeekTable(MetadataBlockHeader header, FileChannel fc)
+    throws IOException {
+    data = ByteBuffer.allocate(header.getDataLength());
+    fc.read(data);
+    data.flip();
+  }
 
+  public ByteBuffer getBytes() {
+    return data;
+  }
 
-    public int getLength() {
-        return data.limit();
-    }
+  public int getLength() {
+    return data.limit();
+  }
 }

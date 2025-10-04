@@ -5,7 +5,8 @@ package org.jaudiotagger.audio.exceptions;
  * Normally an error, but if occurs at end of file we allow it
  */
 public class NullBoxIdException extends RuntimeException {
-    public NullBoxIdException(String message) {
-        super(message);
-    }
+
+  public NullBoxIdException(String message) {
+    super(message);
+  }
 }

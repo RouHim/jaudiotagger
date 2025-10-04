@@ -15,10 +15,9 @@
  */
 package org.jaudiotagger.tag.id3.framebody;
 
+import java.nio.ByteBuffer;
 import org.jaudiotagger.tag.InvalidTagException;
 import org.jaudiotagger.tag.id3.ID3v23Frames;
-
-import java.nio.ByteBuffer;
 
 /**
  * Time Text information frame.
@@ -34,54 +33,57 @@ import java.nio.ByteBuffer;
  * @author : Eric Farng
  * @version $Id$
  */
-public class FrameBodyTIME extends AbstractFrameBodyTextInfo implements ID3v23FrameBody {
-    private boolean hoursOnly;
+public class FrameBodyTIME
+  extends AbstractFrameBodyTextInfo
+  implements ID3v23FrameBody {
 
-    /**
-     * Creates a new FrameBodyTIME datatype.
-     */
-    public FrameBodyTIME() {
-    }
+  private boolean hoursOnly;
 
-    public FrameBodyTIME(FrameBodyTIME body) {
-        super(body);
-    }
+  /**
+   * Creates a new FrameBodyTIME datatype.
+   */
+  public FrameBodyTIME() {}
 
-    /**
-     * Creates a new FrameBodyTIME datatype.
-     *
-     * @param textEncoding
-     * @param text
-     */
-    public FrameBodyTIME(byte textEncoding, String text) {
-        super(textEncoding, text);
-    }
+  public FrameBodyTIME(FrameBodyTIME body) {
+    super(body);
+  }
 
-    /**
-     * Creates a new FrameBodyTIME datatype.
-     *
-     * @param byteBuffer
-     * @param frameSize
-     * @throws InvalidTagException
-     */
-    public FrameBodyTIME(ByteBuffer byteBuffer, int frameSize) throws InvalidTagException {
-        super(byteBuffer, frameSize);
-    }
+  /**
+   * Creates a new FrameBodyTIME datatype.
+   *
+   * @param textEncoding
+   * @param text
+   */
+  public FrameBodyTIME(byte textEncoding, String text) {
+    super(textEncoding, text);
+  }
 
-    /**
-     * The ID3v2 frame identifier
-     *
-     * @return the ID3v2 frame identifier  for this frame type
-     */
-    public String getIdentifier() {
-        return ID3v23Frames.FRAME_ID_V3_TIME;
-    }
+  /**
+   * Creates a new FrameBodyTIME datatype.
+   *
+   * @param byteBuffer
+   * @param frameSize
+   * @throws InvalidTagException
+   */
+  public FrameBodyTIME(ByteBuffer byteBuffer, int frameSize)
+    throws InvalidTagException {
+    super(byteBuffer, frameSize);
+  }
 
-    public boolean isHoursOnly() {
-        return hoursOnly;
-    }
+  /**
+   * The ID3v2 frame identifier
+   *
+   * @return the ID3v2 frame identifier  for this frame type
+   */
+  public String getIdentifier() {
+    return ID3v23Frames.FRAME_ID_V3_TIME;
+  }
 
-    public void setHoursOnly(boolean hoursOnly) {
-        this.hoursOnly = hoursOnly;
-    }
+  public boolean isHoursOnly() {
+    return hoursOnly;
+  }
+
+  public void setHoursOnly(boolean hoursOnly) {
+    this.hoursOnly = hoursOnly;
+  }
 }

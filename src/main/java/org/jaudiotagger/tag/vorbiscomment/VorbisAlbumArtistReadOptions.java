@@ -8,8 +8,8 @@ package org.jaudiotagger.tag.vorbiscomment;
  * This option allows you to configure jaudiotaggers behaviour accordingly when reading metadata from a file
  */
 public enum VorbisAlbumArtistReadOptions {
-    READ_ALBUMARTIST,
-    READ_JRIVER_ALBUMARTIST,
-    READ_ALBUMARTIST_THEN_JRIVER,
-    READ_JRIVER_THEN_ALBUMARTIST,
+  READ_ALBUMARTIST,
+  READ_JRIVER_ALBUMARTIST,
+  READ_ALBUMARTIST_THEN_JRIVER,
+  READ_JRIVER_THEN_ALBUMARTIST,
 }

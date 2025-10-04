@@ -11,42 +11,43 @@ import java.nio.ByteBuffer;
  * @author The JCodec project
  */
 public class MovieExtendsHeaderBox extends FullBox {
-    public MovieExtendsHeaderBox(Header atom) {
-        super(atom);
-    }
 
-    private int fragmentDuration;
+  public MovieExtendsHeaderBox(Header atom) {
+    super(atom);
+  }
 
-    public static String fourcc() {
-        return "mehd";
-    }
+  private int fragmentDuration;
 
-    @Override
-    public void parse(ByteBuffer input) {
-        super.parse(input);
-        fragmentDuration = input.getInt();
-    }
+  public static String fourcc() {
+    return "mehd";
+  }
 
-    @Override
-    protected void doWrite(ByteBuffer out) {
-        super.doWrite(out);
-        out.putInt(fragmentDuration);
-    }
+  @Override
+  public void parse(ByteBuffer input) {
+    super.parse(input);
+    fragmentDuration = input.getInt();
+  }
 
-    @Override
-    public int estimateSize() {
-        return 16;
-    }
+  @Override
+  protected void doWrite(ByteBuffer out) {
+    super.doWrite(out);
+    out.putInt(fragmentDuration);
+  }
 
-    public int getFragmentDuration() {
-        return fragmentDuration;
-    }
+  @Override
+  public int estimateSize() {
+    return 16;
+  }
 
-    public void setFragmentDuration(int fragmentDuration) {
-        this.fragmentDuration = fragmentDuration;
-    }
+  public int getFragmentDuration() {
+    return fragmentDuration;
+  }
 
-    public static MovieExtendsHeaderBox createMovieExtendsHeaderBox() {
-        return new MovieExtendsHeaderBox(new Header(fourcc()));
-    }
+  public void setFragmentDuration(int fragmentDuration) {
+    this.fragmentDuration = fragmentDuration;
+  }
+
+  public static MovieExtendsHeaderBox createMovieExtendsHeaderBox() {
+    return new MovieExtendsHeaderBox(new Header(fourcc()));
+  }
 }

@@ -15,13 +15,12 @@
  */
 package org.jaudiotagger.tag.id3.framebody;
 
+import java.nio.ByteBuffer;
 import org.jaudiotagger.tag.InvalidTagException;
 import org.jaudiotagger.tag.datatype.ByteArraySizeTerminated;
 import org.jaudiotagger.tag.datatype.DataTypes;
 import org.jaudiotagger.tag.datatype.StringNullTerminated;
 import org.jaudiotagger.tag.id3.ID3v24Frames;
-
-import java.nio.ByteBuffer;
 
 /**
  * Private frame.
@@ -51,83 +50,87 @@ import java.nio.ByteBuffer;
  * @author : Eric Farng
  * @version $Id$
  */
-public class FrameBodyPRIV extends AbstractID3v2FrameBody implements ID3v24FrameBody, ID3v23FrameBody {
-    /**
-     * Creates a new FrameBodyPRIV datatype.
-     */
-    public FrameBodyPRIV() {
-        this.setObjectValue(DataTypes.OBJ_OWNER, "");
-        this.setObjectValue(DataTypes.OBJ_DATA, new byte[0]);
-    }
+public class FrameBodyPRIV
+  extends AbstractID3v2FrameBody
+  implements ID3v24FrameBody, ID3v23FrameBody {
 
-    public FrameBodyPRIV(FrameBodyPRIV body) {
-        super(body);
-    }
+  /**
+   * Creates a new FrameBodyPRIV datatype.
+   */
+  public FrameBodyPRIV() {
+    this.setObjectValue(DataTypes.OBJ_OWNER, "");
+    this.setObjectValue(DataTypes.OBJ_DATA, new byte[0]);
+  }
 
-    /**
-     * Creates a new FrameBodyPRIV datatype.
-     *
-     * @param owner
-     * @param data
-     */
-    public FrameBodyPRIV(String owner, byte[] data) {
-        this.setObjectValue(DataTypes.OBJ_OWNER, owner);
-        this.setObjectValue(DataTypes.OBJ_DATA, data);
-    }
+  public FrameBodyPRIV(FrameBodyPRIV body) {
+    super(body);
+  }
 
-    /**
-     * Creates a new FrameBodyPRIV datatype.
-     *
-     * @param byteBuffer
-     * @param frameSize
-     * @throws InvalidTagException if unable to create framebody from buffer
-     */
-    public FrameBodyPRIV(ByteBuffer byteBuffer, int frameSize) throws InvalidTagException {
-        super(byteBuffer, frameSize);
-    }
+  /**
+   * Creates a new FrameBodyPRIV datatype.
+   *
+   * @param owner
+   * @param data
+   */
+  public FrameBodyPRIV(String owner, byte[] data) {
+    this.setObjectValue(DataTypes.OBJ_OWNER, owner);
+    this.setObjectValue(DataTypes.OBJ_DATA, data);
+  }
 
-    /**
-     * @param data
-     */
-    public void setData(byte[] data) {
-        setObjectValue(DataTypes.OBJ_DATA, data);
-    }
+  /**
+   * Creates a new FrameBodyPRIV datatype.
+   *
+   * @param byteBuffer
+   * @param frameSize
+   * @throws InvalidTagException if unable to create framebody from buffer
+   */
+  public FrameBodyPRIV(ByteBuffer byteBuffer, int frameSize)
+    throws InvalidTagException {
+    super(byteBuffer, frameSize);
+  }
 
-    /**
-     * @return
-     */
-    public byte[] getData() {
-        return (byte[]) getObjectValue(DataTypes.OBJ_DATA);
-    }
+  /**
+   * @param data
+   */
+  public void setData(byte[] data) {
+    setObjectValue(DataTypes.OBJ_DATA, data);
+  }
 
-    /**
-     * The ID3v2 frame identifier
-     *
-     * @return the ID3v2 frame identifier  for this frame type
-     */
-    public String getIdentifier() {
-        return ID3v24Frames.FRAME_ID_PRIVATE;
-    }
+  /**
+   * @return
+   */
+  public byte[] getData() {
+    return (byte[]) getObjectValue(DataTypes.OBJ_DATA);
+  }
 
-    /**
-     * @param owner
-     */
-    public void setOwner(String owner) {
-        setObjectValue(DataTypes.OBJ_OWNER, owner);
-    }
+  /**
+   * The ID3v2 frame identifier
+   *
+   * @return the ID3v2 frame identifier  for this frame type
+   */
+  public String getIdentifier() {
+    return ID3v24Frames.FRAME_ID_PRIVATE;
+  }
 
-    /**
-     * @return
-     */
-    public String getOwner() {
-        return (String) getObjectValue(DataTypes.OBJ_OWNER);
-    }
+  /**
+   * @param owner
+   */
+  public void setOwner(String owner) {
+    setObjectValue(DataTypes.OBJ_OWNER, owner);
+  }
 
-    /**
-     *
-     */
-    protected void setupObjectList() {
-        objectList.add(new StringNullTerminated(DataTypes.OBJ_OWNER, this));
-        objectList.add(new ByteArraySizeTerminated(DataTypes.OBJ_DATA, this));
-    }
+  /**
+   * @return
+   */
+  public String getOwner() {
+    return (String) getObjectValue(DataTypes.OBJ_OWNER);
+  }
+
+  /**
+   *
+   */
+  protected void setupObjectList() {
+    objectList.add(new StringNullTerminated(DataTypes.OBJ_OWNER, this));
+    objectList.add(new ByteArraySizeTerminated(DataTypes.OBJ_DATA, this));
+  }
 }

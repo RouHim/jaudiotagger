@@ -10,37 +10,45 @@ package org.jcodec.containers.mp4.boxes;
  */
 public class MovieFragmentBox extends NodeBox {
 
-    public MovieFragmentBox(Header atom) {
-        super(atom);
-    }
+  public MovieFragmentBox(Header atom) {
+    super(atom);
+  }
 
-    private MovieBox moov;
+  private MovieBox moov;
 
-    public static String fourcc() {
-        return "moof";
-    }
+  public static String fourcc() {
+    return "moof";
+  }
 
-    public MovieBox getMovie() {
-        return moov;
-    }
+  public MovieBox getMovie() {
+    return moov;
+  }
 
-    public void setMovie(MovieBox moov) {
-        this.moov = moov;
-    }
+  public void setMovie(MovieBox moov) {
+    this.moov = moov;
+  }
 
-    public TrackFragmentBox[] getTracks() {
-        return NodeBox.findAll(this, TrackFragmentBox.class, TrackFragmentBox.fourcc());
-    }
+  public TrackFragmentBox[] getTracks() {
+    return NodeBox.findAll(
+      this,
+      TrackFragmentBox.class,
+      TrackFragmentBox.fourcc()
+    );
+  }
 
-    public int getSequenceNumber() {
-        MovieFragmentHeaderBox mfhd = NodeBox
-                .findFirst(this, MovieFragmentHeaderBox.class, MovieFragmentHeaderBox.fourcc());
-        if (mfhd == null)
-            throw new RuntimeException("Corrupt movie fragment, no header atom found");
-        return mfhd.getSequenceNumber();
-    }
+  public int getSequenceNumber() {
+    MovieFragmentHeaderBox mfhd = NodeBox.findFirst(
+      this,
+      MovieFragmentHeaderBox.class,
+      MovieFragmentHeaderBox.fourcc()
+    );
+    if (mfhd == null) throw new RuntimeException(
+      "Corrupt movie fragment, no header atom found"
+    );
+    return mfhd.getSequenceNumber();
+  }
 
-    public static MovieFragmentBox createMovieFragmentBox() {
-        return new MovieFragmentBox(new Header(fourcc()));
-    }
+  public static MovieFragmentBox createMovieFragmentBox() {
+    return new MovieFragmentBox(new Header(fourcc()));
+  }
 }

@@ -26,23 +26,24 @@ package org.jaudiotagger.audio.flac.metadatablock;
  * then the audio frames.
  */
 public class MetadataBlock {
-    private final MetadataBlockHeader mbh;
-    private final MetadataBlockData mbd;
 
-    public MetadataBlock(MetadataBlockHeader mbh, MetadataBlockData mbd) {
-        this.mbh = mbh;
-        this.mbd = mbd;
-    }
+  private final MetadataBlockHeader mbh;
+  private final MetadataBlockData mbd;
 
-    public MetadataBlockHeader getHeader() {
-        return mbh;
-    }
+  public MetadataBlock(MetadataBlockHeader mbh, MetadataBlockData mbd) {
+    this.mbh = mbh;
+    this.mbd = mbd;
+  }
 
-    public MetadataBlockData getData() {
-        return mbd;
-    }
+  public MetadataBlockHeader getHeader() {
+    return mbh;
+  }
 
-    public int getLength() {
-        return MetadataBlockHeader.HEADER_LENGTH + mbh.getDataLength();
-    }
+  public MetadataBlockData getData() {
+    return mbd;
+  }
+
+  public int getLength() {
+    return MetadataBlockHeader.HEADER_LENGTH + mbh.getDataLength();
+  }
 }

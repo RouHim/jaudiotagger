@@ -20,86 +20,89 @@ import java.nio.ByteBuffer;
  */
 public class TrackFragmentBaseMediaDecodeTimeBox extends FullBox {
 
-    public TrackFragmentBaseMediaDecodeTimeBox(Header atom) {
-        super(atom);
+  public TrackFragmentBaseMediaDecodeTimeBox(Header atom) {
+    super(atom);
+  }
+
+  private long baseMediaDecodeTime;
+
+  public static TrackFragmentBaseMediaDecodeTimeBox createTrackFragmentBaseMediaDecodeTimeBox(
+    long baseMediaDecodeTime
+  ) {
+    TrackFragmentBaseMediaDecodeTimeBox box =
+      new TrackFragmentBaseMediaDecodeTimeBox(new Header(fourcc()));
+    box.baseMediaDecodeTime = baseMediaDecodeTime;
+    if (box.baseMediaDecodeTime > Integer.MAX_VALUE) {
+      box.version = 1;
+    }
+    return box;
+  }
+
+  public static String fourcc() {
+    return "tfdt";
+  }
+
+  @Override
+  public void parse(ByteBuffer input) {
+    super.parse(input);
+    if (version == 0) {
+      baseMediaDecodeTime = input.getInt();
+    } else if (version == 1) {
+      baseMediaDecodeTime = input.getLong();
+    } else throw new RuntimeException("Unsupported tfdt version");
+  }
+
+  @Override
+  protected void doWrite(ByteBuffer out) {
+    super.doWrite(out);
+    if (version == 0) {
+      out.putInt((int) baseMediaDecodeTime);
+    } else if (version == 1) {
+      out.putLong(baseMediaDecodeTime);
+    } else throw new RuntimeException("Unsupported tfdt version");
+  }
+
+  @Override
+  public int estimateSize() {
+    return 20;
+  }
+
+  public long getBaseMediaDecodeTime() {
+    return baseMediaDecodeTime;
+  }
+
+  public void setBaseMediaDecodeTime(long baseMediaDecodeTime) {
+    this.baseMediaDecodeTime = baseMediaDecodeTime;
+  }
+
+  public static Factory copy(TrackFragmentBaseMediaDecodeTimeBox other) {
+    return new Factory(other);
+  }
+
+  public static class Factory {
+
+    private TrackFragmentBaseMediaDecodeTimeBox box;
+
+    protected Factory(TrackFragmentBaseMediaDecodeTimeBox other) {
+      box =
+        TrackFragmentBaseMediaDecodeTimeBox.createTrackFragmentBaseMediaDecodeTimeBox(
+          other.baseMediaDecodeTime
+        );
+      box.version = other.version;
+      box.flags = other.flags;
     }
 
-    private long baseMediaDecodeTime;
+    public Factory baseMediaDecodeTime(long val) {
+      box.baseMediaDecodeTime = val;
+      return this;
+    }
 
-    public static TrackFragmentBaseMediaDecodeTimeBox createTrackFragmentBaseMediaDecodeTimeBox(
-            long baseMediaDecodeTime) {
-        TrackFragmentBaseMediaDecodeTimeBox box = new TrackFragmentBaseMediaDecodeTimeBox(new Header(fourcc()));
-        box.baseMediaDecodeTime = baseMediaDecodeTime;
-        if (box.baseMediaDecodeTime > Integer.MAX_VALUE) {
-            box.version = 1;
-        }
+    public TrackFragmentBaseMediaDecodeTimeBox create() {
+      try {
         return box;
+      } finally {
+        box = null;
+      }
     }
-
-    public static String fourcc() {
-        return "tfdt";
-    }
-
-    @Override
-    public void parse(ByteBuffer input) {
-        super.parse(input);
-        if (version == 0) {
-            baseMediaDecodeTime = input.getInt();
-        } else if (version == 1) {
-            baseMediaDecodeTime = input.getLong();
-        } else
-            throw new RuntimeException("Unsupported tfdt version");
-    }
-
-    @Override
-    protected void doWrite(ByteBuffer out) {
-        super.doWrite(out);
-        if (version == 0) {
-            out.putInt((int) baseMediaDecodeTime);
-        } else if (version == 1) {
-            out.putLong(baseMediaDecodeTime);
-        } else
-            throw new RuntimeException("Unsupported tfdt version");
-    }
-
-    @Override
-    public int estimateSize() {
-        return 20;
-    }
-
-    public long getBaseMediaDecodeTime() {
-        return baseMediaDecodeTime;
-    }
-
-    public void setBaseMediaDecodeTime(long baseMediaDecodeTime) {
-        this.baseMediaDecodeTime = baseMediaDecodeTime;
-    }
-
-    public static Factory copy(TrackFragmentBaseMediaDecodeTimeBox other) {
-        return new Factory(other);
-    }
-
-    public static class Factory {
-        private TrackFragmentBaseMediaDecodeTimeBox box;
-
-        protected Factory(TrackFragmentBaseMediaDecodeTimeBox other) {
-            box = TrackFragmentBaseMediaDecodeTimeBox
-                    .createTrackFragmentBaseMediaDecodeTimeBox(other.baseMediaDecodeTime);
-            box.version = other.version;
-            box.flags = other.flags;
-        }
-
-        public Factory baseMediaDecodeTime(long val) {
-            box.baseMediaDecodeTime = val;
-            return this;
-        }
-
-        public TrackFragmentBaseMediaDecodeTimeBox create() {
-            try {
-                return box;
-            } finally {
-                box = null;
-            }
-        }
-    }
+  }
 }

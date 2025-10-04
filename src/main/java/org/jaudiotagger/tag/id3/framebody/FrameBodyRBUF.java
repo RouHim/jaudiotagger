@@ -22,75 +22,91 @@
  */
 package org.jaudiotagger.tag.id3.framebody;
 
+import java.nio.ByteBuffer;
 import org.jaudiotagger.tag.InvalidTagException;
 import org.jaudiotagger.tag.datatype.BooleanByte;
 import org.jaudiotagger.tag.datatype.DataTypes;
 import org.jaudiotagger.tag.datatype.NumberFixedLength;
 import org.jaudiotagger.tag.id3.ID3v24Frames;
 
-import java.nio.ByteBuffer;
-
-
 /**
  * Body of Recommended buffer size frame, generally used for streaming audio
  */
-public class FrameBodyRBUF extends AbstractID3v2FrameBody implements ID3v24FrameBody, ID3v23FrameBody {
-    private static final int BUFFER_FIELD_SIZE = 3;
-    private static final int EMBED_FLAG_BIT_POSITION = 1;
-    private static final int OFFSET_FIELD_SIZE = 4;
+public class FrameBodyRBUF
+  extends AbstractID3v2FrameBody
+  implements ID3v24FrameBody, ID3v23FrameBody {
 
-    /**
-     * Creates a new FrameBodyRBUF datatype.
-     */
-    public FrameBodyRBUF() {
-        this.setObjectValue(DataTypes.OBJ_BUFFER_SIZE, (byte) 0);
-        this.setObjectValue(DataTypes.OBJ_EMBED_FLAG, Boolean.FALSE);
-        this.setObjectValue(DataTypes.OBJ_OFFSET, (byte) 0);
-    }
+  private static final int BUFFER_FIELD_SIZE = 3;
+  private static final int EMBED_FLAG_BIT_POSITION = 1;
+  private static final int OFFSET_FIELD_SIZE = 4;
 
-    public FrameBodyRBUF(FrameBodyRBUF body) {
-        super(body);
-    }
+  /**
+   * Creates a new FrameBodyRBUF datatype.
+   */
+  public FrameBodyRBUF() {
+    this.setObjectValue(DataTypes.OBJ_BUFFER_SIZE, (byte) 0);
+    this.setObjectValue(DataTypes.OBJ_EMBED_FLAG, Boolean.FALSE);
+    this.setObjectValue(DataTypes.OBJ_OFFSET, (byte) 0);
+  }
 
-    /**
-     * Creates a new FrameBodyRBUF datatype.
-     *
-     * @param bufferSize
-     * @param embeddedInfoFlag
-     * @param offsetToNextTag
-     */
-    public FrameBodyRBUF(byte bufferSize, boolean embeddedInfoFlag, byte offsetToNextTag) {
-        this.setObjectValue(DataTypes.OBJ_BUFFER_SIZE, bufferSize);
-        this.setObjectValue(DataTypes.OBJ_EMBED_FLAG, embeddedInfoFlag);
-        this.setObjectValue(DataTypes.OBJ_OFFSET, offsetToNextTag);
-    }
+  public FrameBodyRBUF(FrameBodyRBUF body) {
+    super(body);
+  }
 
-    /**
-     * Creates a new FrameBodyRBUF datatype.
-     *
-     * @param byteBuffer
-     * @param frameSize
-     * @throws InvalidTagException if unable to create framebody from buffer
-     */
-    public FrameBodyRBUF(ByteBuffer byteBuffer, int frameSize) throws InvalidTagException {
-        super(byteBuffer, frameSize);
-    }
+  /**
+   * Creates a new FrameBodyRBUF datatype.
+   *
+   * @param bufferSize
+   * @param embeddedInfoFlag
+   * @param offsetToNextTag
+   */
+  public FrameBodyRBUF(
+    byte bufferSize,
+    boolean embeddedInfoFlag,
+    byte offsetToNextTag
+  ) {
+    this.setObjectValue(DataTypes.OBJ_BUFFER_SIZE, bufferSize);
+    this.setObjectValue(DataTypes.OBJ_EMBED_FLAG, embeddedInfoFlag);
+    this.setObjectValue(DataTypes.OBJ_OFFSET, offsetToNextTag);
+  }
 
-    /**
-     * The ID3v2 frame identifier
-     *
-     * @return the ID3v2 frame identifier  for this frame type
-     */
-    public String getIdentifier() {
-        return ID3v24Frames.FRAME_ID_RECOMMENDED_BUFFER_SIZE;
-    }
+  /**
+   * Creates a new FrameBodyRBUF datatype.
+   *
+   * @param byteBuffer
+   * @param frameSize
+   * @throws InvalidTagException if unable to create framebody from buffer
+   */
+  public FrameBodyRBUF(ByteBuffer byteBuffer, int frameSize)
+    throws InvalidTagException {
+    super(byteBuffer, frameSize);
+  }
 
-    /**
-     *
-     */
-    protected void setupObjectList() {
-        objectList.add(new NumberFixedLength(DataTypes.OBJ_BUFFER_SIZE, this, BUFFER_FIELD_SIZE));
-        objectList.add(new BooleanByte(DataTypes.OBJ_EMBED_FLAG, this, (byte) EMBED_FLAG_BIT_POSITION));
-        objectList.add(new NumberFixedLength(DataTypes.OBJ_OFFSET, this, OFFSET_FIELD_SIZE));
-    }
+  /**
+   * The ID3v2 frame identifier
+   *
+   * @return the ID3v2 frame identifier  for this frame type
+   */
+  public String getIdentifier() {
+    return ID3v24Frames.FRAME_ID_RECOMMENDED_BUFFER_SIZE;
+  }
+
+  /**
+   *
+   */
+  protected void setupObjectList() {
+    objectList.add(
+      new NumberFixedLength(DataTypes.OBJ_BUFFER_SIZE, this, BUFFER_FIELD_SIZE)
+    );
+    objectList.add(
+      new BooleanByte(
+        DataTypes.OBJ_EMBED_FLAG,
+        this,
+        (byte) EMBED_FLAG_BIT_POSITION
+      )
+    );
+    objectList.add(
+      new NumberFixedLength(DataTypes.OBJ_OFFSET, this, OFFSET_FIELD_SIZE)
+    );
+  }
 }

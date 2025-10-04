@@ -11,94 +11,101 @@ import java.nio.ByteBuffer;
  * @author The JCodec project
  */
 public class MediaHeaderBox extends FullBox {
-    public MediaHeaderBox(Header atom) {
-        super(atom);
-    }
 
-    private long created;
-    private long modified;
-    private int timescale;
-    private long duration;
-    private int language;
-    private int quality;
+  public MediaHeaderBox(Header atom) {
+    super(atom);
+  }
 
-    public static String fourcc() {
-        return "mdhd";
-    }
+  private long created;
+  private long modified;
+  private int timescale;
+  private long duration;
+  private int language;
+  private int quality;
 
-    public static MediaHeaderBox createMediaHeaderBox(int timescale, long duration, int language, long created,
-                                                      long modified, int quality) {
-        MediaHeaderBox mdhd = new MediaHeaderBox(new Header(fourcc()));
-        mdhd.timescale = timescale;
-        mdhd.duration = duration;
-        mdhd.language = language;
-        mdhd.created = created;
-        mdhd.modified = modified;
-        mdhd.quality = quality;
-        return mdhd;
-    }
+  public static String fourcc() {
+    return "mdhd";
+  }
 
-    public int getTimescale() {
-        return timescale;
-    }
+  public static MediaHeaderBox createMediaHeaderBox(
+    int timescale,
+    long duration,
+    int language,
+    long created,
+    long modified,
+    int quality
+  ) {
+    MediaHeaderBox mdhd = new MediaHeaderBox(new Header(fourcc()));
+    mdhd.timescale = timescale;
+    mdhd.duration = duration;
+    mdhd.language = language;
+    mdhd.created = created;
+    mdhd.modified = modified;
+    mdhd.quality = quality;
+    return mdhd;
+  }
 
-    public long getDuration() {
-        return duration;
-    }
+  public int getTimescale() {
+    return timescale;
+  }
 
-    public long getCreated() {
-        return created;
-    }
+  public long getDuration() {
+    return duration;
+  }
 
-    public long getModified() {
-        return modified;
-    }
+  public long getCreated() {
+    return created;
+  }
 
-    public int getLanguage() {
-        return language;
-    }
+  public long getModified() {
+    return modified;
+  }
 
-    public int getQuality() {
-        return quality;
-    }
+  public int getLanguage() {
+    return language;
+  }
 
-    public void setDuration(long duration) {
-        this.duration = duration;
-    }
+  public int getQuality() {
+    return quality;
+  }
 
-    public void setTimescale(int timescale) {
-        this.timescale = timescale;
-    }
+  public void setDuration(long duration) {
+    this.duration = duration;
+  }
 
-    public void parse(ByteBuffer input) {
-        super.parse(input);
-        if (version == 0) {
-            created = input.getInt();
-            modified = input.getInt();
-            timescale = input.getInt();
-            duration = input.getInt();
-        } else if (version == 1) {
-            created = (int) input.getLong();
-            modified = (int) input.getLong();
-            timescale = input.getInt();
-            duration = input.getLong();
-        } else {
-            throw new RuntimeException("Unsupported version");
-        }
-    }
+  public void setTimescale(int timescale) {
+    this.timescale = timescale;
+  }
 
-    public void doWrite(ByteBuffer out) {
-        super.doWrite(out);
-        out.putInt((int) created);
-        out.putInt((int) modified);
-        out.putInt(timescale);
-        out.putInt((int) duration);
-        out.putShort((short) language);
-        out.putShort((short) quality);
+  public void parse(ByteBuffer input) {
+    super.parse(input);
+    if (version == 0) {
+      created = input.getInt();
+      modified = input.getInt();
+      timescale = input.getInt();
+      duration = input.getInt();
+    } else if (version == 1) {
+      created = (int) input.getLong();
+      modified = (int) input.getLong();
+      timescale = input.getInt();
+      duration = input.getLong();
+    } else {
+      throw new RuntimeException("Unsupported version");
     }
+  }
 
-    @Override
-    public int estimateSize() {
-        return 32;
-    }
+  public void doWrite(ByteBuffer out) {
+    super.doWrite(out);
+    out.putInt((int) created);
+    out.putInt((int) modified);
+    out.putInt(timescale);
+    out.putInt((int) duration);
+    out.putShort((short) language);
+    out.putShort((short) quality);
+  }
+
+  @Override
+  public int estimateSize() {
+    return 32;
+  }
 }

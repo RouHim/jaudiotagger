@@ -9,12 +9,12 @@ package org.jcodec.containers.mp4.boxes;
  * @author The JCodec project
  */
 public class WaveExtension extends NodeBox {
-    public static String fourcc() {
-        return "wave";
-    }
 
-    public WaveExtension(Header atom) {
-        super(atom);
+  public static String fourcc() {
+    return "wave";
+  }
 
-    }
+  public WaveExtension(Header atom) {
+    super(atom);
+  }
 }

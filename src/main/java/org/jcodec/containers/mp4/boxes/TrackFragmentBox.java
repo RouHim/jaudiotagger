@@ -12,23 +12,27 @@ package org.jcodec.containers.mp4.boxes;
  */
 public class TrackFragmentBox extends NodeBox {
 
-    public TrackFragmentBox(Header atom) {
-        super(atom);
-    }
+  public TrackFragmentBox(Header atom) {
+    super(atom);
+  }
 
-    public static String fourcc() {
-        return "traf";
-    }
+  public static String fourcc() {
+    return "traf";
+  }
 
-    public int getTrackId() {
-        TrackFragmentHeaderBox tfhd = NodeBox
-                .findFirst(this, TrackFragmentHeaderBox.class, TrackFragmentHeaderBox.fourcc());
-        if (tfhd == null)
-            throw new RuntimeException("Corrupt track fragment, no header atom found");
-        return tfhd.getTrackId();
-    }
+  public int getTrackId() {
+    TrackFragmentHeaderBox tfhd = NodeBox.findFirst(
+      this,
+      TrackFragmentHeaderBox.class,
+      TrackFragmentHeaderBox.fourcc()
+    );
+    if (tfhd == null) throw new RuntimeException(
+      "Corrupt track fragment, no header atom found"
+    );
+    return tfhd.getTrackId();
+  }
 
-    public static TrackFragmentBox createTrackFragmentBox() {
-        return new TrackFragmentBox(new Header(fourcc()));
-    }
+  public static TrackFragmentBox createTrackFragmentBox() {
+    return new TrackFragmentBox(new Header(fourcc()));
+  }
 }

@@ -11,38 +11,39 @@ import java.nio.ByteBuffer;
  * @author The JCodec project
  */
 public class SoundMediaHeaderBox extends FullBox {
-    private short balance;
 
-    public static String fourcc() {
-        return "smhd";
-    }
+  private short balance;
 
-    public static SoundMediaHeaderBox createSoundMediaHeaderBox() {
-        return new SoundMediaHeaderBox(new Header(fourcc()));
-    }
+  public static String fourcc() {
+    return "smhd";
+  }
 
-    public SoundMediaHeaderBox(Header atom) {
-        super(atom);
-    }
+  public static SoundMediaHeaderBox createSoundMediaHeaderBox() {
+    return new SoundMediaHeaderBox(new Header(fourcc()));
+  }
 
-    public void parse(ByteBuffer input) {
-        super.parse(input);
-        balance = input.getShort();
-        input.getShort();
-    }
+  public SoundMediaHeaderBox(Header atom) {
+    super(atom);
+  }
 
-    protected void doWrite(ByteBuffer out) {
-        super.doWrite(out);
-        out.putShort(balance);
-        out.putShort((short) 0);
-    }
+  public void parse(ByteBuffer input) {
+    super.parse(input);
+    balance = input.getShort();
+    input.getShort();
+  }
 
-    @Override
-    public int estimateSize() {
-        return 16;
-    }
+  protected void doWrite(ByteBuffer out) {
+    super.doWrite(out);
+    out.putShort(balance);
+    out.putShort((short) 0);
+  }
 
-    public short getBalance() {
-        return balance;
-    }
+  @Override
+  public int estimateSize() {
+    return 16;
+  }
+
+  public short getBalance() {
+    return balance;
+  }
 }

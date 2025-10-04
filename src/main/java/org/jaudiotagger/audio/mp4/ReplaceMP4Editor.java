@@ -1,12 +1,11 @@
 package org.jaudiotagger.audio.mp4;
 
+import java.io.IOException;
+import java.nio.channels.FileChannel;
 import org.jcodec.containers.mp4.MP4Util;
 import org.jcodec.containers.mp4.MP4Util.Movie;
 import org.jcodec.containers.mp4.boxes.Box;
 import org.jcodec.containers.mp4.boxes.MovieBox;
-
-import java.io.IOException;
-import java.nio.channels.FileChannel;
 
 /**
  * A full fledged MP4 editor.
@@ -20,20 +19,21 @@ import java.nio.channels.FileChannel;
  */
 public class ReplaceMP4Editor {
 
-    public void modifyOrReplace(FileChannel src, FileChannel dst, MovieBox edit) throws IOException {
-        boolean modify = new InplaceMP4Editor().modify(dst, edit);
-        if (!modify)
-            copy(src, dst, edit);
+  public void modifyOrReplace(FileChannel src, FileChannel dst, MovieBox edit)
+    throws IOException {
+    boolean modify = new InplaceMP4Editor().modify(dst, edit);
+    if (!modify) copy(src, dst, edit);
+  }
+
+  public void copy(FileChannel src, FileChannel dst, MovieBox edit)
+    throws IOException {
+    final Movie movie = MP4Util.parseFullMovieChannel(src);
+
+    for (Box box : edit.getBoxes()) {
+      movie.getMoov().replaceBox(box);
     }
 
-    public void copy(FileChannel src, FileChannel dst, MovieBox edit) throws IOException {
-        final Movie movie = MP4Util.parseFullMovieChannel(src);
-
-        for (Box box : edit.getBoxes()) {
-            movie.getMoov().replaceBox(box);
-        }
-
-        Flatten fl = new Flatten();
-        fl.flattenChannel(movie, dst);
-    }
+    Flatten fl = new Flatten();
+    fl.flattenChannel(movie, dst);
+  }
 }

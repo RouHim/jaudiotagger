@@ -9,209 +9,218 @@ import java.nio.ByteBuffer;
  * @author The JCodec project
  */
 public class TrackHeaderBox extends FullBox {
-    private int trackId;
-    private long duration;
-    private float width;
-    private float height;
-    private long created;
-    private long modified;
-    private float volume;
-    private short layer;
-    private long altGroup;
-    private int[] matrix;
 
-    public static String fourcc() {
-        return "tkhd";
+  private int trackId;
+  private long duration;
+  private float width;
+  private float height;
+  private long created;
+  private long modified;
+  private float volume;
+  private short layer;
+  private long altGroup;
+  private int[] matrix;
+
+  public static String fourcc() {
+    return "tkhd";
+  }
+
+  public static TrackHeaderBox createTrackHeaderBox(
+    int trackId,
+    long duration,
+    float width,
+    float height,
+    long created,
+    long modified,
+    float volume,
+    short layer,
+    long altGroup,
+    int[] matrix
+  ) {
+    TrackHeaderBox box = new TrackHeaderBox(new Header(fourcc()));
+    box.trackId = trackId;
+    box.duration = duration;
+    box.width = width;
+    box.height = height;
+    box.created = created;
+    box.modified = modified;
+    box.volume = volume;
+    box.layer = layer;
+    box.altGroup = altGroup;
+    box.matrix = matrix;
+    return box;
+  }
+
+  public TrackHeaderBox(Header header) {
+    super(header);
+  }
+
+  public void parse(ByteBuffer input) {
+    super.parse(input);
+
+    if (version == 0) {
+      created = input.getInt(); // Creation time
+      modified = input.getInt(); // Modification time
+    } else {
+      created = (int) input.getLong();
+      modified = (int) input.getLong();
+    }
+    trackId = input.getInt();
+    input.getInt();
+
+    if (version == 0) {
+      duration = input.getInt();
+    } else {
+      duration = input.getLong();
     }
 
-    public static TrackHeaderBox createTrackHeaderBox(int trackId, long duration, float width, float height,
-                                                      long created, long modified, float volume, short layer, long altGroup, int[] matrix) {
-        TrackHeaderBox box = new TrackHeaderBox(new Header(fourcc()));
-        box.trackId = trackId;
-        box.duration = duration;
-        box.width = width;
-        box.height = height;
-        box.created = created;
-        box.modified = modified;
-        box.volume = volume;
-        box.layer = layer;
-        box.altGroup = altGroup;
-        box.matrix = matrix;
-        return box;
+    input.getInt(); // Reserved
+    input.getInt();
+
+    layer = input.getShort();
+    altGroup = input.getShort();
+
+    volume = readVolume(input);
+
+    input.getShort();
+
+    readMatrix(input);
+
+    width = input.getInt() / 65536f;
+    height = input.getInt() / 65536f;
+  }
+
+  private void readMatrix(ByteBuffer input) {
+    matrix = new int[9];
+    for (int i = 0; i < 9; i++) matrix[i] = input.getInt() / 65536;
+  }
+
+  private float readVolume(ByteBuffer input) {
+    return (float) (input.getShort() / 256.);
+  }
+
+  public int getNo() {
+    return trackId;
+  }
+
+  public long getDuration() {
+    return duration;
+  }
+
+  public float getWidth() {
+    return width;
+  }
+
+  public float getHeight() {
+    return height;
+  }
+
+  public void doWrite(ByteBuffer out) {
+    super.doWrite(out);
+
+    if (version == 0) {
+      out.putInt((int) created);
+      out.putInt((int) modified);
+    } else {
+      out.putLong(created);
+      out.putLong(modified);
     }
 
-    public TrackHeaderBox(Header header) {
-        super(header);
+    out.putInt(trackId);
+    out.putInt(0);
+
+    if (version == 0) {
+      out.putInt((int) duration);
+    } else {
+      out.putLong(duration);
     }
 
-    public void parse(ByteBuffer input) {
-        super.parse(input);
+    out.putInt(0);
+    out.putInt(0);
 
-        if (version == 0) {
-            created = input.getInt(); // Creation time
-            modified = input.getInt(); // Modification time
-        } else {
-            created = (int) input.getLong();
-            modified = (int) input.getLong();
-        }
-        trackId = input.getInt();
-        input.getInt();
+    out.putShort(layer);
+    out.putShort((short) altGroup);
 
-        if (version == 0) {
-            duration = input.getInt();
-        } else {
-            duration = input.getLong();
-        }
+    writeVolume(out);
 
-        input.getInt(); // Reserved
-        input.getInt();
+    out.putShort((short) 0);
 
-        layer = input.getShort();
-        altGroup = input.getShort();
+    writeMatrix(out);
 
-        volume = readVolume(input);
+    out.putInt((int) (width * 65536));
+    out.putInt((int) (height * 65536));
+  }
 
-        input.getShort();
+  @Override
+  public int estimateSize() {
+    return 92;
+  }
 
-        readMatrix(input);
+  private void writeMatrix(ByteBuffer out) {
+    for (int i = 0; i < 9; i++) out.putInt(matrix[i]);
+  }
 
-        width = input.getInt() / 65536f;
-        height = input.getInt() / 65536f;
-    }
+  private void writeVolume(ByteBuffer out) {
+    out.putShort((short) (volume * 256.));
+  }
 
-    private void readMatrix(ByteBuffer input) {
-        matrix = new int[9];
-        for (int i = 0; i < 9; i++)
-            matrix[i] = input.getInt() / 65536;
-    }
+  public int getTrackId() {
+    return trackId;
+  }
 
-    private float readVolume(ByteBuffer input) {
-        return (float) (input.getShort() / 256.);
-    }
+  public long getCreated() {
+    return created;
+  }
 
-    public int getNo() {
-        return trackId;
-    }
+  public long getModified() {
+    return modified;
+  }
 
-    public long getDuration() {
-        return duration;
-    }
+  public float getVolume() {
+    return volume;
+  }
 
-    public float getWidth() {
-        return width;
-    }
+  public short getLayer() {
+    return layer;
+  }
 
-    public float getHeight() {
-        return height;
-    }
+  public long getAltGroup() {
+    return altGroup;
+  }
 
-    public void doWrite(ByteBuffer out) {
-        super.doWrite(out);
+  public int[] getMatrix() {
+    return matrix;
+  }
 
-        if (version == 0) {
-            out.putInt((int) created);
-            out.putInt((int) modified);
-        } else {
-            out.putLong(created);
-            out.putLong(modified);
-        }
+  public void setWidth(float width) {
+    this.width = width;
+  }
 
-        out.putInt(trackId);
-        out.putInt(0);
+  public void setHeight(float height) {
+    this.height = height;
+  }
 
-        if (version == 0) {
-            out.putInt((int) duration);
-        } else {
-            out.putLong(duration);
-        }
+  public void setDuration(long duration) {
+    this.duration = duration;
+  }
 
-        out.putInt(0);
-        out.putInt(0);
+  public void setNo(int no) {
+    this.trackId = no;
+  }
 
-        out.putShort(layer);
-        out.putShort((short) altGroup);
+  public boolean isOrientation0() {
+    return matrix != null && matrix[0] == 1 && matrix[4] == 1;
+  }
 
-        writeVolume(out);
+  public boolean isOrientation90() {
+    return matrix != null && matrix[1] == 1 && matrix[3] == -1;
+  }
 
-        out.putShort((short) 0);
+  public boolean isOrientation180() {
+    return matrix != null && matrix[0] == -1 && matrix[4] == -1;
+  }
 
-        writeMatrix(out);
-
-        out.putInt((int) (width * 65536));
-        out.putInt((int) (height * 65536));
-    }
-
-    @Override
-    public int estimateSize() {
-        return 92;
-    }
-
-    private void writeMatrix(ByteBuffer out) {
-        for (int i = 0; i < 9; i++)
-            out.putInt(matrix[i]);
-    }
-
-    private void writeVolume(ByteBuffer out) {
-        out.putShort((short) (volume * 256.));
-    }
-
-    public int getTrackId() {
-        return trackId;
-    }
-
-    public long getCreated() {
-        return created;
-    }
-
-    public long getModified() {
-        return modified;
-    }
-
-    public float getVolume() {
-        return volume;
-    }
-
-    public short getLayer() {
-        return layer;
-    }
-
-    public long getAltGroup() {
-        return altGroup;
-    }
-
-    public int[] getMatrix() {
-        return matrix;
-    }
-
-    public void setWidth(float width) {
-        this.width = width;
-    }
-
-    public void setHeight(float height) {
-        this.height = height;
-    }
-
-    public void setDuration(long duration) {
-        this.duration = duration;
-    }
-
-    public void setNo(int no) {
-        this.trackId = no;
-    }
-
-    public boolean isOrientation0() {
-        return matrix != null && matrix[0] == 1 && matrix[4] == 1;
-    }
-
-    public boolean isOrientation90() {
-        return matrix != null && matrix[1] == 1 && matrix[3] == -1;
-    }
-
-    public boolean isOrientation180() {
-        return matrix != null && matrix[0] == -1 && matrix[4] == -1;
-    }
-
-    public boolean isOrientation270() {
-        return matrix != null && matrix[1] == -1 && matrix[3] == 1;
-    }
+  public boolean isOrientation270() {
+    return matrix != null && matrix[1] == -1 && matrix[3] == 1;
+  }
 }

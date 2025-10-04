@@ -18,30 +18,27 @@
  */
 package org.jaudiotagger.audio.aiff;
 
+import java.nio.channels.FileChannel;
 import org.jaudiotagger.audio.exceptions.CannotWriteException;
 import org.jaudiotagger.audio.generic.AudioFileWriter2;
 import org.jaudiotagger.tag.Tag;
-
-import java.nio.channels.FileChannel;
-
 
 /**
  * Write/delete tag info for Aiff file (Old Apple format)
  */
 public class AiffFileWriter extends AudioFileWriter2 {
 
-    private final AiffTagWriter tw = new AiffTagWriter();
+  private final AiffTagWriter tw = new AiffTagWriter();
 
-    @Override
-    protected void writeTag(Tag tag, FileChannel channel, final String fileName) throws CannotWriteException {
-        tw.write(tag, channel, fileName);
-    }
+  @Override
+  protected void writeTag(Tag tag, FileChannel channel, final String fileName)
+    throws CannotWriteException {
+    tw.write(tag, channel, fileName);
+  }
 
-    @Override
-    protected void deleteTag(Tag tag, FileChannel channel, final String fileName) throws CannotWriteException {
-        tw.delete(tag, channel, fileName);
-    }
-
-
+  @Override
+  protected void deleteTag(Tag tag, FileChannel channel, final String fileName)
+    throws CannotWriteException {
+    tw.delete(tag, channel, fileName);
+  }
 }
-

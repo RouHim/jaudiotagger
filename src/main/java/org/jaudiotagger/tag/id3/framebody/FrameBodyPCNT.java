@@ -15,12 +15,11 @@
  */
 package org.jaudiotagger.tag.id3.framebody;
 
+import java.nio.ByteBuffer;
 import org.jaudiotagger.tag.InvalidTagException;
 import org.jaudiotagger.tag.datatype.DataTypes;
 import org.jaudiotagger.tag.datatype.NumberVariableLength;
 import org.jaudiotagger.tag.id3.ID3v24Frames;
-
-import java.nio.ByteBuffer;
 
 /**
  * Play counter frame.
@@ -46,69 +45,79 @@ import java.nio.ByteBuffer;
  * @author : Eric Farng
  * @version $Id$
  */
-public class FrameBodyPCNT extends AbstractID3v2FrameBody implements ID3v24FrameBody, ID3v23FrameBody {
-    private static final int COUNTER_MINIMUM_FIELD_SIZE = 4;
+public class FrameBodyPCNT
+  extends AbstractID3v2FrameBody
+  implements ID3v24FrameBody, ID3v23FrameBody {
 
-    /**
-     * Creates a new FrameBodyPCNT datatype.
-     */
-    public FrameBodyPCNT() {
-        this.setObjectValue(DataTypes.OBJ_NUMBER, 0L);
-    }
+  private static final int COUNTER_MINIMUM_FIELD_SIZE = 4;
 
-    public FrameBodyPCNT(FrameBodyPCNT body) {
-        super(body);
-    }
+  /**
+   * Creates a new FrameBodyPCNT datatype.
+   */
+  public FrameBodyPCNT() {
+    this.setObjectValue(DataTypes.OBJ_NUMBER, 0L);
+  }
 
-    /**
-     * Creates a new FrameBodyPCNT datatype.
-     *
-     * @param counter
-     */
-    public FrameBodyPCNT(long counter) {
-        this.setObjectValue(DataTypes.OBJ_NUMBER, counter);
-    }
+  public FrameBodyPCNT(FrameBodyPCNT body) {
+    super(body);
+  }
 
-    /**
-     * Creates a new FrameBodyPCNT datatype.
-     *
-     * @param byteBuffer
-     * @param frameSize
-     * @throws InvalidTagException if unable to create framebody from buffer
-     */
-    public FrameBodyPCNT(ByteBuffer byteBuffer, int frameSize) throws InvalidTagException {
-        super(byteBuffer, frameSize);
-    }
+  /**
+   * Creates a new FrameBodyPCNT datatype.
+   *
+   * @param counter
+   */
+  public FrameBodyPCNT(long counter) {
+    this.setObjectValue(DataTypes.OBJ_NUMBER, counter);
+  }
 
-    /**
-     * @return the play count of this file
-     */
-    public long getCounter() {
-        return ((Number) getObjectValue(DataTypes.OBJ_NUMBER)).longValue();
-    }
+  /**
+   * Creates a new FrameBodyPCNT datatype.
+   *
+   * @param byteBuffer
+   * @param frameSize
+   * @throws InvalidTagException if unable to create framebody from buffer
+   */
+  public FrameBodyPCNT(ByteBuffer byteBuffer, int frameSize)
+    throws InvalidTagException {
+    super(byteBuffer, frameSize);
+  }
 
-    /**
-     * Set the play counter of this file
-     *
-     * @param counter
-     */
-    public void setCounter(long counter) {
-        setObjectValue(DataTypes.OBJ_NUMBER, counter);
-    }
+  /**
+   * @return the play count of this file
+   */
+  public long getCounter() {
+    return ((Number) getObjectValue(DataTypes.OBJ_NUMBER)).longValue();
+  }
 
-    /**
-     * The ID3v2 frame identifier
-     *
-     * @return the ID3v2 frame identifier  for this frame type
-     */
-    public String getIdentifier() {
-        return ID3v24Frames.FRAME_ID_PLAY_COUNTER;
-    }
+  /**
+   * Set the play counter of this file
+   *
+   * @param counter
+   */
+  public void setCounter(long counter) {
+    setObjectValue(DataTypes.OBJ_NUMBER, counter);
+  }
 
-    /**
-     *
-     */
-    protected void setupObjectList() {
-        objectList.add(new NumberVariableLength(DataTypes.OBJ_NUMBER, this, COUNTER_MINIMUM_FIELD_SIZE));
-    }
+  /**
+   * The ID3v2 frame identifier
+   *
+   * @return the ID3v2 frame identifier  for this frame type
+   */
+  public String getIdentifier() {
+    return ID3v24Frames.FRAME_ID_PLAY_COUNTER;
+  }
+
+  /**
+   *
+   */
+  protected void setupObjectList() {
+    objectList.add(
+      new NumberVariableLength(
+        DataTypes.OBJ_NUMBER,
+        this,
+        COUNTER_MINIMUM_FIELD_SIZE
+      )
+    );
+  }
 }

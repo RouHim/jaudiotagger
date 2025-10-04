@@ -1,5 +1,8 @@
 package org.jaudiotagger.issues;
 
+import static org.junit.jupiter.api.Assertions.*;
+
+import java.io.File;
 import org.jaudiotagger.AbstractTestCase;
 import org.jaudiotagger.audio.AudioFile;
 import org.jaudiotagger.audio.AudioFileIO;
@@ -8,151 +11,139 @@ import org.jaudiotagger.tag.Tag;
 import org.jaudiotagger.tag.TagOptionSingleton;
 import org.junit.jupiter.api.Test;
 
-import java.io.File;
-
-import static org.junit.jupiter.api.Assertions.*;
-
 public class Issue265Test extends AbstractTestCase {
 
-    /**
-     * Try an d write too large a file
-     */
-    @Test
-    public void testWriteTooLargeStringToFile() {
-        File orig = new File("testdata", "test7.wma");
-        if (!orig.isFile()) {
-            System.err.println("Unable to test file - not available");
-            return;
-        }
-
-        Exception exceptionCaught = null;
-        try {
-            TagOptionSingleton.getInstance().setTruncateTextWithoutErrors(false);
-
-            File testFile = AbstractTestCase.copyAudioToTmp("test7.wma");
-            AudioFile f = AudioFileIO.read(testFile);
-            Tag tag = f.getTag();
-            assertEquals(0, tag.getFields(FieldKey.COVER_ART).size());
-
-
-            //Now createField artwork field
-            StringBuffer sb = new StringBuffer();
-            for (int i = 0; i < 34000; i++) {
-                sb.append("x");
-            }
-            tag.setField(FieldKey.ARTIST, sb.toString());
-
-        } catch (Exception e) {
-            e.printStackTrace();
-            exceptionCaught = e;
-        }
-        assertNotNull(exceptionCaught);
-        assertTrue(exceptionCaught instanceof IllegalArgumentException);
+  /**
+   * Try an d write too large a file
+   */
+  @Test
+  public void testWriteTooLargeStringToFile() {
+    File orig = new File("testdata", "test7.wma");
+    if (!orig.isFile()) {
+      System.err.println("Unable to test file - not available");
+      return;
     }
 
+    Exception exceptionCaught = null;
+    try {
+      TagOptionSingleton.getInstance().setTruncateTextWithoutErrors(false);
 
-    /**
-     * Try and write too large a file, automtically truncated if option set
-     */
-    @Test
-    public void testWriteTruncateStringToFile() {
-        File orig = new File("testdata", "test7.wma");
-        if (!orig.isFile()) {
-            System.err.println("Unable to test file - not available");
-            return;
-        }
+      File testFile = AbstractTestCase.copyAudioToTmp("test7.wma");
+      AudioFile f = AudioFileIO.read(testFile);
+      Tag tag = f.getTag();
+      assertEquals(0, tag.getFields(FieldKey.COVER_ART).size());
 
-        Exception exceptionCaught = null;
-        try {
-            File testFile = AbstractTestCase.copyAudioToTmp("test7.wma");
-            AudioFile f = AudioFileIO.read(testFile);
-            Tag tag = f.getTag();
-            assertEquals(0, tag.getFields(FieldKey.COVER_ART).size());
+      //Now createField artwork field
+      StringBuffer sb = new StringBuffer();
+      for (int i = 0; i < 34000; i++) {
+        sb.append("x");
+      }
+      tag.setField(FieldKey.ARTIST, sb.toString());
+    } catch (Exception e) {
+      e.printStackTrace();
+      exceptionCaught = e;
+    }
+    assertNotNull(exceptionCaught);
+    assertTrue(exceptionCaught instanceof IllegalArgumentException);
+  }
 
-            //Enable value
-            TagOptionSingleton.getInstance().setTruncateTextWithoutErrors(true);
-
-            //Now createField artwork field
-            StringBuffer sb = new StringBuffer();
-            for (int i = 0; i < 34000; i++) {
-                sb.append("x");
-            }
-            tag.setField(FieldKey.ARTIST, sb.toString());
-            f.commit();
-
-        } catch (Exception e) {
-            e.printStackTrace();
-            exceptionCaught = e;
-        }
-        assertNull(exceptionCaught);
+  /**
+   * Try and write too large a file, automtically truncated if option set
+   */
+  @Test
+  public void testWriteTruncateStringToFile() {
+    File orig = new File("testdata", "test7.wma");
+    if (!orig.isFile()) {
+      System.err.println("Unable to test file - not available");
+      return;
     }
 
-    /**
-     * Try an d write too large a file
-     */
-    @Test
-    public void testWriteTooLargeStringToFileContentDesc() {
-        File orig = new File("testdata", "test7.wma");
-        if (!orig.isFile()) {
-            System.err.println("Unable to test file - not available");
-            return;
-        }
+    Exception exceptionCaught = null;
+    try {
+      File testFile = AbstractTestCase.copyAudioToTmp("test7.wma");
+      AudioFile f = AudioFileIO.read(testFile);
+      Tag tag = f.getTag();
+      assertEquals(0, tag.getFields(FieldKey.COVER_ART).size());
 
-        Exception exceptionCaught = null;
-        try {
-            File testFile = AbstractTestCase.copyAudioToTmp("test7.wma");
-            AudioFile f = AudioFileIO.read(testFile);
-            Tag tag = f.getTag();
+      //Enable value
+      TagOptionSingleton.getInstance().setTruncateTextWithoutErrors(true);
 
-            TagOptionSingleton.getInstance().setTruncateTextWithoutErrors(false);
-            StringBuffer sb = new StringBuffer();
-            for (int i = 0; i < 34000; i++) {
-                sb.append("x");
-            }
-            tag.setField(FieldKey.TITLE, sb.toString());
+      //Now createField artwork field
+      StringBuffer sb = new StringBuffer();
+      for (int i = 0; i < 34000; i++) {
+        sb.append("x");
+      }
+      tag.setField(FieldKey.ARTIST, sb.toString());
+      f.commit();
+    } catch (Exception e) {
+      e.printStackTrace();
+      exceptionCaught = e;
+    }
+    assertNull(exceptionCaught);
+  }
 
-        } catch (Exception e) {
-            e.printStackTrace();
-            exceptionCaught = e;
-        }
-        assertNotNull(exceptionCaught);
-        assertTrue(exceptionCaught instanceof IllegalArgumentException);
+  /**
+   * Try an d write too large a file
+   */
+  @Test
+  public void testWriteTooLargeStringToFileContentDesc() {
+    File orig = new File("testdata", "test7.wma");
+    if (!orig.isFile()) {
+      System.err.println("Unable to test file - not available");
+      return;
     }
 
+    Exception exceptionCaught = null;
+    try {
+      File testFile = AbstractTestCase.copyAudioToTmp("test7.wma");
+      AudioFile f = AudioFileIO.read(testFile);
+      Tag tag = f.getTag();
 
-    /**
-     * Try and write too large a file, automtically truncated if option set
-     */
-    @Test
-    public void testWriteTruncateStringToFileContentDesc() {
-        File orig = new File("testdata", "test7.wma");
-        if (!orig.isFile()) {
-            System.err.println("Unable to test file - not available");
-            return;
-        }
+      TagOptionSingleton.getInstance().setTruncateTextWithoutErrors(false);
+      StringBuffer sb = new StringBuffer();
+      for (int i = 0; i < 34000; i++) {
+        sb.append("x");
+      }
+      tag.setField(FieldKey.TITLE, sb.toString());
+    } catch (Exception e) {
+      e.printStackTrace();
+      exceptionCaught = e;
+    }
+    assertNotNull(exceptionCaught);
+    assertTrue(exceptionCaught instanceof IllegalArgumentException);
+  }
 
-        Exception exceptionCaught = null;
-        try {
-            File testFile = AbstractTestCase.copyAudioToTmp("test7.wma");
-            AudioFile f = AudioFileIO.read(testFile);
-            Tag tag = f.getTag();
-
-            //Enable value
-            TagOptionSingleton.getInstance().setTruncateTextWithoutErrors(true);
-
-            //Now createField artwork field
-            StringBuffer sb = new StringBuffer();
-            for (int i = 0; i < 34000; i++) {
-                sb.append("x");
-            }
-            tag.setField(FieldKey.TITLE, sb.toString());
-            f.commit();
-
-        } catch (Exception e) {
-            e.printStackTrace();
-            exceptionCaught = e;
-        }
-        assertNull(exceptionCaught);
+  /**
+   * Try and write too large a file, automtically truncated if option set
+   */
+  @Test
+  public void testWriteTruncateStringToFileContentDesc() {
+    File orig = new File("testdata", "test7.wma");
+    if (!orig.isFile()) {
+      System.err.println("Unable to test file - not available");
+      return;
     }
 
+    Exception exceptionCaught = null;
+    try {
+      File testFile = AbstractTestCase.copyAudioToTmp("test7.wma");
+      AudioFile f = AudioFileIO.read(testFile);
+      Tag tag = f.getTag();
+
+      //Enable value
+      TagOptionSingleton.getInstance().setTruncateTextWithoutErrors(true);
+
+      //Now createField artwork field
+      StringBuffer sb = new StringBuffer();
+      for (int i = 0; i < 34000; i++) {
+        sb.append("x");
+      }
+      tag.setField(FieldKey.TITLE, sb.toString());
+      f.commit();
+    } catch (Exception e) {
+      e.printStackTrace();
+      exceptionCaught = e;
+    }
+    assertNull(exceptionCaught);
+  }
 }

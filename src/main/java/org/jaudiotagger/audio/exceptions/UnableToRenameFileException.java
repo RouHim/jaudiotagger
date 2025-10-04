@@ -7,7 +7,8 @@ import java.io.IOException;
  * because you do not have Special Permission 'Delete' set to Denied.
  */
 public class UnableToRenameFileException extends IOException {
-    public UnableToRenameFileException(String message) {
-        super(message);
-    }
+
+  public UnableToRenameFileException(String message) {
+    super(message);
+  }
 }

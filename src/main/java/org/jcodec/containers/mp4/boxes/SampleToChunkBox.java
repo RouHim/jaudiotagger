@@ -12,92 +12,98 @@ import java.nio.ByteBuffer;
  */
 public class SampleToChunkBox extends FullBox {
 
-    public SampleToChunkBox(Header atom) {
-        super(atom);
+  public SampleToChunkBox(Header atom) {
+    super(atom);
+  }
+
+  public static class SampleToChunkEntry {
+
+    private long first;
+    private int count;
+    private int entry;
+
+    public SampleToChunkEntry(long first, int count, int entry) {
+      this.first = first;
+      this.count = count;
+      this.entry = entry;
     }
 
-    public static class SampleToChunkEntry {
-        private long first;
-        private int count;
-        private int entry;
-
-        public SampleToChunkEntry(long first, int count, int entry) {
-            this.first = first;
-            this.count = count;
-            this.entry = entry;
-        }
-
-        public long getFirst() {
-            return first;
-        }
-
-        public void setFirst(long first) {
-            this.first = first;
-        }
-
-        public int getCount() {
-            return count;
-        }
-
-        public int getEntry() {
-            return entry;
-        }
-
-        public void setEntry(int entry) {
-            this.entry = entry;
-        }
-
-        public void setCount(int count) {
-            this.count = count;
-        }
+    public long getFirst() {
+      return first;
     }
 
-    public static String fourcc() {
-        return "stsc";
+    public void setFirst(long first) {
+      this.first = first;
     }
 
-    public static SampleToChunkBox createSampleToChunkBox(SampleToChunkEntry[] sampleToChunk) {
-        SampleToChunkBox box = new SampleToChunkBox(new Header(fourcc()));
-        box.sampleToChunk = sampleToChunk;
-        return box;
+    public int getCount() {
+      return count;
     }
 
-    private SampleToChunkEntry[] sampleToChunk;
-
-    public void parse(ByteBuffer input) {
-        super.parse(input);
-        int size = input.getInt();
-
-        sampleToChunk = new SampleToChunkEntry[size];
-        for (int i = 0; i < size; i++) {
-            sampleToChunk[i] = new SampleToChunkEntry(input.getInt(), input.getInt(),
-                    input.getInt());
-        }
+    public int getEntry() {
+      return entry;
     }
 
-    public SampleToChunkEntry[] getSampleToChunk() {
-        return sampleToChunk;
+    public void setEntry(int entry) {
+      this.entry = entry;
     }
 
-    @Override
-    public void doWrite(ByteBuffer out) {
-        super.doWrite(out);
-        out.putInt(sampleToChunk.length);
-
-        for (int i = 0; i < sampleToChunk.length; i++) {
-            SampleToChunkEntry stc = sampleToChunk[i];
-            out.putInt((int) stc.getFirst());
-            out.putInt(stc.getCount());
-            out.putInt(stc.getEntry());
-        }
+    public void setCount(int count) {
+      this.count = count;
     }
+  }
 
-    @Override
-    public int estimateSize() {
-        return 16 + sampleToChunk.length * 12;
-    }
+  public static String fourcc() {
+    return "stsc";
+  }
 
-    public void setSampleToChunk(SampleToChunkEntry[] sampleToChunk) {
-        this.sampleToChunk = sampleToChunk;
+  public static SampleToChunkBox createSampleToChunkBox(
+    SampleToChunkEntry[] sampleToChunk
+  ) {
+    SampleToChunkBox box = new SampleToChunkBox(new Header(fourcc()));
+    box.sampleToChunk = sampleToChunk;
+    return box;
+  }
+
+  private SampleToChunkEntry[] sampleToChunk;
+
+  public void parse(ByteBuffer input) {
+    super.parse(input);
+    int size = input.getInt();
+
+    sampleToChunk = new SampleToChunkEntry[size];
+    for (int i = 0; i < size; i++) {
+      sampleToChunk[i] = new SampleToChunkEntry(
+        input.getInt(),
+        input.getInt(),
+        input.getInt()
+      );
     }
+  }
+
+  public SampleToChunkEntry[] getSampleToChunk() {
+    return sampleToChunk;
+  }
+
+  @Override
+  public void doWrite(ByteBuffer out) {
+    super.doWrite(out);
+    out.putInt(sampleToChunk.length);
+
+    for (int i = 0; i < sampleToChunk.length; i++) {
+      SampleToChunkEntry stc = sampleToChunk[i];
+      out.putInt((int) stc.getFirst());
+      out.putInt(stc.getCount());
+      out.putInt(stc.getEntry());
+    }
+  }
+
+  @Override
+  public int estimateSize() {
+    return 16 + sampleToChunk.length * 12;
+  }
+
+  public void setSampleToChunk(SampleToChunkEntry[] sampleToChunk) {
+    this.sampleToChunk = sampleToChunk;
+  }
 }

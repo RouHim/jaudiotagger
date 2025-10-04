@@ -22,143 +22,139 @@
  */
 package org.jaudiotagger.tag.lyrics3;
 
-import org.jaudiotagger.tag.InvalidTagException;
-
 import java.io.IOException;
 import java.io.RandomAccessFile;
 import java.nio.ByteBuffer;
-
+import org.jaudiotagger.tag.InvalidTagException;
 
 public class FieldFrameBodyUnsupported extends AbstractLyrics3v2FieldFrameBody {
-    /**
-     *
-     */
-    private byte[] value = null;
 
-    /**
-     * Creates a new FieldBodyUnsupported datatype.
-     */
-    public FieldFrameBodyUnsupported() {
-        //        this.value = new byte[0];
+  /**
+   *
+   */
+  private byte[] value = null;
+
+  /**
+   * Creates a new FieldBodyUnsupported datatype.
+   */
+  public FieldFrameBodyUnsupported() {
+    //        this.value = new byte[0];
+  }
+
+  public FieldFrameBodyUnsupported(FieldFrameBodyUnsupported copyObject) {
+    super(copyObject);
+    this.value = copyObject.value.clone();
+  }
+
+  /**
+   * Creates a new FieldBodyUnsupported datatype.
+   *
+   * @param value
+   */
+  public FieldFrameBodyUnsupported(byte[] value) {
+    this.value = value;
+  }
+
+  /**
+   * Creates a new FieldBodyUnsupported datatype.
+   *
+   * @param byteBuffer
+   * @throws org.jaudiotagger.tag.InvalidTagException
+   */
+  public FieldFrameBodyUnsupported(ByteBuffer byteBuffer)
+    throws InvalidTagException {
+    this.read(byteBuffer);
+  }
+
+  /**
+   * @return
+   */
+  public String getIdentifier() {
+    return "ZZZ";
+  }
+
+  /**
+   * @param obj
+   * @return
+   */
+  public boolean isSubsetOf(Object obj) {
+    if (!(obj instanceof FieldFrameBodyUnsupported object)) {
+      return false;
     }
 
-    public FieldFrameBodyUnsupported(FieldFrameBodyUnsupported copyObject) {
-        super(copyObject);
-        this.value = copyObject.value.clone();
+    String subset = new String(this.value);
+    String superset = new String(object.value);
+
+    return superset.contains(subset) && super.isSubsetOf(obj);
+  }
+
+  /**
+   * @param obj
+   * @return
+   */
+  public boolean equals(Object obj) {
+    if (!(obj instanceof FieldFrameBodyUnsupported object)) {
+      return false;
     }
 
-    /**
-     * Creates a new FieldBodyUnsupported datatype.
-     *
-     * @param value
-     */
-    public FieldFrameBodyUnsupported(byte[] value) {
-        this.value = value;
+    return (
+      java.util.Arrays.equals(this.value, object.value) && super.equals(obj)
+    );
+  }
+
+  /**
+   * @param byteBuffer
+   * @throws IOException
+   */
+  public void read(ByteBuffer byteBuffer) {
+    int size;
+    byte[] buffer = new byte[5];
+
+    // read the 5 character size
+    byteBuffer.get(buffer, 0, 5);
+    size = Integer.parseInt(new String(buffer, 0, 5));
+
+    value = new byte[size];
+
+    // read the SIZE length description
+    byteBuffer.get(value);
+  }
+
+  /**
+   * @return
+   */
+  public String toString() {
+    return getIdentifier() + " : " + (new String(value));
+  }
+
+  /**
+   * @param file
+   * @throws IOException
+   */
+  public void write(RandomAccessFile file) throws IOException {
+    int offset = 0;
+    String str;
+    byte[] buffer = new byte[5];
+
+    str = Integer.toString(value.length);
+
+    for (int i = 0; i < (5 - str.length()); i++) {
+      buffer[i] = (byte) '0';
     }
 
-    /**
-     * Creates a new FieldBodyUnsupported datatype.
-     *
-     * @param byteBuffer
-     * @throws org.jaudiotagger.tag.InvalidTagException
-     */
-    public FieldFrameBodyUnsupported(ByteBuffer byteBuffer) throws InvalidTagException {
+    offset += (5 - str.length());
 
-        this.read(byteBuffer);
-
+    for (int i = 0; i < str.length(); i++) {
+      buffer[i + offset] = (byte) str.charAt(i);
     }
 
-    /**
-     * @return
-     */
-    public String getIdentifier() {
-        return "ZZZ";
-    }
+    file.write(buffer);
 
-    /**
-     * @param obj
-     * @return
-     */
-    public boolean isSubsetOf(Object obj) {
-        if (!(obj instanceof FieldFrameBodyUnsupported object)) {
-            return false;
-        }
+    file.write(value);
+  }
 
-        String subset = new String(this.value);
-        String superset = new String(object.value);
-
-        return superset.contains(subset) && super.isSubsetOf(obj);
-
-    }
-
-    /**
-     * @param obj
-     * @return
-     */
-    public boolean equals(Object obj) {
-        if (!(obj instanceof FieldFrameBodyUnsupported object)) {
-            return false;
-        }
-
-        return java.util.Arrays.equals(this.value, object.value) && super.equals(obj);
-
-    }
-
-    /**
-     * @param byteBuffer
-     * @throws IOException
-     */
-    public void read(ByteBuffer byteBuffer) {
-        int size;
-        byte[] buffer = new byte[5];
-
-        // read the 5 character size
-        byteBuffer.get(buffer, 0, 5);
-        size = Integer.parseInt(new String(buffer, 0, 5));
-
-        value = new byte[size];
-
-        // read the SIZE length description
-        byteBuffer.get(value);
-    }
-
-    /**
-     * @return
-     */
-    public String toString() {
-        return getIdentifier() + " : " + (new String(value));
-    }
-
-    /**
-     * @param file
-     * @throws IOException
-     */
-    public void write(RandomAccessFile file) throws IOException {
-        int offset = 0;
-        String str;
-        byte[] buffer = new byte[5];
-
-        str = Integer.toString(value.length);
-
-        for (int i = 0; i < (5 - str.length()); i++) {
-            buffer[i] = (byte) '0';
-        }
-
-        offset += (5 - str.length());
-
-        for (int i = 0; i < str.length(); i++) {
-            buffer[i + offset] = (byte) str.charAt(i);
-        }
-
-        file.write(buffer);
-
-        file.write(value);
-    }
-
-    /**
-     * TODO
-     */
-    protected void setupObjectList() {
-
-    }
+  /**
+   * TODO
+   */
+  protected void setupObjectList() {}
 }

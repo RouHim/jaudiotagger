@@ -1,6 +1,5 @@
 package org.jaudiotagger.utils;
 
-
 import java.util.Objects;
 
 /**
@@ -27,46 +26,44 @@ import java.util.Objects;
  */
 public final class EqualsUtil {
 
-    static public boolean areEqual(boolean aThis, boolean aThat) {
-        //System.out.println("boolean");
-        return aThis == aThat;
-    }
+  public static boolean areEqual(boolean aThis, boolean aThat) {
+    //System.out.println("boolean");
+    return aThis == aThat;
+  }
 
-    static public boolean areEqual(char aThis, char aThat) {
-        //System.out.println("char");
-        return aThis == aThat;
-    }
+  public static boolean areEqual(char aThis, char aThat) {
+    //System.out.println("char");
+    return aThis == aThat;
+  }
 
-    static public boolean areEqual(long aThis, long aThat) {
-        /*
-         * Implementation Note
-         * Note that byte, short, and int are handled by this method, through
-         * implicit conversion.
-         */
-        //System.out.println("long");
-        return aThis == aThat;
-    }
-
-    static public boolean areEqual(float aThis, float aThat) {
-        //System.out.println("float");
-        return Float.floatToIntBits(aThis) == Float.floatToIntBits(aThat);
-    }
-
-    static public boolean areEqual(double aThis, double aThat) {
-        //System.out.println("double");
-        return Double.doubleToLongBits(aThis) == Double.doubleToLongBits(aThat);
-    }
-
-    /**
-     * Possibly-null object field.
-     * <p>
-     * Includes type-safe enumerations and collections, but does not include
-     * arrays. See class comment.
+  public static boolean areEqual(long aThis, long aThat) {
+    /*
+     * Implementation Note
+     * Note that byte, short, and int are handled by this method, through
+     * implicit conversion.
      */
-    static public boolean areEqual(Object aThis, Object aThat) {
-        //System.out.println("Object");
-        return Objects.equals(aThis, aThat);
-    }
+    //System.out.println("long");
+    return aThis == aThat;
+  }
+
+  public static boolean areEqual(float aThis, float aThat) {
+    //System.out.println("float");
+    return Float.floatToIntBits(aThis) == Float.floatToIntBits(aThat);
+  }
+
+  public static boolean areEqual(double aThis, double aThat) {
+    //System.out.println("double");
+    return Double.doubleToLongBits(aThis) == Double.doubleToLongBits(aThat);
+  }
+
+  /**
+   * Possibly-null object field.
+   * <p>
+   * Includes type-safe enumerations and collections, but does not include
+   * arrays. See class comment.
+   */
+  public static boolean areEqual(Object aThis, Object aThat) {
+    //System.out.println("Object");
+    return Objects.equals(aThis, aThat);
+  }
 }
-
-

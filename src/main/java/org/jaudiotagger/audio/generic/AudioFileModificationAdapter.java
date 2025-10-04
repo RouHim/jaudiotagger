@@ -18,54 +18,57 @@
  */
 package org.jaudiotagger.audio.generic;
 
+import java.io.File;
 import org.jaudiotagger.audio.AudioFile;
 import org.jaudiotagger.audio.exceptions.ModifyVetoException;
-
-import java.io.File;
 
 /**
  * @author Christian Laireiter
  */
-public class AudioFileModificationAdapter implements AudioFileModificationListener {
+public class AudioFileModificationAdapter
+  implements AudioFileModificationListener {
 
-    /**
-     * (overridden)
-     *
-     * @see org.jaudiotagger.audio.generic.AudioFileModificationListener#fileModified(org.jaudiotagger.audio.AudioFile,
-     * File)
-     */
-    public void fileModified(AudioFile original, File temporary) {
-        // Nothing to do
-    }
+  /**
+   * (overridden)
+   *
+   * @see org.jaudiotagger.audio.generic.AudioFileModificationListener#fileModified(org.jaudiotagger.audio.AudioFile,
+   * File)
+   */
+  public void fileModified(AudioFile original, File temporary) {
+    // Nothing to do
+  }
 
-    /**
-     * (overridden)
-     *
-     * @see org.jaudiotagger.audio.generic.AudioFileModificationListener#fileOperationFinished(File)
-     */
-    public void fileOperationFinished(File result) {
-        // Nothing to do
-    }
+  /**
+   * (overridden)
+   *
+   * @see org.jaudiotagger.audio.generic.AudioFileModificationListener#fileOperationFinished(File)
+   */
+  public void fileOperationFinished(File result) {
+    // Nothing to do
+  }
 
-    /**
-     * (overridden)
-     *
-     * @see org.jaudiotagger.audio.generic.AudioFileModificationListener#fileWillBeModified(org.jaudiotagger.audio.AudioFile,
-     * boolean)
-     */
-    public void fileWillBeModified(AudioFile file, boolean delete) {
-        // Nothing to do
-    }
+  /**
+   * (overridden)
+   *
+   * @see org.jaudiotagger.audio.generic.AudioFileModificationListener#fileWillBeModified(org.jaudiotagger.audio.AudioFile,
+   * boolean)
+   */
+  public void fileWillBeModified(AudioFile file, boolean delete) {
+    // Nothing to do
+  }
 
-    /**
-     * (overridden)
-     *
-     * @see org.jaudiotagger.audio.generic.AudioFileModificationListener#vetoThrown(org.jaudiotagger.audio.generic.AudioFileModificationListener,
-     * org.jaudiotagger.audio.AudioFile,
-     * org.jaudiotagger.audio.exceptions.ModifyVetoException)
-     */
-    public void vetoThrown(AudioFileModificationListener cause, AudioFile original, ModifyVetoException veto) {
-        // Nothing to do
-    }
-
+  /**
+   * (overridden)
+   *
+   * @see org.jaudiotagger.audio.generic.AudioFileModificationListener#vetoThrown(org.jaudiotagger.audio.generic.AudioFileModificationListener,
+   * org.jaudiotagger.audio.AudioFile,
+   * org.jaudiotagger.audio.exceptions.ModifyVetoException)
+   */
+  public void vetoThrown(
+    AudioFileModificationListener cause,
+    AudioFile original,
+    ModifyVetoException veto
+  ) {
+    // Nothing to do
+  }
 }

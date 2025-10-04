@@ -29,37 +29,37 @@ package org.jaudiotagger.tag;
  * @version $Revision$
  */
 public class TagException extends Exception {
-    /**
-     * Creates a new TagException datatype.
-     */
-    public TagException() {
-    }
 
-    /**
-     * Creates a new TagException datatype.
-     *
-     * @param ex the cause.
-     */
-    public TagException(Throwable ex) {
-        super(ex);
-    }
+  /**
+   * Creates a new TagException datatype.
+   */
+  public TagException() {}
 
-    /**
-     * Creates a new TagException datatype.
-     *
-     * @param msg the detail message.
-     */
-    public TagException(String msg) {
-        super(msg);
-    }
+  /**
+   * Creates a new TagException datatype.
+   *
+   * @param ex the cause.
+   */
+  public TagException(Throwable ex) {
+    super(ex);
+  }
 
-    /**
-     * Creates a new TagException datatype.
-     *
-     * @param msg the detail message.
-     * @param ex  the cause.
-     */
-    public TagException(String msg, Throwable ex) {
-        super(msg, ex);
-    }
+  /**
+   * Creates a new TagException datatype.
+   *
+   * @param msg the detail message.
+   */
+  public TagException(String msg) {
+    super(msg);
+  }
+
+  /**
+   * Creates a new TagException datatype.
+   *
+   * @param msg the detail message.
+   * @param ex  the cause.
+   */
+  public TagException(String msg, Throwable ex) {
+    super(msg, ex);
+  }
 }

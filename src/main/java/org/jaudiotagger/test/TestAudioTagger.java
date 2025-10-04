@@ -21,12 +21,11 @@
  */
 package org.jaudiotagger.test;
 
-import org.jaudiotagger.audio.AudioFileFilter;
-import org.jaudiotagger.audio.AudioFileIO;
-
 import java.io.File;
 import java.text.DateFormat;
 import java.util.Date;
+import org.jaudiotagger.audio.AudioFileFilter;
+import org.jaudiotagger.audio.AudioFileIO;
 
 /**
  * Simple class that will attempt to recusively read all files within a directory, flags
@@ -34,84 +33,94 @@ import java.util.Date;
  */
 public class TestAudioTagger {
 
-    public static void main(final String[] args) {
-        TestAudioTagger test = new TestAudioTagger();
+  public static void main(final String[] args) {
+    TestAudioTagger test = new TestAudioTagger();
 
-        if (args.length == 0) {
-            System.err.println("usage TestAudioTagger Dirname");
-            System.err.println("      You must enter the root directory");
-            System.exit(1);
-        } else if (args.length > 1) {
-            System.err.println("usage TestAudioTagger Dirname");
-            System.err.println("      Only one parameter accepted");
-            System.exit(1);
-        }
-        File rootDir = new File(args[0]);
-        if (!rootDir.isDirectory()) {
-            System.err.println("usage TestAudioTagger Dirname");
-            System.err.println("      Directory " + args[0] + " could not be found");
-            System.exit(1);
-        }
-        Date start = new Date();
-        System.out.println("Started to read from:" + rootDir.getPath() + " at " + DateFormat.getTimeInstance().format(start));
-        test.scanSingleDir(rootDir);
-        Date finish = new Date();
-        System.out.println("Started to read from:" + rootDir.getPath() + " at " + DateFormat.getTimeInstance().format(start));
-        System.out.println("Finished to read from:" + rootDir.getPath() + DateFormat.getTimeInstance().format(finish));
-        System.out.println("Attempted  to read:" + count);
-        System.out.println("Successful to read:" + (count - failed));
-        System.out.println("Failed     to read:" + failed);
+    if (args.length == 0) {
+      System.err.println("usage TestAudioTagger Dirname");
+      System.err.println("      You must enter the root directory");
+      System.exit(1);
+    } else if (args.length > 1) {
+      System.err.println("usage TestAudioTagger Dirname");
+      System.err.println("      Only one parameter accepted");
+      System.exit(1);
+    }
+    File rootDir = new File(args[0]);
+    if (!rootDir.isDirectory()) {
+      System.err.println("usage TestAudioTagger Dirname");
+      System.err.println("      Directory " + args[0] + " could not be found");
+      System.exit(1);
+    }
+    Date start = new Date();
+    System.out.println(
+      "Started to read from:" +
+        rootDir.getPath() +
+        " at " +
+        DateFormat.getTimeInstance().format(start)
+    );
+    test.scanSingleDir(rootDir);
+    Date finish = new Date();
+    System.out.println(
+      "Started to read from:" +
+        rootDir.getPath() +
+        " at " +
+        DateFormat.getTimeInstance().format(start)
+    );
+    System.out.println(
+      "Finished to read from:" +
+        rootDir.getPath() +
+        DateFormat.getTimeInstance().format(finish)
+    );
+    System.out.println("Attempted  to read:" + count);
+    System.out.println("Successful to read:" + (count - failed));
+    System.out.println("Failed     to read:" + failed);
+  }
 
+  private static int count = 0;
+  private static int failed = 0;
+
+  /**
+   * Recursive function to scan directory
+   *
+   * @param dir
+   */
+  private void scanSingleDir(final File dir) {
+    final File[] audioFiles = dir.listFiles(new AudioFileFilter(false));
+    for (File audioFile : audioFiles) {
+      count++;
+      try {
+        AudioFileIO.read(audioFile);
+      } catch (Throwable t) {
+        System.err.println(
+          "Unable to read record:" + count + ":" + audioFile.getPath()
+        );
+        failed++;
+        t.printStackTrace();
+      }
     }
 
+    final File[] audioFileDirs = dir.listFiles(new DirFilter());
+    for (File audioFileDir : audioFileDirs) {
+      scanSingleDir(audioFileDir);
+    }
+  }
 
-    private static int count = 0;
-    private static int failed = 0;
+  public final class DirFilter implements java.io.FileFilter {
+
+    public DirFilter() {}
 
     /**
-     * Recursive function to scan directory
+     * Determines whether or not the file is an mp3 file.  If the file is
+     * a directory, whether or not is accepted depends upon the
+     * allowDirectories flag passed to the constructor.
      *
-     * @param dir
+     * @param file the file to test
+     * @return true if this file or directory should be accepted
      */
-    private void scanSingleDir(final File dir) {
-
-        final File[] audioFiles = dir.listFiles(new AudioFileFilter(false));
-        for (File audioFile : audioFiles) {
-            count++;
-            try {
-                AudioFileIO.read(audioFile);
-            } catch (Throwable t) {
-                System.err.println("Unable to read record:" + count + ":" + audioFile.getPath());
-                failed++;
-                t.printStackTrace();
-            }
-        }
-
-        final File[] audioFileDirs = dir.listFiles(new DirFilter());
-        for (File audioFileDir : audioFileDirs) {
-            scanSingleDir(audioFileDir);
-        }
+    public boolean accept(final java.io.File file) {
+      return file.isDirectory();
     }
 
-
-    public final class DirFilter implements java.io.FileFilter {
-        public DirFilter() {
-
-        }
-
-
-        /**
-         * Determines whether or not the file is an mp3 file.  If the file is
-         * a directory, whether or not is accepted depends upon the
-         * allowDirectories flag passed to the constructor.
-         *
-         * @param file the file to test
-         * @return true if this file or directory should be accepted
-         */
-        public boolean accept(final java.io.File file) {
-            return file.isDirectory();
-        }
-
-        public static final String IDENT = "$Id$";
-    }
+    public static final String IDENT = "$Id$";
+  }
 }

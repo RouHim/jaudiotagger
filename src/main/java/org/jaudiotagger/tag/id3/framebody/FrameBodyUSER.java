@@ -15,14 +15,13 @@
  */
 package org.jaudiotagger.tag.id3.framebody;
 
+import java.io.ByteArrayOutputStream;
+import java.nio.ByteBuffer;
 import org.jaudiotagger.tag.InvalidTagException;
 import org.jaudiotagger.tag.datatype.*;
 import org.jaudiotagger.tag.id3.ID3v24Frames;
 import org.jaudiotagger.tag.id3.valuepair.TextEncoding;
 import org.jaudiotagger.tag.reference.Languages;
-
-import java.io.ByteArrayOutputStream;
-import java.nio.ByteBuffer;
 
 /**
  * Terms of use frame.
@@ -48,87 +47,102 @@ import java.nio.ByteBuffer;
  * @author : Eric Farng
  * @version $Id$
  */
-public class FrameBodyUSER extends AbstractID3v2FrameBody implements ID3v24FrameBody, ID3v23FrameBody {
-    /**
-     * Creates a new FrameBodyUSER datatype.
-     */
-    public FrameBodyUSER() {
-        //        setObject("Text Encoding", new Byte((byte) 0));
-        //        setObject("Language", "");
-        //        setObject("Text", "");
-    }
+public class FrameBodyUSER
+  extends AbstractID3v2FrameBody
+  implements ID3v24FrameBody, ID3v23FrameBody {
 
-    public FrameBodyUSER(FrameBodyUSER body) {
-        super(body);
-    }
+  /**
+   * Creates a new FrameBodyUSER datatype.
+   */
+  public FrameBodyUSER() {
+    //        setObject("Text Encoding", new Byte((byte) 0));
+    //        setObject("Language", "");
+    //        setObject("Text", "");
+  }
 
-    /**
-     * Creates a new FrameBodyUSER datatype.
-     *
-     * @param textEncoding
-     * @param language
-     * @param text
-     */
-    public FrameBodyUSER(byte textEncoding, String language, String text) {
-        setObjectValue(DataTypes.OBJ_TEXT_ENCODING, textEncoding);
-        setObjectValue(DataTypes.OBJ_LANGUAGE, language);
-        setObjectValue(DataTypes.OBJ_TEXT, text);
-    }
+  public FrameBodyUSER(FrameBodyUSER body) {
+    super(body);
+  }
 
+  /**
+   * Creates a new FrameBodyUSER datatype.
+   *
+   * @param textEncoding
+   * @param language
+   * @param text
+   */
+  public FrameBodyUSER(byte textEncoding, String language, String text) {
+    setObjectValue(DataTypes.OBJ_TEXT_ENCODING, textEncoding);
+    setObjectValue(DataTypes.OBJ_LANGUAGE, language);
+    setObjectValue(DataTypes.OBJ_TEXT, text);
+  }
 
-    /**
-     * Create a new FrameBodyUser by reading from byte buffer
-     *
-     * @param byteBuffer
-     * @param frameSize
-     * @throws InvalidTagException
-     */
-    public FrameBodyUSER(ByteBuffer byteBuffer, int frameSize) throws InvalidTagException {
-        super(byteBuffer, frameSize);
-    }
+  /**
+   * Create a new FrameBodyUser by reading from byte buffer
+   *
+   * @param byteBuffer
+   * @param frameSize
+   * @throws InvalidTagException
+   */
+  public FrameBodyUSER(ByteBuffer byteBuffer, int frameSize)
+    throws InvalidTagException {
+    super(byteBuffer, frameSize);
+  }
 
-    /**
-     * The ID3v2 frame identifier
-     *
-     * @return the ID3v2 frame identifier  for this frame type
-     */
-    public String getIdentifier() {
-        return ID3v24Frames.FRAME_ID_TERMS_OF_USE;
-    }
+  /**
+   * The ID3v2 frame identifier
+   *
+   * @return the ID3v2 frame identifier  for this frame type
+   */
+  public String getIdentifier() {
+    return ID3v24Frames.FRAME_ID_TERMS_OF_USE;
+  }
 
-    /**
-     * @return lanaguage
-     */
-    public String getLanguage() {
-        return (String) getObjectValue(DataTypes.OBJ_LANGUAGE);
-    }
+  /**
+   * @return lanaguage
+   */
+  public String getLanguage() {
+    return (String) getObjectValue(DataTypes.OBJ_LANGUAGE);
+  }
 
-    /**
-     * @param language
-     */
-    public void setOwner(String language) {
-        setObjectValue(DataTypes.OBJ_LANGUAGE, language);
-    }
+  /**
+   * @param language
+   */
+  public void setOwner(String language) {
+    setObjectValue(DataTypes.OBJ_LANGUAGE, language);
+  }
 
-    /**
-     * If the text cannot be encoded using current encoder, change the encoder
-     *
-     * @param tagBuffer
-     * @throws java.io.IOException
-     */
-    public void write(ByteArrayOutputStream tagBuffer) {
-        if (!((AbstractString) getObject(DataTypes.OBJ_TEXT)).canBeEncoded()) {
-            this.setTextEncoding(TextEncoding.UTF_16);
-        }
-        super.write(tagBuffer);
+  /**
+   * If the text cannot be encoded using current encoder, change the encoder
+   *
+   * @param tagBuffer
+   * @throws java.io.IOException
+   */
+  public void write(ByteArrayOutputStream tagBuffer) {
+    if (!((AbstractString) getObject(DataTypes.OBJ_TEXT)).canBeEncoded()) {
+      this.setTextEncoding(TextEncoding.UTF_16);
     }
+    super.write(tagBuffer);
+  }
 
-    /**
-     *
-     */
-    protected void setupObjectList() {
-        objectList.add(new NumberHashMap(DataTypes.OBJ_TEXT_ENCODING, this, TextEncoding.TEXT_ENCODING_FIELD_SIZE));
-        objectList.add(new StringHashMap(DataTypes.OBJ_LANGUAGE, this, Languages.LANGUAGE_FIELD_SIZE));
-        objectList.add(new StringSizeTerminated(DataTypes.OBJ_TEXT, this));
-    }
+  /**
+   *
+   */
+  protected void setupObjectList() {
+    objectList.add(
+      new NumberHashMap(
+        DataTypes.OBJ_TEXT_ENCODING,
+        this,
+        TextEncoding.TEXT_ENCODING_FIELD_SIZE
+      )
+    );
+    objectList.add(
+      new StringHashMap(
+        DataTypes.OBJ_LANGUAGE,
+        this,
+        Languages.LANGUAGE_FIELD_SIZE
+      )
+    );
+    objectList.add(new StringSizeTerminated(DataTypes.OBJ_TEXT, this));
+  }
 }

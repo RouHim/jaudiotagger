@@ -18,6 +18,8 @@
  */
 package org.jaudiotagger.audio.wav;
 
+import java.io.IOException;
+import java.nio.channels.FileChannel;
 import org.jaudiotagger.audio.exceptions.CannotReadException;
 import org.jaudiotagger.audio.generic.AudioFileReader2;
 import org.jaudiotagger.audio.generic.GenericAudioHeader;
@@ -25,31 +27,31 @@ import org.jaudiotagger.tag.Tag;
 import org.jaudiotagger.tag.TagOptionSingleton;
 import org.jaudiotagger.tag.wav.WavTag;
 
-import java.io.IOException;
-import java.nio.channels.FileChannel;
-
 /**
  * Reads Audio and Metadata information contained in Wav file.
  */
 public class WavFileReader extends AudioFileReader2 {
-    public WavFileReader() {
 
-    }
+  public WavFileReader() {}
 
-    protected GenericAudioHeader getEncodingInfo(FileChannel channel, final String fileName) throws CannotReadException, IOException {
-        return new WavInfoReader(fileName).read(channel);
-    }
+  protected GenericAudioHeader getEncodingInfo(
+    FileChannel channel,
+    final String fileName
+  ) throws CannotReadException, IOException {
+    return new WavInfoReader(fileName).read(channel);
+  }
 
-    @Override
-    protected Tag getTag(FileChannel channel, final String fileName) throws IOException, CannotReadException {
-        WavTag tag = new WavTagReader(fileName).read(channel);
-        switch (TagOptionSingleton.getInstance().getWavOptions()) {
-            case READ_ID3_ONLY_AND_SYNC:
-            case READ_ID3_UNLESS_ONLY_INFO_AND_SYNC:
-            case READ_INFO_ONLY_AND_SYNC:
-            case READ_INFO_UNLESS_ONLY_ID3_AND_SYNC:
-                tag.syncTagsAfterRead();
-        }
-        return tag;
+  @Override
+  protected Tag getTag(FileChannel channel, final String fileName)
+    throws IOException, CannotReadException {
+    WavTag tag = new WavTagReader(fileName).read(channel);
+    switch (TagOptionSingleton.getInstance().getWavOptions()) {
+      case READ_ID3_ONLY_AND_SYNC:
+      case READ_ID3_UNLESS_ONLY_INFO_AND_SYNC:
+      case READ_INFO_ONLY_AND_SYNC:
+      case READ_INFO_UNLESS_ONLY_ID3_AND_SYNC:
+        tag.syncTagsAfterRead();
     }
+    return tag;
+  }
 }

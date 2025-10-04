@@ -1,15 +1,14 @@
 package org.jaudiotagger.tag.asf;
 
+import java.io.ByteArrayOutputStream;
+import java.io.UnsupportedEncodingException;
+import java.nio.charset.StandardCharsets;
 import org.jaudiotagger.audio.asf.data.AsfHeader;
 import org.jaudiotagger.audio.asf.data.MetadataDescriptor;
 import org.jaudiotagger.logging.ErrorMessage;
 import org.jaudiotagger.tag.id3.valuepair.ImageFormats;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import java.io.ByteArrayOutputStream;
-import java.io.UnsupportedEncodingException;
-import java.nio.charset.StandardCharsets;
 
 /**
  * Encapsulates the WM/Pictures provides some convenience methods for decoding
@@ -22,191 +21,220 @@ import java.nio.charset.StandardCharsets;
  * byte null byte image data
  */
 public class AsfTagCoverField extends AbstractAsfTagImageField {
-    /**
-     * Logger Object
-     */
-    public final static Logger logger = LoggerFactory.getLogger("org.jaudiotagger.audio.asf.tag");
 
-    /**
-     * Description
-     */
-    private String description;
+  /**
+   * Logger Object
+   */
+  public static final Logger logger = LoggerFactory.getLogger(
+    "org.jaudiotagger.audio.asf.tag"
+  );
 
-    /**
-     * We need this to retrieve the buffered image, if required
-     */
-    private int endOfName = 0;
+  /**
+   * Description
+   */
+  private String description;
 
-    /**
-     * Image Data Size as read
-     */
-    private int imageDataSize;
+  /**
+   * We need this to retrieve the buffered image, if required
+   */
+  private int endOfName = 0;
 
-    /**
-     * Mimetype of binary
-     */
-    private String mimeType;
+  /**
+   * Image Data Size as read
+   */
+  private int imageDataSize;
 
-    /**
-     * Picture Type
-     */
-    private int pictureType;
+  /**
+   * Mimetype of binary
+   */
+  private String mimeType;
 
-    /**
-     * Create New Image Field
-     *
-     * @param imageData
-     * @param pictureType
-     * @param description
-     * @param mimeType
-     */
-    public AsfTagCoverField(final byte[] imageData, final int pictureType,
-                            final String description, final String mimeType) {
-        super(new MetadataDescriptor(AsfFieldKey.COVER_ART.getFieldName(),
-                MetadataDescriptor.TYPE_BINARY));
-        this.getDescriptor()
-                .setBinaryValue(
-                        createRawContent(imageData, pictureType, description,
-                                mimeType));
+  /**
+   * Picture Type
+   */
+  private int pictureType;
+
+  /**
+   * Create New Image Field
+   *
+   * @param imageData
+   * @param pictureType
+   * @param description
+   * @param mimeType
+   */
+  public AsfTagCoverField(
+    final byte[] imageData,
+    final int pictureType,
+    final String description,
+    final String mimeType
+  ) {
+    super(
+      new MetadataDescriptor(
+        AsfFieldKey.COVER_ART.getFieldName(),
+        MetadataDescriptor.TYPE_BINARY
+      )
+    );
+    this.getDescriptor().setBinaryValue(
+      createRawContent(imageData, pictureType, description, mimeType)
+    );
+  }
+
+  /**
+   * Creates an instance from a metadata descriptor
+   *
+   * @param source The metadata descriptor, whose content is published.<br>
+   */
+  public AsfTagCoverField(final MetadataDescriptor source) {
+    super(source);
+    if (!source.getName().equals(AsfFieldKey.COVER_ART.getFieldName())) {
+      throw new IllegalArgumentException(
+        "Descriptor description must be WM/Picture"
+      );
+    }
+    if (source.getType() != MetadataDescriptor.TYPE_BINARY) {
+      throw new IllegalArgumentException("Descriptor type must be binary");
     }
 
-    /**
-     * Creates an instance from a metadata descriptor
-     *
-     * @param source The metadata descriptor, whose content is published.<br>
-     */
-    public AsfTagCoverField(final MetadataDescriptor source) {
-        super(source);
+    try {
+      processRawContent();
+    } catch (final UnsupportedEncodingException uee) {
+      // Should never happen
+      throw new RuntimeException(uee); // NOPMD by Christian Laireiter on 5/9/09 5:45 PM
+    }
+  }
 
-        if (!source.getName().equals(AsfFieldKey.COVER_ART.getFieldName())) {
-            throw new IllegalArgumentException(
-                    "Descriptor description must be WM/Picture");
+  private byte[] createRawContent(
+    final byte[] data,
+    final int pictureType,
+    final String description,
+    String mimeType
+  ) {
+    // NOPMD by Christian Laireiter on 5/9/09 5:46 PM
+    this.description = description;
+    this.imageDataSize = data.length;
+    this.pictureType = pictureType;
+    this.mimeType = mimeType;
+
+    // Get Mimetype from data if not already setField
+    if (mimeType == null) {
+      mimeType = ImageFormats.getMimeTypeForBinarySignature(data);
+      // Couldnt identify lets default to png because probably error in
+      // code because not 100% sure how to identify
+      // formats
+      if (mimeType == null) {
+        logger.warn(ErrorMessage.GENERAL_UNIDENITIFED_IMAGE_FORMAT.getMsg());
+        mimeType = ImageFormats.MIME_TYPE_PNG;
+      }
+    }
+
+    final ByteArrayOutputStream baos = new ByteArrayOutputStream();
+
+    // PictureType
+    baos.write(pictureType);
+
+    // ImageDataSize
+    baos.write(
+      org.jaudiotagger.audio.generic.Utils.getSizeLEInt32(data.length),
+      0,
+      4
+    );
+
+    // mimetype
+    byte[] mimeTypeData;
+    mimeTypeData = mimeType.getBytes(AsfHeader.ASF_CHARSET);
+    baos.write(mimeTypeData, 0, mimeTypeData.length);
+
+    // Seperator
+    baos.write(0x00);
+    baos.write(0x00);
+
+    // description
+    if (description != null && description.length() > 0) {
+      byte[] descriptionData;
+      descriptionData = description.getBytes(AsfHeader.ASF_CHARSET);
+      baos.write(descriptionData, 0, descriptionData.length);
+    }
+
+    // Seperator (always write whther or not we have descriptor field)
+    baos.write(0x00);
+    baos.write(0x00);
+
+    // Image data
+    baos.write(data, 0, data.length);
+
+    return baos.toByteArray();
+  }
+
+  public String getDescription() {
+    return this.description;
+  }
+
+  @Override
+  public int getImageDataSize() {
+    return this.imageDataSize;
+  }
+
+  public String getMimeType() {
+    return this.mimeType;
+  }
+
+  public int getPictureType() {
+    return this.pictureType;
+  }
+
+  /**
+   * @return the raw image data only
+   */
+  @Override
+  public byte[] getRawImageData() {
+    final ByteArrayOutputStream baos = new ByteArrayOutputStream();
+    baos.write(
+      getRawContent(),
+      this.endOfName,
+      this.toWrap.getRawDataSize() - this.endOfName
+    );
+    return baos.toByteArray();
+  }
+
+  private void processRawContent() throws UnsupportedEncodingException {
+    // PictureType
+    this.pictureType = this.getRawContent()[0];
+
+    // ImageDataSize
+    this.imageDataSize = org.jaudiotagger.audio.generic.Utils.getIntLE(
+      this.getRawContent(),
+      1,
+      2
+    );
+
+    // Set Count to after picture type,datasize and two byte nulls
+    int count = 5;
+    this.mimeType = null;
+    this.description = null; // Optional
+    int endOfMimeType = 0;
+
+    while (count < this.getRawContent().length - 1) {
+      if (getRawContent()[count] == 0 && getRawContent()[count + 1] == 0) {
+        if (this.mimeType == null) {
+          this.mimeType = new String(
+            getRawContent(),
+            5,
+            (count) - 5,
+            StandardCharsets.UTF_16LE
+          );
+          endOfMimeType = count + 2;
+        } else if (this.description == null) {
+          this.description = new String(
+            getRawContent(),
+            endOfMimeType,
+            count - endOfMimeType,
+            StandardCharsets.UTF_16LE
+          );
+          this.endOfName = count + 2;
+          break;
         }
-        if (source.getType() != MetadataDescriptor.TYPE_BINARY) {
-            throw new IllegalArgumentException("Descriptor type must be binary");
-        }
-
-        try {
-            processRawContent();
-        } catch (final UnsupportedEncodingException uee) {
-            // Should never happen
-            throw new RuntimeException(uee); // NOPMD by Christian Laireiter on 5/9/09 5:45 PM
-        }
+      }
+      count += 2; // keep on two byte word boundary
     }
-
-    private byte[] createRawContent(final byte[] data, final int pictureType,
-                                    final String description, String mimeType) { // NOPMD by Christian Laireiter on 5/9/09 5:46 PM
-        this.description = description;
-        this.imageDataSize = data.length;
-        this.pictureType = pictureType;
-        this.mimeType = mimeType;
-
-        // Get Mimetype from data if not already setField
-        if (mimeType == null) {
-            mimeType = ImageFormats.getMimeTypeForBinarySignature(data);
-            // Couldnt identify lets default to png because probably error in
-            // code because not 100% sure how to identify
-            // formats
-            if (mimeType == null) {
-                logger.warn(ErrorMessage.GENERAL_UNIDENITIFED_IMAGE_FORMAT
-                        .getMsg());
-                mimeType = ImageFormats.MIME_TYPE_PNG;
-            }
-        }
-
-        final ByteArrayOutputStream baos = new ByteArrayOutputStream();
-
-        // PictureType
-        baos.write(pictureType);
-
-        // ImageDataSize
-        baos.write(org.jaudiotagger.audio.generic.Utils
-                .getSizeLEInt32(data.length), 0, 4);
-
-        // mimetype
-        byte[] mimeTypeData;
-        mimeTypeData = mimeType.getBytes(AsfHeader.ASF_CHARSET);
-        baos.write(mimeTypeData, 0, mimeTypeData.length);
-
-        // Seperator
-        baos.write(0x00);
-        baos.write(0x00);
-
-        // description
-        if (description != null && description.length() > 0) {
-            byte[] descriptionData;
-            descriptionData = description.getBytes(AsfHeader.ASF_CHARSET);
-            baos.write(descriptionData, 0, descriptionData.length);
-        }
-
-        // Seperator (always write whther or not we have descriptor field)
-        baos.write(0x00);
-        baos.write(0x00);
-
-        // Image data
-        baos.write(data, 0, data.length);
-
-        return baos.toByteArray();
-    }
-
-    public String getDescription() {
-        return this.description;
-    }
-
-    @Override
-    public int getImageDataSize() {
-        return this.imageDataSize;
-    }
-
-    public String getMimeType() {
-        return this.mimeType;
-    }
-
-    public int getPictureType() {
-        return this.pictureType;
-    }
-
-    /**
-     * @return the raw image data only
-     */
-    @Override
-    public byte[] getRawImageData() {
-        final ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        baos.write(getRawContent(), this.endOfName, this.toWrap
-                .getRawDataSize()
-                - this.endOfName);
-        return baos.toByteArray();
-    }
-
-    private void processRawContent() throws UnsupportedEncodingException {
-        // PictureType
-        this.pictureType = this.getRawContent()[0];
-
-        // ImageDataSize
-        this.imageDataSize = org.jaudiotagger.audio.generic.Utils.getIntLE(this
-                .getRawContent(), 1, 2);
-
-        // Set Count to after picture type,datasize and two byte nulls
-        int count = 5;
-        this.mimeType = null;
-        this.description = null; // Optional
-        int endOfMimeType = 0;
-
-        while (count < this.getRawContent().length - 1) {
-            if (getRawContent()[count] == 0 && getRawContent()[count + 1] == 0) {
-                if (this.mimeType == null) {
-                    this.mimeType = new String(getRawContent(), 5, (count) - 5,
-                            StandardCharsets.UTF_16LE);
-                    endOfMimeType = count + 2;
-                } else if (this.description == null) {
-                    this.description = new String(getRawContent(),
-                            endOfMimeType, count - endOfMimeType, StandardCharsets.UTF_16LE);
-                    this.endOfName = count + 2;
-                    break;
-                }
-            }
-            count += 2; // keep on two byte word boundary
-        }
-    }
-
+  }
 }

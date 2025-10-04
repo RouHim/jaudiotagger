@@ -1,6 +1,5 @@
 package org.jcodec.containers.mp4.boxes;
 
-
 import java.nio.ByteBuffer;
 
 /**
@@ -12,37 +11,38 @@ import java.nio.ByteBuffer;
  * @author The JCodec project
  */
 public class PixelAspectExt extends Box {
-    private int hSpacing;
-    private int vSpacing;
 
-    public PixelAspectExt(Header header) {
-        super(header);
-    }
+  private int hSpacing;
+  private int vSpacing;
 
-    public void parse(ByteBuffer input) {
-        hSpacing = input.getInt();
-        vSpacing = input.getInt();
-    }
+  public PixelAspectExt(Header header) {
+    super(header);
+  }
 
-    protected void doWrite(ByteBuffer out) {
-        out.putInt(hSpacing);
-        out.putInt(vSpacing);
-    }
+  public void parse(ByteBuffer input) {
+    hSpacing = input.getInt();
+    vSpacing = input.getInt();
+  }
 
-    @Override
-    public int estimateSize() {
-        return 16;
-    }
+  protected void doWrite(ByteBuffer out) {
+    out.putInt(hSpacing);
+    out.putInt(vSpacing);
+  }
 
-    public int gethSpacing() {
-        return hSpacing;
-    }
+  @Override
+  public int estimateSize() {
+    return 16;
+  }
 
-    public int getvSpacing() {
-        return vSpacing;
-    }
+  public int gethSpacing() {
+    return hSpacing;
+  }
 
-    public static String fourcc() {
-        return "pasp";
-    }
+  public int getvSpacing() {
+    return vSpacing;
+  }
+
+  public static String fourcc() {
+    return "pasp";
+  }
 }

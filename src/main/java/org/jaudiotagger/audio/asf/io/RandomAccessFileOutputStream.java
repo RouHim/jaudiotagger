@@ -11,35 +11,35 @@ import java.io.RandomAccessFile;
  */
 public final class RandomAccessFileOutputStream extends OutputStream {
 
-    /**
-     * the file to write to.
-     */
-    private final RandomAccessFile targetFile;
+  /**
+   * the file to write to.
+   */
+  private final RandomAccessFile targetFile;
 
-    /**
-     * Creates an instance.<br>
-     *
-     * @param target file to write to.
-     */
-    public RandomAccessFileOutputStream(final RandomAccessFile target) {
-        super();
-        this.targetFile = target;
-    }
+  /**
+   * Creates an instance.<br>
+   *
+   * @param target file to write to.
+   */
+  public RandomAccessFileOutputStream(final RandomAccessFile target) {
+    super();
+    this.targetFile = target;
+  }
 
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void write(final byte[] bytes, final int off, final int len) throws IOException {
-        this.targetFile.write(bytes, off, len);
-    }
+  /**
+   * {@inheritDoc}
+   */
+  @Override
+  public void write(final byte[] bytes, final int off, final int len)
+    throws IOException {
+    this.targetFile.write(bytes, off, len);
+  }
 
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void write(final int toWrite) throws IOException {
-        this.targetFile.write(toWrite);
-    }
-
+  /**
+   * {@inheritDoc}
+   */
+  @Override
+  public void write(final int toWrite) throws IOException {
+    this.targetFile.write(toWrite);
+  }
 }
