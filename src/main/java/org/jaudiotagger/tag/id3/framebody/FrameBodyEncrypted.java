@@ -15,10 +15,11 @@
  */
 package org.jaudiotagger.tag.id3.framebody;
 
-import java.nio.ByteBuffer;
 import org.jaudiotagger.tag.InvalidTagException;
 import org.jaudiotagger.tag.datatype.ByteArraySizeTerminated;
 import org.jaudiotagger.tag.datatype.DataTypes;
+
+import java.nio.ByteBuffer;
 
 /**
  * Encrypted frame.
@@ -31,52 +32,52 @@ import org.jaudiotagger.tag.datatype.DataTypes;
  * @author : Paul Taylor
  */
 public class FrameBodyEncrypted
-  extends AbstractID3v2FrameBody
-  implements ID3v24FrameBody, ID3v23FrameBody {
+        extends AbstractID3v2FrameBody
+        implements ID3v24FrameBody, ID3v23FrameBody {
 
-  private String identifier = null;
+    private String identifier = null;
 
-  /**
-   * Creates a new FrameBodyEncrypted dataType.
-   */
-  public FrameBodyEncrypted(String identifier) {
-    this.identifier = identifier;
-  }
+    /**
+     * Creates a new FrameBodyEncrypted dataType.
+     */
+    public FrameBodyEncrypted(String identifier) {
+        this.identifier = identifier;
+    }
 
-  public FrameBodyEncrypted(FrameBodyEncrypted body) {
-    super(body);
-  }
+    public FrameBodyEncrypted(FrameBodyEncrypted body) {
+        super(body);
+    }
 
-  /**
-   * Read from file
-   *
-   * @param identifier
-   * @param byteBuffer
-   * @param frameSize
-   * @throws InvalidTagException
-   */
-  public FrameBodyEncrypted(
-    String identifier,
-    ByteBuffer byteBuffer,
-    int frameSize
-  ) throws InvalidTagException {
-    super(byteBuffer, frameSize);
-    this.identifier = identifier;
-  }
+    /**
+     * Read from file
+     *
+     * @param identifier
+     * @param byteBuffer
+     * @param frameSize
+     * @throws InvalidTagException
+     */
+    public FrameBodyEncrypted(
+            String identifier,
+            ByteBuffer byteBuffer,
+            int frameSize
+    ) throws InvalidTagException {
+        super(byteBuffer, frameSize);
+        this.identifier = identifier;
+    }
 
-  /**
-   * The ID3v2 frame identifier
-   *
-   * @return the ID3v2 frame identifier  for this frame type
-   */
-  public String getIdentifier() {
-    return identifier;
-  }
+    /**
+     * The ID3v2 frame identifier
+     *
+     * @return the ID3v2 frame identifier  for this frame type
+     */
+    public String getIdentifier() {
+        return identifier;
+    }
 
-  /**
-   * TODO:proper mapping
-   */
-  protected void setupObjectList() {
-    objectList.add(new ByteArraySizeTerminated(DataTypes.OBJ_DATA, this));
-  }
+    /**
+     * TODO:proper mapping
+     */
+    protected void setupObjectList() {
+        objectList.add(new ByteArraySizeTerminated(DataTypes.OBJ_DATA, this));
+    }
 }

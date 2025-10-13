@@ -18,9 +18,10 @@
  */
 package org.jaudiotagger.audio.mp3;
 
+import org.jaudiotagger.audio.generic.Utils;
+
 import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
-import org.jaudiotagger.audio.generic.Utils;
 
 /**
  * The first frame can sometimes contain a LAME frame at the end of the Xing frame
@@ -46,52 +47,52 @@ import org.jaudiotagger.audio.generic.Utils;
  */
 public class LameFrame {
 
-  public static final int LAME_HEADER_BUFFER_SIZE = 36;
-  public static final int ENCODER_SIZE = 9; //Includes LAME ID
-  public static final int LAME_ID_SIZE = 4;
-  public static final String LAME_ID = "LAME";
-  private final String encoder;
+    public static final int LAME_HEADER_BUFFER_SIZE = 36;
+    public static final int ENCODER_SIZE = 9; //Includes LAME ID
+    public static final int LAME_ID_SIZE = 4;
+    public static final String LAME_ID = "LAME";
+    private final String encoder;
 
-  /**
-   * Initilise a Lame Mpeg Frame
-   *
-   * @param lameHeader
-   */
-  private LameFrame(ByteBuffer lameHeader) {
-    encoder = Utils.getString(
-      lameHeader,
-      0,
-      ENCODER_SIZE,
-      StandardCharsets.ISO_8859_1
-    );
-  }
-
-  /**
-   * Parse frame
-   *
-   * @param bb
-   * @return frame or null if not exists
-   */
-  public static LameFrame parseLameFrame(ByteBuffer bb) {
-    ByteBuffer lameHeader = bb.slice();
-    String id = Utils.getString(
-      lameHeader,
-      0,
-      LAME_ID_SIZE,
-      StandardCharsets.ISO_8859_1
-    );
-    lameHeader.rewind();
-    if (id.equals(LAME_ID)) {
-      LameFrame lameFrame = new LameFrame(lameHeader);
-      return lameFrame;
+    /**
+     * Initilise a Lame Mpeg Frame
+     *
+     * @param lameHeader
+     */
+    private LameFrame(ByteBuffer lameHeader) {
+        encoder = Utils.getString(
+                lameHeader,
+                0,
+                ENCODER_SIZE,
+                StandardCharsets.ISO_8859_1
+        );
     }
-    return null;
-  }
 
-  /**
-   * @return encoder
-   */
-  public String getEncoder() {
-    return encoder;
-  }
+    /**
+     * Parse frame
+     *
+     * @param bb
+     * @return frame or null if not exists
+     */
+    public static LameFrame parseLameFrame(ByteBuffer bb) {
+        ByteBuffer lameHeader = bb.slice();
+        String id = Utils.getString(
+                lameHeader,
+                0,
+                LAME_ID_SIZE,
+                StandardCharsets.ISO_8859_1
+        );
+        lameHeader.rewind();
+        if (id.equals(LAME_ID)) {
+            LameFrame lameFrame = new LameFrame(lameHeader);
+            return lameFrame;
+        }
+        return null;
+    }
+
+    /**
+     * @return encoder
+     */
+    public String getEncoder() {
+        return encoder;
+    }
 }

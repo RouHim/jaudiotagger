@@ -1,13 +1,14 @@
 package org.jaudiotagger.audio.aiff.chunk;
 
-import java.nio.ByteBuffer;
-import java.nio.charset.StandardCharsets;
-import java.util.Date;
 import org.jaudiotagger.audio.aiff.AiffAudioHeader;
 import org.jaudiotagger.audio.aiff.AiffUtil;
 import org.jaudiotagger.audio.generic.Utils;
 import org.jaudiotagger.audio.iff.Chunk;
 import org.jaudiotagger.audio.iff.ChunkHeader;
+
+import java.nio.ByteBuffer;
+import java.nio.charset.StandardCharsets;
+import java.util.Date;
 
 /**
  * <p>
@@ -47,52 +48,52 @@ import org.jaudiotagger.audio.iff.ChunkHeader;
  */
 public class CommentsChunk extends Chunk {
 
-  private static final int TIMESTAMP_LENGTH = 4;
-  private static final int MARKERID_LENGTH = 2;
-  private static final int COUNT_LENGTH = 2;
+    private static final int TIMESTAMP_LENGTH = 4;
+    private static final int MARKERID_LENGTH = 2;
+    private static final int COUNT_LENGTH = 2;
 
-  private final AiffAudioHeader aiffHeader;
+    private final AiffAudioHeader aiffHeader;
 
-  /**
-   * @param chunkHeader     The header for this chunk
-   * @param chunkData       The buffer from which the AIFF data are being read
-   * @param aiffAudioHeader audio header
-   */
-  public CommentsChunk(
-    final ChunkHeader chunkHeader,
-    final ByteBuffer chunkData,
-    final AiffAudioHeader aiffAudioHeader
-  ) {
-    super(chunkData, chunkHeader);
-    this.aiffHeader = aiffAudioHeader;
-  }
-
-  /**
-   * Reads a chunk and extracts information.
-   *
-   * @return <code>false</code> if the chunk is structurally
-   * invalid, otherwise <code>true</code>
-   */
-  public boolean readChunk() {
-    final int numComments = Utils.u(chunkData.getShort());
-
-    //For each comment
-    for (int i = 0; i < numComments; i++) {
-      final long timestamp = Utils.u(chunkData.getInt());
-      final Date jTimestamp = AiffUtil.timestampToDate(timestamp);
-      final int marker = Utils.u(chunkData.getShort());
-      final int count = Utils.u(chunkData.getShort());
-      // Append a timestamp to the comment
-      final String text =
-        Utils.getString(chunkData, 0, count, StandardCharsets.ISO_8859_1) +
-        " " +
-        AiffUtil.formatDate(jTimestamp);
-      if (count % 2 != 0) {
-        // if count is odd, text is padded with an extra byte that we need to consume
-        chunkData.get();
-      }
-      aiffHeader.addComment(text);
+    /**
+     * @param chunkHeader     The header for this chunk
+     * @param chunkData       The buffer from which the AIFF data are being read
+     * @param aiffAudioHeader audio header
+     */
+    public CommentsChunk(
+            final ChunkHeader chunkHeader,
+            final ByteBuffer chunkData,
+            final AiffAudioHeader aiffAudioHeader
+    ) {
+        super(chunkData, chunkHeader);
+        this.aiffHeader = aiffAudioHeader;
     }
-    return true;
-  }
+
+    /**
+     * Reads a chunk and extracts information.
+     *
+     * @return <code>false</code> if the chunk is structurally
+     * invalid, otherwise <code>true</code>
+     */
+    public boolean readChunk() {
+        final int numComments = Utils.u(chunkData.getShort());
+
+        //For each comment
+        for (int i = 0; i < numComments; i++) {
+            final long timestamp = Utils.u(chunkData.getInt());
+            final Date jTimestamp = AiffUtil.timestampToDate(timestamp);
+            final int marker = Utils.u(chunkData.getShort());
+            final int count = Utils.u(chunkData.getShort());
+            // Append a timestamp to the comment
+            final String text =
+                    Utils.getString(chunkData, 0, count, StandardCharsets.ISO_8859_1) +
+                            " " +
+                            AiffUtil.formatDate(jTimestamp);
+            if (count % 2 != 0) {
+                // if count is odd, text is padded with an extra byte that we need to consume
+                chunkData.get();
+            }
+            aiffHeader.addComment(text);
+        }
+        return true;
+    }
 }

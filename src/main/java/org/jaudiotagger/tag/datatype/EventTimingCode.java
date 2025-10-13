@@ -28,140 +28,147 @@ import org.slf4j.LoggerFactory;
  */
 public class EventTimingCode extends AbstractDataType implements Cloneable {
 
-  private static final Logger logger = LoggerFactory.getLogger(
-    AbstractDataType.class
-  );
-  private static final int SIZE = 5;
-  private final NumberHashMap type = new NumberHashMap(
-    DataTypes.OBJ_TYPE_OF_EVENT,
-    null,
-    1
-  );
-  private final NumberFixedLength timestamp = new NumberFixedLength(
-    DataTypes.OBJ_DATETIME,
-    null,
-    4
-  );
+    protected final Logger log = LoggerFactory.getLogger(getClass());
 
-  public EventTimingCode(final EventTimingCode copy) {
-    super(copy);
-    this.type.setValue(copy.type.getValue());
-    this.timestamp.setValue(copy.timestamp.getValue());
-  }
+    private static final int SIZE = 5;
+    private final NumberHashMap type = new NumberHashMap(
+            DataTypes.OBJ_TYPE_OF_EVENT,
+            null,
+            1
+    );
+    private final NumberFixedLength timestamp = new NumberFixedLength(
+            DataTypes.OBJ_DATETIME,
+            null,
+            4
+    );
 
-  public EventTimingCode(
-    final String identifier,
-    final AbstractTagFrameBody frameBody
-  ) {
-    this(identifier, frameBody, 0x00, 0L);
-  }
-
-  public EventTimingCode(
-    final String identifier,
-    final AbstractTagFrameBody frameBody,
-    final int type,
-    final long timestamp
-  ) {
-    super(identifier, frameBody);
-    setBody(frameBody);
-    this.type.setValue(type);
-    this.timestamp.setValue(timestamp);
-  }
-
-  @Override
-  public void setBody(final AbstractTagFrameBody frameBody) {
-    super.setBody(frameBody);
-    this.type.setBody(frameBody);
-    this.timestamp.setBody(frameBody);
-  }
-
-  public long getTimestamp() {
-    return ((Number) timestamp.getValue()).longValue();
-  }
-
-  public void setTimestamp(final long timestamp) {
-    this.timestamp.setValue(timestamp);
-  }
-
-  public int getType() {
-    return ((Number) type.getValue()).intValue();
-  }
-
-  public void setType(final int type) {
-    this.type.setValue(type);
-  }
-
-  @Override
-  public int getSize() {
-    return SIZE;
-  }
-
-  @Override
-  public void readByteArray(final byte[] buffer, final int originalOffset)
-    throws InvalidDataTypeException {
-    int localOffset = originalOffset;
-    int size = getSize();
-
-    logger.debug("offset:" + localOffset);
-
-    //The read has extended further than the defined frame size (ok to extend upto
-    //size because the next datatype may be of length 0.)
-    if (originalOffset > buffer.length - size) {
-      logger.warn("Invalid size for FrameBody");
-      throw new InvalidDataTypeException("Invalid size for FrameBody");
+    public EventTimingCode(final EventTimingCode copy) {
+        super(copy);
+        this.type.setValue(copy.type.getValue());
+        this.timestamp.setValue(copy.timestamp.getValue());
     }
 
-    this.type.readByteArray(buffer, localOffset);
-    localOffset += this.type.getSize();
-    this.timestamp.readByteArray(buffer, localOffset);
-    localOffset += this.timestamp.getSize();
-  }
+    public EventTimingCode(
+            final String identifier,
+            final AbstractTagFrameBody frameBody
+    ) {
+        this(identifier, frameBody, 0x00, 0L);
+    }
 
-  @Override
-  public byte[] writeByteArray() {
-    final byte[] typeData = this.type.writeByteArray();
-    final byte[] timeData = this.timestamp.writeByteArray();
-    if (typeData == null || timeData == null) return null;
+    public EventTimingCode(
+            final String identifier,
+            final AbstractTagFrameBody frameBody,
+            final int type,
+            final long timestamp
+    ) {
+        super(identifier, frameBody);
+        setBody(frameBody);
+        this.type.setValue(type);
+        this.timestamp.setValue(timestamp);
+    }
 
-    final byte[] objectData = new byte[typeData.length + timeData.length];
-    System.arraycopy(typeData, 0, objectData, 0, typeData.length);
-    System.arraycopy(timeData, 0, objectData, typeData.length, timeData.length);
-    return objectData;
-  }
+    @Override
+    public void setBody(final AbstractTagFrameBody frameBody) {
+        super.setBody(frameBody);
+        this.type.setBody(frameBody);
+        this.timestamp.setBody(frameBody);
+    }
 
-  @Override
-  public boolean equals(final Object o) {
-    if (this == o) return true;
-    if (o == null || getClass() != o.getClass()) return false;
-    if (!super.equals(o)) return false;
+    @Override
+    public void readByteArray(final byte[] buffer, final int originalOffset)
+            throws InvalidDataTypeException {
+        int localOffset = originalOffset;
+        int size = getSize();
 
-    final EventTimingCode that = (EventTimingCode) o;
-    return (
-      this.getType() == that.getType() &&
-      this.getTimestamp() == that.getTimestamp()
-    );
-  }
+        log.debug("offset:" + localOffset);
 
-  @Override
-  public int hashCode() {
-    int result = type != null ? type.hashCode() : 0;
-    result = 31 * result + (timestamp != null ? timestamp.hashCode() : 0);
-    return result;
-  }
+        //The read has extended further than the defined frame size (ok to extend upto
+        //size because the next datatype may be of length 0.)
+        if (originalOffset > buffer.length - size) {
+            log.warn("Invalid size for FrameBody");
+            throw new InvalidDataTypeException("Invalid size for FrameBody");
+        }
 
-  @Override
-  public String toString() {
-    return (
-      getType() +
-      " (\"" +
-      EventTimingTypes.getInstanceOf().getValueForId(getType()) +
-      "\"), " +
-      getTimestamp()
-    );
-  }
+        this.type.readByteArray(buffer, localOffset);
+        localOffset += this.type.getSize();
+        this.timestamp.readByteArray(buffer, localOffset);
+        localOffset += this.timestamp.getSize();
+    }
 
-  @Override
-  public Object clone() {
-    return new EventTimingCode(this);
-  }
+    @Override
+    public int getSize() {
+        return SIZE;
+    }
+
+    @Override
+    public byte[] writeByteArray() {
+        final byte[] typeData = this.type.writeByteArray();
+        final byte[] timeData = this.timestamp.writeByteArray();
+        if (typeData == null || timeData == null) {
+            return null;
+        }
+
+        final byte[] objectData = new byte[typeData.length + timeData.length];
+        System.arraycopy(typeData, 0, objectData, 0, typeData.length);
+        System.arraycopy(timeData, 0, objectData, typeData.length, timeData.length);
+        return objectData;
+    }
+
+    @Override
+    public boolean equals(final Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        if (!super.equals(o)) {
+            return false;
+        }
+
+        final EventTimingCode that = (EventTimingCode) o;
+        return (
+                this.getType() == that.getType() &&
+                        this.getTimestamp() == that.getTimestamp()
+        );
+    }
+
+    public long getTimestamp() {
+        return ((Number) timestamp.getValue()).longValue();
+    }
+
+    public void setTimestamp(final long timestamp) {
+        this.timestamp.setValue(timestamp);
+    }
+
+    public int getType() {
+        return ((Number) type.getValue()).intValue();
+    }
+
+    public void setType(final int type) {
+        this.type.setValue(type);
+    }
+
+    @Override
+    public int hashCode() {
+        int result = type != null ? type.hashCode() : 0;
+        result = 31 * result + (timestamp != null ? timestamp.hashCode() : 0);
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return (
+                getType() +
+                        " (\"" +
+                        EventTimingTypes.getInstanceOf().getValueForId(getType()) +
+                        "\"), " +
+                        getTimestamp()
+        );
+    }
+
+    @Override
+    public Object clone() {
+        return new EventTimingCode(this);
+    }
 }

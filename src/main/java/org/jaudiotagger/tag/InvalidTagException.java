@@ -33,36 +33,37 @@ package org.jaudiotagger.tag;
  */
 public class InvalidTagException extends TagException {
 
-  /**
-   * Creates a new InvalidTagException datatype.
-   */
-  public InvalidTagException() {}
+    /**
+     * Creates a new InvalidTagException datatype.
+     */
+    public InvalidTagException() {
+    }
 
-  /**
-   * Creates a new InvalidTagException datatype.
-   *
-   * @param ex the cause.
-   */
-  public InvalidTagException(Throwable ex) {
-    super(ex);
-  }
+    /**
+     * Creates a new InvalidTagException datatype.
+     *
+     * @param ex the cause.
+     */
+    public InvalidTagException(Throwable ex) {
+        super(ex);
+    }
 
-  /**
-   * Creates a new InvalidTagException datatype.
-   *
-   * @param msg the detail message.
-   */
-  public InvalidTagException(String msg) {
-    super(msg);
-  }
+    /**
+     * Creates a new InvalidTagException datatype.
+     *
+     * @param msg the detail message.
+     */
+    public InvalidTagException(String msg) {
+        super(msg);
+    }
 
-  /**
-   * Creates a new InvalidTagException datatype.
-   *
-   * @param msg the detail message.
-   * @param ex  the cause.
-   */
-  public InvalidTagException(String msg, Throwable ex) {
-    super(msg, ex);
-  }
+    /**
+     * Creates a new InvalidTagException datatype.
+     *
+     * @param msg the detail message.
+     * @param ex  the cause.
+     */
+    public InvalidTagException(String msg, Throwable ex) {
+        super(msg, ex);
+    }
 }

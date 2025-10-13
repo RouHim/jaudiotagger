@@ -31,60 +31,57 @@ import org.slf4j.LoggerFactory;
  */
 public class OggCRCFactory {
 
-  // Logger Object
-  private static final Logger logger = LoggerFactory.getLogger(
-    "org.jaudiotagger.audio.ogg"
-  );
+    protected final Logger log = LoggerFactory.getLogger(getClass());
 
-  private static final long[] crc_lookup = new long[256];
-  private static boolean init = false;
+    private static final long[] crc_lookup = new long[256];
+    private static boolean init = false;
 
-  public static void init() {
-    for (int i = 0; i < 256; i++) {
-      long r = (long) i << 24;
+    public boolean checkCRC(byte[] data, byte[] crc) {
+        return new String(crc).equals(new String(computeCRC(data)));
+    }
 
-      for (int j = 0; j < 8; j++) {
-        if ((r & 0x80000000L) != 0) {
-          r = (r << 1) ^ 0x04c11db7L;
-        } else {
-          r <<= 1;
+    public static byte[] computeCRC(byte[] data) {
+        if (!init) {
+            init();
         }
-      }
 
-      crc_lookup[i] = (r);
-    }
-    init = true;
-  }
+        long crc_reg = 0;
 
-  public boolean checkCRC(byte[] data, byte[] crc) {
-    return new String(crc).equals(new String(computeCRC(data)));
-  }
+        for (byte aData : data) {
+            int tmp = (int) (((crc_reg >>> 24) & 0xff) ^ u(aData));
 
-  public static byte[] computeCRC(byte[] data) {
-    if (!init) {
-      init();
-    }
+            crc_reg = (crc_reg << 8) ^ crc_lookup[tmp];
+            crc_reg &= 0xffffffff;
+        }
 
-    long crc_reg = 0;
+        byte[] sum = new byte[4];
 
-    for (byte aData : data) {
-      int tmp = (int) (((crc_reg >>> 24) & 0xff) ^ u(aData));
+        sum[0] = (byte) (crc_reg & 0xffL);
+        sum[1] = (byte) ((crc_reg >>> 8) & 0xffL);
+        sum[2] = (byte) ((crc_reg >>> 16) & 0xffL);
+        sum[3] = (byte) ((crc_reg >>> 24) & 0xffL);
 
-      crc_reg = (crc_reg << 8) ^ crc_lookup[tmp];
-      crc_reg &= 0xffffffff;
+        return sum;
     }
 
-    byte[] sum = new byte[4];
+    public static void init() {
+        for (int i = 0; i < 256; i++) {
+            long r = (long) i << 24;
 
-    sum[0] = (byte) (crc_reg & 0xffL);
-    sum[1] = (byte) ((crc_reg >>> 8) & 0xffL);
-    sum[2] = (byte) ((crc_reg >>> 16) & 0xffL);
-    sum[3] = (byte) ((crc_reg >>> 24) & 0xffL);
+            for (int j = 0; j < 8; j++) {
+                if ((r & 0x80000000L) != 0) {
+                    r = (r << 1) ^ 0x04c11db7L;
+                } else {
+                    r <<= 1;
+                }
+            }
 
-    return sum;
-  }
+            crc_lookup[i] = (r);
+        }
+        init = true;
+    }
 
-  private static int u(int n) {
-    return n & 0xff;
-  }
+    private static int u(int n) {
+        return n & 0xff;
+    }
 }

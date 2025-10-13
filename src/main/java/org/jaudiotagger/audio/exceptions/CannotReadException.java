@@ -26,33 +26,33 @@ package org.jaudiotagger.audio.exceptions;
  */
 public class CannotReadException extends Exception {
 
-  /**
-   * Creates an instance.
-   */
-  public CannotReadException() {
-    super();
-  }
+    /**
+     * Creates an instance.
+     */
+    public CannotReadException() {
+        super();
+    }
 
-  public CannotReadException(Throwable ex) {
-    super(ex);
-  }
+    public CannotReadException(Throwable ex) {
+        super(ex);
+    }
 
-  /**
-   * Creates an instance.
-   *
-   * @param message The message.
-   */
-  public CannotReadException(String message) {
-    super(message);
-  }
+    /**
+     * Creates an instance.
+     *
+     * @param message The message.
+     */
+    public CannotReadException(String message) {
+        super(message);
+    }
 
-  /**
-   * Creates an instance.
-   *
-   * @param message The error message.
-   * @param cause   The throwable causing this exception.
-   */
-  public CannotReadException(String message, Throwable cause) {
-    super(message, cause);
-  }
+    /**
+     * Creates an instance.
+     *
+     * @param message The error message.
+     * @param cause   The throwable causing this exception.
+     */
+    public CannotReadException(String message, Throwable cause) {
+        super(message, cause);
+    }
 }

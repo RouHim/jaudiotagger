@@ -39,145 +39,143 @@ import org.slf4j.LoggerFactory;
  */
 public class NumberFixedLength extends AbstractDataType {
 
-  private static final Logger logger = LoggerFactory.getLogger(
-    NumberFixedLength.class
-  );
+    protected final Logger log = LoggerFactory.getLogger(getClass());
 
-  /**
-   * Creates a new ObjectNumberFixedLength datatype.
-   *
-   * @param identifier
-   * @param frameBody
-   * @param size       the number of significant places that the number is held to
-   * @throws IllegalArgumentException
-   */
-  public NumberFixedLength(
-    String identifier,
-    AbstractTagFrameBody frameBody,
-    int size
-  ) {
-    super(identifier, frameBody);
-    if (size < 0) {
-      throw new IllegalArgumentException("Length is less than zero: " + size);
-    }
-    this.size = size;
-  }
-
-  public NumberFixedLength(NumberFixedLength copy) {
-    super(copy);
-    this.size = copy.size;
-  }
-
-  /**
-   * Set Size in Bytes of this Object
-   *
-   * @param size in bytes that this number will be held as
-   */
-  public void setSize(int size) {
-    if (size > 0) {
-      this.size = size;
-    }
-  }
-
-  /**
-   * Return size
-   *
-   * @return the size of this number
-   */
-  public int getSize() {
-    return size;
-  }
-
-  public void setValue(Object value) {
-    if (!(value instanceof Number)) {
-      throw new IllegalArgumentException(
-        "Invalid value type for NumberFixedLength:" + value.getClass()
-      );
-    }
-    super.setValue(value);
-  }
-
-  /**
-   * @param obj
-   * @return true if obj equivalent to this
-   */
-  public boolean equals(Object obj) {
-    if (!(obj instanceof NumberFixedLength object)) {
-      return false;
-    }
-    return this.size == object.size && super.equals(obj);
-  }
-
-  /**
-   * Read the number from the byte array
-   *
-   * @param arr
-   * @param offset
-   * @throws NullPointerException
-   * @throws IndexOutOfBoundsException
-   */
-  public void readByteArray(byte[] arr, int offset)
-    throws InvalidDataTypeException {
-    if (arr == null) {
-      throw new NullPointerException("Byte array is null");
-    }
-    if ((offset < 0) || (offset >= arr.length)) {
-      throw new InvalidDataTypeException(
-        "Offset to byte array is out of bounds: offset = " +
-          offset +
-          ", array.length = " +
-          arr.length
-      );
+    /**
+     * Creates a new ObjectNumberFixedLength datatype.
+     *
+     * @param identifier
+     * @param frameBody
+     * @param size       the number of significant places that the number is held to
+     * @throws IllegalArgumentException
+     */
+    public NumberFixedLength(
+            String identifier,
+            AbstractTagFrameBody frameBody,
+            int size
+    ) {
+        super(identifier, frameBody);
+        if (size < 0) {
+            throw new IllegalArgumentException("Length is less than zero: " + size);
+        }
+        this.size = size;
     }
 
-    if (offset + size > arr.length) {
-      throw new InvalidDataTypeException(
-        "Offset plus size to byte array is out of bounds: offset = " +
-          offset +
-          ", size = " +
-          size +
-          " + arr.length " +
-          arr.length
-      );
+    public NumberFixedLength(NumberFixedLength copy) {
+        super(copy);
+        this.size = copy.size;
     }
 
-    long lvalue = 0;
-    for (int i = offset; i < (offset + size); i++) {
-      lvalue <<= 8;
-      lvalue += (arr[i] & 0xff);
+    /**
+     * Return size
+     *
+     * @return the size of this number
+     */
+    public int getSize() {
+        return size;
     }
-    value = lvalue;
-    logger.debug("Read NumberFixedlength:" + value);
-  }
 
-  /**
-   * @return String representation of this datatype
-   */
-  public String toString() {
-    if (value == null) {
-      return "";
-    } else {
-      return value.toString();
+    /**
+     * Set Size in Bytes of this Object
+     *
+     * @param size in bytes that this number will be held as
+     */
+    public void setSize(int size) {
+        if (size > 0) {
+            this.size = size;
+        }
     }
-  }
 
-  /**
-   * Write data to byte array
-   *
-   * @return the datatype converted to a byte array
-   */
-  public byte[] writeByteArray() {
-    byte[] arr;
-    arr = new byte[size];
-    if (value != null) {
-      //Convert value to long
-      long temp = ID3Tags.getWholeNumber(value);
-
-      for (int i = size - 1; i >= 0; i--) {
-        arr[i] = (byte) (temp & 0xFF);
-        temp >>= 8;
-      }
+    public void setValue(Object value) {
+        if (!(value instanceof Number)) {
+            throw new IllegalArgumentException(
+                    "Invalid value type for NumberFixedLength:" + value.getClass()
+            );
+        }
+        super.setValue(value);
     }
-    return arr;
-  }
+
+    /**
+     * @param obj
+     * @return true if obj equivalent to this
+     */
+    public boolean equals(Object obj) {
+        if (!(obj instanceof NumberFixedLength object)) {
+            return false;
+        }
+        return this.size == object.size && super.equals(obj);
+    }
+
+    /**
+     * Read the number from the byte array
+     *
+     * @param arr
+     * @param offset
+     * @throws NullPointerException
+     * @throws IndexOutOfBoundsException
+     */
+    public void readByteArray(byte[] arr, int offset)
+            throws InvalidDataTypeException {
+        if (arr == null) {
+            throw new NullPointerException("Byte array is null");
+        }
+        if ((offset < 0) || (offset >= arr.length)) {
+            throw new InvalidDataTypeException(
+                    "Offset to byte array is out of bounds: offset = " +
+                            offset +
+                            ", array.length = " +
+                            arr.length
+            );
+        }
+
+        if (offset + size > arr.length) {
+            throw new InvalidDataTypeException(
+                    "Offset plus size to byte array is out of bounds: offset = " +
+                            offset +
+                            ", size = " +
+                            size +
+                            " + arr.length " +
+                            arr.length
+            );
+        }
+
+        long lvalue = 0;
+        for (int i = offset; i < (offset + size); i++) {
+            lvalue <<= 8;
+            lvalue += (arr[i] & 0xff);
+        }
+        value = lvalue;
+        log.debug("Read NumberFixedlength:" + value);
+    }
+
+    /**
+     * @return String representation of this datatype
+     */
+    public String toString() {
+        if (value == null) {
+            return "";
+        } else {
+            return value.toString();
+        }
+    }
+
+    /**
+     * Write data to byte array
+     *
+     * @return the datatype converted to a byte array
+     */
+    public byte[] writeByteArray() {
+        byte[] arr;
+        arr = new byte[size];
+        if (value != null) {
+            //Convert value to long
+            long temp = ID3Tags.getWholeNumber(value);
+
+            for (int i = size - 1; i >= 0; i--) {
+                arr[i] = (byte) (temp & 0xFF);
+                temp >>= 8;
+            }
+        }
+        return arr;
+    }
 }

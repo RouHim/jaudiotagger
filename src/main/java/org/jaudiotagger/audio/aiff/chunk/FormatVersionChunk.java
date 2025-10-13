@@ -1,11 +1,12 @@
 package org.jaudiotagger.audio.aiff.chunk;
 
-import java.nio.ByteBuffer;
-import java.util.Date;
 import org.jaudiotagger.audio.aiff.AiffAudioHeader;
 import org.jaudiotagger.audio.aiff.AiffUtil;
 import org.jaudiotagger.audio.iff.Chunk;
 import org.jaudiotagger.audio.iff.ChunkHeader;
+
+import java.nio.ByteBuffer;
+import java.util.Date;
 
 /**
  * <p>
@@ -33,34 +34,34 @@ import org.jaudiotagger.audio.iff.ChunkHeader;
  */
 public class FormatVersionChunk extends Chunk {
 
-  private final AiffAudioHeader aiffHeader;
+    private final AiffAudioHeader aiffHeader;
 
-  /**
-   * @param chunkHeader     The header for this chunk
-   * @param chunkData       The buffer from which the AIFF data are being read
-   * @param aiffAudioHeader The AiffTag into which information is stored
-   */
-  public FormatVersionChunk(
-    final ChunkHeader chunkHeader,
-    final ByteBuffer chunkData,
-    final AiffAudioHeader aiffAudioHeader
-  ) {
-    super(chunkData, chunkHeader);
-    this.aiffHeader = aiffAudioHeader;
-  }
+    /**
+     * @param chunkHeader     The header for this chunk
+     * @param chunkData       The buffer from which the AIFF data are being read
+     * @param aiffAudioHeader The AiffTag into which information is stored
+     */
+    public FormatVersionChunk(
+            final ChunkHeader chunkHeader,
+            final ByteBuffer chunkData,
+            final AiffAudioHeader aiffAudioHeader
+    ) {
+        super(chunkData, chunkHeader);
+        this.aiffHeader = aiffAudioHeader;
+    }
 
-  /**
-   * Reads a chunk and extracts information.
-   *
-   * @return <code>false</code> if the chunk is structurally
-   * invalid, otherwise <code>true</code>
-   */
-  public boolean readChunk() {
-    final long rawTimestamp = chunkData.getInt();
-    // The timestamp is in seconds since January 1, 1904.
-    // We must convert to Java time.
-    final Date timestamp = AiffUtil.timestampToDate(rawTimestamp);
-    aiffHeader.setTimestamp(timestamp);
-    return true;
-  }
+    /**
+     * Reads a chunk and extracts information.
+     *
+     * @return <code>false</code> if the chunk is structurally
+     * invalid, otherwise <code>true</code>
+     */
+    public boolean readChunk() {
+        final long rawTimestamp = chunkData.getInt();
+        // The timestamp is in seconds since January 1, 1904.
+        // We must convert to Java time.
+        final Date timestamp = AiffUtil.timestampToDate(rawTimestamp);
+        aiffHeader.setTimestamp(timestamp);
+        return true;
+    }
 }

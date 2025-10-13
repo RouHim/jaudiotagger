@@ -12,88 +12,87 @@ import java.nio.ByteBuffer;
  */
 public class TrackExtendsBox extends FullBox {
 
-  public TrackExtendsBox(Header atom) {
-    super(atom);
-  }
+    private int trackId;
+    private int defaultSampleDescriptionIndex;
+    private int defaultSampleDuration;
+    private int defaultSampleBytes;
+    private int defaultSampleFlags;
+    public TrackExtendsBox(Header atom) {
+        super(atom);
+    }
 
-  private int trackId;
-  private int defaultSampleDescriptionIndex;
-  private int defaultSampleDuration;
-  private int defaultSampleBytes;
-  private int defaultSampleFlags;
+    public static TrackExtendsBox createTrackExtendsBox() {
+        return new TrackExtendsBox(new Header(fourcc()));
+    }
 
-  public static String fourcc() {
-    return "trex";
-  }
+    public static String fourcc() {
+        return "trex";
+    }
 
-  @Override
-  public void parse(ByteBuffer input) {
-    super.parse(input);
-    trackId = input.getInt();
-    defaultSampleDescriptionIndex = input.getInt();
-    defaultSampleDuration = input.getInt();
-    defaultSampleBytes = input.getInt();
-    defaultSampleFlags = input.getInt();
-  }
+    @Override
+    public void parse(ByteBuffer input) {
+        super.parse(input);
+        trackId = input.getInt();
+        defaultSampleDescriptionIndex = input.getInt();
+        defaultSampleDuration = input.getInt();
+        defaultSampleBytes = input.getInt();
+        defaultSampleFlags = input.getInt();
+    }
 
-  @Override
-  protected void doWrite(ByteBuffer out) {
-    super.doWrite(out);
-    out.putInt(trackId);
-    out.putInt(defaultSampleDescriptionIndex);
-    out.putInt(defaultSampleDuration);
-    out.putInt(defaultSampleBytes);
-    out.putInt(defaultSampleFlags);
-  }
+    @Override
+    protected void doWrite(ByteBuffer out) {
+        super.doWrite(out);
+        out.putInt(trackId);
+        out.putInt(defaultSampleDescriptionIndex);
+        out.putInt(defaultSampleDuration);
+        out.putInt(defaultSampleBytes);
+        out.putInt(defaultSampleFlags);
+    }
 
-  @Override
-  public int estimateSize() {
-    return 32;
-  }
+    @Override
+    public int estimateSize() {
+        return 32;
+    }
 
-  public int getTrackId() {
-    return trackId;
-  }
+    public int getTrackId() {
+        return trackId;
+    }
 
-  public void setTrackId(int trackId) {
-    this.trackId = trackId;
-  }
+    public void setTrackId(int trackId) {
+        this.trackId = trackId;
+    }
 
-  public int getDefaultSampleDescriptionIndex() {
-    return defaultSampleDescriptionIndex;
-  }
+    public int getDefaultSampleDescriptionIndex() {
+        return defaultSampleDescriptionIndex;
+    }
 
-  public void setDefaultSampleDescriptionIndex(
-    int defaultSampleDescriptionIndex
-  ) {
-    this.defaultSampleDescriptionIndex = defaultSampleDescriptionIndex;
-  }
+    public void setDefaultSampleDescriptionIndex(
+            int defaultSampleDescriptionIndex
+    ) {
+        this.defaultSampleDescriptionIndex = defaultSampleDescriptionIndex;
+    }
 
-  public int getDefaultSampleDuration() {
-    return defaultSampleDuration;
-  }
+    public int getDefaultSampleDuration() {
+        return defaultSampleDuration;
+    }
 
-  public void setDefaultSampleDuration(int defaultSampleDuration) {
-    this.defaultSampleDuration = defaultSampleDuration;
-  }
+    public void setDefaultSampleDuration(int defaultSampleDuration) {
+        this.defaultSampleDuration = defaultSampleDuration;
+    }
 
-  public int getDefaultSampleBytes() {
-    return defaultSampleBytes;
-  }
+    public int getDefaultSampleBytes() {
+        return defaultSampleBytes;
+    }
 
-  public void setDefaultSampleBytes(int defaultSampleBytes) {
-    this.defaultSampleBytes = defaultSampleBytes;
-  }
+    public void setDefaultSampleBytes(int defaultSampleBytes) {
+        this.defaultSampleBytes = defaultSampleBytes;
+    }
 
-  public int getDefaultSampleFlags() {
-    return defaultSampleFlags;
-  }
+    public int getDefaultSampleFlags() {
+        return defaultSampleFlags;
+    }
 
-  public void setDefaultSampleFlags(int defaultSampleFlags) {
-    this.defaultSampleFlags = defaultSampleFlags;
-  }
-
-  public static TrackExtendsBox createTrackExtendsBox() {
-    return new TrackExtendsBox(new Header(fourcc()));
-  }
+    public void setDefaultSampleFlags(int defaultSampleFlags) {
+        this.defaultSampleFlags = defaultSampleFlags;
+    }
 }

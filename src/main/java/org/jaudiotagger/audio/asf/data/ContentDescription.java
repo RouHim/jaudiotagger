@@ -18,13 +18,14 @@
  */
 package org.jaudiotagger.audio.asf.data;
 
+import org.jaudiotagger.audio.asf.util.Utils;
+
 import java.io.IOException;
 import java.io.OutputStream;
 import java.math.BigInteger;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
-import org.jaudiotagger.audio.asf.util.Utils;
 
 /**
  * This class represents the data of a chunk which contains title, author,
@@ -35,232 +36,232 @@ import org.jaudiotagger.audio.asf.util.Utils;
  */
 public final class ContentDescription extends MetadataContainer {
 
-  /**
-   * Stores the only allowed keys of this metadata container.
-   */
-  public static final Set<String> ALLOWED;
+    /**
+     * Stores the only allowed keys of this metadata container.
+     */
+    public static final Set<String> ALLOWED;
 
-  /**
-   * Field key for author.
-   */
-  public static final String KEY_AUTHOR = "AUTHOR";
+    /**
+     * Field key for author.
+     */
+    public static final String KEY_AUTHOR = "AUTHOR";
 
-  /**
-   * Field key for copyright.
-   */
-  public static final String KEY_COPYRIGHT = "COPYRIGHT";
+    /**
+     * Field key for copyright.
+     */
+    public static final String KEY_COPYRIGHT = "COPYRIGHT";
 
-  /**
-   * Field key for description.
-   */
-  public static final String KEY_DESCRIPTION = "DESCRIPTION";
+    /**
+     * Field key for description.
+     */
+    public static final String KEY_DESCRIPTION = "DESCRIPTION";
 
-  /**
-   * Field key for rating.
-   */
-  public static final String KEY_RATING = "RATING";
+    /**
+     * Field key for rating.
+     */
+    public static final String KEY_RATING = "RATING";
 
-  /**
-   * Field key for title.
-   */
-  public static final String KEY_TITLE = "TITLE";
+    /**
+     * Field key for title.
+     */
+    public static final String KEY_TITLE = "TITLE";
 
-  static {
-    ALLOWED = new HashSet<String>(
-      Arrays.asList(
-        KEY_AUTHOR,
-        KEY_COPYRIGHT,
-        KEY_DESCRIPTION,
-        KEY_RATING,
-        KEY_TITLE
-      )
-    );
-  }
+    static {
+        ALLOWED = new HashSet<String>(
+                Arrays.asList(
+                        KEY_AUTHOR,
+                        KEY_COPYRIGHT,
+                        KEY_DESCRIPTION,
+                        KEY_RATING,
+                        KEY_TITLE
+                )
+        );
+    }
 
-  /**
-   * Creates an instance. <br>
-   */
-  public ContentDescription() {
-    this(0, BigInteger.ZERO);
-  }
+    /**
+     * Creates an instance. <br>
+     */
+    public ContentDescription() {
+        this(0, BigInteger.ZERO);
+    }
 
-  /**
-   * Creates an instance.
-   *
-   * @param pos      Position of content description within file or stream
-   * @param chunkLen Length of content description.
-   */
-  public ContentDescription(final long pos, final BigInteger chunkLen) {
-    super(ContainerType.CONTENT_DESCRIPTION, pos, chunkLen);
-  }
+    /**
+     * Creates an instance.
+     *
+     * @param pos      Position of content description within file or stream
+     * @param chunkLen Length of content description.
+     */
+    public ContentDescription(final long pos, final BigInteger chunkLen) {
+        super(ContainerType.CONTENT_DESCRIPTION, pos, chunkLen);
+    }
 
-  /**
-   * @return Returns the author.
-   */
-  public String getAuthor() {
-    return getValueFor(KEY_AUTHOR);
-  }
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public boolean isAddSupported(final MetadataDescriptor descriptor) {
+        return (
+                ALLOWED.contains(descriptor.getName()) && super.isAddSupported(descriptor)
+        );
+    }
 
-  /**
-   * @return Returns the comment.
-   */
-  public String getComment() {
-    return getValueFor(KEY_DESCRIPTION);
-  }
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public String prettyPrint(final String prefix) {
+        String result =
+                super.prettyPrint(prefix) +
+                        prefix +
+                        "  |->Title      : " +
+                        getTitle() +
+                        Utils.LINE_SEPARATOR +
+                        prefix +
+                        "  |->Author     : " +
+                        getAuthor() +
+                        Utils.LINE_SEPARATOR +
+                        prefix +
+                        "  |->Copyright  : " +
+                        getCopyRight() +
+                        Utils.LINE_SEPARATOR +
+                        prefix +
+                        "  |->Description: " +
+                        getComment() +
+                        Utils.LINE_SEPARATOR +
+                        prefix +
+                        "  |->Rating     :" +
+                        getRating() +
+                        Utils.LINE_SEPARATOR;
+        return result;
+    }
 
-  /**
-   * @return Returns the copyRight.
-   */
-  public String getCopyRight() {
-    return getValueFor(KEY_COPYRIGHT);
-  }
+    /**
+     * @return Returns the author.
+     */
+    public String getAuthor() {
+        return getValueFor(KEY_AUTHOR);
+    }
 
-  /**
-   * {@inheritDoc}
-   */
-  @Override
-  public long getCurrentAsfChunkSize() {
-    long result = 44; // GUID + UINT64 for size + 5 times string length
-    // (each
-    // 2 bytes) + 5 times zero term char (2 bytes each).
-    result += getAuthor().length() * 2L; // UTF-16LE
-    result += getComment().length() * 2L;
-    result += getRating().length() * 2L;
-    result += getTitle().length() * 2L;
-    result += getCopyRight().length() * 2L;
-    return result;
-  }
+    /**
+     * @param fileAuthor The author to set.
+     * @throws IllegalArgumentException If "UTF-16LE"-byte-representation would take more than 65535
+     *                                  bytes.
+     */
+    public void setAuthor(final String fileAuthor)
+            throws IllegalArgumentException {
+        setStringValue(KEY_AUTHOR, fileAuthor);
+    }
 
-  /**
-   * @return returns the rating.
-   */
-  public String getRating() {
-    return getValueFor(KEY_RATING);
-  }
+    /**
+     * @return Returns the comment.
+     */
+    public String getComment() {
+        return getValueFor(KEY_DESCRIPTION);
+    }
 
-  /**
-   * @return Returns the title.
-   */
-  public String getTitle() {
-    return getValueFor(KEY_TITLE);
-  }
+    /**
+     * @param tagComment The comment to set.
+     * @throws IllegalArgumentException If "UTF-16LE"-byte-representation would take more than 65535
+     *                                  bytes.
+     */
+    public void setComment(final String tagComment)
+            throws IllegalArgumentException {
+        setStringValue(KEY_DESCRIPTION, tagComment);
+    }
 
-  /**
-   * {@inheritDoc}
-   */
-  @Override
-  public boolean isAddSupported(final MetadataDescriptor descriptor) {
-    return (
-      ALLOWED.contains(descriptor.getName()) && super.isAddSupported(descriptor)
-    );
-  }
+    /**
+     * @return Returns the copyRight.
+     */
+    public String getCopyRight() {
+        return getValueFor(KEY_COPYRIGHT);
+    }
 
-  /**
-   * {@inheritDoc}
-   */
-  @Override
-  public String prettyPrint(final String prefix) {
-    String result =
-      super.prettyPrint(prefix) +
-      prefix +
-      "  |->Title      : " +
-      getTitle() +
-      Utils.LINE_SEPARATOR +
-      prefix +
-      "  |->Author     : " +
-      getAuthor() +
-      Utils.LINE_SEPARATOR +
-      prefix +
-      "  |->Copyright  : " +
-      getCopyRight() +
-      Utils.LINE_SEPARATOR +
-      prefix +
-      "  |->Description: " +
-      getComment() +
-      Utils.LINE_SEPARATOR +
-      prefix +
-      "  |->Rating     :" +
-      getRating() +
-      Utils.LINE_SEPARATOR;
-    return result;
-  }
+    /**
+     * @return returns the rating.
+     */
+    public String getRating() {
+        return getValueFor(KEY_RATING);
+    }
 
-  /**
-   * @param fileAuthor The author to set.
-   * @throws IllegalArgumentException If "UTF-16LE"-byte-representation would take more than 65535
-   *                                  bytes.
-   */
-  public void setAuthor(final String fileAuthor)
-    throws IllegalArgumentException {
-    setStringValue(KEY_AUTHOR, fileAuthor);
-  }
+    /**
+     * @param ratingText The rating to be set.
+     * @throws IllegalArgumentException If "UTF-16LE"-byte-representation would take more than 65535
+     *                                  bytes.
+     */
+    public void setRating(final String ratingText)
+            throws IllegalArgumentException {
+        setStringValue(KEY_RATING, ratingText);
+    }
 
-  /**
-   * @param tagComment The comment to set.
-   * @throws IllegalArgumentException If "UTF-16LE"-byte-representation would take more than 65535
-   *                                  bytes.
-   */
-  public void setComment(final String tagComment)
-    throws IllegalArgumentException {
-    setStringValue(KEY_DESCRIPTION, tagComment);
-  }
+    /**
+     * @return Returns the title.
+     */
+    public String getTitle() {
+        return getValueFor(KEY_TITLE);
+    }
 
-  /**
-   * @param cpright The copyRight to set.
-   * @throws IllegalArgumentException If "UTF-16LE"-byte-representation would take more than 65535
-   *                                  bytes.
-   */
-  public void setCopyright(final String cpright)
-    throws IllegalArgumentException {
-    setStringValue(KEY_COPYRIGHT, cpright);
-  }
+    /**
+     * @param songTitle The title to set.
+     * @throws IllegalArgumentException If "UTF-16LE"-byte-representation would take more than 65535
+     *                                  bytes.
+     */
+    public void setTitle(final String songTitle) throws IllegalArgumentException {
+        setStringValue(KEY_TITLE, songTitle);
+    }
 
-  /**
-   * @param ratingText The rating to be set.
-   * @throws IllegalArgumentException If "UTF-16LE"-byte-representation would take more than 65535
-   *                                  bytes.
-   */
-  public void setRating(final String ratingText)
-    throws IllegalArgumentException {
-    setStringValue(KEY_RATING, ratingText);
-  }
+    /**
+     * @param cpright The copyRight to set.
+     * @throws IllegalArgumentException If "UTF-16LE"-byte-representation would take more than 65535
+     *                                  bytes.
+     */
+    public void setCopyright(final String cpright)
+            throws IllegalArgumentException {
+        setStringValue(KEY_COPYRIGHT, cpright);
+    }
 
-  /**
-   * @param songTitle The title to set.
-   * @throws IllegalArgumentException If "UTF-16LE"-byte-representation would take more than 65535
-   *                                  bytes.
-   */
-  public void setTitle(final String songTitle) throws IllegalArgumentException {
-    setStringValue(KEY_TITLE, songTitle);
-  }
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public long writeInto(final OutputStream out) throws IOException {
+        final long chunkSize = getCurrentAsfChunkSize();
 
-  /**
-   * {@inheritDoc}
-   */
-  @Override
-  public long writeInto(final OutputStream out) throws IOException {
-    final long chunkSize = getCurrentAsfChunkSize();
+        out.write(this.getGuid().getBytes());
+        Utils.writeUINT64(getCurrentAsfChunkSize(), out);
+        // write the sizes of the string representations plus 2 bytes zero term
+        // character
+        Utils.writeUINT16(getTitle().length() * 2 + 2, out);
+        Utils.writeUINT16(getAuthor().length() * 2 + 2, out);
+        Utils.writeUINT16(getCopyRight().length() * 2 + 2, out);
+        Utils.writeUINT16(getComment().length() * 2 + 2, out);
+        Utils.writeUINT16(getRating().length() * 2 + 2, out);
+        // write the Strings
+        out.write(Utils.getBytes(getTitle(), AsfHeader.ASF_CHARSET));
+        out.write(AsfHeader.ZERO_TERM);
+        out.write(Utils.getBytes(getAuthor(), AsfHeader.ASF_CHARSET));
+        out.write(AsfHeader.ZERO_TERM);
+        out.write(Utils.getBytes(getCopyRight(), AsfHeader.ASF_CHARSET));
+        out.write(AsfHeader.ZERO_TERM);
+        out.write(Utils.getBytes(getComment(), AsfHeader.ASF_CHARSET));
+        out.write(AsfHeader.ZERO_TERM);
+        out.write(Utils.getBytes(getRating(), AsfHeader.ASF_CHARSET));
+        out.write(AsfHeader.ZERO_TERM);
+        return chunkSize;
+    }
 
-    out.write(this.getGuid().getBytes());
-    Utils.writeUINT64(getCurrentAsfChunkSize(), out);
-    // write the sizes of the string representations plus 2 bytes zero term
-    // character
-    Utils.writeUINT16(getTitle().length() * 2 + 2, out);
-    Utils.writeUINT16(getAuthor().length() * 2 + 2, out);
-    Utils.writeUINT16(getCopyRight().length() * 2 + 2, out);
-    Utils.writeUINT16(getComment().length() * 2 + 2, out);
-    Utils.writeUINT16(getRating().length() * 2 + 2, out);
-    // write the Strings
-    out.write(Utils.getBytes(getTitle(), AsfHeader.ASF_CHARSET));
-    out.write(AsfHeader.ZERO_TERM);
-    out.write(Utils.getBytes(getAuthor(), AsfHeader.ASF_CHARSET));
-    out.write(AsfHeader.ZERO_TERM);
-    out.write(Utils.getBytes(getCopyRight(), AsfHeader.ASF_CHARSET));
-    out.write(AsfHeader.ZERO_TERM);
-    out.write(Utils.getBytes(getComment(), AsfHeader.ASF_CHARSET));
-    out.write(AsfHeader.ZERO_TERM);
-    out.write(Utils.getBytes(getRating(), AsfHeader.ASF_CHARSET));
-    out.write(AsfHeader.ZERO_TERM);
-    return chunkSize;
-  }
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public long getCurrentAsfChunkSize() {
+        long result = 44; // GUID + UINT64 for size + 5 times string length
+        // (each
+        // 2 bytes) + 5 times zero term char (2 bytes each).
+        result += getAuthor().length() * 2L; // UTF-16LE
+        result += getComment().length() * 2L;
+        result += getRating().length() * 2L;
+        result += getTitle().length() * 2L;
+        result += getCopyRight().length() * 2L;
+        return result;
+    }
 }

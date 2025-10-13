@@ -10,7 +10,7 @@ import java.io.IOException;
  */
 public class Images {
 
-  public static BufferedImage getImage(Artwork artwork) throws IOException {
-    return (BufferedImage) artwork.getImage();
-  }
+    public static BufferedImage getImage(Artwork artwork) throws IOException {
+        return artwork.getImage();
+    }
 }

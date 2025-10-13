@@ -18,11 +18,12 @@
  */
 package org.jaudiotagger.tag.mp4.field;
 
+import org.jaudiotagger.audio.generic.Utils;
+import org.jaudiotagger.tag.TagField;
+
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.util.List;
-import org.jaudiotagger.audio.generic.Utils;
-import org.jaudiotagger.tag.TagField;
 
 /**
  * Represents simple text field that contains an array of number,
@@ -31,57 +32,57 @@ import org.jaudiotagger.tag.TagField;
  */
 public abstract class Mp4TagTextNumberField extends Mp4TagTextField {
 
-  public static final int NUMBER_LENGTH = 2;
+    public static final int NUMBER_LENGTH = 2;
 
-  //Holds the numbers decoded
-  protected List<Short> numbers;
+    //Holds the numbers decoded
+    protected List<Short> numbers;
 
-  /**
-   * Create a new number, already parsed in subclasses
-   *
-   * @param id
-   * @param number
-   */
-  public Mp4TagTextNumberField(String id, String number) {
-    super(id, number);
-  }
-
-  /**
-   * Recreate the raw data content from the list of numbers
-   *
-   * @return
-   */
-  protected byte[] getDataBytes() {
-    ByteArrayOutputStream baos = new ByteArrayOutputStream();
-    for (Short number : numbers) {
-      try {
-        baos.write(Utils.getSizeBEInt16(number));
-      } catch (IOException e) {
-        //This should never happen because we are not writing to file at this point.
-        throw new RuntimeException(e);
-      }
+    /**
+     * Create a new number, already parsed in subclasses
+     *
+     * @param id
+     * @param number
+     */
+    public Mp4TagTextNumberField(String id, String number) {
+        super(id, number);
     }
-    return baos.toByteArray();
-  }
 
-  public void copyContent(TagField field) {
-    if (field instanceof Mp4TagTextNumberField) {
-      this.content = ((Mp4TagTextNumberField) field).getContent();
-      this.numbers = ((Mp4TagTextNumberField) field).getNumbers();
+    /**
+     * Recreate the raw data content from the list of numbers
+     *
+     * @return
+     */
+    protected byte[] getDataBytes() {
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        for (Short number : numbers) {
+            try {
+                baos.write(Utils.getSizeBEInt16(number));
+            } catch (IOException e) {
+                //This should never happen because we are not writing to file at this point.
+                throw new RuntimeException(e);
+            }
+        }
+        return baos.toByteArray();
     }
-  }
 
-  /**
-   * @return type numeric
-   */
-  public Mp4FieldType getFieldType() {
-    return Mp4FieldType.IMPLICIT;
-  }
+    public void copyContent(TagField field) {
+        if (field instanceof Mp4TagTextNumberField) {
+            this.content = ((Mp4TagTextNumberField) field).getContent();
+            this.numbers = ((Mp4TagTextNumberField) field).getNumbers();
+        }
+    }
 
-  /**
-   * @return the individual numbers making up this field
-   */
-  public List<Short> getNumbers() {
-    return numbers;
-  }
+    /**
+     * @return the individual numbers making up this field
+     */
+    public List<Short> getNumbers() {
+        return numbers;
+    }
+
+    /**
+     * @return type numeric
+     */
+    public Mp4FieldType getFieldType() {
+        return Mp4FieldType.IMPLICIT;
+    }
 }

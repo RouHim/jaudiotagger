@@ -1,66 +1,68 @@
 package org.jaudiotagger.tag.images;
 
+import org.jaudiotagger.audio.flac.metadatablock.MetadataBlockDataPicture;
+
+import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
-import org.jaudiotagger.audio.flac.metadatablock.MetadataBlockDataPicture;
 
 /**
  * Represents artwork in a format independent  way
  */
 public interface Artwork {
-  byte[] getBinaryData();
+    byte[] getBinaryData();
 
-  void setBinaryData(byte[] binaryData);
+    void setBinaryData(byte[] binaryData);
 
-  String getMimeType();
+    String getMimeType();
 
-  void setMimeType(String mimeType);
+    void setMimeType(String mimeType);
 
-  String getDescription();
+    String getDescription();
 
-  int getHeight();
+    void setDescription(String description);
 
-  int getWidth();
+    int getHeight();
 
-  void setDescription(String description);
+    void setHeight(int height);
 
-  /**
-   * Should be called when you wish to prime the artwork for saving
-   *
-   * @return
-   */
-  boolean setImageFromData();
+    int getWidth();
 
-  Object getImage() throws IOException;
+    void setWidth(int width);
 
-  boolean isLinked();
+    /**
+     * Should be called when you wish to prime the artwork for saving
+     *
+     * @return
+     */
+    boolean setImageFromData();
 
-  void setLinked(boolean linked);
+    BufferedImage getImage() throws IOException;
 
-  String getImageUrl();
+    boolean isLinked();
 
-  void setImageUrl(String imageUrl);
+    void setLinked(boolean linked);
 
-  int getPictureType();
+    String getImageUrl();
 
-  void setPictureType(int pictureType);
+    void setImageUrl(String imageUrl);
 
-  /**
-   * Create Artwork from File
-   *
-   * @param file
-   * @throws IOException
-   */
-  void setFromFile(File file) throws IOException;
+    int getPictureType();
 
-  /**
-   * Populate Artwork from MetadataBlockDataPicture as used by Flac and VorbisComment
-   *
-   * @param coverArt
-   */
-  void setFromMetadataBlockDataPicture(MetadataBlockDataPicture coverArt);
+    void setPictureType(int pictureType);
 
-  void setWidth(int width);
+    /**
+     * Create Artwork from File
+     *
+     * @param file
+     * @throws IOException
+     */
+    void setFromFile(File file) throws IOException;
 
-  void setHeight(int height);
+    /**
+     * Populate Artwork from MetadataBlockDataPicture as used by Flac and VorbisComment
+     *
+     * @param coverArt
+     */
+    void setFromMetadataBlockDataPicture(MetadataBlockDataPicture coverArt);
 }

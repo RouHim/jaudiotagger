@@ -6,11 +6,11 @@ package org.jaudiotagger.tag.reference;
  */
 public class PerformerHelper {
 
-  public static String formatForId3(String artist, String attributes) {
-    return attributes.toLowerCase() + '\0' + artist;
-  }
+    public static String formatForId3(String artist, String attributes) {
+        return attributes.toLowerCase() + '\0' + artist;
+    }
 
-  public static String formatForNonId3(String artist, String attributes) {
-    return artist + " (" + attributes.toLowerCase() + ")";
-  }
+    public static String formatForNonId3(String artist, String attributes) {
+        return artist + " (" + attributes.toLowerCase() + ")";
+    }
 }

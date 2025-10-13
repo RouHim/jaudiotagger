@@ -18,11 +18,16 @@
  */
 package org.jaudiotagger.audio.asf.io;
 
+import org.jaudiotagger.audio.asf.data.AudioStreamChunk;
+import org.jaudiotagger.audio.asf.data.Chunk;
+import org.jaudiotagger.audio.asf.data.GUID;
+import org.jaudiotagger.audio.asf.data.StreamChunk;
+import org.jaudiotagger.audio.asf.data.VideoStreamChunk;
+import org.jaudiotagger.audio.asf.util.Utils;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.math.BigInteger;
-import org.jaudiotagger.audio.asf.data.*;
-import org.jaudiotagger.audio.asf.util.Utils;
 
 /**
  * Reads and interprets the data of the audio or video stream information chunk. <br>
@@ -31,160 +36,160 @@ import org.jaudiotagger.audio.asf.util.Utils;
  */
 public class StreamChunkReader implements ChunkReader {
 
-  /**
-   * The GUID this reader {@linkplain #getApplyingIds() applies to}
-   */
-  private static final GUID[] APPLYING = { GUID.GUID_STREAM };
+    /**
+     * The GUID this reader {@linkplain #getApplyingIds() applies to}
+     */
+    private static final GUID[] APPLYING = {GUID.GUID_STREAM};
 
-  /**
-   * Shouldn't be used for now.
-   */
-  protected StreamChunkReader() {
-    // Nothing to do
-  }
-
-  /**
-   * {@inheritDoc}
-   */
-  public boolean canFail() {
-    return true;
-  }
-
-  /**
-   * {@inheritDoc}
-   */
-  public GUID[] getApplyingIds() {
-    return APPLYING.clone();
-  }
-
-  /**
-   * {@inheritDoc}
-   */
-  public Chunk read(
-    final GUID guid,
-    final InputStream stream,
-    final long chunkStart
-  ) throws IOException {
-    StreamChunk result = null;
-    final BigInteger chunkLength = Utils.readBig64(stream);
-    // Now comes GUID indicating whether stream content type is audio or
-    // video
-    final GUID streamTypeGUID = Utils.readGUID(stream);
-    if (
-      GUID.GUID_AUDIOSTREAM.equals(streamTypeGUID) ||
-      GUID.GUID_VIDEOSTREAM.equals(streamTypeGUID)
-    ) {
-      // A GUID is indicating whether the stream is error
-      // concealed
-      final GUID errorConcealment = Utils.readGUID(stream);
-      /*
-       * Read the Time Offset
-       */
-      final long timeOffset = Utils.readUINT64(stream);
-
-      final long typeSpecificDataSize = Utils.readUINT32(stream);
-      final long streamSpecificDataSize = Utils.readUINT32(stream);
-
-      /*
-       * Read a bit field. (Contains stream number, and whether the stream
-       * content is encrypted.)
-       */
-      final int mask = Utils.readUINT16(stream);
-      final int streamNumber = mask & 127;
-      final boolean contentEncrypted = (mask & 0x8000) != 0;
-
-      /*
-       * Skip a reserved field
-       */
-      stream.skip(4);
-
-      /*
-       * very important to set for every stream type. The size of bytes
-       * read by the specific stream type, in order to skip the remaining
-       * unread bytes of the stream chunk.
-       */
-      long streamSpecificBytes;
-
-      if (GUID.GUID_AUDIOSTREAM.equals(streamTypeGUID)) {
-        /*
-         * Reading audio specific information
-         */
-        final AudioStreamChunk audioStreamChunk = new AudioStreamChunk(
-          chunkLength
-        );
-        result = audioStreamChunk;
-
-        /*
-         * read WAVEFORMATEX and format extension.
-         */
-        final long compressionFormat = Utils.readUINT16(stream);
-        final long channelCount = Utils.readUINT16(stream);
-        final long samplingRate = Utils.readUINT32(stream);
-        final long avgBytesPerSec = Utils.readUINT32(stream);
-        final long blockAlignment = Utils.readUINT16(stream);
-        final int bitsPerSample = Utils.readUINT16(stream);
-        final int codecSpecificDataSize = Utils.readUINT16(stream);
-        final byte[] codecSpecificData = new byte[codecSpecificDataSize];
-        stream.read(codecSpecificData);
-
-        audioStreamChunk.setCompressionFormat(compressionFormat);
-        audioStreamChunk.setChannelCount(channelCount);
-        audioStreamChunk.setSamplingRate(samplingRate);
-        audioStreamChunk.setAverageBytesPerSec(avgBytesPerSec);
-        audioStreamChunk.setErrorConcealment(errorConcealment);
-        audioStreamChunk.setBlockAlignment(blockAlignment);
-        audioStreamChunk.setBitsPerSample(bitsPerSample);
-        audioStreamChunk.setCodecData(codecSpecificData);
-
-        streamSpecificBytes = 18 + codecSpecificData.length;
-      } else {
-        /*
-         * Reading video specific information
-         */
-        final VideoStreamChunk videoStreamChunk = new VideoStreamChunk(
-          chunkLength
-        );
-        result = videoStreamChunk;
-
-        final long pictureWidth = Utils.readUINT32(stream);
-        final long pictureHeight = Utils.readUINT32(stream);
-
-        // Skip unknown field
-        stream.skip(1);
-
-        /*
-         * Now read the format specific data
-         */
-        // Size of the data section (formatDataSize)
-        stream.skip(2);
-
-        stream.skip(16);
-        final byte[] fourCC = new byte[4];
-        stream.read(fourCC);
-
-        videoStreamChunk.setPictureWidth(pictureWidth);
-        videoStreamChunk.setPictureHeight(pictureHeight);
-        videoStreamChunk.setCodecId(fourCC);
-
-        streamSpecificBytes = 31;
-      }
-
-      /*
-       * Setting common values for audio and video
-       */
-      result.setStreamNumber(streamNumber);
-      result.setStreamSpecificDataSize(streamSpecificDataSize);
-      result.setTypeSpecificDataSize(typeSpecificDataSize);
-      result.setTimeOffset(timeOffset);
-      result.setContentEncrypted(contentEncrypted);
-      result.setPosition(chunkStart);
-      /*
-       * Now skip remainder of chunks bytes. chunk-length - 24 (size of
-       * GUID and chunklen) - streamSpecificBytes(stream type specific
-       * data) - 54 (common data)
-       */
-      stream.skip(chunkLength.longValue() - 24 - streamSpecificBytes - 54);
+    /**
+     * Shouldn't be used for now.
+     */
+    protected StreamChunkReader() {
+        // Nothing to do
     }
-    return result;
-  }
+
+    /**
+     * {@inheritDoc}
+     */
+    public boolean canFail() {
+        return true;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public GUID[] getApplyingIds() {
+        return APPLYING.clone();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public Chunk read(
+            final GUID guid,
+            final InputStream stream,
+            final long chunkStart
+    ) throws IOException {
+        StreamChunk result = null;
+        final BigInteger chunkLength = Utils.readBig64(stream);
+        // Now comes GUID indicating whether stream content type is audio or
+        // video
+        final GUID streamTypeGUID = Utils.readGUID(stream);
+        if (
+                GUID.GUID_AUDIOSTREAM.equals(streamTypeGUID) ||
+                        GUID.GUID_VIDEOSTREAM.equals(streamTypeGUID)
+        ) {
+            // A GUID is indicating whether the stream is error
+            // concealed
+            final GUID errorConcealment = Utils.readGUID(stream);
+            /*
+             * Read the Time Offset
+             */
+            final long timeOffset = Utils.readUINT64(stream);
+
+            final long typeSpecificDataSize = Utils.readUINT32(stream);
+            final long streamSpecificDataSize = Utils.readUINT32(stream);
+
+            /*
+             * Read a bit field. (Contains stream number, and whether the stream
+             * content is encrypted.)
+             */
+            final int mask = Utils.readUINT16(stream);
+            final int streamNumber = mask & 127;
+            final boolean contentEncrypted = (mask & 0x8000) != 0;
+
+            /*
+             * Skip a reserved field
+             */
+            stream.skip(4);
+
+            /*
+             * very important to set for every stream type. The size of bytes
+             * read by the specific stream type, in order to skip the remaining
+             * unread bytes of the stream chunk.
+             */
+            long streamSpecificBytes;
+
+            if (GUID.GUID_AUDIOSTREAM.equals(streamTypeGUID)) {
+                /*
+                 * Reading audio specific information
+                 */
+                final AudioStreamChunk audioStreamChunk = new AudioStreamChunk(
+                        chunkLength
+                );
+                result = audioStreamChunk;
+
+                /*
+                 * read WAVEFORMATEX and format extension.
+                 */
+                final long compressionFormat = Utils.readUINT16(stream);
+                final long channelCount = Utils.readUINT16(stream);
+                final long samplingRate = Utils.readUINT32(stream);
+                final long avgBytesPerSec = Utils.readUINT32(stream);
+                final long blockAlignment = Utils.readUINT16(stream);
+                final int bitsPerSample = Utils.readUINT16(stream);
+                final int codecSpecificDataSize = Utils.readUINT16(stream);
+                final byte[] codecSpecificData = new byte[codecSpecificDataSize];
+                stream.read(codecSpecificData);
+
+                audioStreamChunk.setCompressionFormat(compressionFormat);
+                audioStreamChunk.setChannelCount(channelCount);
+                audioStreamChunk.setSamplingRate(samplingRate);
+                audioStreamChunk.setAverageBytesPerSec(avgBytesPerSec);
+                audioStreamChunk.setErrorConcealment(errorConcealment);
+                audioStreamChunk.setBlockAlignment(blockAlignment);
+                audioStreamChunk.setBitsPerSample(bitsPerSample);
+                audioStreamChunk.setCodecData(codecSpecificData);
+
+                streamSpecificBytes = 18 + codecSpecificData.length;
+            } else {
+                /*
+                 * Reading video specific information
+                 */
+                final VideoStreamChunk videoStreamChunk = new VideoStreamChunk(
+                        chunkLength
+                );
+                result = videoStreamChunk;
+
+                final long pictureWidth = Utils.readUINT32(stream);
+                final long pictureHeight = Utils.readUINT32(stream);
+
+                // Skip unknown field
+                stream.skip(1);
+
+                /*
+                 * Now read the format specific data
+                 */
+                // Size of the data section (formatDataSize)
+                stream.skip(2);
+
+                stream.skip(16);
+                final byte[] fourCC = new byte[4];
+                stream.read(fourCC);
+
+                videoStreamChunk.setPictureWidth(pictureWidth);
+                videoStreamChunk.setPictureHeight(pictureHeight);
+                videoStreamChunk.setCodecId(fourCC);
+
+                streamSpecificBytes = 31;
+            }
+
+            /*
+             * Setting common values for audio and video
+             */
+            result.setStreamNumber(streamNumber);
+            result.setStreamSpecificDataSize(streamSpecificDataSize);
+            result.setTypeSpecificDataSize(typeSpecificDataSize);
+            result.setTimeOffset(timeOffset);
+            result.setContentEncrypted(contentEncrypted);
+            result.setPosition(chunkStart);
+            /*
+             * Now skip remainder of chunks bytes. chunk-length - 24 (size of
+             * GUID and chunklen) - streamSpecificBytes(stream type specific
+             * data) - 54 (common data)
+             */
+            stream.skip(chunkLength.longValue() - 24 - streamSpecificBytes - 54);
+        }
+        return result;
+    }
 }

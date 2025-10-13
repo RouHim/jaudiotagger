@@ -12,23 +12,23 @@ import java.nio.ByteBuffer;
  */
 public class UdtaMetaBox extends MetaBox {
 
-  public UdtaMetaBox(Header atom) {
-    super(atom);
-  }
+    public UdtaMetaBox(Header atom) {
+        super(atom);
+    }
 
-  public static UdtaMetaBox createUdtaMetaBox() {
-    return new UdtaMetaBox(Header.createHeader(fourcc(), 0));
-  }
+    public static UdtaMetaBox createUdtaMetaBox() {
+        return new UdtaMetaBox(Header.createHeader(fourcc(), 0));
+    }
 
-  @Override
-  public void parse(ByteBuffer input) {
-    input.getInt();
-    super.parse(input);
-  }
+    @Override
+    public void parse(ByteBuffer input) {
+        input.getInt();
+        super.parse(input);
+    }
 
-  @Override
-  protected void doWrite(ByteBuffer out) {
-    out.putInt(0);
-    super.doWrite(out);
-  }
+    @Override
+    protected void doWrite(ByteBuffer out) {
+        out.putInt(0);
+        super.doWrite(out);
+    }
 }

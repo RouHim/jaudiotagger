@@ -62,31 +62,32 @@ import org.jaudiotagger.tag.id3.ID3v23Frames;
  * @version $Id$
  */
 public class FrameBodyEQUA
-  extends AbstractID3v2FrameBody
-  implements ID3v23FrameBody {
+        extends AbstractID3v2FrameBody
+        implements ID3v23FrameBody {
 
-  /**
-   * Creates a new FrameBodyEQUA dataType.
-   */
-  public FrameBodyEQUA() {}
+    /**
+     * Creates a new FrameBodyEQUA dataType.
+     */
+    public FrameBodyEQUA() {
+    }
 
-  public FrameBodyEQUA(FrameBodyEQUA body) {
-    super(body);
-  }
+    public FrameBodyEQUA(FrameBodyEQUA body) {
+        super(body);
+    }
 
-  /**
-   * The ID3v2 frame identifier
-   *
-   * @return the ID3v2 frame identifier  for this frame type
-   */
-  public String getIdentifier() {
-    return ID3v23Frames.FRAME_ID_V3_EQUALISATION;
-  }
+    /**
+     * The ID3v2 frame identifier
+     *
+     * @return the ID3v2 frame identifier  for this frame type
+     */
+    public String getIdentifier() {
+        return ID3v23Frames.FRAME_ID_V3_EQUALISATION;
+    }
 
-  /**
-   * TODO:proper mapping
-   */
-  protected void setupObjectList() {
-    objectList.add(new ByteArraySizeTerminated(DataTypes.OBJ_DATA, this));
-  }
+    /**
+     * TODO:proper mapping
+     */
+    protected void setupObjectList() {
+        objectList.add(new ByteArraySizeTerminated(DataTypes.OBJ_DATA, this));
+    }
 }

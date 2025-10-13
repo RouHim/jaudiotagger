@@ -1,8 +1,5 @@
 package org.jaudiotagger.issues;
 
-import static org.junit.jupiter.api.Assertions.*;
-
-import java.io.File;
 import org.jaudiotagger.AbstractTestCase;
 import org.jaudiotagger.audio.AudioFile;
 import org.jaudiotagger.audio.AudioFileIO;
@@ -15,146 +12,127 @@ import org.jaudiotagger.tag.Tag;
 import org.jaudiotagger.tag.TagOptionSingleton;
 import org.junit.jupiter.api.Test;
 
+import java.io.File;
+
+import static org.junit.jupiter.api.Assertions.*;
+
 public class Issue119Test extends AbstractTestCase {
 
-  @Test
-  public void testWriteAiffWithOddLengthDataChunk() {
-    Exception exceptionCaught = null;
+    @Test
+    public void testWriteAiffWithOddLengthDataChunk() {
+        Exception exceptionCaught = null;
 
-    File orig = new File("testdata", "test151.aif");
-    if (!orig.isFile()) {
-      System.err.println("Unable to test file - not available");
-      return;
+
+        File testFile = copyAudioToTmp(
+                "test151.aif",
+                "test151MissingByte.aiff"
+        );
+        try {
+            AudioFile f = AudioFileIO.read(testFile);
+            AudioHeader ah = f.getAudioHeader();
+            assertInstanceOf(AiffAudioHeader.class, ah);
+            Tag tag = f.getTag();
+            System.out.println(tag);
+            f.getTag().setField(FieldKey.ARTIST, "fred");
+            f.commit();
+            f = AudioFileIO.read(testFile);
+            tag = f.getTag();
+            System.out.println(tag);
+            assertEquals("fred", tag.getFirst(FieldKey.ARTIST));
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            exceptionCaught = ex;
+        }
+        assertNull(exceptionCaught);
     }
 
-    File testFile = AbstractTestCase.copyAudioToTmp(
-      "test151.aif",
-      new File("test151MissingByte.aiff")
-    );
-    try {
-      AudioFile f = AudioFileIO.read(testFile);
-      AudioHeader ah = f.getAudioHeader();
-      assertTrue(ah instanceof AiffAudioHeader);
-      Tag tag = f.getTag();
-      System.out.println(tag);
-      f.getTag().setField(FieldKey.ARTIST, "fred");
-      f.commit();
-      f = AudioFileIO.read(testFile);
-      tag = f.getTag();
-      System.out.println(tag);
-      assertEquals("fred", tag.getFirst(FieldKey.ARTIST));
-    } catch (Exception ex) {
-      ex.printStackTrace();
-      exceptionCaught = ex;
-    }
-    assertNull(exceptionCaught);
-  }
+    @Test
+    public void testWriteFileWithOddLengthLastDataChunkInfo() {
+        TagOptionSingleton.getInstance().setWavOptions(WavOptions.READ_INFO_ONLY);
+        TagOptionSingleton.getInstance().setWavSaveOptions(
+                WavSaveOptions.SAVE_ACTIVE
+        );
 
-  @Test
-  public void testWriteFileWithOddLengthLastDataChunkInfo() {
-    TagOptionSingleton.getInstance().setWavOptions(WavOptions.READ_INFO_ONLY);
-    TagOptionSingleton.getInstance().setWavSaveOptions(
-      WavSaveOptions.SAVE_ACTIVE
-    );
 
-    File orig = new File("testdata", "test153.wav");
-    if (!orig.isFile()) {
-      System.err.println("Unable to test file - not available");
-      return;
+        Exception exceptionCaught = null;
+        try {
+            File testFile = copyAudioToTmp(
+                    "test153.wav",
+                    "test153_odd_data_length_info.wav"
+            );
+            AudioFile f = AudioFileIO.read(testFile);
+            System.out.println(f.getAudioHeader());
+            System.out.println(f.getTag());
+
+            f.getTag().setField(FieldKey.ARTIST, "freddy");
+            f.commit();
+            f = AudioFileIO.read(testFile);
+            Tag tag = f.getTag();
+            System.out.println(tag);
+            assertEquals("freddy", tag.getFirst(FieldKey.ARTIST));
+        } catch (Exception e) {
+            exceptionCaught = e;
+        }
+        assertNull(exceptionCaught);
     }
 
-    Exception exceptionCaught = null;
-    try {
-      File testFile = AbstractTestCase.copyAudioToTmp(
-        "test153.wav",
-        new File("test153_odd_data_length_info.wav")
-      );
-      AudioFile f = AudioFileIO.read(testFile);
-      System.out.println(f.getAudioHeader());
-      System.out.println(f.getTag());
+    @Test
+    public void testWriteFileWithOddLengthLastDataChunkId3() {
+        TagOptionSingleton.getInstance().setWavOptions(WavOptions.READ_ID3_ONLY);
+        TagOptionSingleton.getInstance().setWavSaveOptions(
+                WavSaveOptions.SAVE_ACTIVE
+        );
 
-      f.getTag().setField(FieldKey.ARTIST, "freddy");
-      f.commit();
-      f = AudioFileIO.read(testFile);
-      Tag tag = f.getTag();
-      System.out.println(tag);
-      assertEquals("freddy", tag.getFirst(FieldKey.ARTIST));
-    } catch (Exception e) {
-      e.printStackTrace();
-      exceptionCaught = e;
-    }
-    assertNull(exceptionCaught);
-  }
 
-  @Test
-  public void testWriteFileWithOddLengthLastDataChunkId3() {
-    TagOptionSingleton.getInstance().setWavOptions(WavOptions.READ_ID3_ONLY);
-    TagOptionSingleton.getInstance().setWavSaveOptions(
-      WavSaveOptions.SAVE_ACTIVE
-    );
+        Exception exceptionCaught = null;
+        try {
+            File testFile = copyAudioToTmp(
+                    "test153.wav",
+                    "test153_odd_data_length_id3.wav"
+            );
+            AudioFile f = AudioFileIO.read(testFile);
+            System.out.println(f.getAudioHeader());
+            System.out.println(f.getTag());
 
-    File orig = new File("testdata", "test153.wav");
-    if (!orig.isFile()) {
-      System.err.println("Unable to test file - not available");
-      return;
+            f.getTag().setField(FieldKey.ARTIST, "freddy");
+            f.commit();
+            f = AudioFileIO.read(testFile);
+            Tag tag = f.getTag();
+            System.out.println(tag);
+            assertEquals("freddy", tag.getFirst(FieldKey.ARTIST));
+        } catch (Exception e) {
+            exceptionCaught = e;
+        }
+        assertNull(exceptionCaught);
     }
 
-    Exception exceptionCaught = null;
-    try {
-      File testFile = AbstractTestCase.copyAudioToTmp(
-        "test153.wav",
-        new File("test153_odd_data_length_id3.wav")
-      );
-      AudioFile f = AudioFileIO.read(testFile);
-      System.out.println(f.getAudioHeader());
-      System.out.println(f.getTag());
+    @Test
+    public void testWriteFileWithOddLengthLastDataChunkId3AndInfo() {
+        TagOptionSingleton.getInstance().setWavOptions(WavOptions.READ_ID3_ONLY);
+        TagOptionSingleton.getInstance().setWavSaveOptions(
+                WavSaveOptions.SAVE_BOTH_AND_SYNC
+        );
 
-      f.getTag().setField(FieldKey.ARTIST, "freddy");
-      f.commit();
-      f = AudioFileIO.read(testFile);
-      Tag tag = f.getTag();
-      System.out.println(tag);
-      assertEquals("freddy", tag.getFirst(FieldKey.ARTIST));
-    } catch (Exception e) {
-      e.printStackTrace();
-      exceptionCaught = e;
+
+        Exception exceptionCaught = null;
+        try {
+            File testFile = copyAudioToTmp(
+                    "test153.wav",
+                    "test153_odd_data_length_id3_and_info.wav"
+            );
+            AudioFile f = AudioFileIO.read(testFile);
+            System.out.println(f.getAudioHeader());
+            System.out.println(f.getTag());
+
+            f.getTag().setField(FieldKey.ARTIST, "freddy");
+            f.commit();
+            f = AudioFileIO.read(testFile);
+            Tag tag = f.getTag();
+            System.out.println(tag);
+            assertEquals("freddy", tag.getFirst(FieldKey.ARTIST));
+        } catch (Exception e) {
+            exceptionCaught = e;
+        }
+        assertNull(exceptionCaught);
     }
-    assertNull(exceptionCaught);
-  }
-
-  @Test
-  public void testWriteFileWithOddLengthLastDataChunkId3AndInfo() {
-    TagOptionSingleton.getInstance().setWavOptions(WavOptions.READ_ID3_ONLY);
-    TagOptionSingleton.getInstance().setWavSaveOptions(
-      WavSaveOptions.SAVE_BOTH_AND_SYNC
-    );
-
-    File orig = new File("testdata", "test153.wav");
-    if (!orig.isFile()) {
-      System.err.println("Unable to test file - not available");
-      return;
-    }
-
-    Exception exceptionCaught = null;
-    try {
-      File testFile = AbstractTestCase.copyAudioToTmp(
-        "test153.wav",
-        new File("test153_odd_data_length_id3_and_info.wav")
-      );
-      AudioFile f = AudioFileIO.read(testFile);
-      System.out.println(f.getAudioHeader());
-      System.out.println(f.getTag());
-
-      f.getTag().setField(FieldKey.ARTIST, "freddy");
-      f.commit();
-      f = AudioFileIO.read(testFile);
-      Tag tag = f.getTag();
-      System.out.println(tag);
-      assertEquals("freddy", tag.getFirst(FieldKey.ARTIST));
-    } catch (Exception e) {
-      e.printStackTrace();
-      exceptionCaught = e;
-    }
-    assertNull(exceptionCaught);
-  }
 }

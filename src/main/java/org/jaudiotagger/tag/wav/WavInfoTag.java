@@ -18,13 +18,18 @@
  */
 package org.jaudiotagger.tag.wav;
 
-import java.util.ArrayList;
-import java.util.EnumSet;
-import java.util.List;
 import org.jaudiotagger.audio.generic.GenericTag;
 import org.jaudiotagger.audio.iff.ChunkHeader;
 import org.jaudiotagger.logging.Hex;
-import org.jaudiotagger.tag.*;
+import org.jaudiotagger.tag.FieldDataInvalidException;
+import org.jaudiotagger.tag.FieldKey;
+import org.jaudiotagger.tag.KeyNotFoundException;
+import org.jaudiotagger.tag.TagField;
+import org.jaudiotagger.tag.TagTextField;
+
+import java.util.ArrayList;
+import java.util.EnumSet;
+import java.util.List;
 
 /**
  * Represent wav metadata found in the LISTINFO Chunk
@@ -36,91 +41,89 @@ import org.jaudiotagger.tag.*;
  */
 public class WavInfoTag extends GenericTag {
 
-  //We dont use these fields but we need to read them so they can be written back if user modifies
-  private final List<TagTextField> unrecognisedFields = new ArrayList<>();
-
-  private Long startLocationInFile = null;
-
-  //End location of this chunk
-  private Long endLocationInFile = null;
-
-  static {
-    supportedKeys = EnumSet.of(
-      FieldKey.ALBUM,
-      FieldKey.ARTIST,
-      FieldKey.ALBUM_ARTIST,
-      FieldKey.TITLE,
-      FieldKey.TRACK,
-      FieldKey.GENRE,
-      FieldKey.COMMENT,
-      FieldKey.YEAR,
-      FieldKey.RECORD_LABEL,
-      FieldKey.ISRC,
-      FieldKey.COMPOSER,
-      FieldKey.LYRICIST,
-      FieldKey.ENCODER,
-      FieldKey.CONDUCTOR,
-      FieldKey.RATING
-    );
-  }
-
-  public String toString() {
-    StringBuilder output = new StringBuilder("Wav Info Tag:\n");
-    if (getStartLocationInFile() != null) {
-      output.append(
-        "\tstartLocation:" + Hex.asDecAndHex(getStartLocationInFile()) + "\n"
-      );
+    static {
+        supportedKeys = EnumSet.of(
+                FieldKey.ALBUM,
+                FieldKey.ARTIST,
+                FieldKey.ALBUM_ARTIST,
+                FieldKey.TITLE,
+                FieldKey.TRACK,
+                FieldKey.GENRE,
+                FieldKey.COMMENT,
+                FieldKey.YEAR,
+                FieldKey.RECORD_LABEL,
+                FieldKey.ISRC,
+                FieldKey.COMPOSER,
+                FieldKey.LYRICIST,
+                FieldKey.ENCODER,
+                FieldKey.CONDUCTOR,
+                FieldKey.RATING
+        );
     }
-    if (getEndLocationInFile() != null) {
-      output.append(
-        "\tendLocation:" + Hex.asDecAndHex(getEndLocationInFile()) + "\n"
-      );
+
+    //We dont use these fields but we need to read them so they can be written back if user modifies
+    private final List<TagTextField> unrecognisedFields = new ArrayList<>();
+    private Long startLocationInFile = null;
+    //End location of this chunk
+    private Long endLocationInFile = null;
+
+    public String toString() {
+        StringBuilder output = new StringBuilder("Wav Info Tag:\n");
+        if (getStartLocationInFile() != null) {
+            output.append(
+                    "\tstartLocation:" + Hex.asDecAndHex(getStartLocationInFile()) + "\n"
+            );
+        }
+        if (getEndLocationInFile() != null) {
+            output.append(
+                    "\tendLocation:" + Hex.asDecAndHex(getEndLocationInFile()) + "\n"
+            );
+        }
+        output.append(super.toString());
+        if (unrecognisedFields.size() > 0) {
+            output.append("\nUnrecognized Tags:\n");
+            for (TagTextField next : unrecognisedFields) {
+                output.append("\t" + next.getId() + ":" + next.getContent() + "\n");
+            }
+        }
+        return output.toString();
     }
-    output.append(super.toString());
-    if (unrecognisedFields.size() > 0) {
-      output.append("\nUnrecognized Tags:\n");
-      for (TagTextField next : unrecognisedFields) {
-        output.append("\t" + next.getId() + ":" + next.getContent() + "\n");
-      }
+
+    public Long getStartLocationInFile() {
+        return startLocationInFile;
     }
-    return output.toString();
-  }
 
-  public TagField createCompilationField(boolean value)
-    throws KeyNotFoundException, FieldDataInvalidException {
-    return createField(FieldKey.IS_COMPILATION, String.valueOf(value));
-  }
-
-  public Long getStartLocationInFile() {
-    return startLocationInFile;
-  }
-
-  public void setStartLocationInFile(long startLocationInFile) {
-    this.startLocationInFile = startLocationInFile;
-  }
-
-  public Long getEndLocationInFile() {
-    return endLocationInFile;
-  }
-
-  public void setEndLocationInFile(long endLocationInFile) {
-    this.endLocationInFile = endLocationInFile;
-  }
-
-  public long getSizeOfTag() {
-    if (endLocationInFile == null || startLocationInFile == null) {
-      return 0;
+    public void setStartLocationInFile(long startLocationInFile) {
+        this.startLocationInFile = startLocationInFile;
     }
-    return (
-      (endLocationInFile - startLocationInFile) - ChunkHeader.CHUNK_HEADER_SIZE
-    );
-  }
 
-  public void addUnRecognizedField(String code, String contents) {
-    unrecognisedFields.add(new GenericTagTextField(code, contents));
-  }
+    public Long getEndLocationInFile() {
+        return endLocationInFile;
+    }
 
-  public List<TagTextField> getUnrecognisedFields() {
-    return unrecognisedFields;
-  }
+    public void setEndLocationInFile(long endLocationInFile) {
+        this.endLocationInFile = endLocationInFile;
+    }
+
+    public TagField createCompilationField(boolean value)
+            throws KeyNotFoundException, FieldDataInvalidException {
+        return createField(FieldKey.IS_COMPILATION, String.valueOf(value));
+    }
+
+    public long getSizeOfTag() {
+        if (endLocationInFile == null || startLocationInFile == null) {
+            return 0;
+        }
+        return (
+                (endLocationInFile - startLocationInFile) - ChunkHeader.CHUNK_HEADER_SIZE
+        );
+    }
+
+    public void addUnRecognizedField(String code, String contents) {
+        unrecognisedFields.add(new GenericTagTextField(code, contents));
+    }
+
+    public List<TagTextField> getUnrecognisedFields() {
+        return unrecognisedFields;
+    }
 }

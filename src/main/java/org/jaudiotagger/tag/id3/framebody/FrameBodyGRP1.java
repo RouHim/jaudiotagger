@@ -15,9 +15,10 @@
  */
 package org.jaudiotagger.tag.id3.framebody;
 
-import java.nio.ByteBuffer;
 import org.jaudiotagger.tag.InvalidTagException;
 import org.jaudiotagger.tag.id3.ID3v24Frames;
+
+import java.nio.ByteBuffer;
 
 /**
  * iTunes grouping field introduced in 12.5.4.42, before that iTunes used TIT1 as is the norm, but it now uses that
@@ -29,46 +30,47 @@ import org.jaudiotagger.tag.id3.ID3v24Frames;
  * @version $Id$
  */
 public class FrameBodyGRP1
-  extends AbstractFrameBodyTextInfo
-  implements ID3v24FrameBody, ID3v23FrameBody {
+        extends AbstractFrameBodyTextInfo
+        implements ID3v24FrameBody, ID3v23FrameBody {
 
-  /**
-   * Creates a new FrameBodyTBPM datatype.
-   */
-  public FrameBodyGRP1() {}
+    /**
+     * Creates a new FrameBodyTBPM datatype.
+     */
+    public FrameBodyGRP1() {
+    }
 
-  public FrameBodyGRP1(FrameBodyGRP1 body) {
-    super(body);
-  }
+    public FrameBodyGRP1(FrameBodyGRP1 body) {
+        super(body);
+    }
 
-  /**
-   * Creates a new FrameBodyTBPM datatype.
-   *
-   * @param textEncoding
-   * @param text
-   */
-  public FrameBodyGRP1(byte textEncoding, String text) {
-    super(textEncoding, text);
-  }
+    /**
+     * Creates a new FrameBodyTBPM datatype.
+     *
+     * @param textEncoding
+     * @param text
+     */
+    public FrameBodyGRP1(byte textEncoding, String text) {
+        super(textEncoding, text);
+    }
 
-  /**
-   * Creates a new FrameBodyTBPM datatype.
-   *
-   * @param byteBuffer
-   * @param frameSize
-   * @throws org.jaudiotagger.tag.InvalidTagException
-   */
-  public FrameBodyGRP1(ByteBuffer byteBuffer, int frameSize)
-    throws InvalidTagException {
-    super(byteBuffer, frameSize);
-  }
+    /**
+     * Creates a new FrameBodyTBPM datatype.
+     *
+     * @param byteBuffer
+     * @param frameSize
+     * @throws org.jaudiotagger.tag.InvalidTagException
+     */
+    public FrameBodyGRP1(ByteBuffer byteBuffer, int frameSize)
+            throws InvalidTagException {
+        super(byteBuffer, frameSize);
+    }
 
-  /**
-   * The ID3v2 frame identifier
-   *
-   * @return the ID3v2 frame identifier  for this frame type
-   */
-  public String getIdentifier() {
-    return ID3v24Frames.FRAME_ID_ITUNES_GROUPING;
-  }
+    /**
+     * The ID3v2 frame identifier
+     *
+     * @return the ID3v2 frame identifier  for this frame type
+     */
+    public String getIdentifier() {
+        return ID3v24Frames.FRAME_ID_ITUNES_GROUPING;
+    }
 }

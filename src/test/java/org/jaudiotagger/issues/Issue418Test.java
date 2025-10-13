@@ -1,8 +1,5 @@
 package org.jaudiotagger.issues;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-
-import java.io.File;
 import org.jaudiotagger.AbstractTestCase;
 import org.jaudiotagger.audio.AudioFile;
 import org.jaudiotagger.audio.AudioFileIO;
@@ -12,39 +9,43 @@ import org.jaudiotagger.tag.mp4.Mp4FieldKey;
 import org.jaudiotagger.tag.mp4.Mp4Tag;
 import org.junit.jupiter.api.Test;
 
+import java.io.File;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
 public class Issue418Test extends AbstractTestCase {
 
-  @Test
-  public void testGetCustomGenreField() throws Exception {
-    File testFile = AbstractTestCase.copyAudioToTmp("test.m4a");
-    AudioFile f = AudioFileIO.read(testFile);
-    Tag tag = f.getTag();
-    assertEquals("Genre", tag.getFirst(FieldKey.GENRE));
-    assertEquals(1, tag.getFields(FieldKey.GENRE).size());
+    @Test
+    public void testGetCustomGenreField() throws Exception {
+        File testFile = copyAudioToTmp("test.m4a");
+        AudioFile f = AudioFileIO.read(testFile);
+        Tag tag = f.getTag();
+        assertEquals("Genre", tag.getFirst(FieldKey.GENRE));
+        assertEquals(1, tag.getFields(FieldKey.GENRE).size());
 
-    Mp4Tag mp4tag = (Mp4Tag) f.getTag();
-    assertEquals("Genre", mp4tag.getFirst(Mp4FieldKey.GENRE_CUSTOM));
-    assertEquals("", mp4tag.getFirst(Mp4FieldKey.GENRE));
+        Mp4Tag mp4tag = (Mp4Tag) f.getTag();
+        assertEquals("Genre", mp4tag.getFirst(Mp4FieldKey.GENRE_CUSTOM));
+        assertEquals("", mp4tag.getFirst(Mp4FieldKey.GENRE));
 
-    mp4tag.setField(mp4tag.createField(Mp4FieldKey.GENRE, "Rock"));
-    assertEquals("Rock", mp4tag.getFirst(Mp4FieldKey.GENRE));
-    assertEquals("Genre", mp4tag.getFirst(Mp4FieldKey.GENRE_CUSTOM));
-    //Because we now have two genre fields stored in the file returns the standard genre field by default
-    assertEquals("Rock", tag.getFirst(FieldKey.GENRE));
+        mp4tag.setField(mp4tag.createField(Mp4FieldKey.GENRE, "Rock"));
+        assertEquals("Rock", mp4tag.getFirst(Mp4FieldKey.GENRE));
+        assertEquals("Genre", mp4tag.getFirst(Mp4FieldKey.GENRE_CUSTOM));
+        //Because we now have two genre fields stored in the file returns the standard genre field by default
+        assertEquals("Rock", tag.getFirst(FieldKey.GENRE));
 
-    //We still only return one genre because generic interface hides the fact the fact we have two
-    assertEquals(1, tag.getAll(FieldKey.GENRE).size());
-    assertEquals(1, tag.getFields(FieldKey.GENRE).size());
+        //We still only return one genre because generic interface hides the fact the fact we have two
+        assertEquals(1, tag.getAll(FieldKey.GENRE).size());
+        assertEquals(1, tag.getFields(FieldKey.GENRE).size());
 
-    f.commit();
+        f.commit();
 
-    f = AudioFileIO.read(testFile);
-    tag = f.getTag();
-    mp4tag = (Mp4Tag) f.getTag();
-    assertEquals("Rock", mp4tag.getFirst(Mp4FieldKey.GENRE));
-    assertEquals("Genre", mp4tag.getFirst(Mp4FieldKey.GENRE_CUSTOM));
-    //Because we still have two genre fields stored in the file returns the standard genre field by default
-    assertEquals("Rock", tag.getFirst(FieldKey.GENRE));
-    assertEquals(1, tag.getFields(FieldKey.GENRE).size());
-  }
+        f = AudioFileIO.read(testFile);
+        tag = f.getTag();
+        mp4tag = (Mp4Tag) f.getTag();
+        assertEquals("Rock", mp4tag.getFirst(Mp4FieldKey.GENRE));
+        assertEquals("Genre", mp4tag.getFirst(Mp4FieldKey.GENRE_CUSTOM));
+        //Because we still have two genre fields stored in the file returns the standard genre field by default
+        assertEquals("Rock", tag.getFirst(FieldKey.GENRE));
+        assertEquals(1, tag.getFields(FieldKey.GENRE).size());
+    }
 }

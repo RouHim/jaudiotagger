@@ -6,12 +6,12 @@ package org.jaudiotagger.tag.images;
  */
 public class ImageHandlingFactory {
 
-  private static StandardImageHandler standardImageHandler;
+    private static StandardImageHandler standardImageHandler;
 
-  public static ImageHandler getInstance() {
-    if (standardImageHandler == null) {
-      standardImageHandler = StandardImageHandler.getInstanceOf();
+    public static ImageHandler getInstance() {
+        if (standardImageHandler == null) {
+            standardImageHandler = StandardImageHandler.getInstanceOf();
+        }
+        return standardImageHandler;
     }
-    return standardImageHandler;
-  }
 }

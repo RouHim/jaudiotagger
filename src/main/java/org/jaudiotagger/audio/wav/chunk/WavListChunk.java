@@ -18,62 +18,63 @@
  */
 package org.jaudiotagger.audio.wav.chunk;
 
-import java.nio.ByteBuffer;
 import org.jaudiotagger.audio.generic.Utils;
 import org.jaudiotagger.audio.iff.Chunk;
 import org.jaudiotagger.audio.iff.ChunkHeader;
 import org.jaudiotagger.audio.wav.WavChunkType;
 import org.jaudiotagger.tag.wav.WavTag;
 
+import java.nio.ByteBuffer;
+
 /**
  * Reads a list chunk, only interested in it if contains INFO chunk as this contains basic metadata
  */
 public class WavListChunk extends Chunk {
 
-  private final boolean isValid = false;
+    private final boolean isValid = false;
 
-  private final WavTag tag;
-  private final String loggingName;
+    private final WavTag tag;
+    private final String loggingName;
 
-  public WavListChunk(
-    String loggingName,
-    ByteBuffer chunkData,
-    ChunkHeader chunkHeader,
-    WavTag tag
-  ) {
-    super(chunkData, chunkHeader);
-    this.tag = tag;
-    this.loggingName = loggingName;
-  }
-
-  /**
-   * @return true if successfully read chunks
-   */
-  public boolean readChunk() {
-    boolean result = false;
-    String subIdentifier = Utils.readFourBytesAsChars(chunkData);
-    if (subIdentifier.equals(WavChunkType.INFO.getCode())) {
-      WavInfoChunk chunk = new WavInfoChunk(tag, loggingName);
-      result = chunk.readChunks(chunkData);
-      //This is the start of the enclosing LIST element
-      tag
-        .getInfoTag()
-        .setStartLocationInFile(chunkHeader.getStartLocationInFile());
-      tag
-        .getInfoTag()
-        .setEndLocationInFile(
-          chunkHeader.getStartLocationInFile() +
-            ChunkHeader.CHUNK_HEADER_SIZE +
-            chunkHeader.getSize()
-        );
-      tag.setExistingInfoTag(true);
+    public WavListChunk(
+            String loggingName,
+            ByteBuffer chunkData,
+            ChunkHeader chunkHeader,
+            WavTag tag
+    ) {
+        super(chunkData, chunkHeader);
+        this.tag = tag;
+        this.loggingName = loggingName;
     }
-    return result;
-  }
 
-  public String toString() {
-    String out = "RIFF-WAVE Header:\n";
-    out += "Is valid?: " + isValid;
-    return out;
-  }
+    /**
+     * @return true if successfully read chunks
+     */
+    public boolean readChunk() {
+        boolean result = false;
+        String subIdentifier = Utils.readFourBytesAsChars(chunkData);
+        if (subIdentifier.equals(WavChunkType.INFO.getCode())) {
+            WavInfoChunk chunk = new WavInfoChunk(tag, loggingName);
+            result = chunk.readChunks(chunkData);
+            //This is the start of the enclosing LIST element
+            tag
+                    .getInfoTag()
+                    .setStartLocationInFile(chunkHeader.getStartLocationInFile());
+            tag
+                    .getInfoTag()
+                    .setEndLocationInFile(
+                            chunkHeader.getStartLocationInFile() +
+                                    ChunkHeader.CHUNK_HEADER_SIZE +
+                                    chunkHeader.getSize()
+                    );
+            tag.setExistingInfoTag(true);
+        }
+        return result;
+    }
+
+    public String toString() {
+        String out = "RIFF-WAVE Header:\n";
+        out += "Is valid?: " + isValid;
+        return out;
+    }
 }

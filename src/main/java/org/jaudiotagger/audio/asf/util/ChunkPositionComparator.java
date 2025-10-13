@@ -18,9 +18,10 @@
  */
 package org.jaudiotagger.audio.asf.util;
 
+import org.jaudiotagger.audio.asf.data.Chunk;
+
 import java.io.Serializable;
 import java.util.Comparator;
-import org.jaudiotagger.audio.asf.data.Chunk;
 
 /**
  * This class is needed for ordering all types of
@@ -29,17 +30,17 @@ import org.jaudiotagger.audio.asf.data.Chunk;
  * @author Christian Laireiter
  */
 public final class ChunkPositionComparator
-  implements Comparator<Chunk>, Serializable {
+        implements Comparator<Chunk>, Serializable {
 
-  /**
-   *
-   */
-  private static final long serialVersionUID = -6337108235272376289L;
+    /**
+     *
+     */
+    private static final long serialVersionUID = -6337108235272376289L;
 
-  /**
-   * {@inheritDoc}
-   */
-  public int compare(final Chunk first, final Chunk second) {
-    return Long.valueOf(first.getPosition()).compareTo(second.getPosition());
-  }
+    /**
+     * {@inheritDoc}
+     */
+    public int compare(final Chunk first, final Chunk second) {
+        return Long.valueOf(first.getPosition()).compareTo(second.getPosition());
+    }
 }

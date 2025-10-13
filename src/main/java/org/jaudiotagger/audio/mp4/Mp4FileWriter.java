@@ -18,12 +18,13 @@
  */
 package org.jaudiotagger.audio.mp4;
 
-import java.io.IOException;
-import java.io.RandomAccessFile;
 import org.jaudiotagger.audio.AudioFile;
 import org.jaudiotagger.audio.exceptions.CannotWriteException;
 import org.jaudiotagger.audio.generic.AudioFileWriter;
 import org.jaudiotagger.tag.Tag;
+
+import java.io.IOException;
+import java.io.RandomAccessFile;
 
 /**
  * Mp4 File Writer
@@ -32,22 +33,22 @@ import org.jaudiotagger.tag.Tag;
  */
 public class Mp4FileWriter extends AudioFileWriter {
 
-  private final Mp4TagWriter tw = new Mp4TagWriter();
+    private final Mp4TagWriter tw = new Mp4TagWriter();
 
-  protected void writeTag(
-    AudioFile audioFile,
-    Tag tag,
-    RandomAccessFile raf,
-    RandomAccessFile rafTemp
-  ) throws CannotWriteException, IOException {
-    tw.write(audioFile, raf, rafTemp);
-  }
+    protected void writeTag(
+            AudioFile audioFile,
+            Tag tag,
+            RandomAccessFile raf,
+            RandomAccessFile rafTemp
+    ) throws CannotWriteException, IOException {
+        tw.write(audioFile, raf, rafTemp);
+    }
 
-  protected void deleteTag(
-    Tag tag,
-    RandomAccessFile raf,
-    RandomAccessFile rafTemp
-  ) throws IOException {
-    tw.delete(raf, rafTemp);
-  }
+    protected void deleteTag(
+            Tag tag,
+            RandomAccessFile raf,
+            RandomAccessFile rafTemp
+    ) throws IOException {
+        tw.delete(raf, rafTemp);
+    }
 }

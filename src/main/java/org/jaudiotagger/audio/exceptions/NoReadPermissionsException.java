@@ -24,33 +24,33 @@ package org.jaudiotagger.audio.exceptions;
  */
 public class NoReadPermissionsException extends CannotReadException {
 
-  /**
-   * Creates an instance.
-   */
-  public NoReadPermissionsException() {
-    super();
-  }
+    /**
+     * Creates an instance.
+     */
+    public NoReadPermissionsException() {
+        super();
+    }
 
-  public NoReadPermissionsException(Throwable ex) {
-    super(ex);
-  }
+    public NoReadPermissionsException(Throwable ex) {
+        super(ex);
+    }
 
-  /**
-   * Creates an instance.
-   *
-   * @param message The message.
-   */
-  public NoReadPermissionsException(String message) {
-    super(message);
-  }
+    /**
+     * Creates an instance.
+     *
+     * @param message The message.
+     */
+    public NoReadPermissionsException(String message) {
+        super(message);
+    }
 
-  /**
-   * Creates an instance.
-   *
-   * @param message The error message.
-   * @param cause   The throwable causing this exception.
-   */
-  public NoReadPermissionsException(String message, Throwable cause) {
-    super(message, cause);
-  }
+    /**
+     * Creates an instance.
+     *
+     * @param message The error message.
+     * @param cause   The throwable causing this exception.
+     */
+    public NoReadPermissionsException(String message, Throwable cause) {
+        super(message, cause);
+    }
 }

@@ -10,34 +10,34 @@ import java.nio.ByteBuffer;
  */
 public class DataRefBox extends NodeBox {
 
-  public static String fourcc() {
-    return "dref";
-  }
+    public DataRefBox(Header atom) {
+        super(atom);
+    }
 
-  public static DataRefBox createDataRefBox() {
-    return new DataRefBox(new Header(fourcc()));
-  }
+    public static DataRefBox createDataRefBox() {
+        return new DataRefBox(new Header(fourcc()));
+    }
 
-  public DataRefBox(Header atom) {
-    super(atom);
-  }
+    public static String fourcc() {
+        return "dref";
+    }
 
-  @Override
-  public void parse(ByteBuffer input) {
-    input.getInt();
-    input.getInt();
-    super.parse(input);
-  }
+    @Override
+    public void parse(ByteBuffer input) {
+        input.getInt();
+        input.getInt();
+        super.parse(input);
+    }
 
-  @Override
-  public void doWrite(ByteBuffer out) {
-    out.putInt(0);
-    out.putInt(boxes.size());
-    super.doWrite(out);
-  }
+    @Override
+    public void doWrite(ByteBuffer out) {
+        out.putInt(0);
+        out.putInt(boxes.size());
+        super.doWrite(out);
+    }
 
-  @Override
-  public int estimateSize() {
-    return 8 + super.estimateSize();
-  }
+    @Override
+    public int estimateSize() {
+        return 8 + super.estimateSize();
+    }
 }

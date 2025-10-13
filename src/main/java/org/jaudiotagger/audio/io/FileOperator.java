@@ -16,12 +16,13 @@
 
 package org.jaudiotagger.audio.io;
 
+import okio.Buffer;
+import okio.Okio;
+
 import java.io.EOFException;
 import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.nio.channels.FileChannel;
-import okio.Buffer;
-import okio.Okio;
 
 /**
  * Read and write a target file. Unlike Okio's built-in {@linkplain Okio#source(java.io.File) file
@@ -38,71 +39,71 @@ import okio.Okio;
 @SuppressWarnings("unused")
 public final class FileOperator {
 
-  private static final int BUFFER_SIZE = 8192;
+    private static final int BUFFER_SIZE = 8192;
 
-  private final byte[] byteArray = new byte[BUFFER_SIZE];
-  private final ByteBuffer byteBuffer = ByteBuffer.wrap(byteArray);
-  private final FileChannel fileChannel;
+    private final byte[] byteArray = new byte[BUFFER_SIZE];
+    private final ByteBuffer byteBuffer = ByteBuffer.wrap(byteArray);
+    private final FileChannel fileChannel;
 
-  public FileOperator(FileChannel fileChannel) {
-    this.fileChannel = fileChannel;
-  }
-
-  /**
-   * Write {@code byteCount} bytes from {@code source} to the file at {@code pos}.
-   */
-  public void write(long pos, Buffer source, long byteCount)
-    throws IOException {
-    if (byteCount < 0 || byteCount > source.size()) {
-      throw new IndexOutOfBoundsException();
+    public FileOperator(FileChannel fileChannel) {
+        this.fileChannel = fileChannel;
     }
 
-    while (byteCount > 0L) {
-      try {
-        // Write bytes to the byte[], and tell the ByteBuffer wrapper about 'em.
-        int toWrite = (int) Math.min(BUFFER_SIZE, byteCount);
-        source.read(byteArray, 0, toWrite);
-        byteBuffer.limit(toWrite);
-
-        // Copy bytes from the ByteBuffer to the file.
-        do {
-          int bytesWritten = fileChannel.write(byteBuffer, pos);
-          pos += bytesWritten;
-        } while (byteBuffer.hasRemaining());
-
-        byteCount -= toWrite;
-      } finally {
-        byteBuffer.clear();
-      }
-    }
-  }
-
-  /**
-   * Copy {@code byteCount} bytes from the file at {@code pos} into to {@code source}. It is the
-   * caller's responsibility to make sure there are sufficient bytes to read: if there aren't this
-   * method throws an {@link EOFException}.
-   */
-  public void read(long pos, Buffer sink, long byteCount) throws IOException {
-    if (byteCount < 0) {
-      throw new IndexOutOfBoundsException();
-    }
-
-    while (byteCount > 0L) {
-      try {
-        // Read up to byteCount bytes.
-        byteBuffer.limit((int) Math.min(BUFFER_SIZE, byteCount));
-        if (fileChannel.read(byteBuffer, pos) == -1) {
-          throw new EOFException();
+    /**
+     * Write {@code byteCount} bytes from {@code source} to the file at {@code pos}.
+     */
+    public void write(long pos, Buffer source, long byteCount)
+            throws IOException {
+        if (byteCount < 0 || byteCount > source.size()) {
+            throw new IndexOutOfBoundsException();
         }
-        int bytesRead = byteBuffer.position();
 
-        // Write those bytes to sink.
-        sink.write(byteArray, 0, bytesRead);
-        pos += bytesRead;
-        byteCount -= bytesRead;
-      } finally {
-        byteBuffer.clear();
-      }
+        while (byteCount > 0L) {
+            try {
+                // Write bytes to the byte[], and tell the ByteBuffer wrapper about 'em.
+                int toWrite = (int) Math.min(BUFFER_SIZE, byteCount);
+                source.read(byteArray, 0, toWrite);
+                byteBuffer.limit(toWrite);
+
+                // Copy bytes from the ByteBuffer to the file.
+                do {
+                    int bytesWritten = fileChannel.write(byteBuffer, pos);
+                    pos += bytesWritten;
+                } while (byteBuffer.hasRemaining());
+
+                byteCount -= toWrite;
+            } finally {
+                byteBuffer.clear();
+            }
+        }
     }
-  }
+
+    /**
+     * Copy {@code byteCount} bytes from the file at {@code pos} into to {@code source}. It is the
+     * caller's responsibility to make sure there are sufficient bytes to read: if there aren't this
+     * method throws an {@link EOFException}.
+     */
+    public void read(long pos, Buffer sink, long byteCount) throws IOException {
+        if (byteCount < 0) {
+            throw new IndexOutOfBoundsException();
+        }
+
+        while (byteCount > 0L) {
+            try {
+                // Read up to byteCount bytes.
+                byteBuffer.limit((int) Math.min(BUFFER_SIZE, byteCount));
+                if (fileChannel.read(byteBuffer, pos) == -1) {
+                    throw new EOFException();
+                }
+                int bytesRead = byteBuffer.position();
+
+                // Write those bytes to sink.
+                sink.write(byteArray, 0, bytesRead);
+                pos += bytesRead;
+                byteCount -= bytesRead;
+            } finally {
+                byteBuffer.clear();
+            }
+        }
+    }
 }
