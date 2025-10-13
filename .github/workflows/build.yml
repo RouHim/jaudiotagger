@@ -2,40 +2,62 @@ name: CI/CD
 
 on:
   push:
-  pull_request:
-    types:
-      - opened
-  workflow_dispatch: # allow manual execution
-
-
+    branches:
+      - main
+      - develop
 jobs:
-  build:
-    name: Build
-    runs-on: ${{ matrix.os }}
-    strategy:
-      matrix:
-        os: [ ubuntu-latest, windows-latest ]
+  publish:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      issues: write
+      packages: write
     steps:
-      - uses: actions/checkout@v5
-
-      - name: Set up JDK 25
-        uses: actions/setup-java@v5
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
         with:
-          java-version: '25'
+          java-version: '24'
           distribution: 'temurin'
-          cache: maven
-
-      - name: Build with Maven (Windows)
-        if: runner.os == 'Windows'
-        run: .\mvnw.cmd clean package
-        shell: cmd
-
-      - name: Build with Maven (Non-Windows)
-        if: runner.os != 'Windows'
-        run: ./mvnw clean package
-        shell: bash
-
-
+      - name: Build and deploy package
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: mvn --batch-mode clean deploy -DskipTests
+#on:
+#  push:
+#  pull_request:
+#    types:
+#      - opened
+#  workflow_dispatch: # allow manual execution
+#
+#
+#jobs:
+#  build:
+#    name: Build
+#    runs-on: ${{ matrix.os }}
+#    strategy:
+#      matrix:
+#        os: [ ubuntu-latest, windows-latest ]
+#    steps:
+#      - uses: actions/checkout@v5
+#
+#      - name: Set up JDK 25
+#        uses: actions/setup-java@v5
+#        with:
+#          java-version: '25'
+#          distribution: 'temurin'
+#          cache: maven
+#
+#      - name: Build with Maven (Windows)
+#        if: runner.os == 'Windows'
+#        run: .\mvnw.cmd clean package
+#        shell: cmd
+#
+#      - name: Build with Maven (Non-Windows)
+#        if: runner.os != 'Windows'
+#        run: ./mvnw clean package
+#        shell: bash
+#
+#
 #  release:
 #    name: Release
 #    needs: [ build ]
