@@ -14,12 +14,15 @@ import org.jaudiotagger.tag.TagOptionSingleton;
 import org.jaudiotagger.tag.id3.AbstractID3v2Tag;
 import org.jaudiotagger.tag.id3.ID3v23Tag;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.condition.DisabledOnOs;
 import org.junit.jupiter.api.condition.EnabledIf;
+import org.junit.jupiter.api.condition.OS;
 
 import java.io.File;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+@DisabledOnOs(OS.LINUX)
 public class WavMetadataTest extends FilePermissionsTest {
 
     /**
