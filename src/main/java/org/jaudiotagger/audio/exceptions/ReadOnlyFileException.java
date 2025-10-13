@@ -25,25 +25,26 @@ package org.jaudiotagger.audio.exceptions;
  */
 public class ReadOnlyFileException extends Exception {
 
-  /**
-   * Creates a new ReadOnlyException datatype.
-   */
-  public ReadOnlyFileException() {}
+    /**
+     * Creates a new ReadOnlyException datatype.
+     */
+    public ReadOnlyFileException() {
+    }
 
-  public ReadOnlyFileException(Throwable ex) {
-    super(ex);
-  }
+    public ReadOnlyFileException(Throwable ex) {
+        super(ex);
+    }
 
-  /**
-   * Creates a new ReadOnlyException datatype.
-   *
-   * @param msg the detail message.
-   */
-  public ReadOnlyFileException(String msg) {
-    super(msg);
-  }
+    /**
+     * Creates a new ReadOnlyException datatype.
+     *
+     * @param msg the detail message.
+     */
+    public ReadOnlyFileException(String msg) {
+        super(msg);
+    }
 
-  public ReadOnlyFileException(String msg, Throwable ex) {
-    super(msg, ex);
-  }
+    public ReadOnlyFileException(String msg, Throwable ex) {
+        super(msg, ex);
+    }
 }

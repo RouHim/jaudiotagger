@@ -12,42 +12,42 @@ import java.nio.ByteBuffer;
  */
 public class MovieFragmentHeaderBox extends FullBox {
 
-  public MovieFragmentHeaderBox(Header atom) {
-    super(atom);
-  }
+    private int sequenceNumber;
 
-  private int sequenceNumber;
+    public MovieFragmentHeaderBox(Header atom) {
+        super(atom);
+    }
 
-  public static String fourcc() {
-    return "mfhd";
-  }
+    public static MovieFragmentHeaderBox createMovieFragmentHeaderBox() {
+        return new MovieFragmentHeaderBox(new Header(fourcc()));
+    }
 
-  @Override
-  public void parse(ByteBuffer input) {
-    super.parse(input);
-    sequenceNumber = input.getInt();
-  }
+    public static String fourcc() {
+        return "mfhd";
+    }
 
-  @Override
-  protected void doWrite(ByteBuffer out) {
-    super.doWrite(out);
-    out.putInt(sequenceNumber);
-  }
+    @Override
+    public void parse(ByteBuffer input) {
+        super.parse(input);
+        sequenceNumber = input.getInt();
+    }
 
-  @Override
-  public int estimateSize() {
-    return 16;
-  }
+    @Override
+    protected void doWrite(ByteBuffer out) {
+        super.doWrite(out);
+        out.putInt(sequenceNumber);
+    }
 
-  public int getSequenceNumber() {
-    return sequenceNumber;
-  }
+    @Override
+    public int estimateSize() {
+        return 16;
+    }
 
-  public void setSequenceNumber(int sequenceNumber) {
-    this.sequenceNumber = sequenceNumber;
-  }
+    public int getSequenceNumber() {
+        return sequenceNumber;
+    }
 
-  public static MovieFragmentHeaderBox createMovieFragmentHeaderBox() {
-    return new MovieFragmentHeaderBox(new Header(fourcc()));
-  }
+    public void setSequenceNumber(int sequenceNumber) {
+        this.sequenceNumber = sequenceNumber;
+    }
 }

@@ -22,11 +22,12 @@
  */
 package org.jaudiotagger.tag.id3.framebody;
 
-import java.nio.ByteBuffer;
 import org.jaudiotagger.tag.InvalidTagException;
 import org.jaudiotagger.tag.datatype.ByteArraySizeTerminated;
 import org.jaudiotagger.tag.datatype.DataTypes;
 import org.jaudiotagger.tag.id3.ID3v24Frames;
+
+import java.nio.ByteBuffer;
 
 /**
  * Equalisation (2)
@@ -69,43 +70,44 @@ import org.jaudiotagger.tag.id3.ID3v24Frames;
  * should only be described once in the frame.
  */
 public class FrameBodyEQU2
-  extends AbstractID3v2FrameBody
-  implements ID3v24FrameBody {
+        extends AbstractID3v2FrameBody
+        implements ID3v24FrameBody {
 
-  /**
-   * Creates a new FrameBodyEQU2 datatype.
-   */
-  public FrameBodyEQU2() {}
+    /**
+     * Creates a new FrameBodyEQU2 datatype.
+     */
+    public FrameBodyEQU2() {
+    }
 
-  public FrameBodyEQU2(FrameBodyEQU2 body) {
-    super(body);
-  }
+    public FrameBodyEQU2(FrameBodyEQU2 body) {
+        super(body);
+    }
 
-  /**
-   * Creates a new FrameBodyEQU2 datatype.
-   *
-   * @param byteBuffer
-   * @param frameSize
-   * @throws InvalidTagException if unable to create framebody from buffer
-   */
-  public FrameBodyEQU2(ByteBuffer byteBuffer, int frameSize)
-    throws InvalidTagException {
-    super(byteBuffer, frameSize);
-  }
+    /**
+     * Creates a new FrameBodyEQU2 datatype.
+     *
+     * @param byteBuffer
+     * @param frameSize
+     * @throws InvalidTagException if unable to create framebody from buffer
+     */
+    public FrameBodyEQU2(ByteBuffer byteBuffer, int frameSize)
+            throws InvalidTagException {
+        super(byteBuffer, frameSize);
+    }
 
-  /**
-   * The ID3v2 frame identifier
-   *
-   * @return the ID3v2 frame identifier  for this frame type
-   */
-  public String getIdentifier() {
-    return ID3v24Frames.FRAME_ID_EQUALISATION2;
-  }
+    /**
+     * The ID3v2 frame identifier
+     *
+     * @return the ID3v2 frame identifier  for this frame type
+     */
+    public String getIdentifier() {
+        return ID3v24Frames.FRAME_ID_EQUALISATION2;
+    }
 
-  /**
-   *
-   */
-  protected void setupObjectList() {
-    objectList.add(new ByteArraySizeTerminated(DataTypes.OBJ_DATA, this));
-  }
+    /**
+     *
+     */
+    protected void setupObjectList() {
+        objectList.add(new ByteArraySizeTerminated(DataTypes.OBJ_DATA, this));
+    }
 }

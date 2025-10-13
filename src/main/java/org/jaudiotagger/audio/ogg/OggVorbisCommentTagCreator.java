@@ -18,14 +18,15 @@
  */
 package org.jaudiotagger.audio.ogg;
 
-import java.io.UnsupportedEncodingException;
-import java.nio.ByteBuffer;
 import org.jaudiotagger.audio.ogg.util.VorbisHeader;
 import org.jaudiotagger.audio.ogg.util.VorbisPacketType;
 import org.jaudiotagger.tag.Tag;
 import org.jaudiotagger.tag.vorbiscomment.VorbisCommentCreator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import java.io.UnsupportedEncodingException;
+import java.nio.ByteBuffer;
 
 /**
  * Creates a Vorbis Comment Tag from a VorbisComment for use within an OggVorbis Container.
@@ -37,57 +38,55 @@ import org.slf4j.LoggerFactory;
  */
 public class OggVorbisCommentTagCreator {
 
-  private static final Logger logger = LoggerFactory.getLogger(
-    "org.jaudiotagger.audio.ogg"
-  );
+    protected final Logger log = LoggerFactory.getLogger(getClass());
 
-  public static final int FIELD_FRAMING_BIT_LENGTH = 1;
-  public static final byte FRAMING_BIT_VALID_VALUE = (byte) 0x01;
+    public static final int FIELD_FRAMING_BIT_LENGTH = 1;
+    public static final byte FRAMING_BIT_VALID_VALUE = (byte) 0x01;
 
-  private final VorbisCommentCreator creator = new VorbisCommentCreator();
-  private final byte[] prefix;
-  private final byte[] capturePattern;
-  private final boolean shouldWriteFramingBit;
+    private final VorbisCommentCreator creator = new VorbisCommentCreator();
+    private final byte[] prefix;
+    private final byte[] capturePattern;
+    private final boolean shouldWriteFramingBit;
 
-  public OggVorbisCommentTagCreator(
-    byte[] prefix,
-    byte[] pattern,
-    boolean shouldWriteFramingBit
-  ) {
-    this.prefix = prefix;
-    this.capturePattern = pattern;
-    this.shouldWriteFramingBit = shouldWriteFramingBit;
-  }
-
-  public OggVorbisCommentTagCreator() {
-    prefix = new byte[] { (byte) VorbisPacketType.COMMENT_HEADER.getType() };
-    capturePattern = VorbisHeader.CAPTURE_PATTERN_AS_BYTES;
-    shouldWriteFramingBit = true;
-  }
-
-  // Creates the ByteBuffer for the ogg tag
-  public ByteBuffer convert(Tag tag) throws UnsupportedEncodingException {
-    ByteBuffer ogg = creator.convert(tag);
-    int tagLength = ogg.capacity() + prefix.length + capturePattern.length;
-    if (shouldWriteFramingBit) {
-      tagLength += OggVorbisCommentTagCreator.FIELD_FRAMING_BIT_LENGTH;
+    public OggVorbisCommentTagCreator(
+            byte[] prefix,
+            byte[] pattern,
+            boolean shouldWriteFramingBit
+    ) {
+        this.prefix = prefix;
+        this.capturePattern = pattern;
+        this.shouldWriteFramingBit = shouldWriteFramingBit;
     }
 
-    ByteBuffer buf = ByteBuffer.allocate(tagLength);
-
-    //[packet type=comment0x03]['vorbis']
-    buf.put(prefix);
-    buf.put(capturePattern);
-
-    //The actual tag
-    buf.put(ogg);
-
-    //Framing bit = 1
-    if (shouldWriteFramingBit) {
-      buf.put(FRAMING_BIT_VALID_VALUE);
+    public OggVorbisCommentTagCreator() {
+        prefix = new byte[]{(byte) VorbisPacketType.COMMENT_HEADER.getType()};
+        capturePattern = VorbisHeader.CAPTURE_PATTERN_AS_BYTES;
+        shouldWriteFramingBit = true;
     }
 
-    buf.rewind();
-    return buf;
-  }
+    // Creates the ByteBuffer for the ogg tag
+    public ByteBuffer convert(Tag tag) throws UnsupportedEncodingException {
+        ByteBuffer ogg = creator.convert(tag);
+        int tagLength = ogg.capacity() + prefix.length + capturePattern.length;
+        if (shouldWriteFramingBit) {
+            tagLength += OggVorbisCommentTagCreator.FIELD_FRAMING_BIT_LENGTH;
+        }
+
+        ByteBuffer buf = ByteBuffer.allocate(tagLength);
+
+        //[packet type=comment0x03]['vorbis']
+        buf.put(prefix);
+        buf.put(capturePattern);
+
+        //The actual tag
+        buf.put(ogg);
+
+        //Framing bit = 1
+        if (shouldWriteFramingBit) {
+            buf.put(FRAMING_BIT_VALID_VALUE);
+        }
+
+        buf.rewind();
+        return buf;
+    }
 }

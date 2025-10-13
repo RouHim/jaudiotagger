@@ -18,9 +18,6 @@
  */
 package org.jaudiotagger.audio.generic;
 
-import java.io.File;
-import java.io.IOException;
-import java.io.RandomAccessFile;
 import org.jaudiotagger.audio.AudioFile;
 import org.jaudiotagger.audio.exceptions.CannotReadException;
 import org.jaudiotagger.audio.exceptions.InvalidAudioFrameException;
@@ -31,6 +28,10 @@ import org.jaudiotagger.tag.Tag;
 import org.jaudiotagger.tag.TagException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import java.io.File;
+import java.io.IOException;
+import java.io.RandomAccessFile;
 
 /*
  * This abstract class is the skeleton for tag readers. It handles the creation/closing of
@@ -44,99 +45,97 @@ import org.slf4j.LoggerFactory;
 
 public abstract class AudioFileReader {
 
-  // Logger Object
-  private static final Logger logger = LoggerFactory.getLogger(
-    "org.jaudiotagger.audio.generic"
-  );
-  protected static final int MINIMUM_SIZE_FOR_VALID_AUDIO_FILE = 100;
+    protected final Logger log = LoggerFactory.getLogger(getClass());
 
-  /*
-   * Returns the encoding info object associated wih the current File.
-   * The subclass can assume the RAF pointer is at the first byte of the file.
-   * The RandomAccessFile must be kept open after this function, but can point
-   * at any offset in the file.
-   *
-   * @param raf The RandomAccessFile associtaed with the current file
-   * @exception IOException is thrown when the RandomAccessFile operations throw it (you should never throw them manually)
-   * @exception CannotReadException when an error occured during the parsing of the encoding infos
-   */
-  protected abstract GenericAudioHeader getEncodingInfo(RandomAccessFile raf)
-    throws CannotReadException, IOException;
+    protected static final int MINIMUM_SIZE_FOR_VALID_AUDIO_FILE = 100;
 
-  /*
-   * Same as above but returns the Tag contained in the file, or a new one.
-   *
-   * @param raf The RandomAccessFile associted with the current file
-   * @exception IOException is thrown when the RandomAccessFile operations throw it (you should never throw them manually)
-   * @exception CannotReadException when an error occured during the parsing of the tag
-   */
-  protected abstract Tag getTag(RandomAccessFile raf)
-    throws CannotReadException, IOException;
+    /*
+     * Reads the given file, and return an AudioFile object containing the Tag
+     * and the encoding infos present in the file. If the file has no tag, an
+     * empty one is returned. If the encodinginfo is not valid , an exception is thrown.
+     *
+     * @param f The file to read
+     * @exception CannotReadException If anything went bad during the read of this file
+     */
+    public AudioFile read(File f)
+            throws CannotReadException, IOException, TagException, ReadOnlyFileException, InvalidAudioFrameException {
+        if (log.isDebugEnabled()) {
+            log.debug(ErrorMessage.GENERAL_READ.getMsg(f.getAbsolutePath()));
+        }
 
-  /*
-   * Reads the given file, and return an AudioFile object containing the Tag
-   * and the encoding infos present in the file. If the file has no tag, an
-   * empty one is returned. If the encodinginfo is not valid , an exception is thrown.
-   *
-   * @param f The file to read
-   * @exception CannotReadException If anything went bad during the read of this file
-   */
-  public AudioFile read(File f)
-    throws CannotReadException, IOException, TagException, ReadOnlyFileException, InvalidAudioFrameException {
-    if (logger.isDebugEnabled()) {
-      logger.debug(ErrorMessage.GENERAL_READ.getMsg(f.getAbsolutePath()));
+        if (!f.canRead()) {
+            log.warn(
+                    ErrorMessage.GENERAL_READ_FAILED_DO_NOT_HAVE_PERMISSION_TO_READ_FILE.getMsg(
+                            f.getAbsolutePath()
+                    )
+            );
+            throw new NoReadPermissionsException(
+                    ErrorMessage.GENERAL_READ_FAILED_DO_NOT_HAVE_PERMISSION_TO_READ_FILE.getMsg(
+                            f.getAbsolutePath()
+                    )
+            );
+        }
+
+        if (f.length() <= MINIMUM_SIZE_FOR_VALID_AUDIO_FILE) {
+            throw new CannotReadException(
+                    ErrorMessage.GENERAL_READ_FAILED_FILE_TOO_SMALL.getMsg(
+                            f.getAbsolutePath()
+                    )
+            );
+        }
+
+        try (RandomAccessFile raf = new RandomAccessFile(f, "r")) {
+            try {
+                raf.seek(0);
+
+                GenericAudioHeader info = getEncodingInfo(raf);
+                raf.seek(0);
+                Tag tag = getTag(raf);
+                return new AudioFile(f, info, tag);
+            } catch (CannotReadException cre) {
+                throw cre;
+            } catch (Exception e) {
+                log.error(ErrorMessage.GENERAL_READ.getMsg(f.getAbsolutePath()), e);
+                throw new CannotReadException(
+                        f.getAbsolutePath() + ":" + e.getMessage(),
+                        e
+                );
+            }
+        } catch (Exception ex) {
+            log.warn(
+                    ErrorMessage.GENERAL_READ_FAILED_UNABLE_TO_CLOSE_RANDOM_ACCESS_FILE.getMsg(
+                            f.getAbsolutePath()
+                    )
+            );
+            throw new CannotReadException(
+                    ErrorMessage.GENERAL_READ_FAILED_UNABLE_TO_CLOSE_RANDOM_ACCESS_FILE.getMsg(
+                            f.getAbsolutePath()
+                    ),
+                    ex
+            );
+        }
     }
 
-    if (!f.canRead()) {
-      logger.warn(
-        ErrorMessage.GENERAL_READ_FAILED_DO_NOT_HAVE_PERMISSION_TO_READ_FILE.getMsg(
-          f.getAbsolutePath()
-        )
-      );
-      throw new NoReadPermissionsException(
-        ErrorMessage.GENERAL_READ_FAILED_DO_NOT_HAVE_PERMISSION_TO_READ_FILE.getMsg(
-          f.getAbsolutePath()
-        )
-      );
-    }
+    /*
+     * Returns the encoding info object associated wih the current File.
+     * The subclass can assume the RAF pointer is at the first byte of the file.
+     * The RandomAccessFile must be kept open after this function, but can point
+     * at any offset in the file.
+     *
+     * @param raf The RandomAccessFile associtaed with the current file
+     * @exception IOException is thrown when the RandomAccessFile operations throw it (you should never throw them manually)
+     * @exception CannotReadException when an error occured during the parsing of the encoding infos
+     */
+    protected abstract GenericAudioHeader getEncodingInfo(RandomAccessFile raf)
+            throws CannotReadException, IOException;
 
-    if (f.length() <= MINIMUM_SIZE_FOR_VALID_AUDIO_FILE) {
-      throw new CannotReadException(
-        ErrorMessage.GENERAL_READ_FAILED_FILE_TOO_SMALL.getMsg(
-          f.getAbsolutePath()
-        )
-      );
-    }
-
-    try (RandomAccessFile raf = new RandomAccessFile(f, "r")) {
-      try {
-        raf.seek(0);
-
-        GenericAudioHeader info = getEncodingInfo(raf);
-        raf.seek(0);
-        Tag tag = getTag(raf);
-        return new AudioFile(f, info, tag);
-      } catch (CannotReadException cre) {
-        throw cre;
-      } catch (Exception e) {
-        logger.error(ErrorMessage.GENERAL_READ.getMsg(f.getAbsolutePath()), e);
-        throw new CannotReadException(
-          f.getAbsolutePath() + ":" + e.getMessage(),
-          e
-        );
-      }
-    } catch (Exception ex) {
-      logger.warn(
-        ErrorMessage.GENERAL_READ_FAILED_UNABLE_TO_CLOSE_RANDOM_ACCESS_FILE.getMsg(
-          f.getAbsolutePath()
-        )
-      );
-      throw new CannotReadException(
-        ErrorMessage.GENERAL_READ_FAILED_UNABLE_TO_CLOSE_RANDOM_ACCESS_FILE.getMsg(
-          f.getAbsolutePath()
-        ),
-        ex
-      );
-    }
-  }
+    /*
+     * Same as above but returns the Tag contained in the file, or a new one.
+     *
+     * @param raf The RandomAccessFile associted with the current file
+     * @exception IOException is thrown when the RandomAccessFile operations throw it (you should never throw them manually)
+     * @exception CannotReadException when an error occured during the parsing of the tag
+     */
+    protected abstract Tag getTag(RandomAccessFile raf)
+            throws CannotReadException, IOException;
 }

@@ -10,45 +10,47 @@ package org.jcodec.containers.mp4.boxes;
  */
 public class MovieFragmentBox extends NodeBox {
 
-  public MovieFragmentBox(Header atom) {
-    super(atom);
-  }
+    private MovieBox moov;
 
-  private MovieBox moov;
+    public MovieFragmentBox(Header atom) {
+        super(atom);
+    }
 
-  public static String fourcc() {
-    return "moof";
-  }
+    public static MovieFragmentBox createMovieFragmentBox() {
+        return new MovieFragmentBox(new Header(fourcc()));
+    }
 
-  public MovieBox getMovie() {
-    return moov;
-  }
+    public static String fourcc() {
+        return "moof";
+    }
 
-  public void setMovie(MovieBox moov) {
-    this.moov = moov;
-  }
+    public MovieBox getMovie() {
+        return moov;
+    }
 
-  public TrackFragmentBox[] getTracks() {
-    return NodeBox.findAll(
-      this,
-      TrackFragmentBox.class,
-      TrackFragmentBox.fourcc()
-    );
-  }
+    public void setMovie(MovieBox moov) {
+        this.moov = moov;
+    }
 
-  public int getSequenceNumber() {
-    MovieFragmentHeaderBox mfhd = NodeBox.findFirst(
-      this,
-      MovieFragmentHeaderBox.class,
-      MovieFragmentHeaderBox.fourcc()
-    );
-    if (mfhd == null) throw new RuntimeException(
-      "Corrupt movie fragment, no header atom found"
-    );
-    return mfhd.getSequenceNumber();
-  }
+    public TrackFragmentBox[] getTracks() {
+        return NodeBox.findAll(
+                this,
+                TrackFragmentBox.class,
+                TrackFragmentBox.fourcc()
+        );
+    }
 
-  public static MovieFragmentBox createMovieFragmentBox() {
-    return new MovieFragmentBox(new Header(fourcc()));
-  }
+    public int getSequenceNumber() {
+        MovieFragmentHeaderBox mfhd = NodeBox.findFirst(
+                this,
+                MovieFragmentHeaderBox.class,
+                MovieFragmentHeaderBox.fourcc()
+        );
+        if (mfhd == null) {
+            throw new RuntimeException(
+                    "Corrupt movie fragment, no header atom found"
+            );
+        }
+        return mfhd.getSequenceNumber();
+    }
 }

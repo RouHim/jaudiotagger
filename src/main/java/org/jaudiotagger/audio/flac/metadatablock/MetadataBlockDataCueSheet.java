@@ -32,20 +32,20 @@ import java.nio.channels.FileChannel;
  */
 public class MetadataBlockDataCueSheet implements MetadataBlockData {
 
-  private final ByteBuffer data;
+    private final ByteBuffer data;
 
-  public MetadataBlockDataCueSheet(MetadataBlockHeader header, FileChannel fc)
-    throws IOException {
-    data = ByteBuffer.allocate(header.getDataLength());
-    fc.read(data);
-    data.flip();
-  }
+    public MetadataBlockDataCueSheet(MetadataBlockHeader header, FileChannel fc)
+            throws IOException {
+        data = ByteBuffer.allocate(header.getDataLength());
+        fc.read(data);
+        data.flip();
+    }
 
-  public ByteBuffer getBytes() {
-    return data;
-  }
+    public ByteBuffer getBytes() {
+        return data;
+    }
 
-  public int getLength() {
-    return data.limit();
-  }
+    public int length() {
+        return data.limit();
+    }
 }

@@ -15,9 +15,10 @@
  */
 package org.jaudiotagger.tag.id3.framebody;
 
-import java.nio.ByteBuffer;
 import org.jaudiotagger.tag.InvalidTagException;
 import org.jaudiotagger.tag.id3.ID3v24Frames;
+
+import java.nio.ByteBuffer;
 
 /**
  * Original lyricist(s)/text writer(s) Text information frame.
@@ -33,46 +34,47 @@ import org.jaudiotagger.tag.id3.ID3v24Frames;
  * @version $Id$
  */
 public class FrameBodyTOLY
-  extends AbstractFrameBodyTextInfo
-  implements ID3v23FrameBody, ID3v24FrameBody {
+        extends AbstractFrameBodyTextInfo
+        implements ID3v23FrameBody, ID3v24FrameBody {
 
-  /**
-   * Creates a new FrameBodyTOLY datatype.
-   */
-  public FrameBodyTOLY() {}
+    /**
+     * Creates a new FrameBodyTOLY datatype.
+     */
+    public FrameBodyTOLY() {
+    }
 
-  public FrameBodyTOLY(FrameBodyTOLY body) {
-    super(body);
-  }
+    public FrameBodyTOLY(FrameBodyTOLY body) {
+        super(body);
+    }
 
-  /**
-   * Creates a new FrameBodyTOLY datatype.
-   *
-   * @param textEncoding
-   * @param text
-   */
-  public FrameBodyTOLY(byte textEncoding, String text) {
-    super(textEncoding, text);
-  }
+    /**
+     * Creates a new FrameBodyTOLY datatype.
+     *
+     * @param textEncoding
+     * @param text
+     */
+    public FrameBodyTOLY(byte textEncoding, String text) {
+        super(textEncoding, text);
+    }
 
-  /**
-   * Creates a new FrameBodyTOLY datatype.
-   *
-   * @param byteBuffer
-   * @param frameSize
-   * @throws InvalidTagException
-   */
-  public FrameBodyTOLY(ByteBuffer byteBuffer, int frameSize)
-    throws InvalidTagException {
-    super(byteBuffer, frameSize);
-  }
+    /**
+     * Creates a new FrameBodyTOLY datatype.
+     *
+     * @param byteBuffer
+     * @param frameSize
+     * @throws InvalidTagException
+     */
+    public FrameBodyTOLY(ByteBuffer byteBuffer, int frameSize)
+            throws InvalidTagException {
+        super(byteBuffer, frameSize);
+    }
 
-  /**
-   * The ID3v2 frame identifier
-   *
-   * @return the ID3v2 frame identifier  for this frame type
-   */
-  public String getIdentifier() {
-    return ID3v24Frames.FRAME_ID_ORIG_LYRICIST;
-  }
+    /**
+     * The ID3v2 frame identifier
+     *
+     * @return the ID3v2 frame identifier  for this frame type
+     */
+    public String getIdentifier() {
+        return ID3v24Frames.FRAME_ID_ORIG_LYRICIST;
+    }
 }

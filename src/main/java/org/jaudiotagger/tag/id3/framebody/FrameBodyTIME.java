@@ -15,9 +15,10 @@
  */
 package org.jaudiotagger.tag.id3.framebody;
 
-import java.nio.ByteBuffer;
 import org.jaudiotagger.tag.InvalidTagException;
 import org.jaudiotagger.tag.id3.ID3v23Frames;
+
+import java.nio.ByteBuffer;
 
 /**
  * Time Text information frame.
@@ -34,56 +35,57 @@ import org.jaudiotagger.tag.id3.ID3v23Frames;
  * @version $Id$
  */
 public class FrameBodyTIME
-  extends AbstractFrameBodyTextInfo
-  implements ID3v23FrameBody {
+        extends AbstractFrameBodyTextInfo
+        implements ID3v23FrameBody {
 
-  private boolean hoursOnly;
+    private boolean hoursOnly;
 
-  /**
-   * Creates a new FrameBodyTIME datatype.
-   */
-  public FrameBodyTIME() {}
+    /**
+     * Creates a new FrameBodyTIME datatype.
+     */
+    public FrameBodyTIME() {
+    }
 
-  public FrameBodyTIME(FrameBodyTIME body) {
-    super(body);
-  }
+    public FrameBodyTIME(FrameBodyTIME body) {
+        super(body);
+    }
 
-  /**
-   * Creates a new FrameBodyTIME datatype.
-   *
-   * @param textEncoding
-   * @param text
-   */
-  public FrameBodyTIME(byte textEncoding, String text) {
-    super(textEncoding, text);
-  }
+    /**
+     * Creates a new FrameBodyTIME datatype.
+     *
+     * @param textEncoding
+     * @param text
+     */
+    public FrameBodyTIME(byte textEncoding, String text) {
+        super(textEncoding, text);
+    }
 
-  /**
-   * Creates a new FrameBodyTIME datatype.
-   *
-   * @param byteBuffer
-   * @param frameSize
-   * @throws InvalidTagException
-   */
-  public FrameBodyTIME(ByteBuffer byteBuffer, int frameSize)
-    throws InvalidTagException {
-    super(byteBuffer, frameSize);
-  }
+    /**
+     * Creates a new FrameBodyTIME datatype.
+     *
+     * @param byteBuffer
+     * @param frameSize
+     * @throws InvalidTagException
+     */
+    public FrameBodyTIME(ByteBuffer byteBuffer, int frameSize)
+            throws InvalidTagException {
+        super(byteBuffer, frameSize);
+    }
 
-  /**
-   * The ID3v2 frame identifier
-   *
-   * @return the ID3v2 frame identifier  for this frame type
-   */
-  public String getIdentifier() {
-    return ID3v23Frames.FRAME_ID_V3_TIME;
-  }
+    /**
+     * The ID3v2 frame identifier
+     *
+     * @return the ID3v2 frame identifier  for this frame type
+     */
+    public String getIdentifier() {
+        return ID3v23Frames.FRAME_ID_V3_TIME;
+    }
 
-  public boolean isHoursOnly() {
-    return hoursOnly;
-  }
+    public boolean isHoursOnly() {
+        return hoursOnly;
+    }
 
-  public void setHoursOnly(boolean hoursOnly) {
-    this.hoursOnly = hoursOnly;
-  }
+    public void setHoursOnly(boolean hoursOnly) {
+        this.hoursOnly = hoursOnly;
+    }
 }

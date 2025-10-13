@@ -1,11 +1,12 @@
 package org.jaudiotagger.audio.aiff.chunk;
 
-import java.nio.ByteBuffer;
-import java.nio.charset.StandardCharsets;
 import org.jaudiotagger.audio.aiff.AiffAudioHeader;
 import org.jaudiotagger.audio.generic.Utils;
 import org.jaudiotagger.audio.iff.Chunk;
 import org.jaudiotagger.audio.iff.ChunkHeader;
+
+import java.nio.ByteBuffer;
+import java.nio.charset.StandardCharsets;
 
 /**
  * Provides common functionality for textual chunks like {@link NameChunk}, {@link AuthorChunk},
@@ -13,36 +14,36 @@ import org.jaudiotagger.audio.iff.ChunkHeader;
  */
 public abstract class TextChunk extends Chunk {
 
-  protected final AiffAudioHeader aiffAudioHeader;
+    protected final AiffAudioHeader aiffAudioHeader;
 
-  /**
-   * Constructor.
-   *
-   * @param chunkHeader     The header for this chunk
-   * @param chunkData       The buffer from which the AIFF data are being read
-   * @param aiffAudioHeader aiff header
-   */
-  public TextChunk(
-    final ChunkHeader chunkHeader,
-    final ByteBuffer chunkData,
-    final AiffAudioHeader aiffAudioHeader
-  ) {
-    super(chunkData, chunkHeader);
-    this.aiffAudioHeader = aiffAudioHeader;
-  }
+    /**
+     * Constructor.
+     *
+     * @param chunkHeader     The header for this chunk
+     * @param chunkData       The buffer from which the AIFF data are being read
+     * @param aiffAudioHeader aiff header
+     */
+    public TextChunk(
+            final ChunkHeader chunkHeader,
+            final ByteBuffer chunkData,
+            final AiffAudioHeader aiffAudioHeader
+    ) {
+        super(chunkData, chunkHeader);
+        this.aiffAudioHeader = aiffAudioHeader;
+    }
 
-  /**
-   * Reads the chunk and transforms it to a {@link String}.
-   *
-   * @return text string
-   */
-  protected String readChunkText() {
-    // the spec actually only defines ASCII, not ISO_8859_1, but it probably does not hurt to be lenient
-    return Utils.getString(
-      chunkData,
-      0,
-      chunkData.remaining(),
-      StandardCharsets.ISO_8859_1
-    );
-  }
+    /**
+     * Reads the chunk and transforms it to a {@link String}.
+     *
+     * @return text string
+     */
+    protected String readChunkText() {
+        // the spec actually only defines ASCII, not ISO_8859_1, but it probably does not hurt to be lenient
+        return Utils.getString(
+                chunkData,
+                0,
+                chunkData.remaining(),
+                StandardCharsets.ISO_8859_1
+        );
+    }
 }

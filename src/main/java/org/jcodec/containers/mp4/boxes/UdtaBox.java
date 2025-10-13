@@ -10,34 +10,34 @@ import org.jcodec.containers.mp4.IBoxFactory;
  */
 public class UdtaBox extends NodeBox {
 
-  private static final String FOURCC = "udta";
+    private static final String FOURCC = "udta";
 
-  public static UdtaBox createUdtaBox() {
-    return new UdtaBox(Header.createHeader(fourcc(), 0));
-  }
+    public UdtaBox(Header atom) {
+        super(atom);
+    }
 
-  @Override
-  public void setFactory(final IBoxFactory _factory) {
-    factory = header -> {
-      if (header.getFourcc().equals(UdtaMetaBox.fourcc())) {
-        UdtaMetaBox box = new UdtaMetaBox(header);
-        box.setFactory(_factory);
-        return box;
-      }
+    public static UdtaBox createUdtaBox() {
+        return new UdtaBox(Header.createHeader(fourcc(), 0));
+    }
 
-      return _factory.newBox(header);
-    };
-  }
+    public static String fourcc() {
+        return FOURCC;
+    }
 
-  public UdtaBox(Header atom) {
-    super(atom);
-  }
+    @Override
+    public void setFactory(final IBoxFactory _factory) {
+        factory = header -> {
+            if (header.getFourcc().equals(UdtaMetaBox.fourcc())) {
+                UdtaMetaBox box = new UdtaMetaBox(header);
+                box.setFactory(_factory);
+                return box;
+            }
 
-  public MetaBox meta() {
-    return NodeBox.findFirst(this, MetaBox.class, MetaBox.fourcc());
-  }
+            return _factory.newBox(header);
+        };
+    }
 
-  public static String fourcc() {
-    return FOURCC;
-  }
+    public MetaBox meta() {
+        return NodeBox.findFirst(this, MetaBox.class, MetaBox.fourcc());
+    }
 }

@@ -18,9 +18,10 @@
  */
 package org.jaudiotagger.tag.mp4.field;
 
-import java.io.UnsupportedEncodingException;
 import org.jaudiotagger.tag.TagField;
 import org.jaudiotagger.tag.mp4.Mp4TagField;
+
+import java.io.UnsupportedEncodingException;
 
 /**
  * Represents binary data
@@ -30,70 +31,70 @@ import org.jaudiotagger.tag.mp4.Mp4TagField;
  */
 public class Mp4TagBinaryField extends Mp4TagField {
 
-  protected int dataSize;
-  protected byte[] dataBytes;
-  protected boolean isBinary = false;
+    protected int dataSize;
+    protected byte[] dataBytes;
+    protected boolean isBinary = false;
 
-  /**
-   * Construct an empty Binary Field
-   *
-   * @param id
-   */
-  public Mp4TagBinaryField(String id) {
-    super(id);
-  }
-
-  /**
-   * Construct new binary field with binarydata provided
-   *
-   * @param id
-   * @param data
-   * @throws UnsupportedEncodingException
-   */
-  public Mp4TagBinaryField(String id, byte[] data) {
-    super(id);
-    this.dataBytes = data;
-  }
-
-  public Mp4FieldType getFieldType() {
-    //TODO dont know what value this should be do we actually have any binary fields other
-    //than cover art
-    return Mp4FieldType.IMPLICIT;
-  }
-
-  /**
-   * Used when creating raw content
-   *
-   * @return
-   */
-  protected byte[] getDataBytes() {
-    return dataBytes;
-  }
-
-  public boolean isBinary() {
-    return isBinary;
-  }
-
-  public boolean isEmpty() {
-    return this.dataBytes.length == 0;
-  }
-
-  public int getDataSize() {
-    return dataSize;
-  }
-
-  public byte[] getData() {
-    return this.dataBytes;
-  }
-
-  public void setData(byte[] d) {
-    this.dataBytes = d;
-  }
-
-  public void copyContent(TagField field) {
-    if (field instanceof Mp4TagBinaryField) {
-      this.dataBytes = ((Mp4TagBinaryField) field).getData();
-      this.isBinary = field.isBinary();
+    /**
+     * Construct an empty Binary Field
+     *
+     * @param id
+     */
+    public Mp4TagBinaryField(String id) {
+        super(id);
     }
-  }
+
+    /**
+     * Construct new binary field with binarydata provided
+     *
+     * @param id
+     * @param data
+     * @throws UnsupportedEncodingException
+     */
+    public Mp4TagBinaryField(String id, byte[] data) {
+        super(id);
+        this.dataBytes = data;
+    }
+
+    public Mp4FieldType getFieldType() {
+        //TODO dont know what value this should be do we actually have any binary fields other
+        //than cover art
+        return Mp4FieldType.IMPLICIT;
+    }
+
+    /**
+     * Used when creating raw content
+     *
+     * @return
+     */
+    protected byte[] getDataBytes() {
+        return dataBytes;
+    }
+
+    public boolean isBinary() {
+        return isBinary;
+    }
+
+    public boolean isEmpty() {
+        return this.dataBytes.length == 0;
+    }
+
+    public int getDataSize() {
+        return dataSize;
+    }
+
+    public void copyContent(TagField field) {
+        if (field instanceof Mp4TagBinaryField) {
+            this.dataBytes = ((Mp4TagBinaryField) field).getData();
+            this.isBinary = field.isBinary();
+        }
+    }
+
+    public byte[] getData() {
+        return this.dataBytes;
+    }
+
+    public void setData(byte[] d) {
+        this.dataBytes = d;
+    }
 }

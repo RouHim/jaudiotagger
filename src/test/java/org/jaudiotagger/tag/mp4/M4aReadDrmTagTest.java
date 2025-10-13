@@ -1,11 +1,6 @@
 package org.jaudiotagger.tag.mp4;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNull;
-
-import java.io.File;
-import java.util.List;
-import org.jaudiotagger.AbstractTestCase;
+import org.jaudiotagger.AbstractBaseTestCase;
 import org.jaudiotagger.audio.AudioFile;
 import org.jaudiotagger.audio.AudioFileIO;
 import org.jaudiotagger.audio.mp4.EncoderType;
@@ -14,80 +9,82 @@ import org.jaudiotagger.tag.FieldKey;
 import org.jaudiotagger.tag.Tag;
 import org.jcodec.containers.mp4.boxes.EsdsBox;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.condition.EnabledIf;
 
-public class M4aReadDrmTagTest {
+import java.io.File;
+import java.util.List;
 
-  /**
-   * Test to read all metadata from an Apple iTunes encoded mp4 file, note also uses fixed genre rather than
-   * custom genre
-   */
-  @Test
-  public void testReadFile() {
-    Exception exceptionCaught = null;
-    try {
-      File orig = new File("testdata", "test9.m4p");
-      if (!orig.isFile()) {
-        return;
-      }
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
 
-      File testFile = AbstractTestCase.copyAudioToTmp("test9.m4p");
-      AudioFile f = AudioFileIO.read(testFile);
-      Tag tag = f.getTag();
+public class M4aReadDrmTagTest extends AbstractBaseTestCase {
 
-      System.out.println(f.getAudioHeader());
-      System.out.println(tag);
+    /**
+     * Test to read all metadata from an Apple iTunes encoded mp4 file, note also uses fixed genre rather than
+     * custom genre
+     */
+    @Test
+    @EnabledIf("executeAlsoWithMissingResources") // to be configured in AbsractBaseTestCase
+    public void testReadFile() {
+        Exception exceptionCaught = null;
+        try {
+            File testFile = copyAudioToTmp("test9.m4p");
+            AudioFile f = AudioFileIO.read(testFile);
+            Tag tag = f.getTag();
 
-      //AudioInfo
-      //Time in seconds
-      assertEquals(329, f.getAudioHeader().getTrackLength());
-      assertEquals(44100, f.getAudioHeader().getSampleRateAsNumber());
-      assertEquals("2", f.getAudioHeader().getChannels());
-      assertEquals(128, f.getAudioHeader().getBitRateAsNumber());
-      assertEquals(
-        EncoderType.DRM_AAC.getDescription(),
-        f.getAudioHeader().getEncodingType()
-      );
+            System.out.println(f.getAudioHeader());
+            System.out.println(tag);
 
-      //MPEG Specific
-      Mp4AudioHeader audioheader = (Mp4AudioHeader) f.getAudioHeader();
-      assertEquals(EsdsBox.Kind.MPEG4_AUDIO, audioheader.getKind());
-      assertEquals(
-        EsdsBox.AudioProfile.LOW_COMPLEXITY,
-        audioheader.getProfile()
-      );
+            //AudioInfo
+            //Time in seconds
+            assertEquals(329, f.getAudioHeader().getTrackLength());
+            assertEquals(44100, f.getAudioHeader().getSampleRateAsNumber());
+            assertEquals("2", f.getAudioHeader().getChannels());
+            assertEquals(128, f.getAudioHeader().getBitRateAsNumber());
+            assertEquals(
+                    EncoderType.DRM_AAC.getDescription(),
+                    f.getAudioHeader().getEncodingType()
+            );
 
-      //Ease of use methods for common fields
-      assertEquals("The King Of The Slums", tag.getFirst(FieldKey.ARTIST));
-      assertEquals("Barbarous English Fayre", tag.getFirst(FieldKey.ALBUM));
-      assertEquals("Simpering Blonde Bombshell", tag.getFirst(FieldKey.TITLE));
-      assertEquals("1990-01-01T08:00:00Z", tag.getFirst(FieldKey.YEAR));
-      assertEquals("1", tag.getFirst(FieldKey.TRACK));
-      assertEquals("12", tag.getFirst(FieldKey.TRACK_TOTAL));
-      assertEquals("Rock", tag.getFirst(FieldKey.GENRE));
+            //MPEG Specific
+            Mp4AudioHeader audioheader = (Mp4AudioHeader) f.getAudioHeader();
+            assertEquals(EsdsBox.Kind.MPEG4_AUDIO, audioheader.getKind());
+            assertEquals(
+                    EsdsBox.AudioProfile.LOW_COMPLEXITY,
+                    audioheader.getProfile()
+            );
 
-      //Cast to format specific tag
-      Mp4Tag mp4tag = (Mp4Tag) tag;
+            //Ease of use methods for common fields
+            assertEquals("The King Of The Slums", tag.getFirst(FieldKey.ARTIST));
+            assertEquals("Barbarous English Fayre", tag.getFirst(FieldKey.ALBUM));
+            assertEquals("Simpering Blonde Bombshell", tag.getFirst(FieldKey.TITLE));
+            assertEquals("1990-01-01T08:00:00Z", tag.getFirst(FieldKey.YEAR));
+            assertEquals("1", tag.getFirst(FieldKey.TRACK));
+            assertEquals("12", tag.getFirst(FieldKey.TRACK_TOTAL));
+            assertEquals("Rock", tag.getFirst(FieldKey.GENRE));
 
-      //Lookup by mp4 key
-      assertEquals(
-        "The King Of The Slums",
-        mp4tag.getFirst(Mp4FieldKey.ARTIST)
-      );
-      assertEquals(
-        "Barbarous English Fayre",
-        mp4tag.getFirst(Mp4FieldKey.ALBUM)
-      );
-      assertEquals(
-        "Simpering Blonde Bombshell",
-        mp4tag.getFirst(Mp4FieldKey.TITLE)
-      );
-      List coverart = mp4tag.get(Mp4FieldKey.ARTWORK);
-      //Should be one image
-      assertEquals(1, coverart.size());
-    } catch (Exception e) {
-      e.printStackTrace();
-      exceptionCaught = e;
+            //Cast to format specific tag
+            Mp4Tag mp4tag = (Mp4Tag) tag;
+
+            //Lookup by mp4 key
+            assertEquals(
+                    "The King Of The Slums",
+                    mp4tag.getFirst(Mp4FieldKey.ARTIST)
+            );
+            assertEquals(
+                    "Barbarous English Fayre",
+                    mp4tag.getFirst(Mp4FieldKey.ALBUM)
+            );
+            assertEquals(
+                    "Simpering Blonde Bombshell",
+                    mp4tag.getFirst(Mp4FieldKey.TITLE)
+            );
+            List coverart = mp4tag.get(Mp4FieldKey.ARTWORK);
+            //Should be one image
+            assertEquals(1, coverart.size());
+        } catch (Exception e) {
+            exceptionCaught = e;
+        }
+        assertNull(exceptionCaught);
     }
-    assertNull(exceptionCaught);
-  }
 }

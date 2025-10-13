@@ -15,9 +15,10 @@
  */
 package org.jaudiotagger.tag.id3.framebody;
 
-import java.nio.ByteBuffer;
 import org.jaudiotagger.tag.InvalidTagException;
 import org.jaudiotagger.tag.id3.ID3v24Frames;
+
+import java.nio.ByteBuffer;
 
 /**
  * Interpreted, remixed, or otherwise modified by Text information frame.
@@ -33,47 +34,48 @@ import org.jaudiotagger.tag.id3.ID3v24Frames;
  * @version $Id$
  */
 public class FrameBodyTPE4
-  extends AbstractFrameBodyTextInfo
-  implements ID3v24FrameBody, ID3v23FrameBody {
+        extends AbstractFrameBodyTextInfo
+        implements ID3v24FrameBody, ID3v23FrameBody {
 
-  /**
-   * Creates a new FrameBodyTPE4 datatype.
-   */
-  public FrameBodyTPE4() {}
+    /**
+     * Creates a new FrameBodyTPE4 datatype.
+     */
+    public FrameBodyTPE4() {
+    }
 
-  public FrameBodyTPE4(FrameBodyTPE4 body) {
-    super(body);
-  }
+    public FrameBodyTPE4(FrameBodyTPE4 body) {
+        super(body);
+    }
 
-  /**
-   * Creates a new FrameBodyTPE4 datatype.
-   *
-   * @param textEncoding
-   * @param text
-   */
-  public FrameBodyTPE4(byte textEncoding, String text) {
-    super(textEncoding, text);
-  }
+    /**
+     * Creates a new FrameBodyTPE4 datatype.
+     *
+     * @param textEncoding
+     * @param text
+     */
+    public FrameBodyTPE4(byte textEncoding, String text) {
+        super(textEncoding, text);
+    }
 
-  /**
-   * Creates a new FrameBodyTPE4 datatype.
-   *
-   * @param byteBuffer
-   * @param frameSize
-   * @throws java.io.IOException
-   * @throws InvalidTagException
-   */
-  public FrameBodyTPE4(ByteBuffer byteBuffer, int frameSize)
-    throws InvalidTagException {
-    super(byteBuffer, frameSize);
-  }
+    /**
+     * Creates a new FrameBodyTPE4 datatype.
+     *
+     * @param byteBuffer
+     * @param frameSize
+     * @throws java.io.IOException
+     * @throws InvalidTagException
+     */
+    public FrameBodyTPE4(ByteBuffer byteBuffer, int frameSize)
+            throws InvalidTagException {
+        super(byteBuffer, frameSize);
+    }
 
-  /**
-   * The ID3v2 frame identifier
-   *
-   * @return the ID3v2 frame identifier  for this frame type
-   */
-  public String getIdentifier() {
-    return ID3v24Frames.FRAME_ID_REMIXED;
-  }
+    /**
+     * The ID3v2 frame identifier
+     *
+     * @return the ID3v2 frame identifier  for this frame type
+     */
+    public String getIdentifier() {
+        return ID3v24Frames.FRAME_ID_REMIXED;
+    }
 }

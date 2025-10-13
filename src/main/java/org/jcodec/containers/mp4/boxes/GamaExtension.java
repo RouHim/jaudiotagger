@@ -10,37 +10,37 @@ import java.nio.ByteBuffer;
  */
 public class GamaExtension extends Box {
 
-  private float gamma;
+    private float gamma;
 
-  public static GamaExtension createGamaExtension(float gamma) {
-    GamaExtension gamaExtension = new GamaExtension(new Header(fourcc()));
-    gamaExtension.gamma = gamma;
-    return gamaExtension;
-  }
+    public GamaExtension(Header header) {
+        super(header);
+    }
 
-  public GamaExtension(Header header) {
-    super(header);
-  }
+    public static GamaExtension createGamaExtension(float gamma) {
+        GamaExtension gamaExtension = new GamaExtension(new Header(fourcc()));
+        gamaExtension.gamma = gamma;
+        return gamaExtension;
+    }
 
-  public void parse(ByteBuffer input) {
-    float g = input.getInt();
-    gamma = g / 65536f;
-  }
+    public static String fourcc() {
+        return "gama";
+    }
 
-  protected void doWrite(ByteBuffer out) {
-    out.putInt((int) (gamma * 65536));
-  }
+    public void parse(ByteBuffer input) {
+        float g = input.getInt();
+        gamma = g / 65536f;
+    }
 
-  public float getGamma() {
-    return gamma;
-  }
+    protected void doWrite(ByteBuffer out) {
+        out.putInt((int) (gamma * 65536));
+    }
 
-  public static String fourcc() {
-    return "gama";
-  }
+    public float getGamma() {
+        return gamma;
+    }
 
-  @Override
-  public int estimateSize() {
-    return 12;
-  }
+    @Override
+    public int estimateSize() {
+        return 12;
+    }
 }

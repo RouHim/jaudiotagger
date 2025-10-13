@@ -8,13 +8,13 @@ import org.jaudiotagger.tag.TagField;
 
 public class RealTag extends GenericTag {
 
-  public String toString() {
-    String output = "REAL " + super.toString();
-    return output;
-  }
+    public String toString() {
+        String output = "REAL " + super.toString();
+        return output;
+    }
 
-  public TagField createCompilationField(boolean value)
-    throws KeyNotFoundException, FieldDataInvalidException {
-    return createField(FieldKey.IS_COMPILATION, String.valueOf(value));
-  }
+    public TagField createCompilationField(boolean value)
+            throws KeyNotFoundException, FieldDataInvalidException {
+        return createField(FieldKey.IS_COMPILATION, String.valueOf(value));
+    }
 }

@@ -22,71 +22,72 @@
  */
 package org.jaudiotagger.tag.lyrics3;
 
-import java.nio.ByteBuffer;
 import org.jaudiotagger.tag.InvalidTagException;
 import org.jaudiotagger.tag.datatype.BooleanString;
 
+import java.nio.ByteBuffer;
+
 public class FieldFrameBodyIND extends AbstractLyrics3v2FieldFrameBody {
 
-  /**
-   * Creates a new FieldBodyIND datatype.
-   */
-  public FieldFrameBodyIND() {
-    //        this.setObject("Lyrics Present", new Boolean(false));
-    //        this.setObject("Timestamp Present", new Boolean(false));
-  }
+    /**
+     * Creates a new FieldBodyIND datatype.
+     */
+    public FieldFrameBodyIND() {
+        //        this.setObject("Lyrics Present", new Boolean(false));
+        //        this.setObject("Timestamp Present", new Boolean(false));
+    }
 
-  public FieldFrameBodyIND(FieldFrameBodyIND body) {
-    super(body);
-  }
+    public FieldFrameBodyIND(FieldFrameBodyIND body) {
+        super(body);
+    }
 
-  /**
-   * Creates a new FieldBodyIND datatype.
-   *
-   * @param lyricsPresent
-   * @param timeStampPresent
-   */
-  public FieldFrameBodyIND(boolean lyricsPresent, boolean timeStampPresent) {
-    this.setObjectValue("Lyrics Present", lyricsPresent);
-    this.setObjectValue("Timestamp Present", timeStampPresent);
-  }
+    /**
+     * Creates a new FieldBodyIND datatype.
+     *
+     * @param lyricsPresent
+     * @param timeStampPresent
+     */
+    public FieldFrameBodyIND(boolean lyricsPresent, boolean timeStampPresent) {
+        this.setObjectValue("Lyrics Present", lyricsPresent);
+        this.setObjectValue("Timestamp Present", timeStampPresent);
+    }
 
-  /**
-   * Creates a new FieldBodyIND datatype.
-   *
-   * @param byteBuffer
-   * @throws InvalidTagException
-   */
-  public FieldFrameBodyIND(ByteBuffer byteBuffer) throws InvalidTagException {
-    this.read(byteBuffer);
-  }
+    /**
+     * Creates a new FieldBodyIND datatype.
+     *
+     * @param byteBuffer
+     * @throws InvalidTagException
+     */
+    public FieldFrameBodyIND(ByteBuffer byteBuffer) throws InvalidTagException {
+        this.read(byteBuffer);
+    }
 
-  /**
-   * @param author
-   */
-  public void setAuthor(String author) {
-    setObjectValue("Author", author);
-  }
+    /**
+     * @return
+     */
+    public String getAuthor() {
+        return (String) getObjectValue("Author");
+    }
 
-  /**
-   * @return
-   */
-  public String getAuthor() {
-    return (String) getObjectValue("Author");
-  }
+    /**
+     * @param author
+     */
+    public void setAuthor(String author) {
+        setObjectValue("Author", author);
+    }
 
-  /**
-   * @return
-   */
-  public String getIdentifier() {
-    return "IND";
-  }
+    /**
+     * @return
+     */
+    public String getIdentifier() {
+        return "IND";
+    }
 
-  /**
-   *
-   */
-  protected void setupObjectList() {
-    objectList.add(new BooleanString("Lyrics Present", this));
-    objectList.add(new BooleanString("Timestamp Present", this));
-  }
+    /**
+     *
+     */
+    protected void setupObjectList() {
+        objectList.add(new BooleanString("Lyrics Present", this));
+        objectList.add(new BooleanString("Timestamp Present", this));
+    }
 }

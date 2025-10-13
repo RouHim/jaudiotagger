@@ -1,83 +1,85 @@
 package org.jaudiotagger.tag.id3;
 
-import static org.junit.jupiter.api.Assertions.*;
-
-import java.io.File;
 import org.jaudiotagger.AbstractTestCase;
 import org.jaudiotagger.audio.mp3.MP3File;
 import org.junit.jupiter.api.Test;
 
+import java.io.File;
+
+import static org.junit.jupiter.api.Assertions.*;
+
 public class FileClosingTest extends AbstractTestCase {
 
-  /**
-   * This tests checks files are closed after reading attempt
-   */
-  @Test
-  public void testClosingFileAfterFailedRead() {
-    Exception exception = null;
-    File testFile = AbstractTestCase.copyAudioToTmp("corrupt.mp3");
+    /**
+     * This tests checks files are closed after reading attempt
+     */
+    @Test
+    public void testClosingFileAfterFailedRead() {
+        Exception exception = null;
+        File testFile = copyAudioToTmp("corrupt.mp3");
 
-    //Try and Read
-    try {
-      MP3File mp3File = new MP3File(testFile);
-    } catch (Exception e) {
-      exception = e;
+        //Try and Read
+        try {
+            MP3File mp3File = new MP3File(testFile);
+        } catch (Exception e) {
+            exception = e;
+        }
+
+        //Error Should have occured
+        assertNotNull(exception);
+
+        //Should be able to deleteField
+        boolean deleted = testFile.delete();
+        assertTrue(deleted);
     }
 
-    //Error Should have occured
-    assertNotNull(exception);
+    /**
+     * This tests checks files are closed after succesful reading attempt
+     */
+    @Test
+    public void testClosingFileAfterSuccessfulRead() {
+        Exception exception = null;
+        File testFile = copyAudioToTmp("testV1.mp3");
 
-    //Should be able to deleteField
-    boolean deleted = testFile.delete();
-    assertTrue(deleted);
-  }
+        //Try and Read
+        try {
+            MP3File mp3File = new MP3File(testFile);
+        } catch (Exception e) {
+            exception = e;
+        }
 
-  /**
-   * This tests checks files are closed after succesful reading attempt
-   */
-  @Test
-  public void testClosingFileAfterSuccessfulRead() {
-    Exception exception = null;
-    File testFile = AbstractTestCase.copyAudioToTmp("testV1.mp3");
+        //No Error Should have occured
+        assertNull(exception);
 
-    //Try and Read
-    try {
-      MP3File mp3File = new MP3File(testFile);
-    } catch (Exception e) {
-      exception = e;
+        //Should be able to deleteField
+        boolean deleted = testFile.delete();
+        assertTrue(deleted);
     }
 
-    //No Error Should have occured
-    assertNull(exception);
+    /**
+     * This tests checks files are closed after failed reading attempt (read only)
+     */
+    @Test
+    public void testClosingFileAfterFailedReadOnly() {
+        Exception exception = null;
+        File testFile = copyAudioToTmp("testV1.mp3");
 
-    //Should be able to deleteField
-    boolean deleted = testFile.delete();
-    assertTrue(deleted);
-  }
+        boolean readonly = testFile.setReadOnly();
+        assertTrue(readonly);
 
-  /**
-   * This tests checks files are closed after failed reading attempt (read only)
-   */
-  @Test
-  public void testClosingFileAfterFailedReadOnly() {
-    Exception exception = null;
-    File testFile = AbstractTestCase.copyAudioToTmp("testV1.mp3");
+        //Try and Read
+        try {
+            MP3File mp3File = new MP3File(testFile);
+        } catch (Exception e) {
+            exception = e;
+        }
 
-    boolean readonly = testFile.setReadOnly();
-    assertTrue(readonly);
+        //Error Should have occured
+        assertNotNull(exception);
 
-    //Try and Read
-    try {
-      MP3File mp3File = new MP3File(testFile);
-    } catch (Exception e) {
-      exception = e;
+        //Should be able to deleteField
+        testFile.setWritable(true); // needs to be writeable to be deletable
+        boolean deleted = testFile.delete();
+        assertTrue(deleted);
     }
-
-    //Error Should have occured
-    assertNotNull(exception);
-
-    //Should be able to deleteField
-    boolean deleted = testFile.delete();
-    assertTrue(deleted);
-  }
 }

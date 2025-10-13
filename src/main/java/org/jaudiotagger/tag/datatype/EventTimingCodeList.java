@@ -23,22 +23,22 @@ import org.jaudiotagger.tag.id3.framebody.FrameBodyETCO;
  */
 public class EventTimingCodeList extends AbstractDataTypeList<EventTimingCode> {
 
-  /**
-   * Mandatory, concretely-typed copy constructor, as required by
-   * {@link AbstractDataTypeList#AbstractDataTypeList(AbstractDataTypeList)}.
-   *
-   * @param copy instance to copy
-   */
-  public EventTimingCodeList(final EventTimingCodeList copy) {
-    super(copy);
-  }
+    /**
+     * Mandatory, concretely-typed copy constructor, as required by
+     * {@link AbstractDataTypeList#AbstractDataTypeList(AbstractDataTypeList)}.
+     *
+     * @param copy instance to copy
+     */
+    public EventTimingCodeList(final EventTimingCodeList copy) {
+        super(copy);
+    }
 
-  public EventTimingCodeList(final FrameBodyETCO body) {
-    super(DataTypes.OBJ_TIMED_EVENT_LIST, body);
-  }
+    public EventTimingCodeList(final FrameBodyETCO body) {
+        super(DataTypes.OBJ_TIMED_EVENT_LIST, body);
+    }
 
-  @Override
-  protected EventTimingCode createListElement() {
-    return new EventTimingCode(DataTypes.OBJ_TIMED_EVENT, frameBody);
-  }
+    @Override
+    protected EventTimingCode createListElement() {
+        return new EventTimingCode(DataTypes.OBJ_TIMED_EVENT, frameBody);
+    }
 }

@@ -12,47 +12,47 @@ import org.jaudiotagger.tag.mp4.Mp4TagField;
  */
 public class Mp4TagRawBinaryField extends Mp4TagField {
 
-  protected int dataSize;
-  protected byte[] dataBytes;
+    protected int dataSize;
+    protected byte[] dataBytes;
 
-  protected Mp4TagRawBinaryField(String id) {
-    super(id);
-  }
+    protected Mp4TagRawBinaryField(String id) {
+        super(id);
+    }
 
-  public Mp4FieldType getFieldType() {
-    return Mp4FieldType.IMPLICIT;
-  }
+    public Mp4FieldType getFieldType() {
+        return Mp4FieldType.IMPLICIT;
+    }
 
-  /**
-   * Used when creating raw content
-   *
-   * @return
-   */
-  protected byte[] getDataBytes() {
-    return dataBytes;
-  }
+    /**
+     * Used when creating raw content
+     *
+     * @return
+     */
+    protected byte[] getDataBytes() {
+        return dataBytes;
+    }
 
-  public boolean isBinary() {
-    return true;
-  }
+    public boolean isBinary() {
+        return true;
+    }
 
-  public boolean isEmpty() {
-    return this.dataBytes.length == 0;
-  }
+    public boolean isEmpty() {
+        return this.dataBytes.length == 0;
+    }
 
-  public int getDataSize() {
-    return dataSize;
-  }
+    public int getDataSize() {
+        return dataSize;
+    }
 
-  public byte[] getData() {
-    return this.dataBytes;
-  }
+    public byte[] getData() {
+        return this.dataBytes;
+    }
 
-  public void setData(byte[] d) {
-    this.dataBytes = d;
-  }
+    public void setData(byte[] d) {
+        this.dataBytes = d;
+    }
 
-  public void copyContent(TagField field) {
-    throw new UnsupportedOperationException("not done");
-  }
+    public void copyContent(TagField field) {
+        throw new UnsupportedOperationException("not done");
+    }
 }

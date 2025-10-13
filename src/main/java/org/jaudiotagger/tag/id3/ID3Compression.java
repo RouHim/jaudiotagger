@@ -1,12 +1,13 @@
 package org.jaudiotagger.tag.id3;
 
-import java.nio.ByteBuffer;
-import java.util.zip.DataFormatException;
-import java.util.zip.Inflater;
 import org.jaudiotagger.logging.ErrorMessage;
 import org.jaudiotagger.tag.InvalidFrameException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import java.nio.ByteBuffer;
+import java.util.zip.DataFormatException;
+import java.util.zip.Inflater;
 
 /**
  * compresses frame data
@@ -16,64 +17,58 @@ import org.slf4j.LoggerFactory;
 //TODO also need to support compress framedata
 public class ID3Compression {
 
-  //Logger
-  private static final Logger logger = LoggerFactory.getLogger(
-    "org.jaudiotagger.tag.id3"
-  );
+    protected static final Logger log = LoggerFactory.getLogger(ID3Compression.class);
 
-  /**
-   * Decompress realFrameSize bytes to decompressedFrameSize bytes and return as ByteBuffer
-   *
-   * @param byteBuffer
-   * @param decompressedFrameSize
-   * @param realFrameSize
-   * @return
-   * @throws org.jaudiotagger.tag.InvalidFrameException
-   */
-  protected static ByteBuffer uncompress(
-    String identifier,
-    String filename,
-    ByteBuffer byteBuffer,
-    int decompressedFrameSize,
-    int realFrameSize
-  ) throws InvalidFrameException {
-    logger.debug(
-      filename +
-        ":About to decompress " +
-        realFrameSize +
-        " bytes, expect result to be:" +
-        decompressedFrameSize +
-        " bytes"
-    );
-    // Decompress the bytes into this buffer, size initialized from header field
-    byte[] result = new byte[decompressedFrameSize];
-    byte[] input = new byte[realFrameSize];
+    /**
+     * Decompress realFrameSize bytes to decompressedFrameSize bytes and return as ByteBuffer
+     *
+     * @param byteBuffer
+     * @param decompressedFrameSize
+     * @param realFrameSize
+     * @return
+     * @throws org.jaudiotagger.tag.InvalidFrameException
+     */
+    protected static ByteBuffer uncompress(
+            String identifier,
+            ByteBuffer byteBuffer,
+            int decompressedFrameSize,
+            int realFrameSize
+    ) throws InvalidFrameException {
+        log.debug(
+                        "About to decompress " +
+                        realFrameSize +
+                        " bytes, expect result to be:" +
+                        decompressedFrameSize +
+                        " bytes"
+        );
+        // Decompress the bytes into this buffer, size initialized from header field
+        byte[] result = new byte[decompressedFrameSize];
+        byte[] input = new byte[realFrameSize];
 
-    //Store position ( just after frame header and any extra bits)
-    //Read frame data into array, and then put buffer back to where it was
-    int position = byteBuffer.position();
-    byteBuffer.get(input, 0, realFrameSize);
-    byteBuffer.position(position);
+        //Store position ( just after frame header and any extra bits)
+        //Read frame data into array, and then put buffer back to where it was
+        int position = byteBuffer.position();
+        byteBuffer.get(input, 0, realFrameSize);
+        byteBuffer.position(position);
 
-    Inflater decompresser = new Inflater();
-    decompresser.setInput(input);
-    try {
-      int inflatedTo = decompresser.inflate(result);
-      logger.debug(filename + ":Decompressed to " + inflatedTo + " bytes");
-    } catch (DataFormatException dfe) {
-      logger.debug("Unable to decompress this frame:" + identifier, dfe);
+        Inflater decompresser = new Inflater();
+        decompresser.setInput(input);
+        try {
+            int inflatedTo = decompresser.inflate(result);
+            log.debug("Decompressed to " + inflatedTo + " bytes");
+        } catch (DataFormatException dfe) {
+            log.debug("Unable to decompress this frame:" + identifier, dfe);
 
-      //Update position of main buffer, so no attempt is made to reread these bytes
-      byteBuffer.position(byteBuffer.position() + realFrameSize);
-      throw new InvalidFrameException(
-        ErrorMessage.ID3_UNABLE_TO_DECOMPRESS_FRAME.getMsg(
-          identifier,
-          filename,
-          dfe.getMessage()
-        )
-      );
+            //Update position of main buffer, so no attempt is made to reread these bytes
+            byteBuffer.position(byteBuffer.position() + realFrameSize);
+            throw new InvalidFrameException(
+                    ErrorMessage.ID3_UNABLE_TO_DECOMPRESS_FRAME.getMsg(
+                            identifier,
+                            dfe.getMessage()
+                    )
+            );
+        }
+        decompresser.end();
+        return ByteBuffer.wrap(result);
     }
-    decompresser.end();
-    return ByteBuffer.wrap(result);
-  }
 }

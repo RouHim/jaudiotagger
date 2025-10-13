@@ -8,7 +8,7 @@ import org.jaudiotagger.tag.TagOptionSingleton;
  */
 public class Dsf {
 
-  public static Tag createDefaultTag() {
-    return TagOptionSingleton.createDefaultID3Tag();
-  }
+    public static Tag createDefaultTag() {
+        return TagOptionSingleton.createDefaultID3Tag();
+    }
 }

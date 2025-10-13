@@ -12,30 +12,30 @@ import org.junit.jupiter.api.Test;
 
 public class TagEnumsTest {
 
-  @Test
-  public void allTagsShouldHaveAllValues() {
-    for (FieldKey fk : FieldKey.values()) {
-      checkTag(new Mp4Tag(), fk);
-      checkTag(new ID3v1Tag(), fk);
-      checkTag(new ID3v24Tag(), fk);
-      checkTag(new ID3v22Tag(), fk);
-      checkTag(new ID3v23Tag(), fk);
-      // checkTag(new AiffTag(), fk);  // derived from ID3
-      checkTag(new AsfTag(), fk);
-      // checkTag(new WavTag(READ_ID3_ONLY), fk); // derived from ID3
-      checkTag(new VorbisCommentTag(), fk);
-      checkTag(new FlacTag(), fk);
+    @Test
+    public void allTagsShouldHaveAllValues() {
+        for (FieldKey fk : FieldKey.values()) {
+            checkTag(new Mp4Tag(), fk);
+            checkTag(new ID3v1Tag(), fk);
+            checkTag(new ID3v24Tag(), fk);
+            checkTag(new ID3v22Tag(), fk);
+            checkTag(new ID3v23Tag(), fk);
+            // checkTag(new AiffTag(), fk);  // derived from ID3
+            checkTag(new AsfTag(), fk);
+            // checkTag(new WavTag(READ_ID3_ONLY), fk); // derived from ID3
+            checkTag(new VorbisCommentTag(), fk);
+            checkTag(new FlacTag(), fk);
+        }
     }
-  }
 
-  private void checkTag(Tag tag, FieldKey fk) {
-    try {
-      tag.getFields(fk);
-    } catch (Exception ex) {
-      // System.out.println("No tag " + fk + " in type " + tag.getClass().getSimpleName());
-      throw new RuntimeException(
-        "No tag " + fk + " in type " + tag.getClass().getSimpleName()
-      );
+    private void checkTag(Tag tag, FieldKey fk) {
+        try {
+            tag.getFields(fk);
+        } catch (Exception ex) {
+            // System.out.println("No tag " + fk + " in type " + tag.getClass().getSimpleName());
+            throw new RuntimeException(
+                    "No tag " + fk + " in type " + tag.getClass().getSimpleName()
+            );
+        }
     }
-  }
 }

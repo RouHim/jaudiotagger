@@ -21,4 +21,5 @@ package org.jaudiotagger.tag.id3.framebody;
  * @author Paul Taylor
  * @version $Id$
  */
-public interface ID3v23FrameBody {}
+public interface ID3v23FrameBody {
+}

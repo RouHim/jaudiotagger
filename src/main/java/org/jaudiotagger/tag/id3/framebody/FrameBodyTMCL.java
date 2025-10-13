@@ -20,83 +20,84 @@
  */
 package org.jaudiotagger.tag.id3.framebody;
 
-import java.nio.ByteBuffer;
-import java.util.List;
 import org.jaudiotagger.tag.InvalidTagException;
 import org.jaudiotagger.tag.datatype.DataTypes;
 import org.jaudiotagger.tag.datatype.Pair;
 import org.jaudiotagger.tag.datatype.PairedTextEncodedStringNullTerminated;
 import org.jaudiotagger.tag.id3.ID3v24Frames;
 
+import java.nio.ByteBuffer;
+import java.util.List;
+
 /**
  * The 'Musician credits list' is intended as a mapping between instruments and the musician that played it. Every odd field is an
  * instrument and every even is an artist or a comma delimited list of artists.
  */
 public class FrameBodyTMCL
-  extends AbstractFrameBodyPairs
-  implements ID3v24FrameBody {
+        extends AbstractFrameBodyPairs
+        implements ID3v24FrameBody {
 
-  /**
-   * Creates a new FrameBodyTMCL datatype.
-   */
-  public FrameBodyTMCL() {
-    super();
-  }
-
-  /**
-   * Creates a new FrameBodyTMCL data type.
-   *
-   * @param textEncoding
-   * @param text
-   */
-  public FrameBodyTMCL(byte textEncoding, String text) {
-    super(textEncoding, text);
-  }
-
-  /**
-   * Creates a new FrameBodyTMCL data type.
-   *
-   * @param byteBuffer
-   * @param frameSize
-   * @throws InvalidTagException
-   */
-  public FrameBodyTMCL(ByteBuffer byteBuffer, int frameSize)
-    throws InvalidTagException {
-    super(byteBuffer, frameSize);
-  }
-
-  /**
-   * Convert from V3 to V4 Frame
-   *
-   * @param body
-   */
-  public FrameBodyTMCL(FrameBodyIPLS body) {
-    setObjectValue(DataTypes.OBJ_TEXT_ENCODING, body.getTextEncoding());
-    setObjectValue(DataTypes.OBJ_TEXT, body.getPairing());
-  }
-
-  /**
-   * Construct from a set of pairs
-   *
-   * @param textEncoding
-   * @param pairs
-   */
-  public FrameBodyTMCL(byte textEncoding, List<Pair<String, String>> pairs) {
-    setObjectValue(DataTypes.OBJ_TEXT_ENCODING, textEncoding);
-    PairedTextEncodedStringNullTerminated.ValuePairs values =
-      new PairedTextEncodedStringNullTerminated.ValuePairs();
-    for (Pair<String, String> next : pairs) {
-      values.add(next);
+    /**
+     * Creates a new FrameBodyTMCL datatype.
+     */
+    public FrameBodyTMCL() {
+        super();
     }
-    setObjectValue(DataTypes.OBJ_TEXT, values);
-  }
 
-  /**
-   * The ID3v2 frame identifier
-   *
-   * @return the ID3v2 frame identifier  for this frame type
-   */
-  public String getIdentifier() {
-    return ID3v24Frames.FRAME_ID_MUSICIAN_CREDITS;
-  }
+    /**
+     * Creates a new FrameBodyTMCL data type.
+     *
+     * @param textEncoding
+     * @param text
+     */
+    public FrameBodyTMCL(byte textEncoding, String text) {
+        super(textEncoding, text);
+    }
+
+    /**
+     * Creates a new FrameBodyTMCL data type.
+     *
+     * @param byteBuffer
+     * @param frameSize
+     * @throws InvalidTagException
+     */
+    public FrameBodyTMCL(ByteBuffer byteBuffer, int frameSize)
+            throws InvalidTagException {
+        super(byteBuffer, frameSize);
+    }
+
+    /**
+     * Convert from V3 to V4 Frame
+     *
+     * @param body
+     */
+    public FrameBodyTMCL(FrameBodyIPLS body) {
+        setObjectValue(DataTypes.OBJ_TEXT_ENCODING, body.getTextEncoding());
+        setObjectValue(DataTypes.OBJ_TEXT, body.getPairing());
+    }
+
+    /**
+     * Construct from a set of pairs
+     *
+     * @param textEncoding
+     * @param pairs
+     */
+    public FrameBodyTMCL(byte textEncoding, List<Pair<String, String>> pairs) {
+        setObjectValue(DataTypes.OBJ_TEXT_ENCODING, textEncoding);
+        PairedTextEncodedStringNullTerminated.ValuePairs values =
+                new PairedTextEncodedStringNullTerminated.ValuePairs();
+        for (Pair<String, String> next : pairs) {
+            values.add(next);
+        }
+        setObjectValue(DataTypes.OBJ_TEXT, values);
+    }
+
+    /**
+     * The ID3v2 frame identifier
+     *
+     * @return the ID3v2 frame identifier  for this frame type
+     */
+    public String getIdentifier() {
+        return ID3v24Frames.FRAME_ID_MUSICIAN_CREDITS;
+    }
 }

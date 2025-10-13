@@ -1,7 +1,8 @@
 package org.jcodec.containers.mp4.boxes;
 
-import java.nio.ByteBuffer;
 import org.jaudiotagger.audio.generic.Utils;
+
+import java.nio.ByteBuffer;
 
 /**
  * This class is part of JCodec ( www.jcodec.org ) This software is distributed
@@ -11,55 +12,55 @@ import org.jaudiotagger.audio.generic.Utils;
  */
 public class DataBox extends Box {
 
-  private static final String FOURCC = "data";
-  private int type;
-  private int locale;
-  private byte[] data;
+    private static final String FOURCC = "data";
+    private int type;
+    private int locale;
+    private byte[] data;
 
-  public DataBox(Header header) {
-    super(header);
-  }
+    public DataBox(Header header) {
+        super(header);
+    }
 
-  public static DataBox createDataBox(int type, int locale, byte[] data) {
-    DataBox box = new DataBox(Header.createHeader(FOURCC, 0));
-    box.type = type;
-    box.locale = locale;
-    box.data = data;
-    return box;
-  }
+    public static DataBox createDataBox(int type, int locale, byte[] data) {
+        DataBox box = new DataBox(Header.createHeader(FOURCC, 0));
+        box.type = type;
+        box.locale = locale;
+        box.data = data;
+        return box;
+    }
 
-  @Override
-  public void parse(ByteBuffer buf) {
-    type = buf.getInt();
-    locale = buf.getInt();
-    data = Utils.toArray(Utils.readBuf(buf));
-  }
+    public static String fourcc() {
+        return FOURCC;
+    }
 
-  public int getType() {
-    return type;
-  }
+    @Override
+    public void parse(ByteBuffer buf) {
+        type = buf.getInt();
+        locale = buf.getInt();
+        data = Utils.toArray(Utils.readBuf(buf));
+    }
 
-  public int getLocale() {
-    return locale;
-  }
+    public int getType() {
+        return type;
+    }
 
-  public byte[] getData() {
-    return data;
-  }
+    public int getLocale() {
+        return locale;
+    }
 
-  @Override
-  protected void doWrite(ByteBuffer out) {
-    out.putInt(type);
-    out.putInt(locale);
-    out.put(data);
-  }
+    public byte[] getData() {
+        return data;
+    }
 
-  @Override
-  public int estimateSize() {
-    return 8 + 4 + 4 + data.length;
-  }
+    @Override
+    protected void doWrite(ByteBuffer out) {
+        out.putInt(type);
+        out.putInt(locale);
+        out.put(data);
+    }
 
-  public static String fourcc() {
-    return FOURCC;
-  }
+    @Override
+    public int estimateSize() {
+        return 8 + 4 + 4 + data.length;
+    }
 }

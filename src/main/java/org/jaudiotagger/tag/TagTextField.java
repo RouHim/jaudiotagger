@@ -28,31 +28,31 @@ import java.nio.charset.Charset;
  * @author Rapha�l Slinckx
  */
 public interface TagTextField extends TagField {
-  /**
-   * Returns the content of the field.
-   *
-   * @return Content
-   */
-  String getContent();
+    /**
+     * Returns the content of the field.
+     *
+     * @return Content
+     */
+    String getContent();
 
-  /**
-   * Returns the current used charset encoding.
-   *
-   * @return Charset encoding.
-   */
-  Charset getEncoding();
+    /**
+     * Sets the content of the field.
+     *
+     * @param content fields content.
+     */
+    void setContent(String content);
 
-  /**
-   * Sets the content of the field.
-   *
-   * @param content fields content.
-   */
-  void setContent(String content);
+    /**
+     * Returns the current used charset encoding.
+     *
+     * @return Charset encoding.
+     */
+    Charset getEncoding();
 
-  /**
-   * Sets the charset encoding used by the field.
-   *
-   * @param encoding charset.
-   */
-  void setEncoding(Charset encoding);
+    /**
+     * Sets the charset encoding used by the field.
+     *
+     * @param encoding charset.
+     */
+    void setEncoding(Charset encoding);
 }

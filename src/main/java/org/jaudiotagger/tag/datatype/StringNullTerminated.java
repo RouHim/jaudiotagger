@@ -22,9 +22,10 @@
  */
 package org.jaudiotagger.tag.datatype;
 
+import org.jaudiotagger.tag.id3.AbstractTagFrameBody;
+
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
-import org.jaudiotagger.tag.id3.AbstractTagFrameBody;
 
 /**
  * Represents a String whose size is determined by finding of a null character at the end of the String with fixed text encoding.
@@ -33,28 +34,28 @@ import org.jaudiotagger.tag.id3.AbstractTagFrameBody;
  */
 public class StringNullTerminated extends TextEncodedStringNullTerminated {
 
-  /**
-   * Creates a new ObjectStringNullTerminated datatype.
-   *
-   * @param identifier identifies the frame type
-   * @param frameBody
-   */
-  public StringNullTerminated(
-    String identifier,
-    AbstractTagFrameBody frameBody
-  ) {
-    super(identifier, frameBody);
-  }
+    /**
+     * Creates a new ObjectStringNullTerminated datatype.
+     *
+     * @param identifier identifies the frame type
+     * @param frameBody
+     */
+    public StringNullTerminated(
+            String identifier,
+            AbstractTagFrameBody frameBody
+    ) {
+        super(identifier, frameBody);
+    }
 
-  public StringNullTerminated(StringNullTerminated object) {
-    super(object);
-  }
+    public StringNullTerminated(StringNullTerminated object) {
+        super(object);
+    }
 
-  public boolean equals(Object obj) {
-    return obj instanceof StringNullTerminated && super.equals(obj);
-  }
+    public boolean equals(Object obj) {
+        return obj instanceof StringNullTerminated && super.equals(obj);
+    }
 
-  protected Charset getTextEncodingCharSet() {
-    return StandardCharsets.ISO_8859_1;
-  }
+    protected Charset getTextEncodingCharSet() {
+        return StandardCharsets.ISO_8859_1;
+    }
 }

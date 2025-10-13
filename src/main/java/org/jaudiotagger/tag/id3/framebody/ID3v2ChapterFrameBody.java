@@ -21,4 +21,5 @@ package org.jaudiotagger.tag.id3.framebody;
  * @author Marc Gimpel, Horizon Wimba S.A.
  * @version $Id$
  */
-public interface ID3v2ChapterFrameBody {}
+public interface ID3v2ChapterFrameBody {
+}

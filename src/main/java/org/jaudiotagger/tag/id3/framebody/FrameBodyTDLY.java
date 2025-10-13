@@ -15,9 +15,10 @@
  */
 package org.jaudiotagger.tag.id3.framebody;
 
-import java.nio.ByteBuffer;
 import org.jaudiotagger.tag.InvalidTagException;
 import org.jaudiotagger.tag.id3.ID3v24Frames;
+
+import java.nio.ByteBuffer;
 
 /**
  * Playlist delay Text information frame.
@@ -33,46 +34,47 @@ import org.jaudiotagger.tag.id3.ID3v24Frames;
  * @version $Id$
  */
 public class FrameBodyTDLY
-  extends AbstractFrameBodyTextInfo
-  implements ID3v24FrameBody, ID3v23FrameBody {
+        extends AbstractFrameBodyTextInfo
+        implements ID3v24FrameBody, ID3v23FrameBody {
 
-  /**
-   * Creates a new FrameBodyTDLY datatype.
-   */
-  public FrameBodyTDLY() {}
+    /**
+     * Creates a new FrameBodyTDLY datatype.
+     */
+    public FrameBodyTDLY() {
+    }
 
-  public FrameBodyTDLY(FrameBodyTDLY body) {
-    super(body);
-  }
+    public FrameBodyTDLY(FrameBodyTDLY body) {
+        super(body);
+    }
 
-  /**
-   * Creates a new FrameBodyTDLY datatype.
-   *
-   * @param textEncoding
-   * @param text
-   */
-  public FrameBodyTDLY(byte textEncoding, String text) {
-    super(textEncoding, text);
-  }
+    /**
+     * Creates a new FrameBodyTDLY datatype.
+     *
+     * @param textEncoding
+     * @param text
+     */
+    public FrameBodyTDLY(byte textEncoding, String text) {
+        super(textEncoding, text);
+    }
 
-  /**
-   * Creates a new FrameBodyTDLY datatype.
-   *
-   * @param byteBuffer
-   * @param frameSize
-   * @throws InvalidTagException
-   */
-  public FrameBodyTDLY(ByteBuffer byteBuffer, int frameSize)
-    throws InvalidTagException {
-    super(byteBuffer, frameSize);
-  }
+    /**
+     * Creates a new FrameBodyTDLY datatype.
+     *
+     * @param byteBuffer
+     * @param frameSize
+     * @throws InvalidTagException
+     */
+    public FrameBodyTDLY(ByteBuffer byteBuffer, int frameSize)
+            throws InvalidTagException {
+        super(byteBuffer, frameSize);
+    }
 
-  /**
-   * The ID3v2 frame identifier
-   *
-   * @return the ID3v2 frame identifier  for this frame type
-   */
-  public String getIdentifier() {
-    return ID3v24Frames.FRAME_ID_PLAYLIST_DELAY;
-  }
+    /**
+     * The ID3v2 frame identifier
+     *
+     * @return the ID3v2 frame identifier  for this frame type
+     */
+    public String getIdentifier() {
+        return ID3v24Frames.FRAME_ID_PLAYLIST_DELAY;
+    }
 }

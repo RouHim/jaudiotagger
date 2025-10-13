@@ -6,33 +6,33 @@ package org.jaudiotagger.audio.exceptions;
  */
 public class NoWritePermissionsException extends CannotWriteException {
 
-  /**
-   * Creates an instance.
-   */
-  public NoWritePermissionsException() {
-    super();
-  }
+    /**
+     * Creates an instance.
+     */
+    public NoWritePermissionsException() {
+        super();
+    }
 
-  public NoWritePermissionsException(Throwable ex) {
-    super(ex);
-  }
+    public NoWritePermissionsException(Throwable ex) {
+        super(ex);
+    }
 
-  /**
-   * Creates an instance.
-   *
-   * @param message The message.
-   */
-  public NoWritePermissionsException(String message) {
-    super(message);
-  }
+    /**
+     * Creates an instance.
+     *
+     * @param message The message.
+     */
+    public NoWritePermissionsException(String message) {
+        super(message);
+    }
 
-  /**
-   * Creates an instance.
-   *
-   * @param message The error message.
-   * @param cause   The throwable causing this exception.
-   */
-  public NoWritePermissionsException(String message, Throwable cause) {
-    super(message, cause);
-  }
+    /**
+     * Creates an instance.
+     *
+     * @param message The error message.
+     * @param cause   The throwable causing this exception.
+     */
+    public NoWritePermissionsException(String message, Throwable cause) {
+        super(message, cause);
+    }
 }

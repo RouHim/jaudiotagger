@@ -30,19 +30,9 @@ import java.nio.ByteBuffer;
  * (which is relatively quick) instead of having to insert it into the right place in the existing file
  * (which would normally require rewriting the entire file).
  */
-public class MetadataBlockDataPadding implements MetadataBlockData {
+public record MetadataBlockDataPadding(int length) implements MetadataBlockData {
 
-  private final int length;
-
-  public MetadataBlockDataPadding(int length) {
-    this.length = length;
-  }
-
-  public ByteBuffer getBytes() {
-    return ByteBuffer.allocate(length);
-  }
-
-  public int getLength() {
-    return length;
-  }
+    public ByteBuffer getBytes() {
+        return ByteBuffer.allocate(length);
+    }
 }

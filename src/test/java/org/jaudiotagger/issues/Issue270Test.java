@@ -1,40 +1,37 @@
 package org.jaudiotagger.issues;
 
-import static org.junit.jupiter.api.Assertions.assertTrue;
-
-import java.io.File;
 import org.jaudiotagger.AbstractTestCase;
 import org.jaudiotagger.audio.AudioFile;
 import org.jaudiotagger.audio.AudioFileIO;
 import org.jaudiotagger.audio.exceptions.CannotReadException;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.condition.EnabledIf;
+
+import java.io.File;
+
+import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 
 public class Issue270Test extends AbstractTestCase {
 
-  /**
-   * Test read mp3 that says it has extended header but doesnt really
-   */
-  @Test
-  public void testReadMp4WithCorruptMdata() {
-    File orig = new File("testdata", "test49.m4a");
-    if (!orig.isFile()) {
-      System.err.println("Unable to test file - not available");
-      return;
+    /**
+     * Test read mp3 that says it has extended header but doesnt really
+     */
+    @Test
+    @EnabledIf("executeAlsoWithMissingResources") // to be configured in AbsractBaseTestCase
+    public void testReadMp4WithCorruptMdata() {
+
+        File testFile = null;
+        Exception exceptionCaught = null;
+        try {
+            testFile = copyAudioToTmp("test49.m4a");
+
+            //Read FileFails
+            AudioFile af = AudioFileIO.read(testFile);
+            System.out.println(af.getTag().toString());
+        } catch (Exception e) {
+            exceptionCaught = e;
+        }
+
+        assertInstanceOf(CannotReadException.class, exceptionCaught);
     }
-
-    File testFile = null;
-    Exception exceptionCaught = null;
-    try {
-      testFile = AbstractTestCase.copyAudioToTmp("test49.m4a");
-
-      //Read FileFails
-      AudioFile af = AudioFileIO.read(testFile);
-      System.out.println(af.getTag().toString());
-    } catch (Exception e) {
-      e.printStackTrace();
-      exceptionCaught = e;
-    }
-
-    assertTrue(exceptionCaught instanceof CannotReadException);
-  }
 }

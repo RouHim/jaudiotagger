@@ -18,18 +18,24 @@
  */
 package org.jaudiotagger.audio.mp4;
 
-import java.io.IOException;
-import java.io.RandomAccessFile;
-import java.nio.channels.FileChannel;
 import org.jaudiotagger.audio.AudioFile;
 import org.jaudiotagger.audio.exceptions.CannotWriteException;
 import org.jaudiotagger.audio.generic.Utils;
 import org.jaudiotagger.tag.Tag;
 import org.jaudiotagger.tag.mp4.Mp4TagCreator;
 import org.jcodec.containers.mp4.MP4Util;
-import org.jcodec.containers.mp4.boxes.*;
+import org.jcodec.containers.mp4.boxes.IListBox;
+import org.jcodec.containers.mp4.boxes.MovieExtendsBox;
+import org.jcodec.containers.mp4.boxes.NodeBox;
+import org.jcodec.containers.mp4.boxes.TrakBox;
+import org.jcodec.containers.mp4.boxes.UdtaBox;
+import org.jcodec.containers.mp4.boxes.UdtaMetaBox;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import java.io.IOException;
+import java.io.RandomAccessFile;
+import java.nio.channels.FileChannel;
 
 /**
  * Writes metadata from mp4, the metadata tags are held under the {@code ilst} atom as shown below, (note all free atoms are
@@ -95,110 +101,107 @@ import org.slf4j.LoggerFactory;
  */
 public class Mp4TagWriter {
 
-  // Logger Object
-  private static final Logger logger = LoggerFactory.getLogger(
-    "org.jaudiotagger.tag.mp4"
-  );
+    protected final Logger log = LoggerFactory.getLogger(getClass());
 
-  private final Mp4TagCreator tc = new Mp4TagCreator();
+    private final Mp4TagCreator tc = new Mp4TagCreator();
 
-  /**
-   * Write tag to {@code rafTemp} file.
-   *
-   * @param raf     current file
-   * @param rafTemp temporary file for writing
-   * @throws CannotWriteException
-   * @throws IOException
-   */
-  public void write(
-    AudioFile af,
-    RandomAccessFile raf,
-    RandomAccessFile rafTemp
-  ) throws CannotWriteException, IOException {
-    logger.debug("Started writing tag data");
-    try (
-      FileChannel fi = raf.getChannel();
-      FileChannel fo = rafTemp.getChannel()
-    ) {
-      MP4Util.Movie mp4 = MP4Util.parseFullMovieChannel(fi);
-      writeTagBox(af.getTag(), mp4);
+    /**
+     * Write tag to {@code rafTemp} file.
+     *
+     * @param raf     current file
+     * @param rafTemp temporary file for writing
+     * @throws CannotWriteException
+     * @throws IOException
+     */
+    public void write(
+            AudioFile af,
+            RandomAccessFile raf,
+            RandomAccessFile rafTemp
+    ) throws CannotWriteException, IOException {
+        log.debug("Started writing tag data");
+        try (
+                FileChannel fi = raf.getChannel();
+                FileChannel fo = rafTemp.getChannel()
+        ) {
+            MP4Util.Movie mp4 = MP4Util.parseFullMovieChannel(fi);
+            writeTagBox(af.getTag(), mp4);
 
-      MovieExtendsBox mvex = NodeBox.findFirst(
-        mp4.getMoov(),
-        MovieExtendsBox.class,
-        MovieExtendsBox.fourcc()
-      );
-      if (mvex != null) {
-        // segmented file
-        fo.position(0);
-        MP4Util.writeFullMovie(fo, mp4);
+            MovieExtendsBox mvex = NodeBox.findFirst(
+                    mp4.moov(),
+                    MovieExtendsBox.class,
+                    MovieExtendsBox.fourcc()
+            );
+            if (mvex != null) {
+                // segmented file
+                fo.position(0);
+                MP4Util.writeFullMovie(fo, mp4);
 
-        // copy segments
-        for (MP4Util.Atom atom : mp4.getOthers()) {
-          atom.copy(fi, fo);
+                // copy segments
+                for (MP4Util.Atom atom : mp4.others()) {
+                    atom.copy(fi, fo);
+                }
+            } else {
+                String path = af.getFile().getCanonicalPath();
+                for (TrakBox tb : mp4.moov().getTracks()) {
+                    // flattern only works with data refs
+                    tb.setDataRef("file://" + path);
+                }
+
+                // non-segmented file, need to keep chunk offsets
+                fi.position(0);
+                Utils.copy(fi, fo, raf.length());
+
+                fi.position(0);
+                fo.position(0);
+                new ReplaceMP4Editor().modifyOrReplace(fi, fo, mp4.moov());
+            }
         }
-      } else {
-        String path = af.getFile().getCanonicalPath();
-        for (TrakBox tb : mp4.getMoov().getTracks()) {
-          // flattern only works with data refs
-          tb.setDataRef("file://" + path);
+    }
+
+    private void writeTagBox(Tag tag, MP4Util.Movie mp4)
+            throws java.io.UnsupportedEncodingException {
+        IListBox ilst = tc.convert(tag);
+
+        UdtaBox udta = NodeBox.findFirst(
+                mp4.moov(),
+                UdtaBox.class,
+                UdtaBox.fourcc()
+        );
+        if (udta == null) {
+            udta = UdtaBox.createUdtaBox();
+            mp4.moov().add(udta);
         }
 
-        // non-segmented file, need to keep chunk offsets
-        fi.position(0);
-        Utils.copy(fi, fo, raf.length());
-
-        fi.position(0);
-        fo.position(0);
-        new ReplaceMP4Editor().modifyOrReplace(fi, fo, mp4.getMoov());
-      }
-    }
-  }
-
-  private void writeTagBox(Tag tag, MP4Util.Movie mp4)
-    throws java.io.UnsupportedEncodingException {
-    IListBox ilst = tc.convert(tag);
-
-    UdtaBox udta = NodeBox.findFirst(
-      mp4.getMoov(),
-      UdtaBox.class,
-      UdtaBox.fourcc()
-    );
-    if (udta == null) {
-      udta = UdtaBox.createUdtaBox();
-      mp4.getMoov().add(udta);
+        UdtaMetaBox meta = NodeBox.findFirst(
+                udta,
+                UdtaMetaBox.class,
+                UdtaMetaBox.fourcc()
+        );
+        if (meta == null) {
+            meta = UdtaMetaBox.createUdtaMetaBox();
+            udta.add(meta);
+        }
+        meta.replace(IListBox.fourcc(), ilst);
     }
 
-    UdtaMetaBox meta = NodeBox.findFirst(
-      udta,
-      UdtaMetaBox.class,
-      UdtaMetaBox.fourcc()
-    );
-    if (meta == null) {
-      meta = UdtaMetaBox.createUdtaMetaBox();
-      udta.add(meta);
-    }
-    meta.replace(IListBox.fourcc(), ilst);
-  }
+    /**
+     * Delete the tag.
+     * <p/>
+     * <p>This is achieved by writing an empty {@code ilst} atom.
+     *
+     * @param raf
+     * @param rafTemp
+     * @throws IOException
+     */
+    public void delete(RandomAccessFile raf, RandomAccessFile rafTemp)
+            throws IOException {
+        try (FileChannel fi = raf.getChannel()) {
+            MP4Util.Movie mp4 = MP4Util.parseFullMovieChannel(fi);
+            mp4.moov().removeChildren(new String[]{UdtaBox.fourcc()});
 
-  /**
-   * Delete the tag.
-   * <p/>
-   * <p>This is achieved by writing an empty {@code ilst} atom.
-   *
-   * @param raf
-   * @param rafTemp
-   * @throws IOException
-   */
-  public void delete(RandomAccessFile raf, RandomAccessFile rafTemp)
-    throws IOException {
-    try (FileChannel fi = raf.getChannel()) {
-      MP4Util.Movie mp4 = MP4Util.parseFullMovieChannel(fi);
-      mp4.getMoov().removeChildren(new String[] { UdtaBox.fourcc() });
-
-      new InplaceMP4Editor().modify(fi, mp4.getMoov());
-    } catch (Exception e) {
-      throw new IOException(e.getMessage());
+            new InplaceMP4Editor().modify(fi, mp4.moov());
+        } catch (Exception e) {
+            throw new IOException(e.getMessage());
+        }
     }
-  }
 }

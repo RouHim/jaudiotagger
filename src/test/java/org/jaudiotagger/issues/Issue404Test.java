@@ -1,39 +1,32 @@
 package org.jaudiotagger.issues;
 
-import static org.junit.jupiter.api.Assertions.assertNull;
-
-import java.io.File;
 import org.jaudiotagger.AbstractTestCase;
 import org.jaudiotagger.audio.AudioFile;
 import org.jaudiotagger.audio.AudioFileIO;
 import org.jaudiotagger.tag.FieldKey;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.condition.EnabledIf;
+
+import java.io.File;
+
+import static org.junit.jupiter.api.Assertions.assertNull;
 
 public class Issue404Test extends AbstractTestCase {
 
-  @Test
-  public void testWritingTooLongTempFile() {
-    File origFile = new File(
-      "testdata",
-      "test3811111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111...........................................................m4a"
-    );
-    if (!origFile.isFile()) {
-      System.err.println("Unable to test file - not available");
-      return;
+    @Test
+    @EnabledIf("executeAlsoWithMissingResources") // to be configured in AbsractBaseTestCase
+    public void testWritingTooLongTempFile() {
+        Exception caught = null;
+        try {
+            File orig = copyAudioToTmp(
+                    "test3811111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111...........................................................m4a"
+            );
+            AudioFile af = AudioFileIO.read(orig);
+            af.getTag().setField(FieldKey.ALBUM, "Albumstuff");
+            AudioFileIO.write(af);
+        } catch (Exception e) {
+            caught = e;
+        }
+        assertNull(caught);
     }
-
-    Exception caught = null;
-    try {
-      File orig = AbstractTestCase.copyAudioToTmp(
-        "test3811111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111...........................................................m4a"
-      );
-      AudioFile af = AudioFileIO.read(orig);
-      af.getTag().setField(FieldKey.ALBUM, "Albumstuff");
-      AudioFileIO.write(af);
-    } catch (Exception e) {
-      caught = e;
-      e.printStackTrace();
-    }
-    assertNull(caught);
-  }
 }

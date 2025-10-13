@@ -18,7 +18,6 @@
  */
 package org.jaudiotagger.tag.mp4;
 
-import java.util.*;
 import org.jaudiotagger.audio.generic.AbstractTagCreator;
 import org.jaudiotagger.audio.generic.Utils;
 import org.jaudiotagger.tag.Tag;
@@ -27,6 +26,12 @@ import org.jcodec.containers.mp4.boxes.Box;
 import org.jcodec.containers.mp4.boxes.DataBox;
 import org.jcodec.containers.mp4.boxes.IListBox;
 import org.jcodec.containers.mp4.boxes.ReverseDnsBox;
+
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Create raw content of mp4 tag data, concerns itself with atoms upto the ilst atom
@@ -62,48 +67,48 @@ import org.jcodec.containers.mp4.boxes.ReverseDnsBox;
  */
 public class Mp4TagCreator extends AbstractTagCreator<IListBox> {
 
-  /**
-   * Convert tagdata to rawdata ready for writing to file
-   *
-   * @param tag
-   * @param padding TODO padding parameter currently ignored
-   * @return
-   */
-  public IListBox convert(Tag tag, int padding) {
-    Map<Integer, List<Box>> values = new LinkedHashMap<>();
-    List<ReverseDnsBox> rdnsBoxes = new ArrayList<>();
-    try {
-      //Add metadata raw content
-      Iterator<TagField> it = tag.getFields();
-      while (it.hasNext()) {
-        TagField frame = it.next();
-        if (frame instanceof Mp4TagField mp4Frame) {
-          Mp4FieldKey key = Mp4FieldKey.byFieldName(frame.getId());
-          DataBox data = DataBox.createDataBox(
-            mp4Frame.getFieldType().getFileClassId(),
-            0,
-            mp4Frame.getDataBytes()
-          );
-          if (key.isReverseDnsType()) {
-            rdnsBoxes.add(
-              ReverseDnsBox.createReverseDnsBox(
-                key.getIssuer(),
-                key.getIdentifier(),
-                data
-              )
-            );
-          } else {
-            Integer keyAsInt = Utils.reinterpretStringAsInt(key.getFieldName());
-            values
-              .computeIfAbsent(keyAsInt, idx -> new ArrayList<>())
-              .add(data);
-          }
+    /**
+     * Convert tagdata to rawdata ready for writing to file
+     *
+     * @param tag
+     * @param padding TODO padding parameter currently ignored
+     * @return
+     */
+    public IListBox convert(Tag tag, int padding) {
+        Map<Integer, List<Box>> values = new LinkedHashMap<>();
+        List<ReverseDnsBox> rdnsBoxes = new ArrayList<>();
+        try {
+            //Add metadata raw content
+            Iterator<TagField> it = tag.getFields();
+            while (it.hasNext()) {
+                TagField frame = it.next();
+                if (frame instanceof Mp4TagField mp4Frame) {
+                    Mp4FieldKey key = Mp4FieldKey.byFieldName(frame.getId());
+                    DataBox data = DataBox.createDataBox(
+                            mp4Frame.getFieldType().getFileClassId(),
+                            0,
+                            mp4Frame.getDataBytes()
+                    );
+                    if (key.isReverseDnsType()) {
+                        rdnsBoxes.add(
+                                ReverseDnsBox.createReverseDnsBox(
+                                        key.getIssuer(),
+                                        key.getIdentifier(),
+                                        data
+                                )
+                        );
+                    } else {
+                        Integer keyAsInt = Utils.reinterpretStringAsInt(key.getFieldName());
+                        values
+                                .computeIfAbsent(keyAsInt, idx -> new ArrayList<>())
+                                .add(data);
+                    }
+                }
+            }
+            return IListBox.createIListBox(values, rdnsBoxes);
+        } catch (Exception ioe) {
+            //Should never happen as not writing to file at this point
+            throw new RuntimeException(ioe);
         }
-      }
-      return IListBox.createIListBox(values, rdnsBoxes);
-    } catch (Exception ioe) {
-      //Should never happen as not writing to file at this point
-      throw new RuntimeException(ioe);
     }
-  }
 }

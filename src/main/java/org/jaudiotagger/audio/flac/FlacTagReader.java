@@ -18,11 +18,6 @@
  */
 package org.jaudiotagger.audio.flac;
 
-import java.io.IOException;
-import java.nio.ByteBuffer;
-import java.nio.channels.FileChannel;
-import java.util.ArrayList;
-import java.util.List;
 import org.jaudiotagger.audio.exceptions.CannotReadException;
 import org.jaudiotagger.audio.flac.metadatablock.MetadataBlockDataPicture;
 import org.jaudiotagger.audio.flac.metadatablock.MetadataBlockHeader;
@@ -34,112 +29,115 @@ import org.jaudiotagger.tag.vorbiscomment.VorbisCommentTag;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.io.IOException;
+import java.nio.ByteBuffer;
+import java.nio.channels.FileChannel;
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Read Flac Tag
  */
 public class FlacTagReader {
 
-  // Logger Object
-  private static final Logger logger = LoggerFactory.getLogger(
-    "org.jaudiotagger.audio.flac"
-  );
+    protected final Logger log = LoggerFactory.getLogger(getClass());
 
-  private final VorbisCommentReader vorbisCommentReader =
-    new VorbisCommentReader();
+    private final VorbisCommentReader vorbisCommentReader =
+            new VorbisCommentReader();
 
-  public FlacTag read(FileChannel fc, final String path)
-    throws CannotReadException, IOException {
-    FlacStreamReader flacStream = new FlacStreamReader(fc, path + " ");
-    flacStream.findStream();
+    public FlacTag read(FileChannel fc, final String path)
+            throws CannotReadException, IOException {
+        FlacStreamReader flacStream = new FlacStreamReader(fc, path + " ");
+        flacStream.findStream();
 
-    //Hold the metadata
-    VorbisCommentTag tag = null;
-    List<MetadataBlockDataPicture> images = new ArrayList<
-      MetadataBlockDataPicture
-    >();
+        //Hold the metadata
+        VorbisCommentTag tag = null;
+        List<MetadataBlockDataPicture> images = new ArrayList<
+                MetadataBlockDataPicture
+                >();
 
-    //Seems like we have a valid stream
-    boolean isLastBlock = false;
-    while (!isLastBlock) {
-      if (logger.isDebugEnabled()) {
-        logger.debug(path + " Looking for MetaBlockHeader at:" + fc.position());
-      }
-
-      //Read the header
-      MetadataBlockHeader mbh = MetadataBlockHeader.readHeader(fc);
-      if (mbh == null) {
-        break;
-      }
-
-      if (logger.isDebugEnabled()) {
-        logger.debug(
-          path +
-            " Reading MetadataBlockHeader:" +
-            mbh +
-            " ending at " +
-            fc.position()
-        );
-      }
-
-      //Is it one containing some sort of metadata, therefore interested in it?
-
-      //JAUDIOTAGGER-466:CBlocktype can be null
-      if (mbh.getBlockType() != null) {
-        switch (mbh.getBlockType()) {
-          //We got a vorbiscomment comment block, parse it
-          case VORBIS_COMMENT:
-            ByteBuffer commentHeaderRawPacket = ByteBuffer.allocate(
-              mbh.getDataLength()
-            );
-            fc.read(commentHeaderRawPacket);
-            tag = vorbisCommentReader.read(
-              commentHeaderRawPacket.array(),
-              false
-            );
-            break;
-          case PICTURE:
-            try {
-              MetadataBlockDataPicture mbdp = new MetadataBlockDataPicture(
-                mbh,
-                fc
-              );
-              images.add(mbdp);
-            } catch (IOException ioe) {
-              logger.warn(
-                path +
-                  "Unable to read picture metablock, ignoring:" +
-                  ioe.getMessage()
-              );
-            } catch (InvalidFrameException ive) {
-              logger.warn(
-                path +
-                  "Unable to read picture metablock, ignoring" +
-                  ive.getMessage()
-              );
+        //Seems like we have a valid stream
+        boolean isLastBlock = false;
+        while (!isLastBlock) {
+            if (log.isDebugEnabled()) {
+                log.debug(path + " Looking for MetaBlockHeader at:" + fc.position());
             }
 
-            break;
-          //This is not a metadata block we are interested in so we skip to next block
-          default:
-            if (logger.isDebugEnabled()) {
-              logger.debug(
-                path + "Ignoring MetadataBlock:" + mbh.getBlockType()
-              );
+            //Read the header
+            MetadataBlockHeader mbh = MetadataBlockHeader.readHeader(fc);
+            if (mbh == null) {
+                break;
             }
-            fc.position(fc.position() + mbh.getDataLength());
-            break;
+
+            if (log.isDebugEnabled()) {
+                log.debug(
+                        path +
+                                " Reading MetadataBlockHeader:" +
+                                mbh +
+                                " ending at " +
+                                fc.position()
+                );
+            }
+
+            //Is it one containing some sort of metadata, therefore interested in it?
+
+            //JAUDIOTAGGER-466:CBlocktype can be null
+            if (mbh.getBlockType() != null) {
+                switch (mbh.getBlockType()) {
+                    //We got a vorbiscomment comment block, parse it
+                    case VORBIS_COMMENT:
+                        ByteBuffer commentHeaderRawPacket = ByteBuffer.allocate(
+                                mbh.getDataLength()
+                        );
+                        fc.read(commentHeaderRawPacket);
+                        tag = vorbisCommentReader.read(
+                                commentHeaderRawPacket.array(),
+                                false
+                        );
+                        break;
+                    case PICTURE:
+                        try {
+                            MetadataBlockDataPicture mbdp = new MetadataBlockDataPicture(
+                                    mbh,
+                                    fc
+                            );
+                            images.add(mbdp);
+                        } catch (IOException ioe) {
+                            log.warn(
+                                    path +
+                                            "Unable to read picture metablock, ignoring:" +
+                                            ioe.getMessage()
+                            );
+                        } catch (InvalidFrameException ive) {
+                            log.warn(
+                                    path +
+                                            "Unable to read picture metablock, ignoring" +
+                                            ive.getMessage()
+                            );
+                        }
+
+                        break;
+                    //This is not a metadata block we are interested in so we skip to next block
+                    default:
+                        if (log.isDebugEnabled()) {
+                            log.debug(
+                                    path + "Ignoring MetadataBlock:" + mbh.getBlockType()
+                            );
+                        }
+                        fc.position(fc.position() + mbh.getDataLength());
+                        break;
+                }
+            }
+            isLastBlock = mbh.isLastBlock();
         }
-      }
-      isLastBlock = mbh.isLastBlock();
-    }
-    logger.debug("Audio should start at:" + Hex.asHex(fc.position()));
+        log.debug("Audio should start at:" + Hex.asHex(fc.position()));
 
-    //Note there may not be either a tag or any images, no problem this is valid however to make it easier we
-    //just initialize Flac with an empty VorbisTag
-    if (tag == null) {
-      tag = VorbisCommentTag.createNewTag();
+        //Note there may not be either a tag or any images, no problem this is valid however to make it easier we
+        //just initialize Flac with an empty VorbisTag
+        if (tag == null) {
+            tag = VorbisCommentTag.createNewTag();
+        }
+        FlacTag flacTag = new FlacTag(tag, images);
+        return flacTag;
     }
-    FlacTag flacTag = new FlacTag(tag, images);
-    return flacTag;
-  }
 }

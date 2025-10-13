@@ -25,43 +25,43 @@ package org.jaudiotagger.audio.exceptions;
  */
 public class CannotWriteException extends Exception {
 
-  /**
-   * (overridden)
-   *
-   * @see Exception#Exception()
-   */
-  public CannotWriteException() {
-    super();
-  }
+    /**
+     * (overridden)
+     *
+     * @see Exception#Exception()
+     */
+    public CannotWriteException() {
+        super();
+    }
 
-  /**
-   * (overridden)
-   *
-   * @param message
-   * @see Exception#Exception(java.lang.String)
-   */
-  public CannotWriteException(String message) {
-    super(message);
-  }
+    /**
+     * (overridden)
+     *
+     * @param message
+     * @see Exception#Exception(java.lang.String)
+     */
+    public CannotWriteException(String message) {
+        super(message);
+    }
 
-  /**
-   * (overridden)
-   *
-   * @param message
-   * @param cause
-   * @see Exception#Exception(java.lang.String, java.lang.Throwable)
-   */
-  public CannotWriteException(String message, Throwable cause) {
-    super(message, cause);
-  }
+    /**
+     * (overridden)
+     *
+     * @param message
+     * @param cause
+     * @see Exception#Exception(java.lang.String, java.lang.Throwable)
+     */
+    public CannotWriteException(String message, Throwable cause) {
+        super(message, cause);
+    }
 
-  /**
-   * (overridden)
-   *
-   * @param cause
-   * @see Exception#Exception(java.lang.Throwable)
-   */
-  public CannotWriteException(Throwable cause) {
-    super(cause);
-  }
+    /**
+     * (overridden)
+     *
+     * @param cause
+     * @see Exception#Exception(java.lang.Throwable)
+     */
+    public CannotWriteException(Throwable cause) {
+        super(cause);
+    }
 }

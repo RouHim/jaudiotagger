@@ -7,16 +7,16 @@ package org.jaudiotagger.tag.id3.valuepair;
  * numeric key
  */
 public enum ID3V2ExtendedGenreTypes {
-  RX("Remix"),
-  CR("Cover");
+    RX("Remix"),
+    CR("Cover");
 
-  private final String description;
+    private final String description;
 
-  ID3V2ExtendedGenreTypes(String description) {
-    this.description = description;
-  }
+    ID3V2ExtendedGenreTypes(String description) {
+        this.description = description;
+    }
 
-  public String getDescription() {
-    return description;
-  }
+    public String getDescription() {
+        return description;
+    }
 }

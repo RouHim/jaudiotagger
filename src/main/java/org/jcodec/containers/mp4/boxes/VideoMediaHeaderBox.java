@@ -10,69 +10,69 @@ import java.nio.ByteBuffer;
  */
 public class VideoMediaHeaderBox extends FullBox {
 
-  int graphicsMode;
-  int rOpColor;
-  int gOpColor;
-  int bOpColor;
+    int graphicsMode;
+    int rOpColor;
+    int gOpColor;
+    int bOpColor;
 
-  public static String fourcc() {
-    return "vmhd";
-  }
+    public VideoMediaHeaderBox(Header header) {
+        super(header);
+    }
 
-  public static VideoMediaHeaderBox createVideoMediaHeaderBox(
-    int graphicsMode,
-    int rOpColor,
-    int gOpColor,
-    int bOpColor
-  ) {
-    VideoMediaHeaderBox vmhd = new VideoMediaHeaderBox(new Header(fourcc()));
-    vmhd.graphicsMode = graphicsMode;
-    vmhd.rOpColor = rOpColor;
-    vmhd.gOpColor = gOpColor;
-    vmhd.bOpColor = bOpColor;
-    return vmhd;
-  }
+    public static VideoMediaHeaderBox createVideoMediaHeaderBox(
+            int graphicsMode,
+            int rOpColor,
+            int gOpColor,
+            int bOpColor
+    ) {
+        VideoMediaHeaderBox vmhd = new VideoMediaHeaderBox(new Header(fourcc()));
+        vmhd.graphicsMode = graphicsMode;
+        vmhd.rOpColor = rOpColor;
+        vmhd.gOpColor = gOpColor;
+        vmhd.bOpColor = bOpColor;
+        return vmhd;
+    }
 
-  public VideoMediaHeaderBox(Header header) {
-    super(header);
-  }
+    public static String fourcc() {
+        return "vmhd";
+    }
 
-  @Override
-  public void parse(ByteBuffer input) {
-    super.parse(input);
-    graphicsMode = input.getShort();
-    rOpColor = input.getShort();
-    gOpColor = input.getShort();
-    bOpColor = input.getShort();
-  }
+    @Override
+    public void parse(ByteBuffer input) {
+        super.parse(input);
+        graphicsMode = input.getShort();
+        rOpColor = input.getShort();
+        gOpColor = input.getShort();
+        bOpColor = input.getShort();
+    }
 
-  @Override
-  protected void doWrite(ByteBuffer out) {
-    super.doWrite(out);
-    out.putShort((short) graphicsMode);
-    out.putShort((short) rOpColor);
-    out.putShort((short) gOpColor);
-    out.putShort((short) bOpColor);
-  }
+    @Override
+    protected void doWrite(ByteBuffer out) {
+        super.doWrite(out);
+        out.putShort((short) graphicsMode);
+        out.putShort((short) rOpColor);
+        out.putShort((short) gOpColor);
+        out.putShort((short) bOpColor);
+    }
 
-  @Override
-  public int estimateSize() {
-    return 20;
-  }
+    @Override
+    public int estimateSize() {
+        return 20;
+    }
 
-  public int getGraphicsMode() {
-    return graphicsMode;
-  }
+    public int getGraphicsMode() {
+        return graphicsMode;
+    }
 
-  public int getrOpColor() {
-    return rOpColor;
-  }
+    public int getrOpColor() {
+        return rOpColor;
+    }
 
-  public int getgOpColor() {
-    return gOpColor;
-  }
+    public int getgOpColor() {
+        return gOpColor;
+    }
 
-  public int getbOpColor() {
-    return bOpColor;
-  }
+    public int getbOpColor() {
+        return bOpColor;
+    }
 }

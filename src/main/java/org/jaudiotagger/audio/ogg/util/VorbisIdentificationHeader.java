@@ -18,10 +18,11 @@
  */
 package org.jaudiotagger.audio.ogg.util;
 
-import java.nio.charset.StandardCharsets;
 import org.jaudiotagger.audio.ogg.VorbisVersion;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import java.nio.charset.StandardCharsets;
 
 /**
  * Vorbis Identification header
@@ -49,109 +50,104 @@ import org.slf4j.LoggerFactory;
  */
 public class VorbisIdentificationHeader implements VorbisHeader {
 
-  // Logger Object
-  private static final Logger logger = LoggerFactory.getLogger(
-    "org.jaudiotagger.audio.ogg.atom"
-  );
+    protected final Logger log = LoggerFactory.getLogger(getClass());
 
-  private int audioChannels;
-  private boolean isValid = false;
+    public static final int FIELD_VORBIS_VERSION_POS = 7;
+    public static final int FIELD_AUDIO_CHANNELS_POS = 11;
+    public static final int FIELD_AUDIO_SAMPLE_RATE_POS = 12;
+    public static final int FIELD_BITRATE_MAX_POS = 16;
+    public static final int FIELD_BITRATE_NOMAIML_POS = 20;
+    public static final int FIELD_BITRATE_MIN_POS = 24;
+    public static final int FIELD_BLOCKSIZE_POS = 28;
+    public static final int FIELD_FRAMING_FLAG_POS = 29;
+    public static final int FIELD_VORBIS_VERSION_LENGTH = 4;
+    public static final int FIELD_AUDIO_CHANNELS_LENGTH = 1;
+    public static final int FIELD_AUDIO_SAMPLE_RATE_LENGTH = 4;
+    public static final int FIELD_BITRATE_MAX_LENGTH = 4;
+    public static final int FIELD_BITRATE_NOMAIML_LENGTH = 4;
+    public static final int FIELD_BITRATE_MIN_LENGTH = 4;
+    public static final int FIELD_BLOCKSIZE_LENGTH = 1;
+    public static final int FIELD_FRAMING_FLAG_LENGTH = 1;
 
-  private int vorbisVersion, audioSampleRate;
-  private int bitrateMinimal, bitrateNominal, bitrateMaximal;
+    private int audioChannels;
+    private boolean isValid = false;
+    private int vorbisVersion, audioSampleRate;
+    private int bitrateMinimal, bitrateNominal, bitrateMaximal;
 
-  public static final int FIELD_VORBIS_VERSION_POS = 7;
-  public static final int FIELD_AUDIO_CHANNELS_POS = 11;
-  public static final int FIELD_AUDIO_SAMPLE_RATE_POS = 12;
-  public static final int FIELD_BITRATE_MAX_POS = 16;
-  public static final int FIELD_BITRATE_NOMAIML_POS = 20;
-  public static final int FIELD_BITRATE_MIN_POS = 24;
-  public static final int FIELD_BLOCKSIZE_POS = 28;
-  public static final int FIELD_FRAMING_FLAG_POS = 29;
-
-  public static final int FIELD_VORBIS_VERSION_LENGTH = 4;
-  public static final int FIELD_AUDIO_CHANNELS_LENGTH = 1;
-  public static final int FIELD_AUDIO_SAMPLE_RATE_LENGTH = 4;
-  public static final int FIELD_BITRATE_MAX_LENGTH = 4;
-  public static final int FIELD_BITRATE_NOMAIML_LENGTH = 4;
-  public static final int FIELD_BITRATE_MIN_LENGTH = 4;
-  public static final int FIELD_BLOCKSIZE_LENGTH = 1;
-  public static final int FIELD_FRAMING_FLAG_LENGTH = 1;
-
-  public VorbisIdentificationHeader(byte[] vorbisData) {
-    decodeHeader(vorbisData);
-  }
-
-  public int getChannelNumber() {
-    return audioChannels;
-  }
-
-  public String getEncodingType() {
-    return VorbisVersion.values()[vorbisVersion].toString();
-  }
-
-  public int getSamplingRate() {
-    return audioSampleRate;
-  }
-
-  public int getNominalBitrate() {
-    return bitrateNominal;
-  }
-
-  public int getMaxBitrate() {
-    return bitrateMaximal;
-  }
-
-  public int getMinBitrate() {
-    return bitrateMinimal;
-  }
-
-  public boolean isValid() {
-    return isValid;
-  }
-
-  public void decodeHeader(byte[] b) {
-    int packetType = b[FIELD_PACKET_TYPE_POS];
-    logger.debug("packetType" + packetType);
-    String vorbis = new String(
-      b,
-      VorbisHeader.FIELD_CAPTURE_PATTERN_POS,
-      VorbisHeader.FIELD_CAPTURE_PATTERN_LENGTH,
-      StandardCharsets.ISO_8859_1
-    );
-
-    if (
-      packetType == VorbisPacketType.IDENTIFICATION_HEADER.getType() &&
-      vorbis.equals(CAPTURE_PATTERN)
-    ) {
-      this.vorbisVersion = b[7] + (b[8] << 8) + (b[9] << 16) + (b[10] << 24);
-      logger.debug("vorbisVersion" + vorbisVersion);
-      this.audioChannels = u(b[FIELD_AUDIO_CHANNELS_POS]);
-      logger.debug("audioChannels" + audioChannels);
-      this.audioSampleRate =
-        u(b[12]) + (u(b[13]) << 8) + (u(b[14]) << 16) + (u(b[15]) << 24);
-      logger.debug("audioSampleRate" + audioSampleRate);
-      logger.debug("audioSampleRate" + b[12] + " " + b[13] + " " + b[14]);
-
-      //TODO is this right spec says signed
-      this.bitrateMinimal =
-        u(b[16]) + (u(b[17]) << 8) + (u(b[18]) << 16) + (u(b[19]) << 24);
-      this.bitrateNominal =
-        u(b[20]) + (u(b[21]) << 8) + (u(b[22]) << 16) + (u(b[23]) << 24);
-      this.bitrateMaximal =
-        u(b[24]) + (u(b[25]) << 8) + (u(b[26]) << 16) + (u(b[27]) << 24);
-      //byte blockSize0 = (byte) ( b[28] & 240 );
-      //byte blockSize1 = (byte) ( b[28] & 15 );
-
-      int framingFlag = b[FIELD_FRAMING_FLAG_POS];
-      logger.debug("framingFlag" + framingFlag);
-      if (framingFlag != 0) {
-        isValid = true;
-      }
+    public VorbisIdentificationHeader(byte[] vorbisData) {
+        decodeHeader(vorbisData);
     }
-  }
 
-  private int u(int i) {
-    return i & 0xFF;
-  }
+    public void decodeHeader(byte[] b) {
+        int packetType = b[FIELD_PACKET_TYPE_POS];
+        log.debug("packetType" + packetType);
+        String vorbis = new String(
+                b,
+                VorbisHeader.FIELD_CAPTURE_PATTERN_POS,
+                VorbisHeader.FIELD_CAPTURE_PATTERN_LENGTH,
+                StandardCharsets.ISO_8859_1
+        );
+
+        if (
+                packetType == VorbisPacketType.IDENTIFICATION_HEADER.getType() &&
+                        vorbis.equals(CAPTURE_PATTERN)
+        ) {
+            this.vorbisVersion = b[7] + (b[8] << 8) + (b[9] << 16) + (b[10] << 24);
+            log.debug("vorbisVersion" + vorbisVersion);
+            this.audioChannels = u(b[FIELD_AUDIO_CHANNELS_POS]);
+            log.debug("audioChannels" + audioChannels);
+            this.audioSampleRate =
+                    u(b[12]) + (u(b[13]) << 8) + (u(b[14]) << 16) + (u(b[15]) << 24);
+            log.debug("audioSampleRate" + audioSampleRate);
+            log.debug("audioSampleRate" + b[12] + " " + b[13] + " " + b[14]);
+
+            //TODO is this right spec says signed
+            this.bitrateMinimal =
+                    u(b[16]) + (u(b[17]) << 8) + (u(b[18]) << 16) + (u(b[19]) << 24);
+            this.bitrateNominal =
+                    u(b[20]) + (u(b[21]) << 8) + (u(b[22]) << 16) + (u(b[23]) << 24);
+            this.bitrateMaximal =
+                    u(b[24]) + (u(b[25]) << 8) + (u(b[26]) << 16) + (u(b[27]) << 24);
+            //byte blockSize0 = (byte) ( b[28] & 240 );
+            //byte blockSize1 = (byte) ( b[28] & 15 );
+
+            int framingFlag = b[FIELD_FRAMING_FLAG_POS];
+            log.debug("framingFlag" + framingFlag);
+            if (framingFlag != 0) {
+                isValid = true;
+            }
+        }
+    }
+
+    private int u(int i) {
+        return i & 0xFF;
+    }
+
+    public int getChannelNumber() {
+        return audioChannels;
+    }
+
+    public String getEncodingType() {
+        return VorbisVersion.values()[vorbisVersion].toString();
+    }
+
+    public int getSamplingRate() {
+        return audioSampleRate;
+    }
+
+    public int getNominalBitrate() {
+        return bitrateNominal;
+    }
+
+    public int getMaxBitrate() {
+        return bitrateMaximal;
+    }
+
+    public int getMinBitrate() {
+        return bitrateMinimal;
+    }
+
+    public boolean isValid() {
+        return isValid;
+    }
 }

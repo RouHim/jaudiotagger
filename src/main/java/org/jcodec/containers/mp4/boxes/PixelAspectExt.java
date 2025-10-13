@@ -12,37 +12,37 @@ import java.nio.ByteBuffer;
  */
 public class PixelAspectExt extends Box {
 
-  private int hSpacing;
-  private int vSpacing;
+    private int hSpacing;
+    private int vSpacing;
 
-  public PixelAspectExt(Header header) {
-    super(header);
-  }
+    public PixelAspectExt(Header header) {
+        super(header);
+    }
 
-  public void parse(ByteBuffer input) {
-    hSpacing = input.getInt();
-    vSpacing = input.getInt();
-  }
+    public static String fourcc() {
+        return "pasp";
+    }
 
-  protected void doWrite(ByteBuffer out) {
-    out.putInt(hSpacing);
-    out.putInt(vSpacing);
-  }
+    public void parse(ByteBuffer input) {
+        hSpacing = input.getInt();
+        vSpacing = input.getInt();
+    }
 
-  @Override
-  public int estimateSize() {
-    return 16;
-  }
+    protected void doWrite(ByteBuffer out) {
+        out.putInt(hSpacing);
+        out.putInt(vSpacing);
+    }
 
-  public int gethSpacing() {
-    return hSpacing;
-  }
+    @Override
+    public int estimateSize() {
+        return 16;
+    }
 
-  public int getvSpacing() {
-    return vSpacing;
-  }
+    public int gethSpacing() {
+        return hSpacing;
+    }
 
-  public static String fourcc() {
-    return "pasp";
-  }
+    public int getvSpacing() {
+        return vSpacing;
+    }
 }

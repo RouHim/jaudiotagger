@@ -18,13 +18,14 @@
  */
 package org.jaudiotagger.audio.wav.chunk;
 
-import java.nio.ByteBuffer;
 import org.jaudiotagger.audio.generic.GenericAudioHeader;
 import org.jaudiotagger.audio.generic.Utils;
 import org.jaudiotagger.audio.iff.Chunk;
 import org.jaudiotagger.audio.iff.ChunkHeader;
 import org.jaudiotagger.audio.wav.WavSubFormat;
 import org.jaudiotagger.logging.Hex;
+
+import java.nio.ByteBuffer;
 
 /**
  * Reads the fmt header, this contains the information required for constructing Audio header
@@ -40,70 +41,69 @@ import org.jaudiotagger.logging.Hex;
  */
 public class WavFormatChunk extends Chunk {
 
-  private static final int STANDARD_DATA_SIZE = 18;
-  private static final int EXTENSIBLE_DATA_SIZE = 22;
-  private static final int EXTENSIBLE_DATA_SIZE_WE_NEED = 10;
+    private static final int STANDARD_DATA_SIZE = 18;
+    private static final int EXTENSIBLE_DATA_SIZE = 22;
+    private static final int EXTENSIBLE_DATA_SIZE_WE_NEED = 10;
 
-  private static final String WAV_RIFF_ENCODING_PREPEND = "WAV-RIFF ";
+    private static final String WAV_RIFF_ENCODING_PREPEND = "WAV-RIFF ";
 
-  private final boolean isValid = false;
+    private final boolean isValid = false;
+    private final GenericAudioHeader info;
+    private int blockAlign, channelMask;
+    private WavSubFormat wsf;
 
-  private int blockAlign, channelMask;
-  private WavSubFormat wsf;
-  private final GenericAudioHeader info;
+    public WavFormatChunk(
+            ByteBuffer chunkData,
+            ChunkHeader hdr,
+            GenericAudioHeader info
+    ) {
+        super(chunkData, hdr);
+        this.info = info;
+    }
 
-  public WavFormatChunk(
-    ByteBuffer chunkData,
-    ChunkHeader hdr,
-    GenericAudioHeader info
-  ) {
-    super(chunkData, hdr);
-    this.info = info;
-  }
-
-  public boolean readChunk() {
-    int subFormatCode = Utils.u(chunkData.getShort());
-    wsf = WavSubFormat.getByCode(subFormatCode);
-    info.setChannelNumber(Utils.u(chunkData.getShort()));
-    info.setSamplingRate(chunkData.getInt());
-    info.setByteRate(chunkData.getInt());
-    info.setBitRate(
-      (info.getByteRate() * Utils.BITS_IN_BYTE_MULTIPLIER) /
-        Utils.KILOBYTE_MULTIPLIER
-    ); //AvgBytePerSec  converted to kb/sec
-    info.setVariableBitRate(false);
-    blockAlign = Utils.u(chunkData.getShort());
-    info.setBitsPerSample(Utils.u(chunkData.getShort()));
-    if (wsf != null && wsf == WavSubFormat.FORMAT_EXTENSIBLE) {
-      int extensibleSize = Utils.u(chunkData.getShort());
-      if (extensibleSize == EXTENSIBLE_DATA_SIZE) {
+    public boolean readChunk() {
+        int subFormatCode = Utils.u(chunkData.getShort());
+        wsf = WavSubFormat.getByCode(subFormatCode);
+        info.setChannelNumber(Utils.u(chunkData.getShort()));
+        info.setSamplingRate(chunkData.getInt());
+        info.setByteRate(chunkData.getInt());
+        info.setBitRate(
+                (info.getByteRate() * Utils.BITS_IN_BYTE_MULTIPLIER) /
+                        Utils.KILOBYTE_MULTIPLIER
+        ); //AvgBytePerSec  converted to kb/sec
+        info.setVariableBitRate(false);
+        blockAlign = Utils.u(chunkData.getShort());
         info.setBitsPerSample(Utils.u(chunkData.getShort()));
-        //We dont use this currently
-        channelMask = chunkData.getInt();
+        if (wsf != null && wsf == WavSubFormat.FORMAT_EXTENSIBLE) {
+            int extensibleSize = Utils.u(chunkData.getShort());
+            if (extensibleSize == EXTENSIBLE_DATA_SIZE) {
+                info.setBitsPerSample(Utils.u(chunkData.getShort()));
+                //We dont use this currently
+                channelMask = chunkData.getInt();
 
-        //If Extensible then the actual formatCode is held here
-        wsf = WavSubFormat.getByCode(Utils.u(chunkData.getShort()));
-      }
+                //If Extensible then the actual formatCode is held here
+                wsf = WavSubFormat.getByCode(Utils.u(chunkData.getShort()));
+            }
+        }
+        if (wsf != null) {
+            if (info.getBitsPerSample() > 0) {
+                info.setEncodingType(
+                        wsf.getDescription() + " " + info.getBitsPerSample() + " bits"
+                );
+            } else {
+                info.setEncodingType(wsf.getDescription());
+            }
+        } else {
+            info.setEncodingType(
+                    "Unknown Sub Format Code:" + Hex.asHex(subFormatCode)
+            );
+        }
+        return true;
     }
-    if (wsf != null) {
-      if (info.getBitsPerSample() > 0) {
-        info.setEncodingType(
-          wsf.getDescription() + " " + info.getBitsPerSample() + " bits"
-        );
-      } else {
-        info.setEncodingType(wsf.getDescription());
-      }
-    } else {
-      info.setEncodingType(
-        "Unknown Sub Format Code:" + Hex.asHex(subFormatCode)
-      );
-    }
-    return true;
-  }
 
-  public String toString() {
-    String out = "RIFF-WAVE Header:\n";
-    out += "Is valid?: " + isValid;
-    return out;
-  }
+    public String toString() {
+        String out = "RIFF-WAVE Header:\n";
+        out += "Is valid?: " + isValid;
+        return out;
+    }
 }

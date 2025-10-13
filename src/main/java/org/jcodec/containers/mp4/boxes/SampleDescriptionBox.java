@@ -11,39 +11,39 @@ import java.util.Collections;
  */
 public class SampleDescriptionBox extends NodeBox {
 
-  public static String fourcc() {
-    return "stsd";
-  }
+    public SampleDescriptionBox(Header header) {
+        super(header);
+    }
 
-  public static SampleDescriptionBox createSampleDescriptionBox(
-    SampleEntry[] entries
-  ) {
-    SampleDescriptionBox box = new SampleDescriptionBox(new Header(fourcc()));
-    Collections.addAll(box.boxes, entries);
-    return box;
-  }
+    public static SampleDescriptionBox createSampleDescriptionBox(
+            SampleEntry[] entries
+    ) {
+        SampleDescriptionBox box = new SampleDescriptionBox(new Header(fourcc()));
+        Collections.addAll(box.boxes, entries);
+        return box;
+    }
 
-  public SampleDescriptionBox(Header header) {
-    super(header);
-  }
+    public static String fourcc() {
+        return "stsd";
+    }
 
-  @Override
-  public void parse(ByteBuffer input) {
-    input.getInt();
-    input.getInt();
-    super.parse(input);
-  }
+    @Override
+    public void parse(ByteBuffer input) {
+        input.getInt();
+        input.getInt();
+        super.parse(input);
+    }
 
-  @Override
-  public void doWrite(ByteBuffer out) {
-    out.putInt(0);
-    //even if there is no sample descriptors entry count can not be less than 1
-    out.putInt(Math.max(1, boxes.size()));
-    super.doWrite(out);
-  }
+    @Override
+    public void doWrite(ByteBuffer out) {
+        out.putInt(0);
+        //even if there is no sample descriptors entry count can not be less than 1
+        out.putInt(Math.max(1, boxes.size()));
+        super.doWrite(out);
+    }
 
-  @Override
-  public int estimateSize() {
-    return 8 + super.estimateSize();
-  }
+    @Override
+    public int estimateSize() {
+        return 8 + super.estimateSize();
+    }
 }
