@@ -27,7 +27,7 @@ jobs:
 
       - name: Build with Maven (Windows)
         if: runner.os == 'Windows'
-        run: .\mvnw.cmd clean package -DskipTests
+        run: .\mvnw.cmd clean package
         shell: cmd
 
       - name: Build with Maven (Non-Windows)
@@ -36,34 +36,34 @@ jobs:
         shell: bash
 
 
-  release:
-    name: Release
-    needs: [ build ]
-    runs-on: ubuntu-latest
-    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
-
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v5
-
-      # Create a new release based on semantic versioning
-      - name: Set up Node.js
-        uses: actions/setup-node@v5
-        with:
-          node-version: 22
-
-      - name: Install Dependencies
-        run: |
-          npm install -g \
-             semantic-release  \
-            @semantic-release/git  \
-            @semantic-release/gitlab  \
-            @semantic-release/changelog  \
-            @semantic-release/exec \
-            @semantic-release/commit-analyzer \
-            conventional-changelog-conventionalcommits
-
-      - name: Generate Semantic Release Notes and Create Release
-        env:
-          GITHUB_TOKEN: ${{ secrets.RELEASE_TOKEN }}
-        run: npx semantic-release
+#  release:
+#    name: Release
+#    needs: [ build ]
+#    runs-on: ubuntu-latest
+#    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+#
+#    steps:
+#      - name: Checkout
+#        uses: actions/checkout@v5
+#
+#      # Create a new release based on semantic versioning
+#      - name: Set up Node.js
+#        uses: actions/setup-node@v5
+#        with:
+#          node-version: 22
+#
+#      - name: Install Dependencies
+#        run: |
+#          npm install -g \
+#             semantic-release  \
+#            @semantic-release/git  \
+#            @semantic-release/gitlab  \
+#            @semantic-release/changelog  \
+#            @semantic-release/exec \
+#            @semantic-release/commit-analyzer \
+#            conventional-changelog-conventionalcommits
+#
+#      - name: Generate Semantic Release Notes and Create Release
+#        env:
+#          GITHUB_TOKEN: ${{ secrets.RELEASE_TOKEN }}
+#        run: npx semantic-release
