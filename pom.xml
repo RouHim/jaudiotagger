@@ -34,6 +34,14 @@
     <java.version>24</java.version>
   </properties>
 
+  <distributionManagement>
+    <repository>
+      <id>github</id>
+      <name>GitHub Packages</name>
+      <url>https://maven.pkg.github.com/sknull/jaudiotagger</url>
+    </repository>
+  </distributionManagement>
+
   <dependencies>
     <!-- File processing -->
     <dependency>
@@ -135,4 +143,10 @@
       </plugin>
     </plugins>
   </build>
+
+  <scm>
+    <connection>scm:git@github.com:sknull/jaudiotagger.git</connection>
+    <developerConnection>scm:git@github.com:sknull/jaudiotagger.git</developerConnection>
+    <url>https://github.com/sknull/jaudiotagger</url>
+  </scm>
 </project>
