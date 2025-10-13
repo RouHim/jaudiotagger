@@ -663,4 +663,13 @@ public enum ID3v23FieldKey {
     public String getFieldName() {
         return fieldName;
     }
+
+    public static ID3v23FieldKey fromFrameId(String frameId) {
+        for (ID3v23FieldKey v : ID3v23FieldKey.values()) {
+            if (frameId == v.frameId) {
+                return v;
+            }
+        }
+        return null;
+    }
 }
