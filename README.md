@@ -9,7 +9,7 @@ AIFF, AU, RealAudio, Opus, and MP2. It also supports ID3v1, ID3v2, Vorbis Commen
 ## Differences to the original
 
 * Bumped dependency versions
-* Compile target java 21
+* Compile target java 25
 * Removed android compatibility
 * Migrated to junit 5
 * Added: github actions, renovate, semantic releases
