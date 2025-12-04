@@ -60,7 +60,6 @@ public class FrameBodyTIPLTest extends AbstractTestCase {
       fb = new FrameBodyTIPL();
       fb.setText(FrameBodyTIPLTest.INVOLVED_PEOPLE_ODD);
     } catch (Exception e) {
-      e.printStackTrace();
       exceptionCaught = e;
     }
 
@@ -121,9 +120,9 @@ public class FrameBodyTIPLTest extends AbstractTestCase {
    */
   @Test
   public void testMultiArrangerIDv24() throws Exception {
-    File testFile = AbstractTestCase.copyAudioToTmp(
+    File testFile = copyAudioToTmp(
       "testV1.mp3",
-      new File("testWriteArrangerv24.mp3")
+      "testWriteArrangerv24.mp3"
     );
     AudioFile f = AudioFileIO.read(testFile);
     assertNull(f.getTag());

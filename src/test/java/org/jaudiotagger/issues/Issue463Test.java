@@ -11,20 +11,16 @@ import org.jaudiotagger.tag.FieldKey;
 import org.jcodec.containers.mp4.MP4Util;
 import org.json.JSONObject;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.condition.EnabledIf;
 
 public class Issue463Test extends AbstractTestCase {
 
   @Test
+  @EnabledIf("executeAlsoWithMissingResources") // to be configured in AbsractBaseTestCase
   public void testReadMp4() {
     Exception ex = null;
     try {
-      File orig = new File("testdata", "test116.m4a");
-      if (!orig.isFile()) {
-        System.err.println("Unable to test file - not available");
-        return;
-      }
-
-      File testFile = AbstractTestCase.copyAudioToTmp("test116.m4a");
+      File testFile = copyAudioToTmp("test116.m4a");
       RandomAccessFile raf = new RandomAccessFile(testFile, "r");
       MP4Util.Movie mp4 = MP4Util.parseFullMovie(testFile);
       String json = new JSONObject(mp4.getMoov().toString()).toString(2);
@@ -49,7 +45,6 @@ public class Issue463Test extends AbstractTestCase {
       assertNotNull(af.getTag());
       assertEquals("fred", af.getTag().getFirst(FieldKey.ARTIST));
     } catch (Exception e) {
-      e.printStackTrace();
       ex = e;
     }
     assertNull(ex);

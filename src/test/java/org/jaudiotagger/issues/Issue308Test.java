@@ -10,29 +10,22 @@ import org.jaudiotagger.tag.FieldKey;
 import org.jaudiotagger.tag.images.Artwork;
 import org.jaudiotagger.tag.images.ArtworkFactory;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.condition.EnabledIf;
 
 public class Issue308Test extends AbstractTestCase {
 
   public static int countExceptions = 0;
 
   @Test
+  @EnabledIf("executeAlsoWithMissingResources") // to be configured in AbsractBaseTestCase
   public void testAddingLargeImageToOgg() {
-    File orig = new File("testdata", "test72.ogg");
-    if (!orig.isFile()) {
-      System.err.println("Unable to test file - not available");
-      return;
-    }
 
     Exception e = null;
     try {
-      final File testFile = AbstractTestCase.copyAudioToTmp("test72.ogg");
-      if (!testFile.isFile()) {
-        System.err.println("Unable to test file - not available");
-        return;
-      }
+      final File testFile = copyAudioToTmp("test72.ogg");
       AudioFile af = AudioFileIO.read(testFile);
       Artwork artwork = ArtworkFactory.getNew();
-      artwork.setFromFile(new File("testdata", "coverart_large.jpg"));
+      artwork.setFromFile(fileResource("testdata", "coverart_large.jpg"));
 
       af.getTag().setField(artwork);
       af.commit();

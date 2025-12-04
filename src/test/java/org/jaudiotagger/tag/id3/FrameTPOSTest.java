@@ -11,6 +11,7 @@ import org.jaudiotagger.tag.FieldKey;
 import org.jaudiotagger.tag.Tag;
 import org.jaudiotagger.tag.TagField;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.condition.EnabledIf;
 
 public class FrameTPOSTest extends AbstractTestCase {
 
@@ -21,18 +22,14 @@ public class FrameTPOSTest extends AbstractTestCase {
     tag.setField(tag.createField(FieldKey.DISC_TOTAL, "10"));
     assertEquals("1", tag.getFirst(FieldKey.DISC_NO));
     assertEquals("10", tag.getFirst(FieldKey.DISC_TOTAL));
-    assertTrue(tag.getFrame("TPOS") instanceof AbstractID3v2Frame);
+    assertInstanceOf(AbstractID3v2Frame.class, tag.getFrame("TPOS"));
   }
 
   @Test
+  @EnabledIf("executeAlsoWithMissingResources") // to be configured in AbsractBaseTestCase
   public void testDiscNo() {
     Exception exceptionCaught = null;
-    File orig = new File("testdata", "test82.mp3");
-    if (!orig.isFile()) {
-      System.err.println("Unable to test file - not available");
-      return;
-    }
-
+    File orig = fileResource("testdata", "test82.mp3");
     try {
       AudioFile af = AudioFileIO.read(orig);
       Tag newTags = af.getTag();

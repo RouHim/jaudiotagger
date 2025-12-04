@@ -23,11 +23,11 @@ public class FrameBodyUSLTTest extends AbstractTestCase {
     );
     ByteArrayOutputStream baos = new ByteArrayOutputStream();
     fb.write(baos);
-    FileOutputStream fos = new FileOutputStream("testdatatmp/TEST.TXT");
+    FileOutputStream fos = new FileOutputStream(tempFileResource("TEST.TXT"));
     fos.write(baos.toByteArray());
     byte[] frameBody = baos.toByteArray();
     byte[] correctBits = makeByteArray(
-      new int[] {
+      new int[]{
         0x01,
         'e',
         'n',

@@ -3,7 +3,8 @@ package org.jaudiotagger.tag.id3;
 import static org.junit.jupiter.api.Assertions.*;
 
 import java.io.File;
-import org.jaudiotagger.AbstractTestCase;
+
+import org.jaudiotagger.AbstractBaseTestCase;
 import org.jaudiotagger.audio.AudioFile;
 import org.jaudiotagger.audio.AudioFileIO;
 import org.jaudiotagger.audio.mp3.MP3File;
@@ -14,7 +15,7 @@ import org.jaudiotagger.tag.TagTextField;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-public class ID3v1TagTest {
+public class ID3v1TagTest extends AbstractBaseTestCase {
 
   public static final String ARTIST = "artist";
   public static final String ALBUM = "album";
@@ -23,23 +24,6 @@ public class ID3v1TagTest {
   public static final String TRACK_VALUE = "10";
   public static final String GENRE_VAL = "Country";
   public static final String YEAR = "1971";
-
-  /**
-   * Provides an initialised object to be used in other tests
-   * to prevent code duplication
-   *
-   * @return ID3v1Tag
-   */
-  public static ID3v1Tag getInitialisedTag() {
-    ID3v1Tag v1Tag = new ID3v1Tag();
-    v1Tag.setArtist(ID3v1TagTest.ARTIST);
-    v1Tag.setAlbum(ID3v1TagTest.ALBUM);
-    v1Tag.setComment(ID3v1TagTest.COMMENT);
-    v1Tag.setTitle(ID3v1TagTest.TITLE);
-    v1Tag.setGenre(ID3v1TagTest.GENRE_VAL);
-    v1Tag.setYear(ID3v1TagTest.YEAR);
-    return v1Tag;
-  }
 
   /////////////////////////////////////////////////////////////////////////
   // TestCase classes to override
@@ -56,7 +40,8 @@ public class ID3v1TagTest {
   /**
    *
    */
-  protected void tearDown() {}
+  protected void tearDown() {
+  }
 
   /**
    *
@@ -67,7 +52,8 @@ public class ID3v1TagTest {
 
   /////////////////////////////////////////////////////////////////////////
   // Tests
-  /////////////////////////////////////////////////////////////////////////
+
+  /// //////////////////////////////////////////////////////////////////////
   @Test
   public void testCreateID3v1Tag() {
     ID3v1Tag v1Tag = new ID3v1Tag();
@@ -119,7 +105,7 @@ public class ID3v1TagTest {
 
   @Test
   public void testSaveID3v1TagToFile() throws Exception {
-    File testFile = AbstractTestCase.copyAudioToTmp("testV1.mp3");
+    File testFile = copyAudioToTmp("testV1.mp3");
     MP3File mp3File = new MP3File(testFile);
 
     //Create v1 Tag
@@ -154,7 +140,7 @@ public class ID3v1TagTest {
 
   @Test
   public void testSaveID3v1TagToFileUsingTagInterface() throws Exception {
-    File testFile = AbstractTestCase.copyAudioToTmp("testV1.mp3");
+    File testFile = copyAudioToTmp("testV1.mp3");
     AudioFile file = AudioFileIO.read(testFile);
 
     //Create v1 Tag
@@ -233,8 +219,8 @@ public class ID3v1TagTest {
     assertEquals(
       "artist",
       ((TagTextField) (v1Tag
-            .getFields(FieldKey.ARTIST.name())
-            .get(0))).getContent()
+        .getFields(FieldKey.ARTIST.name())
+        .get(0))).getContent()
     );
 
     v1Tag.setField(new ID3v1TagField(FieldKey.ALBUM.name(), "album"));
@@ -320,6 +306,6 @@ public class ID3v1TagTest {
     } catch (Exception e) {
       exceptionCaught = e;
     }
-    assertTrue(exceptionCaught instanceof IllegalArgumentException);
+    assertInstanceOf(IllegalArgumentException.class, exceptionCaught);
   }
 }

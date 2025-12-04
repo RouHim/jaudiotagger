@@ -18,17 +18,12 @@ public class Issue265Test extends AbstractTestCase {
    */
   @Test
   public void testWriteTooLargeStringToFile() {
-    File orig = new File("testdata", "test7.wma");
-    if (!orig.isFile()) {
-      System.err.println("Unable to test file - not available");
-      return;
-    }
 
     Exception exceptionCaught = null;
     try {
       TagOptionSingleton.getInstance().setTruncateTextWithoutErrors(false);
 
-      File testFile = AbstractTestCase.copyAudioToTmp("test7.wma");
+      File testFile = copyAudioToTmp("test7.wma");
       AudioFile f = AudioFileIO.read(testFile);
       Tag tag = f.getTag();
       assertEquals(0, tag.getFields(FieldKey.COVER_ART).size());
@@ -40,11 +35,10 @@ public class Issue265Test extends AbstractTestCase {
       }
       tag.setField(FieldKey.ARTIST, sb.toString());
     } catch (Exception e) {
-      e.printStackTrace();
       exceptionCaught = e;
     }
     assertNotNull(exceptionCaught);
-    assertTrue(exceptionCaught instanceof IllegalArgumentException);
+    assertInstanceOf(IllegalArgumentException.class, exceptionCaught);
   }
 
   /**
@@ -52,15 +46,10 @@ public class Issue265Test extends AbstractTestCase {
    */
   @Test
   public void testWriteTruncateStringToFile() {
-    File orig = new File("testdata", "test7.wma");
-    if (!orig.isFile()) {
-      System.err.println("Unable to test file - not available");
-      return;
-    }
 
     Exception exceptionCaught = null;
     try {
-      File testFile = AbstractTestCase.copyAudioToTmp("test7.wma");
+      File testFile = copyAudioToTmp("test7.wma");
       AudioFile f = AudioFileIO.read(testFile);
       Tag tag = f.getTag();
       assertEquals(0, tag.getFields(FieldKey.COVER_ART).size());
@@ -76,7 +65,6 @@ public class Issue265Test extends AbstractTestCase {
       tag.setField(FieldKey.ARTIST, sb.toString());
       f.commit();
     } catch (Exception e) {
-      e.printStackTrace();
       exceptionCaught = e;
     }
     assertNull(exceptionCaught);
@@ -87,15 +75,10 @@ public class Issue265Test extends AbstractTestCase {
    */
   @Test
   public void testWriteTooLargeStringToFileContentDesc() {
-    File orig = new File("testdata", "test7.wma");
-    if (!orig.isFile()) {
-      System.err.println("Unable to test file - not available");
-      return;
-    }
 
     Exception exceptionCaught = null;
     try {
-      File testFile = AbstractTestCase.copyAudioToTmp("test7.wma");
+      File testFile = copyAudioToTmp("test7.wma");
       AudioFile f = AudioFileIO.read(testFile);
       Tag tag = f.getTag();
 
@@ -106,11 +89,10 @@ public class Issue265Test extends AbstractTestCase {
       }
       tag.setField(FieldKey.TITLE, sb.toString());
     } catch (Exception e) {
-      e.printStackTrace();
       exceptionCaught = e;
     }
     assertNotNull(exceptionCaught);
-    assertTrue(exceptionCaught instanceof IllegalArgumentException);
+    assertInstanceOf(IllegalArgumentException.class, exceptionCaught);
   }
 
   /**
@@ -118,15 +100,10 @@ public class Issue265Test extends AbstractTestCase {
    */
   @Test
   public void testWriteTruncateStringToFileContentDesc() {
-    File orig = new File("testdata", "test7.wma");
-    if (!orig.isFile()) {
-      System.err.println("Unable to test file - not available");
-      return;
-    }
 
     Exception exceptionCaught = null;
     try {
-      File testFile = AbstractTestCase.copyAudioToTmp("test7.wma");
+      File testFile = copyAudioToTmp("test7.wma");
       AudioFile f = AudioFileIO.read(testFile);
       Tag tag = f.getTag();
 
@@ -141,7 +118,6 @@ public class Issue265Test extends AbstractTestCase {
       tag.setField(FieldKey.TITLE, sb.toString());
       f.commit();
     } catch (Exception e) {
-      e.printStackTrace();
       exceptionCaught = e;
     }
     assertNull(exceptionCaught);

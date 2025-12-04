@@ -29,7 +29,7 @@ public class Issue245Test extends AbstractTestCase {
     File testFile = null;
     Exception exceptionCaught = null;
     try {
-      testFile = AbstractTestCase.copyAudioToTmp("testV1.mp3");
+      testFile = copyAudioToTmp("testV1.mp3");
 
       //Read File okay
       AudioFile af = AudioFileIO.read(testFile);
@@ -40,7 +40,7 @@ public class Issue245Test extends AbstractTestCase {
 
       //Now addField the image
       Artwork newartwork = ArtworkFactory.createArtworkFromFile(
-        new File("testdata", "coverart.png")
+        fileResource("testdata", "coverart.png")
       );
       assertTrue(ImageFormats.isPortableFormat(newartwork.getBinaryData()));
 
@@ -50,7 +50,7 @@ public class Issue245Test extends AbstractTestCase {
       af = AudioFileIO.read(testFile);
       tag = af.getTag();
       assertEquals(1, tag.getArtworkList().size());
-      assertTrue(tag.getArtworkList().get(0) instanceof Artwork);
+      assertInstanceOf(Artwork.class, tag.getArtworkList().get(0));
       Artwork artwork = tag.getFirstArtwork();
       assertEquals("image/png", artwork.getMimeType());
       assertNotNull(artwork.getImage());
@@ -64,7 +64,6 @@ public class Issue245Test extends AbstractTestCase {
       tag = af.getTag();
       assertEquals(0, tag.getArtworkList().size());
     } catch (Exception e) {
-      e.printStackTrace();
       exceptionCaught = e;
     }
 
@@ -79,7 +78,7 @@ public class Issue245Test extends AbstractTestCase {
     File testFile = null;
     Exception exceptionCaught = null;
     try {
-      testFile = AbstractTestCase.copyAudioToTmp("testV1.mp3");
+      testFile = copyAudioToTmp("testV1.mp3");
 
       //Read File okay
       AudioFile af = AudioFileIO.read(testFile);
@@ -90,7 +89,7 @@ public class Issue245Test extends AbstractTestCase {
 
       //Now addField the image
       Artwork newartwork = ArtworkFactory.createArtworkFromFile(
-        new File("testdata", "coverart.png")
+        fileResource("testdata", "coverart.png")
       );
       assertTrue(ImageFormats.isPortableFormat(newartwork.getBinaryData()));
 
@@ -100,7 +99,7 @@ public class Issue245Test extends AbstractTestCase {
       af = AudioFileIO.read(testFile);
       tag = af.getTag();
       assertEquals(1, tag.getArtworkList().size());
-      assertTrue(tag.getArtworkList().get(0) instanceof Artwork);
+      assertInstanceOf(Artwork.class, tag.getArtworkList().get(0));
       Artwork artwork = tag.getFirstArtwork();
       assertEquals("image/png", artwork.getMimeType());
       assertNotNull(artwork.getImage());
@@ -114,7 +113,6 @@ public class Issue245Test extends AbstractTestCase {
       tag = af.getTag();
       assertEquals(0, tag.getArtworkList().size());
     } catch (Exception e) {
-      e.printStackTrace();
       exceptionCaught = e;
     }
 
@@ -129,7 +127,7 @@ public class Issue245Test extends AbstractTestCase {
     File testFile = null;
     Exception exceptionCaught = null;
     try {
-      testFile = AbstractTestCase.copyAudioToTmp("testV1.mp3");
+      testFile = copyAudioToTmp("testV1.mp3");
 
       //Read File okay
       AudioFile af = AudioFileIO.read(testFile);
@@ -140,7 +138,7 @@ public class Issue245Test extends AbstractTestCase {
 
       //Now addField the image
       Artwork newartwork = ArtworkFactory.createArtworkFromFile(
-        new File("testdata", "coverart.png")
+        fileResource("testdata", "coverart.png")
       );
       assertTrue(ImageFormats.isPortableFormat(newartwork.getBinaryData()));
 
@@ -150,7 +148,7 @@ public class Issue245Test extends AbstractTestCase {
       af = AudioFileIO.read(testFile);
       tag = af.getTag();
       assertEquals(1, tag.getArtworkList().size());
-      assertTrue(tag.getArtworkList().get(0) instanceof Artwork);
+      assertInstanceOf(Artwork.class, tag.getArtworkList().get(0));
       Artwork artwork = tag.getFirstArtwork();
       assertEquals("image/png", artwork.getMimeType());
       assertNotNull(artwork.getImage());
@@ -164,7 +162,6 @@ public class Issue245Test extends AbstractTestCase {
       tag = af.getTag();
       assertEquals(0, tag.getArtworkList().size());
     } catch (Exception e) {
-      e.printStackTrace();
       exceptionCaught = e;
     }
 
@@ -179,14 +176,14 @@ public class Issue245Test extends AbstractTestCase {
     File testFile = null;
     Exception exceptionCaught = null;
     try {
-      testFile = AbstractTestCase.copyAudioToTmp("test3.ogg");
+      testFile = copyAudioToTmp("test3.ogg");
 
       //Read File okay
       AudioFile af = AudioFileIO.read(testFile);
       Tag tag = af.getTag();
 
       assertEquals(1, tag.getArtworkList().size());
-      assertTrue(tag.getArtworkList().get(0) instanceof Artwork);
+      assertInstanceOf(Artwork.class, tag.getArtworkList().get(0));
       Artwork artwork = tag.getFirstArtwork();
       assertEquals("image/png", artwork.getMimeType());
       assertNotNull(artwork.getImage());
@@ -194,7 +191,7 @@ public class Issue245Test extends AbstractTestCase {
 
       //Now replace the image
       Artwork newartwork = ArtworkFactory.createArtworkFromFile(
-        new File("testdata", "coverart.png")
+        fileResource("testdata", "coverart.png")
       );
       assertTrue(ImageFormats.isPortableFormat(newartwork.getBinaryData()));
       tag.setField(newartwork);
@@ -202,7 +199,7 @@ public class Issue245Test extends AbstractTestCase {
       af = AudioFileIO.read(testFile);
       tag = af.getTag();
       assertEquals(1, tag.getArtworkList().size());
-      assertTrue(tag.getArtworkList().get(0) instanceof Artwork);
+      assertInstanceOf(Artwork.class, tag.getArtworkList().get(0));
       artwork = tag.getFirstArtwork();
       assertEquals("image/png", artwork.getMimeType());
       assertNotNull(artwork.getImage());
@@ -215,7 +212,6 @@ public class Issue245Test extends AbstractTestCase {
       tag = af.getTag();
       assertEquals(0, tag.getArtworkList().size());
     } catch (Exception e) {
-      e.printStackTrace();
       exceptionCaught = e;
     }
 
@@ -230,9 +226,9 @@ public class Issue245Test extends AbstractTestCase {
     File testFile = null;
     Exception exceptionCaught = null;
     try {
-      testFile = AbstractTestCase.copyAudioToTmp(
+      testFile = copyAudioToTmp(
         "test.flac",
-        new File("testwriteartwork.flac")
+        "testwriteartwork.flac"
       );
 
       //Read File okay
@@ -240,7 +236,7 @@ public class Issue245Test extends AbstractTestCase {
       Tag tag = af.getTag();
 
       assertEquals(2, tag.getArtworkList().size());
-      assertTrue(tag.getArtworkList().get(0) instanceof Artwork);
+      assertInstanceOf(Artwork.class, tag.getArtworkList().get(0));
       Artwork artwork = tag.getFirstArtwork();
       assertEquals("image/png", artwork.getMimeType());
       assertNotNull(artwork.getImage());
@@ -248,7 +244,7 @@ public class Issue245Test extends AbstractTestCase {
       assertEquals(3, artwork.getPictureType());
       //Now replace the image
       Artwork newartwork = ArtworkFactory.createArtworkFromFile(
-        new File("testdata", "coverart.png")
+        fileResource("testdata", "coverart.png")
       );
       assertTrue(ImageFormats.isPortableFormat(newartwork.getBinaryData()));
 
@@ -259,7 +255,7 @@ public class Issue245Test extends AbstractTestCase {
       af = AudioFileIO.read(testFile);
       tag = af.getTag();
       assertEquals(2, tag.getArtworkList().size());
-      assertTrue(tag.getArtworkList().get(0) instanceof Artwork);
+      assertInstanceOf(Artwork.class, tag.getArtworkList().get(0));
       artwork = tag.getFirstArtwork();
       assertEquals("image/png", artwork.getMimeType());
       assertNotNull(artwork.getImage());
@@ -273,7 +269,6 @@ public class Issue245Test extends AbstractTestCase {
       tag = af.getTag();
       assertEquals(0, tag.getArtworkList().size());
     } catch (Exception e) {
-      e.printStackTrace();
       exceptionCaught = e;
     }
 
@@ -288,14 +283,14 @@ public class Issue245Test extends AbstractTestCase {
     File testFile = null;
     Exception exceptionCaught = null;
     try {
-      testFile = AbstractTestCase.copyAudioToTmp("test5.wma");
+      testFile = copyAudioToTmp("test5.wma");
 
       //Read File okay
       AudioFile af = AudioFileIO.read(testFile);
       Tag tag = af.getTag();
 
       assertEquals(1, tag.getArtworkList().size());
-      assertTrue(tag.getArtworkList().get(0) instanceof Artwork);
+      assertInstanceOf(Artwork.class, tag.getArtworkList().get(0));
       Artwork artwork = tag.getFirstArtwork();
       assertEquals("image/png", artwork.getMimeType());
       assertNotNull(artwork.getImage());
@@ -303,7 +298,7 @@ public class Issue245Test extends AbstractTestCase {
       assertEquals(3, artwork.getPictureType());
       //Now replace the image
       Artwork newartwork = ArtworkFactory.createArtworkFromFile(
-        new File("testdata", "coverart.png")
+        fileResource("testdata", "coverart.png")
       );
       assertTrue(ImageFormats.isPortableFormat(newartwork.getBinaryData()));
 
@@ -313,11 +308,9 @@ public class Issue245Test extends AbstractTestCase {
       af.commit();
       af = AudioFileIO.read(testFile);
       tag = af.getTag();
-      assertTrue(
-        tag.getFirstField(FieldKey.COVER_ART) instanceof AsfTagCoverField
-      );
+      assertInstanceOf(AsfTagCoverField.class, tag.getFirstField(FieldKey.COVER_ART));
       assertEquals(1, tag.getArtworkList().size());
-      assertTrue(tag.getArtworkList().get(0) instanceof Artwork);
+      assertInstanceOf(Artwork.class, tag.getArtworkList().get(0));
       artwork = tag.getFirstArtwork();
       assertEquals("image/png", artwork.getMimeType());
       assertNotNull(artwork.getImage());
@@ -331,7 +324,6 @@ public class Issue245Test extends AbstractTestCase {
       tag = af.getTag();
       assertEquals(0, tag.getArtworkList().size());
     } catch (Exception e) {
-      e.printStackTrace();
       exceptionCaught = e;
     }
 
@@ -346,14 +338,14 @@ public class Issue245Test extends AbstractTestCase {
     File testFile = null;
     Exception exceptionCaught = null;
     try {
-      testFile = AbstractTestCase.copyAudioToTmp("test.m4a");
+      testFile = copyAudioToTmp("test.m4a");
 
       //Read File okay
       AudioFile af = AudioFileIO.read(testFile);
       Tag tag = af.getTag();
 
       assertEquals(1, tag.getArtworkList().size());
-      assertTrue(tag.getArtworkList().get(0) instanceof Artwork);
+      assertInstanceOf(Artwork.class, tag.getArtworkList().get(0));
       Artwork artwork = tag.getFirstArtwork();
       assertEquals("image/jpeg", artwork.getMimeType());
       assertNotNull(artwork.getImage());
@@ -361,7 +353,7 @@ public class Issue245Test extends AbstractTestCase {
 
       //Now replace the image
       Artwork newartwork = ArtworkFactory.createArtworkFromFile(
-        new File("testdata", "coverart.png")
+        fileResource("testdata", "coverart.png")
       );
       assertTrue(ImageFormats.isPortableFormat(newartwork.getBinaryData()));
 
@@ -370,7 +362,7 @@ public class Issue245Test extends AbstractTestCase {
       af = AudioFileIO.read(testFile);
       tag = af.getTag();
       assertEquals(1, tag.getArtworkList().size());
-      assertTrue(tag.getArtworkList().get(0) instanceof Artwork);
+      assertInstanceOf(Artwork.class, tag.getArtworkList().get(0));
       artwork = tag.getFirstArtwork();
       assertEquals("image/png", artwork.getMimeType());
       assertNotNull(artwork.getImage());
@@ -383,7 +375,6 @@ public class Issue245Test extends AbstractTestCase {
       tag = af.getTag();
       assertEquals(0, tag.getArtworkList().size());
     } catch (Exception e) {
-      e.printStackTrace();
       exceptionCaught = e;
     }
 
@@ -399,7 +390,7 @@ public class Issue245Test extends AbstractTestCase {
     File testFile = null;
     Exception exceptionCaught = null;
     try {
-      testFile = AbstractTestCase.copyAudioToTmp("test.wav");
+      testFile = copyAudioToTmp("test.wav");
 
       //Read File okay
       AudioFile af = AudioFileIO.read(testFile);
@@ -407,7 +398,6 @@ public class Issue245Test extends AbstractTestCase {
 
       assertEquals(0, tag.getArtworkList().size());
     } catch (Exception e) {
-      e.printStackTrace();
       exceptionCaught = e;
     }
 
@@ -417,18 +407,17 @@ public class Issue245Test extends AbstractTestCase {
       //Now try and addField image
       AudioFile af = AudioFileIO.read(testFile);
       Artwork newartwork = ArtworkFactory.createArtworkFromFile(
-        new File("testdata", "coverart.png")
+        fileResource("testdata", "coverart.png")
       );
       assertTrue(ImageFormats.isPortableFormat(newartwork.getBinaryData()));
 
       Tag tag = af.getTag();
       tag.setField(newartwork);
     } catch (Exception e) {
-      e.printStackTrace();
       exceptionCaught = e;
     }
     assertNotNull(exceptionCaught);
-    assertTrue(exceptionCaught instanceof UnsupportedOperationException);
+    assertInstanceOf(UnsupportedOperationException.class, exceptionCaught);
 
     //Not Supported
     try {
@@ -439,11 +428,10 @@ public class Issue245Test extends AbstractTestCase {
       assertEquals(0, tag.getArtworkList().size());
       af.commit();
     } catch (Exception e) {
-      e.printStackTrace();
       exceptionCaught = e;
     }
     assertNotNull(exceptionCaught);
-    assertTrue(exceptionCaught instanceof UnsupportedOperationException);
+    assertInstanceOf(UnsupportedOperationException.class, exceptionCaught);
   }
 
   /**
@@ -454,7 +442,7 @@ public class Issue245Test extends AbstractTestCase {
     File testFile = null;
     Exception exceptionCaught = null;
     try {
-      testFile = AbstractTestCase.copyAudioToTmp("test01.ra");
+      testFile = copyAudioToTmp("test01.ra");
 
       //Read File okay
       AudioFile af = AudioFileIO.read(testFile);
@@ -462,7 +450,6 @@ public class Issue245Test extends AbstractTestCase {
 
       assertEquals(0, tag.getArtworkList().size());
     } catch (Exception e) {
-      e.printStackTrace();
       exceptionCaught = e;
     }
 
@@ -472,18 +459,17 @@ public class Issue245Test extends AbstractTestCase {
       //Now try and addField image
       AudioFile af = AudioFileIO.read(testFile);
       Artwork newartwork = ArtworkFactory.createArtworkFromFile(
-        new File("testdata", "coverart.png")
+        fileResource("testdata", "coverart.png")
       );
       assertTrue(ImageFormats.isPortableFormat(newartwork.getBinaryData()));
 
       Tag tag = af.getTag();
       tag.setField(newartwork);
     } catch (Exception e) {
-      e.printStackTrace();
       exceptionCaught = e;
     }
     assertNotNull(exceptionCaught);
-    assertTrue(exceptionCaught instanceof UnsupportedOperationException);
+    assertInstanceOf(UnsupportedOperationException.class, exceptionCaught);
 
     //Not supported
     try {
@@ -491,10 +477,9 @@ public class Issue245Test extends AbstractTestCase {
       Tag tag = af.getTag();
       tag.deleteArtworkField();
     } catch (Exception e) {
-      e.printStackTrace();
       exceptionCaught = e;
     }
     assertNotNull(exceptionCaught);
-    assertTrue(exceptionCaught instanceof UnsupportedOperationException);
+    assertInstanceOf(UnsupportedOperationException.class, exceptionCaught);
   }
 }

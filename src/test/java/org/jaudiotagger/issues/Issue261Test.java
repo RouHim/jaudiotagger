@@ -9,6 +9,7 @@ import org.jaudiotagger.audio.AudioFile;
 import org.jaudiotagger.audio.AudioFileIO;
 import org.jaudiotagger.tag.FieldKey;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.condition.EnabledIf;
 
 public class Issue261Test extends AbstractTestCase {
 
@@ -16,17 +17,13 @@ public class Issue261Test extends AbstractTestCase {
    * Test write mp4 ok without any udta/meta atoms
    */
   @Test
+  @EnabledIf("executeAlsoWithMissingResources") // to be configured in AbsractBaseTestCase
   public void testWriteMp4() {
-    File orig = new File("testdata", "test45.m4a");
-    if (!orig.isFile()) {
-      System.err.println("Unable to test file - not available");
-      return;
-    }
 
     File testFile = null;
     Exception exceptionCaught = null;
     try {
-      testFile = AbstractTestCase.copyAudioToTmp("test45.m4a");
+      testFile = copyAudioToTmp("test45.m4a");
 
       //Read File okay
       AudioFile af = AudioFileIO.read(testFile);
@@ -38,7 +35,6 @@ public class Issue261Test extends AbstractTestCase {
       af = AudioFileIO.read(testFile);
       assertEquals("2007", af.getTag().getFirst(FieldKey.YEAR));
     } catch (Exception e) {
-      e.printStackTrace();
       exceptionCaught = e;
     }
 
