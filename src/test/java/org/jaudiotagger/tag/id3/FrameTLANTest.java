@@ -9,7 +9,7 @@ public class FrameTLANTest extends AbstractTestCase {
 
   @Test
   public void testWriteFileContainingTLANFrame() throws Exception {
-    File testFile = AbstractTestCase.copyAudioToTmp(
+    File testFile = prependAudioToTmp(
       "Issue116.id3",
       "testV1.mp3"
     );

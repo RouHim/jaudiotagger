@@ -25,10 +25,7 @@ public class FrameTDTGTest extends AbstractTestCase {
       ID3v23Tag v23tag = new ID3v23Tag(tag);
       assertEquals(1, v23tag.getFieldCount());
       assertNotNull(v23tag.getFirst("TDTG"));
-      assertTrue(
-        (((AbstractID3v2Frame) v23tag.getFrame("TDTG")).getBody()) instanceof
-          FrameBodyUnsupported
-      );
+      assertInstanceOf(FrameBodyUnsupported.class, (((AbstractID3v2Frame) v23tag.getFrame("TDTG")).getBody()));
     } catch (Exception ex) {
       e = ex;
       ex.printStackTrace();
