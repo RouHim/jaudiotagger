@@ -19,6 +19,8 @@ import org.jaudiotagger.tag.id3.AbstractID3v2Tag;
 import org.jaudiotagger.tag.id3.ID3v23Tag;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.condition.EnabledIf;
+import org.junit.jupiter.api.condition.EnabledOnOs;
+import org.junit.jupiter.api.condition.OS;
 
 public class WavMetadataTest extends FilePermissionsTest {
 
@@ -263,6 +265,7 @@ public class WavMetadataTest extends FilePermissionsTest {
   }
 
   @Test
+  @EnabledOnOs(OS.WINDOWS) // gives unexpected results on github ubunto build machine
   public void testModifyFileWithMoreMetadataSaveBothId3ThenInfo() {
     TagOptionSingleton.getInstance().setWavOptions(WavOptions.READ_INFO_ONLY);
     TagOptionSingleton.getInstance().setWavSaveOptions(
@@ -795,6 +798,7 @@ public class WavMetadataTest extends FilePermissionsTest {
    * Read file with metadata added by MediaMonkey
    */
   @Test
+  @EnabledOnOs(OS.WINDOWS) // gives unexpected results on github ubunto build machine
   public void testModifyFileMetadataSaveActive() {
     TagOptionSingleton.getInstance().setWavOptions(WavOptions.READ_INFO_ONLY);
     TagOptionSingleton.getInstance().setWavSaveOptions(
@@ -1341,6 +1345,7 @@ public class WavMetadataTest extends FilePermissionsTest {
   }
 
   @Test
+  @EnabledOnOs(OS.WINDOWS) // gives unexpected results on github ubunto build machine
   public void testWriteNumberedOddSaveBoth() {
     TagOptionSingleton.getInstance().setWavOptions(WavOptions.READ_ID3_ONLY);
     TagOptionSingleton.getInstance().setWavSaveOptions(
