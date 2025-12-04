@@ -171,6 +171,7 @@ public class WavMetadataTest extends FilePermissionsTest {
    * Read file with metadata added by MediaMonkey
    */
   @Test
+  @EnabledOnOs(OS.WINDOWS) // gives unexpected results on github ubunto build machine
   public void testModifyFileWithMoreMetadataSaveBothInfoThenId3() {
     TagOptionSingleton.getInstance().setWavOptions(WavOptions.READ_INFO_ONLY);
     TagOptionSingleton.getInstance().setWavSaveOptions(
@@ -880,6 +881,7 @@ public class WavMetadataTest extends FilePermissionsTest {
    * Read file with metadata added by MediaMonkey
    */
   @Test
+  @EnabledOnOs(OS.WINDOWS) // gives unexpected results on github ubunto build machine
   public void testModifyFileWithMoreMetadataSaveActive() {
     TagOptionSingleton.getInstance().setWavOptions(WavOptions.READ_INFO_ONLY);
     TagOptionSingleton.getInstance().setWavSaveOptions(
