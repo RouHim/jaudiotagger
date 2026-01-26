@@ -4,7 +4,8 @@ import static org.junit.jupiter.api.Assertions.*;
 
 import java.io.File;
 import java.io.RandomAccessFile;
-import org.jaudiotagger.AbstractTestCase;
+
+import org.jaudiotagger.AbstractBaseTestCase;
 import org.jaudiotagger.audio.AudioFile;
 import org.jaudiotagger.audio.AudioFileIO;
 import org.jaudiotagger.audio.ogg.util.OggPageHeader;
@@ -12,8 +13,9 @@ import org.jaudiotagger.tag.FieldKey;
 import org.jaudiotagger.tag.vorbiscomment.VorbisCommentFieldKey;
 import org.jaudiotagger.tag.vorbiscomment.VorbisCommentTag;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.condition.EnabledIf;
 
-public class OggVorbisHeaderTest {
+public class OggVorbisHeaderTest extends AbstractBaseTestCase {
 
   /**
    * Testing reading of vorbis audio header info
@@ -22,9 +24,9 @@ public class OggVorbisHeaderTest {
   public void testReadFile() {
     Exception exceptionCaught = null;
     try {
-      File testFile = AbstractTestCase.copyAudioToTmp(
+      File testFile = copyAudioToTmp(
         "test.ogg",
-        new File("testReadFile.ogg")
+        "testReadFile.ogg"
       );
       AudioFile f = AudioFileIO.read(testFile);
 
@@ -33,9 +35,8 @@ public class OggVorbisHeaderTest {
       //assertEquals("2",f.getAudioHeader().getChannels());
       //assertEquals("44100",f.getAudioHeader().getSampleRate());
 
-      assertTrue(f.getTag() instanceof VorbisCommentTag);
+      assertInstanceOf(VorbisCommentTag.class, f.getTag());
     } catch (Exception e) {
-      e.printStackTrace();
       exceptionCaught = e;
     }
     assertNull(exceptionCaught);
@@ -47,17 +48,13 @@ public class OggVorbisHeaderTest {
    * TODO, need to replace with file that is not copyrighted
    */
   @Test
+  @EnabledIf("executeAlsoWithMissingResources") // to be configured in AbsractBaseTestCase
   public void testReadPaddedFile() {
     Exception exceptionCaught = null;
     try {
-      File orig = new File("testdata", "test2.ogg");
-      if (!orig.isFile()) {
-        return;
-      }
-
-      File testFile = AbstractTestCase.copyAudioToTmp(
+      File testFile = copyAudioToTmp(
         "test2.ogg",
-        new File("test2.ogg")
+        "test2.ogg"
       );
       AudioFile f = AudioFileIO.read(testFile);
 
@@ -71,7 +68,6 @@ public class OggVorbisHeaderTest {
 
       //assertTrue(f.getTag() instanceof VorbisCommentTag);
     } catch (Exception e) {
-      e.printStackTrace();
       exceptionCaught = e;
     }
     assertNull(exceptionCaught);
@@ -84,19 +80,19 @@ public class OggVorbisHeaderTest {
   public void testWriteFile() {
     Exception exceptionCaught = null;
     try {
-      File testFile = AbstractTestCase.copyAudioToTmp(
+      File testFile = copyAudioToTmp(
         "test.ogg",
-        new File("testWriteTagToFile.ogg")
+        "testWriteTagToFile.ogg"
       );
       AudioFile f = AudioFileIO.read(testFile);
 
       //Size of VorbisComment should increase
-      assertTrue(f.getTag() instanceof VorbisCommentTag);
+      assertInstanceOf(VorbisCommentTag.class, f.getTag());
       f.getTag().setField(FieldKey.ALBUM, "bbbbbbb");
       f.commit();
 
       f = AudioFileIO.read(testFile);
-      assertTrue(f.getTag() instanceof VorbisCommentTag);
+      assertInstanceOf(VorbisCommentTag.class, f.getTag());
       assertEquals("bbbbbbb", f.getTag().getFirst(FieldKey.ALBUM));
 
       OggFileReader ofr = new OggFileReader();
@@ -115,7 +111,6 @@ public class OggVorbisHeaderTest {
       assertEquals(559748870, oph.getSerialNumber());
       assertEquals(233133993, oph.getCheckSum());
     } catch (Exception e) {
-      e.printStackTrace();
       exceptionCaught = e;
     }
     assertNull(exceptionCaught);
@@ -129,14 +124,14 @@ public class OggVorbisHeaderTest {
   public void testWritePreviouslyLargeFile() {
     Exception exceptionCaught = null;
     try {
-      File testFile = AbstractTestCase.copyAudioToTmp(
+      File testFile = copyAudioToTmp(
         "testlargeimage.ogg",
-        new File("testWritePreviouslyLargeFile.ogg")
+        "testWritePreviouslyLargeFile.ogg"
       );
       AudioFile f = AudioFileIO.read(testFile);
 
       //Size of VorbisComment should decrease just setting a nonsical but muuch smaller value for image
-      assertTrue(f.getTag() instanceof VorbisCommentTag);
+      assertInstanceOf(VorbisCommentTag.class, f.getTag());
       VorbisCommentTag vorbisTag = (VorbisCommentTag) f.getTag();
       vorbisTag.setField(
         vorbisTag.createField(VorbisCommentFieldKey.COVERART, "ccc")
@@ -144,7 +139,7 @@ public class OggVorbisHeaderTest {
       f.commit();
 
       f = AudioFileIO.read(testFile);
-      assertTrue(f.getTag() instanceof VorbisCommentTag);
+      assertInstanceOf(VorbisCommentTag.class, f.getTag());
 
       OggFileReader ofr = new OggFileReader();
       OggPageHeader oph = ofr.readOggPageHeader(
@@ -172,7 +167,6 @@ public class OggVorbisHeaderTest {
       assertEquals(1176378771, oph.getCheckSum());
       assertEquals(0, oph.getHeaderType());
     } catch (Exception e) {
-      e.printStackTrace();
       exceptionCaught = e;
     }
     assertNull(exceptionCaught);
@@ -185,19 +179,19 @@ public class OggVorbisHeaderTest {
   public void testLargeWriteFile() {
     Exception exceptionCaught = null;
     try {
-      File testFile = AbstractTestCase.copyAudioToTmp(
+      File testFile = copyAudioToTmp(
         "testlargeimage.ogg",
-        new File("testLargeWriteFile.ogg")
+        "testLargeWriteFile.ogg"
       );
       AudioFile f = AudioFileIO.read(testFile);
 
       //Size of VorbisComment should increase
-      assertTrue(f.getTag() instanceof VorbisCommentTag);
+      assertInstanceOf(VorbisCommentTag.class, f.getTag());
       f.getTag().setField(FieldKey.ALBUM, "bbbbbbb");
       f.commit();
 
       f = AudioFileIO.read(testFile);
-      assertTrue(f.getTag() instanceof VorbisCommentTag);
+      assertInstanceOf(VorbisCommentTag.class, f.getTag());
       assertEquals("bbbbbbb", f.getTag().getFirst(FieldKey.ALBUM));
 
       OggFileReader ofr = new OggFileReader();
@@ -218,7 +212,6 @@ public class OggVorbisHeaderTest {
       assertEquals(-1172108515, oph.getCheckSum());
       assertEquals(0, oph.getHeaderType());
     } catch (Exception e) {
-      e.printStackTrace();
       exceptionCaught = e;
     }
     assertNull(exceptionCaught);
@@ -233,15 +226,15 @@ public class OggVorbisHeaderTest {
     Exception exceptionCaught = null;
     int count = 0;
     try {
-      File testFile = AbstractTestCase.copyAudioToTmp(
+      File testFile = copyAudioToTmp(
         "testlargeimage.ogg",
-        new File("testAwkwardSizeWriteFile.ogg")
+        "testAwkwardSizeWriteFile.ogg"
       );
       AudioFile f = AudioFileIO.read(testFile);
 
       //Size of VorbisComment should increase and to a level that the setupheader cant fit completely
       //in last page pf comment header so has to be split over two pages
-      assertTrue(f.getTag() instanceof VorbisCommentTag);
+      assertInstanceOf(VorbisCommentTag.class, f.getTag());
       StringBuffer sb = new StringBuffer();
       for (int i = 0; i < 24000; i++) {
         sb.append("z");
@@ -251,7 +244,7 @@ public class OggVorbisHeaderTest {
       f.commit();
 
       f = AudioFileIO.read(testFile);
-      assertTrue(f.getTag() instanceof VorbisCommentTag);
+      assertInstanceOf(VorbisCommentTag.class, f.getTag());
       assertEquals("bbbbbbb", f.getTag().getFirst(FieldKey.ALBUM));
       assertEquals(sb.toString(), f.getTag().getFirst(FieldKey.TITLE));
 
@@ -301,7 +294,6 @@ public class OggVorbisHeaderTest {
       }
       assertEquals(raf.length(), raf.getFilePointer());
     } catch (Exception e) {
-      e.printStackTrace();
       exceptionCaught = e;
     }
     assertNull(exceptionCaught);

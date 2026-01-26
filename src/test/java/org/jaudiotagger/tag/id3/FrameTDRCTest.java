@@ -9,7 +9,7 @@ public class FrameTDRCTest extends AbstractTestCase {
 
   @Test
   public void testReadFileContainingTDRCAndTYERFrames() throws Exception {
-    File testFile = AbstractTestCase.copyAudioToTmp(
+    File testFile = prependAudioToTmp(
       "Issue73.id3",
       "testV1.mp3"
     );

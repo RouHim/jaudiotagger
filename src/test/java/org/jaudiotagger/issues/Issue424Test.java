@@ -15,7 +15,7 @@ public class Issue424Test extends AbstractTestCase {
 
   @Test
   public void testDeleteTrackTotalShouldNotEffectTrackNoMp4() throws Exception {
-    File testFile = AbstractTestCase.copyAudioToTmp("test2.m4a");
+    File testFile = copyAudioToTmp("test2.m4a");
     AudioFile f = AudioFileIO.read(testFile);
     Tag tag = f.getTag();
     tag.deleteField(FieldKey.TRACK);
@@ -40,7 +40,7 @@ public class Issue424Test extends AbstractTestCase {
 
   @Test
   public void testDeleteTrackTotalShouldNotEffectTrackNoMp3() throws Exception {
-    File testFile = AbstractTestCase.copyAudioToTmp("testV25.mp3");
+    File testFile = copyAudioToTmp("testV25.mp3");
     AudioFile f = AudioFileIO.read(testFile);
     Tag tag = f.getTagOrCreateDefault();
     tag.deleteField(FieldKey.TRACK);

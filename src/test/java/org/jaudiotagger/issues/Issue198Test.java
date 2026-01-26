@@ -16,13 +16,7 @@ public class Issue198Test extends AbstractTestCase {
   public void testIssue() {
     Exception caught = null;
     try {
-      File orig = new File("testdata", "issue-198.m4a");
-      if (!orig.isFile()) {
-        System.err.println("Unable to test file - not available");
-        return;
-      }
-
-      File testFile = AbstractTestCase.copyAudioToTmp("issue-198.m4a");
+      File testFile = copyAudioToTmp("issue-198.m4a");
       AudioFile af = AudioFileIO.read(testFile);
       System.out.println(af.getAudioHeader());
       af.getTagOrCreateAndSetDefault();
@@ -33,7 +27,6 @@ public class Issue198Test extends AbstractTestCase {
       System.out.println(json);
     } catch (Exception e) {
       caught = e;
-      e.printStackTrace();
     }
     assertNull(caught);
   }

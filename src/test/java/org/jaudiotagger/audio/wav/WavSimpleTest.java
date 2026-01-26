@@ -11,6 +11,7 @@ import org.jaudiotagger.audio.AudioFileIO;
 import org.jaudiotagger.logging.Hex;
 import org.jaudiotagger.tag.wav.WavTag;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.condition.EnabledIf;
 
 public class WavSimpleTest extends AbstractTestCase {
 
@@ -18,7 +19,7 @@ public class WavSimpleTest extends AbstractTestCase {
   public void testRead8bitMonoFile() {
     Exception exceptionCaught = null;
     try {
-      File testFile = AbstractTestCase.copyAudioToTmp("test.wav");
+      File testFile = copyAudioToTmp("test.wav");
       AudioFile f = AudioFileIO.read(testFile);
       System.out.println(f.getAudioHeader());
       System.out.println(f.getTag());
@@ -30,25 +31,20 @@ public class WavSimpleTest extends AbstractTestCase {
       assertEquals("22050", f.getAudioHeader().getSampleRate());
       assertEquals(8, f.getAudioHeader().getBitsPerSample());
       assertEquals(14, f.getAudioHeader().getTrackLength());
-      assertTrue(f.getTag() instanceof WavTag);
+      assertInstanceOf(WavTag.class, f.getTag());
     } catch (Exception e) {
-      e.printStackTrace();
       exceptionCaught = e;
     }
     assertNull(exceptionCaught);
   }
 
   @Test
+  @EnabledIf("executeAlsoWithMissingResources") // to be configured in AbsractBaseTestCase
   public void testRead24BitMonoFile() {
-    File orig = new File("testdata", "test105.wav");
-    if (!orig.isFile()) {
-      System.err.println("Unable to test file - not available");
-      return;
-    }
 
     Exception exceptionCaught = null;
     try {
-      File testFile = AbstractTestCase.copyAudioToTmp("test105.wav");
+      File testFile = copyAudioToTmp("test105.wav");
       AudioFile f = AudioFileIO.read(testFile);
       System.out.println(f.getAudioHeader());
       System.out.println(f.getTag());
@@ -61,7 +57,6 @@ public class WavSimpleTest extends AbstractTestCase {
       assertEquals(24, f.getAudioHeader().getBitsPerSample());
       assertEquals(14, f.getAudioHeader().getTrackLength());
     } catch (Exception e) {
-      e.printStackTrace();
       exceptionCaught = e;
     }
     assertNull(exceptionCaught);
@@ -96,7 +91,7 @@ public class WavSimpleTest extends AbstractTestCase {
   public void testRead8bitStereoFile() {
     Exception exceptionCaught = null;
     try {
-      File testFile = AbstractTestCase.copyAudioToTmp("test127.wav");
+      File testFile = copyAudioToTmp("test127.wav");
       AudioFile f = AudioFileIO.read(testFile);
       System.out.println(f.getAudioHeader());
       System.out.println(f.getTag());
@@ -109,9 +104,8 @@ public class WavSimpleTest extends AbstractTestCase {
       assertEquals("8000", f.getAudioHeader().getSampleRate());
       assertEquals(8, f.getAudioHeader().getBitsPerSample());
       assertEquals(3, f.getAudioHeader().getTrackLength());
-      assertTrue(f.getTag() instanceof WavTag);
+      assertInstanceOf(WavTag.class, f.getTag());
     } catch (Exception e) {
-      e.printStackTrace();
       exceptionCaught = e;
     }
     assertNull(exceptionCaught);
@@ -121,7 +115,7 @@ public class WavSimpleTest extends AbstractTestCase {
   public void testGoldstarCompressedStereoFile() {
     Exception exceptionCaught = null;
     try {
-      File testFile = AbstractTestCase.copyAudioToTmp("test129.wav");
+      File testFile = copyAudioToTmp("test129.wav");
       AudioFile f = AudioFileIO.read(testFile);
       System.out.println(f.getAudioHeader());
       System.out.println(f.getTag());
@@ -134,9 +128,8 @@ public class WavSimpleTest extends AbstractTestCase {
       assertEquals("8000", f.getAudioHeader().getSampleRate());
       assertEquals(0, f.getAudioHeader().getBitsPerSample());
       assertEquals(3, f.getAudioHeader().getTrackLength());
-      assertTrue(f.getTag() instanceof WavTag);
+      assertInstanceOf(WavTag.class, f.getTag());
     } catch (Exception e) {
-      e.printStackTrace();
       exceptionCaught = e;
     }
     assertNull(exceptionCaught);
@@ -146,7 +139,7 @@ public class WavSimpleTest extends AbstractTestCase {
   public void testRead8bitStereoFileExtensible() {
     Exception exceptionCaught = null;
     try {
-      File testFile = AbstractTestCase.copyAudioToTmp("test128.wav");
+      File testFile = copyAudioToTmp("test128.wav");
       AudioFile f = AudioFileIO.read(testFile);
       System.out.println(f.getAudioHeader());
       System.out.println(f.getTag());
@@ -159,9 +152,8 @@ public class WavSimpleTest extends AbstractTestCase {
       assertEquals("8000", f.getAudioHeader().getSampleRate());
       assertEquals(8, f.getAudioHeader().getBitsPerSample());
       assertEquals(3, f.getAudioHeader().getTrackLength());
-      assertTrue(f.getTag() instanceof WavTag);
+      assertInstanceOf(WavTag.class, f.getTag());
     } catch (Exception e) {
-      e.printStackTrace();
       exceptionCaught = e;
     }
     assertNull(exceptionCaught);
@@ -171,7 +163,7 @@ public class WavSimpleTest extends AbstractTestCase {
   public void testReadStereoFloatingPointFile() {
     Exception exceptionCaught = null;
     try {
-      File testFile = AbstractTestCase.copyAudioToTmp("test130.wav");
+      File testFile = copyAudioToTmp("test130.wav");
       AudioFile f = AudioFileIO.read(testFile);
       System.out.println(f.getAudioHeader());
       System.out.println(f.getTag());
@@ -191,9 +183,8 @@ public class WavSimpleTest extends AbstractTestCase {
         0.32897958159446716d,
         f.getAudioHeader().getPreciseTrackLength()
       );
-      assertTrue(f.getTag() instanceof WavTag);
+      assertInstanceOf(WavTag.class, f.getTag());
     } catch (Exception e) {
-      e.printStackTrace();
       exceptionCaught = e;
     }
     assertNull(exceptionCaught);
@@ -203,7 +194,7 @@ public class WavSimpleTest extends AbstractTestCase {
   public void testReadQuadChannelFile() {
     Exception exceptionCaught = null;
     try {
-      File testFile = AbstractTestCase.copyAudioToTmp("test131.wav");
+      File testFile = copyAudioToTmp("test131.wav");
       AudioFile f = AudioFileIO.read(testFile);
       System.out.println(f.getAudioHeader());
       System.out.println(f.getTag());
@@ -220,9 +211,8 @@ public class WavSimpleTest extends AbstractTestCase {
         4.784897804260254d,
         f.getAudioHeader().getPreciseTrackLength()
       );
-      assertTrue(f.getTag() instanceof WavTag);
+      assertInstanceOf(WavTag.class, f.getTag());
     } catch (Exception e) {
-      e.printStackTrace();
       exceptionCaught = e;
     }
     assertNull(exceptionCaught);
