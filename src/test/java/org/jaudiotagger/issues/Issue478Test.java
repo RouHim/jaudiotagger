@@ -10,20 +10,17 @@ import org.jaudiotagger.audio.mp3.MP3File;
 import org.jaudiotagger.tag.id3.ID3v23Tag;
 import org.jaudiotagger.tag.id3.ID3v24Tag;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.condition.EnabledIf;
 
 public class Issue478Test extends AbstractTestCase {
 
   @Test
+  @EnabledIf("executeAlsoWithMissingResources") // to be configured in AbsractBaseTestCase
   public void testKeepPodcastTags() {
-    File orig = new File("testdata", "test115.mp3");
-    if (!orig.isFile()) {
-      System.err.println("Unable to test file - not available");
-      return;
-    }
 
     Exception ex = null;
     try {
-      File testFile = AbstractTestCase.copyAudioToTmp("test115.mp3");
+      File testFile = copyAudioToTmp("test115.mp3");
       AudioFile af = AudioFileIO.read(testFile);
       assertNotNull(af.getTag());
       MP3File mp3File = (MP3File) af;
@@ -69,7 +66,6 @@ public class Issue478Test extends AbstractTestCase {
       assertNotNull(tag.getFrame("PCST"));
       assertNotNull(tag.getFrame("TGID"));
     } catch (Exception e) {
-      e.printStackTrace();
       ex = e;
     }
     assertNull(ex);

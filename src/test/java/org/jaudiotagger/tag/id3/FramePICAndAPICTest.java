@@ -134,7 +134,7 @@ public class FramePICAndAPICTest extends AbstractTestCase {
 
   @Test
   public void testSaveToFile() throws Exception {
-    File testFile = AbstractTestCase.copyAudioToTmp("testV1.mp3");
+    File testFile = copyAudioToTmp("testV1.mp3");
     MP3File mp3File = new MP3File(testFile);
 
     //Create and Save
@@ -150,13 +150,13 @@ public class FramePICAndAPICTest extends AbstractTestCase {
       .getFrame(ID3v24Frames.FRAME_ID_ATTACHED_PICTURE);
     assertNotNull(frame);
     FrameBodyAPIC body = (FrameBodyAPIC) frame.getBody();
-    assertTrue(body instanceof FrameBodyAPIC);
+    assertInstanceOf(FrameBodyAPIC.class, body);
     assertEquals(FrameBodyAPICTest.DESCRIPTION, body.getDescription());
   }
 
   @Test
   public void testConvertV24ToV23() throws Exception {
-    File testFile = AbstractTestCase.copyAudioToTmp("testV1.mp3");
+    File testFile = copyAudioToTmp("testV1.mp3");
     MP3File mp3File = new MP3File(testFile);
 
     //Create and Save
@@ -178,13 +178,13 @@ public class FramePICAndAPICTest extends AbstractTestCase {
       .getFrame(ID3v23Frames.FRAME_ID_V3_ATTACHED_PICTURE);
     assertNotNull(frame);
     FrameBodyAPIC body = (FrameBodyAPIC) frame.getBody();
-    assertTrue(body instanceof FrameBodyAPIC);
+    assertInstanceOf(FrameBodyAPIC.class, body);
     assertEquals(FrameBodyAPICTest.DESCRIPTION, body.getDescription());
   }
 
   @Test
   public void testConvertV24ToV22() throws Exception {
-    File testFile = AbstractTestCase.copyAudioToTmp("testV1.mp3");
+    File testFile = copyAudioToTmp("testV1.mp3");
     MP3File mp3File = new MP3File(testFile);
 
     //Create and Save
@@ -206,13 +206,13 @@ public class FramePICAndAPICTest extends AbstractTestCase {
       .getFrame(ID3v22Frames.FRAME_ID_V2_ATTACHED_PICTURE);
     assertNotNull(frame);
     FrameBodyPIC body = (FrameBodyPIC) frame.getBody();
-    assertTrue(body instanceof FrameBodyPIC);
+    assertInstanceOf(FrameBodyPIC.class, body);
     assertEquals(FrameBodyAPICTest.DESCRIPTION, body.getDescription());
   }
 
   @Test
   public void testConvertV22ToV24() throws Exception {
-    File testFile = AbstractTestCase.copyAudioToTmp("testV1.mp3");
+    File testFile = copyAudioToTmp("testV1.mp3");
     MP3File mp3File = new MP3File(testFile);
 
     //Create and Save
@@ -236,7 +236,7 @@ public class FramePICAndAPICTest extends AbstractTestCase {
       .getFrame(ID3v24Frames.FRAME_ID_ATTACHED_PICTURE);
     assertNotNull(frame);
     FrameBodyAPIC body = (FrameBodyAPIC) frame.getBody();
-    assertTrue(body instanceof FrameBodyAPIC);
+    assertInstanceOf(FrameBodyAPIC.class, body);
     assertEquals(FrameBodyPICTest.DESCRIPTION, body.getDescription());
   }
 }

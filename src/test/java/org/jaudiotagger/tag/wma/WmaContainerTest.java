@@ -57,7 +57,7 @@ public class WmaContainerTest extends WmaTestCase {
     assertEquals(GUID.GUID_EXTENDED_CONTENT_DESCRIPTION, readGUID);
     Chunk read1 = reader.read(GUID.GUID_EXTENDED_CONTENT_DESCRIPTION, bis, 0);
     System.out.println(read1);
-    assertTrue(read1 instanceof MetadataContainer);
+    assertInstanceOf(MetadataContainer.class, read1);
     assertEquals(
       tmp.length,
       ((MetadataContainer) read1).getCurrentAsfChunkSize()

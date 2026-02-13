@@ -7,22 +7,19 @@ import org.jaudiotagger.AbstractTestCase;
 import org.jaudiotagger.audio.mp3.MP3File;
 import org.jaudiotagger.tag.FieldKey;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.condition.EnabledIf;
 
 public class Issue452Test extends AbstractTestCase {
 
   @Test
+  @EnabledIf("executeAlsoWithMissingResources") // to be configured in AbsractBaseTestCase
   public void testFindAudioHeaderWhenTagSizeIsTooShortAndHasNullPadding()
     throws Exception {
     Exception ex = null;
-    File orig = new File("testdata", "test110.mp3");
-    if (!orig.isFile()) {
-      System.err.println("Unable to test file - not available");
-      return;
-    }
 
-    File testFile = AbstractTestCase.copyAudioToTmp(
+    File testFile = copyAudioToTmp(
       "test110.mp3",
-      new File("testFindAudioHeaderWhenTagSizeIsTooShortAndHasNullPadding.mp3")
+      "testFindAudioHeaderWhenTagSizeIsTooShortAndHasNullPadding.mp3"
     );
     MP3File mp3File = new MP3File(testFile);
     System.out.println("AudioHeaderBefore" + mp3File.getMP3AudioHeader());

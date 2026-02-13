@@ -152,9 +152,9 @@ public class FrameTSOPTest extends AbstractTestCase {
 
   @Test
   public void testSaveToFile() throws Exception {
-    File testFile = AbstractTestCase.copyAudioToTmp(
+    File testFile = copyAudioToTmp(
       "testV1.mp3",
-      new File("test1016.mp3")
+      "test1016.mp3"
     );
     MP3File mp3File = new MP3File(testFile);
 
@@ -175,9 +175,9 @@ public class FrameTSOPTest extends AbstractTestCase {
 
   @Test
   public void testSaveEmptyFrameToFile() throws Exception {
-    File testFile = AbstractTestCase.copyAudioToTmp(
+    File testFile = copyAudioToTmp(
       "testV1.mp3",
-      new File("test1004.mp3")
+      "test1004.mp3"
     );
     MP3File mp3File = new MP3File(testFile);
 
@@ -203,9 +203,9 @@ public class FrameTSOPTest extends AbstractTestCase {
 
   @Test
   public void testConvertV24ToV23() throws Exception {
-    File testFile = AbstractTestCase.copyAudioToTmp(
+    File testFile = copyAudioToTmp(
       "testV1.mp3",
-      new File("test1005.mp3")
+      "test1005.mp3"
     );
     MP3File mp3File = new MP3File(testFile);
 
@@ -233,9 +233,9 @@ public class FrameTSOPTest extends AbstractTestCase {
 
   @Test
   public void testConvertV24ToV22() throws Exception {
-    File testFile = AbstractTestCase.copyAudioToTmp(
+    File testFile = copyAudioToTmp(
       "testV1.mp3",
-      new File("test1006.mp3")
+      "test1006.mp3"
     );
     MP3File mp3File = new MP3File(testFile);
 
@@ -263,9 +263,9 @@ public class FrameTSOPTest extends AbstractTestCase {
 
   @Test
   public void testConvertV23ITunesToV22() throws Exception {
-    File testFile = AbstractTestCase.copyAudioToTmp(
+    File testFile = copyAudioToTmp(
       "testV1.mp3",
-      new File("test1007.mp3")
+      "test1007.mp3"
     );
     MP3File mp3File = new MP3File(testFile);
 
@@ -293,9 +293,9 @@ public class FrameTSOPTest extends AbstractTestCase {
 
   @Test
   public void testConvertV23MusicBrainzToV22() throws Exception {
-    File testFile = AbstractTestCase.copyAudioToTmp(
+    File testFile = copyAudioToTmp(
       "testV1.mp3",
-      new File("test1008.mp3")
+      "test1008.mp3"
     );
     MP3File mp3File = new MP3File(testFile);
 
@@ -323,9 +323,9 @@ public class FrameTSOPTest extends AbstractTestCase {
 
   @Test
   public void testConvertV22ToV24() throws Exception {
-    File testFile = AbstractTestCase.copyAudioToTmp(
+    File testFile = copyAudioToTmp(
       "testV1.mp3",
-      new File("test1009.mp3")
+      "test1009.mp3"
     );
     MP3File mp3File = new MP3File(testFile);
 

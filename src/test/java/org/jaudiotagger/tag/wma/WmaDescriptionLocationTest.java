@@ -43,6 +43,26 @@ public class WmaDescriptionLocationTest extends WmaTestCase {
   }
 
   /**
+   * Tests the locations of the metadata descriptor object and the extended metadata descriptor object, upon
+   * some deep ASF manipulations.
+   *
+   * @throws Exception On I/O Errors
+   */
+  @Test
+  public void testChunkLocations() throws Exception {
+    File testFile = prepareTestFile(null);
+    AudioFile read = AudioFileIO.read(testFile);
+    AudioFileIO.delete(read);
+    read.setTag(testTag);
+    read.commit();
+    checkExcpectations(testFile, true, true, false, false);
+    applyTag(testFile, false, false);
+    applyTag(testFile, false, true);
+    applyTag(testFile, true, false);
+    applyTag(testFile, true, true);
+  }
+
+  /**
    * Applies {@link #testTag} to the given audio file, and allows to specify at which location the
    * content description and extended content description are to be added.<br>
    *
@@ -130,25 +150,5 @@ public class WmaDescriptionLocationTest extends WmaTestCase {
       readHeader.getExtendedHeader() != null &&
         readHeader.getExtendedHeader().getExtendedContentDescription() != null
     );
-  }
-
-  /**
-   * Tests the locations of the metadata descriptor object and the extended metadata descriptor object, upon
-   * some deep ASF manipulations.
-   *
-   * @throws Exception On I/O Errors
-   */
-  @Test
-  public void testChunkLocations() throws Exception {
-    File testFile = prepareTestFile(null);
-    AudioFile read = AudioFileIO.read(testFile);
-    AudioFileIO.delete(read);
-    read.setTag(testTag);
-    read.commit();
-    checkExcpectations(testFile, true, true, false, false);
-    applyTag(testFile, false, false);
-    applyTag(testFile, false, true);
-    applyTag(testFile, true, false);
-    applyTag(testFile, true, true);
   }
 }

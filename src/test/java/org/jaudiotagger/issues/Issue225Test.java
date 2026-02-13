@@ -9,6 +9,7 @@ import org.jaudiotagger.audio.AudioFileIO;
 import org.jaudiotagger.tag.FieldKey;
 import org.jaudiotagger.tag.Tag;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.condition.EnabledIf;
 
 public class Issue225Test extends AbstractTestCase {
 
@@ -17,22 +18,17 @@ public class Issue225Test extends AbstractTestCase {
    * store the value the genre is mapped to we return null. This is correct behaviour.
    */
   @Test
+  @EnabledIf("executeAlsoWithMissingResources") // to be configured in AbsractBaseTestCase
   public void testReadInvalidGenre() {
     String genre = null;
 
-    File orig = new File("testdata", "test30.m4a");
-    if (!orig.isFile()) {
-      return;
-    }
-
     Exception exceptionCaught = null;
     try {
-      File testFile = AbstractTestCase.copyAudioToTmp("test30.m4a");
+      File testFile = copyAudioToTmp("test30.m4a");
       AudioFile f = AudioFileIO.read(testFile);
       Tag tag = f.getTag();
       genre = tag.getFirst(FieldKey.GENRE);
     } catch (Exception e) {
-      e.printStackTrace();
       exceptionCaught = e;
     }
     assertNull(exceptionCaught);

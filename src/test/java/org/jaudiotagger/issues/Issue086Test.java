@@ -27,9 +27,9 @@ public class Issue086Test extends AbstractTestCase {
         TagOptionSingleton.getInstance().setWavSaveOptions(
           WavSaveOptions.SAVE_BOTH
         );
-        File testFile = AbstractTestCase.copyAudioToTmp(
+        File testFile = copyAudioToTmp(
           "test126.wav",
-          new File("test126ID3WriteSyncByte.wav")
+          "test126ID3WriteSyncByte.wav"
         );
         AudioFile f = AudioFileIO.read(testFile);
         Tag tag = f.getTag();
@@ -51,7 +51,6 @@ public class Issue086Test extends AbstractTestCase {
         assertEquals("fred", tag.getFirst(FieldKey.ARTIST));
       }
     } catch (Exception e) {
-      e.printStackTrace();
       exceptionCaught = e;
     }
     assertNull(exceptionCaught);
