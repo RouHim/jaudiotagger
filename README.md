@@ -1,5 +1,9 @@
 This is a maintained fork of [Kaned1as/jaudiotagger](https://github.com/Kaned1as/jaudiotagger).
 
+# Status
+
+[![CI/CD](https://github.com/sknull/jaudiotagger/actions/workflows/build.yml/badge.svg)](https://github.com/sknull/jaudiotagger/actions/workflows/build.yml)
+
 # Jaudiotagger
 
 Jaudiotagger is a Java library for reading and writing audio metadata. It supports a wide range of audio formats,

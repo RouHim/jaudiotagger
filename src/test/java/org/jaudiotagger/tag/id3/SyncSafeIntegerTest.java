@@ -17,7 +17,7 @@ public class SyncSafeIntegerTest extends AbstractTestCase {
   public void testReadFileContainingLargeSyncSizedFrame() {
     Exception e = null;
     try {
-      File testFile = AbstractTestCase.copyAudioToTmp(
+      File testFile = prependAudioToTmp(
         "issue158.id3",
         "testV1.mp3"
       );

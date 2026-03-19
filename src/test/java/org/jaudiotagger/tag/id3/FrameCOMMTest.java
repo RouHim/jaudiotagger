@@ -18,7 +18,7 @@ public class FrameCOMMTest extends AbstractTestCase {
   public void testReadFileContainingInvalidSizeCOMMFrame() {
     Exception e = null;
     try {
-      File testFile = AbstractTestCase.copyAudioToTmp(
+      File testFile = prependAudioToTmp(
         "Issue77.id3",
         "testV1.mp3"
       );
@@ -37,7 +37,7 @@ public class FrameCOMMTest extends AbstractTestCase {
   public void testReadFileContainingInvalidTextEncodingCOMMFrame() {
     Exception e = null;
     try {
-      File testFile = AbstractTestCase.copyAudioToTmp(
+      File testFile = prependAudioToTmp(
         "Issue80.id3",
         "testV1.mp3"
       );
@@ -57,7 +57,7 @@ public class FrameCOMMTest extends AbstractTestCase {
     final String INVALID_LANG_CODE = "   ";
     Exception e = null;
     try {
-      File testFile = AbstractTestCase.copyAudioToTmp(
+      File testFile = prependAudioToTmp(
         "Issue108.id3",
         "testV1.mp3"
       );
@@ -72,7 +72,6 @@ public class FrameCOMMTest extends AbstractTestCase {
 
       assertEquals(INVALID_LANG_CODE, frameBody.getLanguage());
     } catch (Exception ie) {
-      ie.printStackTrace();
       e = ie;
     }
     assertNull(e);
@@ -89,7 +88,7 @@ public class FrameCOMMTest extends AbstractTestCase {
     Exception e = null;
     try {
       //Read tag
-      File testFile = AbstractTestCase.copyAudioToTmp(
+      File testFile = prependAudioToTmp(
         "Issue108.id3",
         "testV1.mp3"
       );
@@ -123,7 +122,6 @@ public class FrameCOMMTest extends AbstractTestCase {
       frameBody = (FrameBodyCOMM) commFrame.getBody();
       assertEquals(SAFE_SHORTER_LANG_CODE, frameBody.getLanguage());
     } catch (Exception ie) {
-      ie.printStackTrace();
       e = ie;
     }
     assertNull(e);

@@ -15,7 +15,7 @@ public class FileClosingTest extends AbstractTestCase {
   @Test
   public void testClosingFileAfterFailedRead() {
     Exception exception = null;
-    File testFile = AbstractTestCase.copyAudioToTmp("corrupt.mp3");
+    File testFile = copyAudioToTmp("corrupt.mp3");
 
     //Try and Read
     try {
@@ -38,7 +38,7 @@ public class FileClosingTest extends AbstractTestCase {
   @Test
   public void testClosingFileAfterSuccessfulRead() {
     Exception exception = null;
-    File testFile = AbstractTestCase.copyAudioToTmp("testV1.mp3");
+    File testFile = copyAudioToTmp("testV1.mp3");
 
     //Try and Read
     try {
@@ -61,7 +61,7 @@ public class FileClosingTest extends AbstractTestCase {
   @Test
   public void testClosingFileAfterFailedReadOnly() {
     Exception exception = null;
-    File testFile = AbstractTestCase.copyAudioToTmp("testV1.mp3");
+    File testFile = copyAudioToTmp("testV1.mp3");
 
     boolean readonly = testFile.setReadOnly();
     assertTrue(readonly);
@@ -77,6 +77,7 @@ public class FileClosingTest extends AbstractTestCase {
     assertNotNull(exception);
 
     //Should be able to deleteField
+    testFile.setWritable(true); // needs to be writeable to be deletable
     boolean deleted = testFile.delete();
     assertTrue(deleted);
   }

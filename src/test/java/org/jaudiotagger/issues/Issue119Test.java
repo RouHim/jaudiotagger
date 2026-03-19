@@ -21,20 +21,15 @@ public class Issue119Test extends AbstractTestCase {
   public void testWriteAiffWithOddLengthDataChunk() {
     Exception exceptionCaught = null;
 
-    File orig = new File("testdata", "test151.aif");
-    if (!orig.isFile()) {
-      System.err.println("Unable to test file - not available");
-      return;
-    }
 
-    File testFile = AbstractTestCase.copyAudioToTmp(
+    File testFile = copyAudioToTmp(
       "test151.aif",
-      new File("test151MissingByte.aiff")
+      "test151MissingByte.aiff"
     );
     try {
       AudioFile f = AudioFileIO.read(testFile);
       AudioHeader ah = f.getAudioHeader();
-      assertTrue(ah instanceof AiffAudioHeader);
+      assertInstanceOf(AiffAudioHeader.class, ah);
       Tag tag = f.getTag();
       System.out.println(tag);
       f.getTag().setField(FieldKey.ARTIST, "fred");
@@ -57,17 +52,12 @@ public class Issue119Test extends AbstractTestCase {
       WavSaveOptions.SAVE_ACTIVE
     );
 
-    File orig = new File("testdata", "test153.wav");
-    if (!orig.isFile()) {
-      System.err.println("Unable to test file - not available");
-      return;
-    }
 
     Exception exceptionCaught = null;
     try {
-      File testFile = AbstractTestCase.copyAudioToTmp(
+      File testFile = copyAudioToTmp(
         "test153.wav",
-        new File("test153_odd_data_length_info.wav")
+        "test153_odd_data_length_info.wav"
       );
       AudioFile f = AudioFileIO.read(testFile);
       System.out.println(f.getAudioHeader());
@@ -80,7 +70,6 @@ public class Issue119Test extends AbstractTestCase {
       System.out.println(tag);
       assertEquals("freddy", tag.getFirst(FieldKey.ARTIST));
     } catch (Exception e) {
-      e.printStackTrace();
       exceptionCaught = e;
     }
     assertNull(exceptionCaught);
@@ -93,17 +82,12 @@ public class Issue119Test extends AbstractTestCase {
       WavSaveOptions.SAVE_ACTIVE
     );
 
-    File orig = new File("testdata", "test153.wav");
-    if (!orig.isFile()) {
-      System.err.println("Unable to test file - not available");
-      return;
-    }
 
     Exception exceptionCaught = null;
     try {
-      File testFile = AbstractTestCase.copyAudioToTmp(
+      File testFile = copyAudioToTmp(
         "test153.wav",
-        new File("test153_odd_data_length_id3.wav")
+        "test153_odd_data_length_id3.wav"
       );
       AudioFile f = AudioFileIO.read(testFile);
       System.out.println(f.getAudioHeader());
@@ -116,7 +100,6 @@ public class Issue119Test extends AbstractTestCase {
       System.out.println(tag);
       assertEquals("freddy", tag.getFirst(FieldKey.ARTIST));
     } catch (Exception e) {
-      e.printStackTrace();
       exceptionCaught = e;
     }
     assertNull(exceptionCaught);
@@ -129,17 +112,12 @@ public class Issue119Test extends AbstractTestCase {
       WavSaveOptions.SAVE_BOTH_AND_SYNC
     );
 
-    File orig = new File("testdata", "test153.wav");
-    if (!orig.isFile()) {
-      System.err.println("Unable to test file - not available");
-      return;
-    }
 
     Exception exceptionCaught = null;
     try {
-      File testFile = AbstractTestCase.copyAudioToTmp(
+      File testFile = copyAudioToTmp(
         "test153.wav",
-        new File("test153_odd_data_length_id3_and_info.wav")
+        "test153_odd_data_length_id3_and_info.wav"
       );
       AudioFile f = AudioFileIO.read(testFile);
       System.out.println(f.getAudioHeader());
@@ -152,7 +130,6 @@ public class Issue119Test extends AbstractTestCase {
       System.out.println(tag);
       assertEquals("freddy", tag.getFirst(FieldKey.ARTIST));
     } catch (Exception e) {
-      e.printStackTrace();
       exceptionCaught = e;
     }
     assertNull(exceptionCaught);

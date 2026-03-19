@@ -6,7 +6,8 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.nio.charset.StandardCharsets;
 import javax.imageio.ImageIO;
-import org.jaudiotagger.AbstractTestCase;
+
+import org.jaudiotagger.AbstractBaseTestCase;
 import org.jaudiotagger.audio.AudioFile;
 import org.jaudiotagger.audio.AudioFileIO;
 import org.jaudiotagger.audio.flac.metadatablock.MetadataBlockDataPicture;
@@ -14,14 +15,15 @@ import org.jaudiotagger.tag.FieldKey;
 import org.jaudiotagger.tag.flac.FlacTag;
 import org.jaudiotagger.tag.reference.PictureTypes;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.condition.EnabledIf;
 
-public class FlacHeaderTest {
+public class FlacHeaderTest extends AbstractBaseTestCase {
 
   @Test
   public void testReadFileWithVorbisComment() {
     Exception exceptionCaught = null;
     try {
-      File testFile = AbstractTestCase.copyAudioToTmp("test.flac");
+      File testFile = copyAudioToTmp("test.flac");
       AudioFile f = AudioFileIO.read(testFile);
       System.out.println(f.getAudioHeader());
 
@@ -31,7 +33,7 @@ public class FlacHeaderTest {
       assertEquals("44100", f.getAudioHeader().getSampleRate());
       assertEquals(5, f.getAudioHeader().getTrackLength());
 
-      assertTrue(f.getTag() instanceof FlacTag);
+      assertInstanceOf(FlacTag.class, f.getTag());
       FlacTag tag = (FlacTag) f.getTag();
       FlacInfoReader infoReader = new FlacInfoReader();
       assertEquals(6, infoReader.countMetaBlocks(f.getFile()));
@@ -105,13 +107,12 @@ public class FlacHeaderTest {
 
       //Can we actually createField Buffered Image from the url  of course remember url is relative to the audio file
       //not where we run the program from
-      File file = new File("testdatatmp", image.getImageUrl());
+      File file = fileResource("testdatatmp", image.getImageUrl());
       assertTrue(file.exists());
       BufferedImage bi = ImageIO.read(file);
       assertEquals(200, bi.getWidth());
       assertEquals(200, bi.getHeight());
     } catch (Exception e) {
-      e.printStackTrace();
       exceptionCaught = e;
     }
     assertNull(exceptionCaught);
@@ -124,7 +125,7 @@ public class FlacHeaderTest {
   public void testReadFileWithOnlyVorbisCommentEncoder() {
     Exception exceptionCaught = null;
     try {
-      File testFile = AbstractTestCase.copyAudioToTmp("test2.flac");
+      File testFile = copyAudioToTmp("test2.flac");
       AudioFile f = AudioFileIO.read(testFile);
       System.out.println(f.getAudioHeader());
 
@@ -134,30 +135,25 @@ public class FlacHeaderTest {
       assertEquals("44100", f.getAudioHeader().getSampleRate());
       assertEquals(5, f.getAudioHeader().getTrackLength());
 
-      assertTrue(f.getTag() instanceof FlacTag);
+      assertInstanceOf(FlacTag.class, f.getTag());
       FlacTag tag = (FlacTag) f.getTag();
       FlacInfoReader infoReader = new FlacInfoReader();
       assertEquals(4, infoReader.countMetaBlocks(f.getFile()));
       //No Images
       assertEquals(0, tag.getImages().size());
     } catch (Exception e) {
-      e.printStackTrace();
       exceptionCaught = e;
     }
     assertNull(exceptionCaught);
   }
 
   @Test
+  @EnabledIf("executeAlsoWithMissingResources") // to be configured in AbsractBaseTestCase
   public void testReadFile2() {
-    File orig = new File("testdata", "test102.flac");
-    if (!orig.isFile()) {
-      System.err.println("Unable to test file - not available");
-      return;
-    }
 
     Exception exceptionCaught = null;
     try {
-      File testFile = AbstractTestCase.copyAudioToTmp("test102.flac");
+      File testFile = copyAudioToTmp("test102.flac");
       AudioFile f = AudioFileIO.read(testFile);
       System.out.println(f.getAudioHeader());
 
@@ -167,30 +163,25 @@ public class FlacHeaderTest {
       assertEquals("44100", f.getAudioHeader().getSampleRate());
       assertEquals(10, f.getAudioHeader().getTrackLength());
 
-      assertTrue(f.getTag() instanceof FlacTag);
+      assertInstanceOf(FlacTag.class, f.getTag());
       FlacTag tag = (FlacTag) f.getTag();
       FlacInfoReader infoReader = new FlacInfoReader();
       assertEquals(2, infoReader.countMetaBlocks(f.getFile()));
       //No Images
       assertEquals(0, tag.getImages().size());
     } catch (Exception e) {
-      e.printStackTrace();
       exceptionCaught = e;
     }
     assertNull(exceptionCaught);
   }
 
   @Test
+  @EnabledIf("executeAlsoWithMissingResources") // to be configured in AbsractBaseTestCase
   public void testReadWithID3Header() {
-    File orig = new File("testdata", "test158.flac");
-    if (!orig.isFile()) {
-      System.err.println("Unable to test file - not available");
-      return;
-    }
 
     Exception exceptionCaught = null;
     try {
-      File testFile = AbstractTestCase.copyAudioToTmp("test158.flac");
+      File testFile = copyAudioToTmp("test158.flac");
       AudioFile f = AudioFileIO.read(testFile);
       System.out.println(f.getAudioHeader());
 
@@ -200,32 +191,27 @@ public class FlacHeaderTest {
       assertEquals("44100", f.getAudioHeader().getSampleRate());
       assertEquals(289, f.getAudioHeader().getTrackLength());
 
-      assertTrue(f.getTag() instanceof FlacTag);
+      assertInstanceOf(FlacTag.class, f.getTag());
       FlacTag tag = (FlacTag) f.getTag();
       FlacInfoReader infoReader = new FlacInfoReader();
       assertEquals(5, infoReader.countMetaBlocks(f.getFile()));
       //No Images
       assertEquals(1, tag.getImages().size());
     } catch (Exception e) {
-      e.printStackTrace();
       exceptionCaught = e;
     }
     assertNull(exceptionCaught);
   }
 
   @Test
+  @EnabledIf("executeAlsoWithMissingResources") // to be configured in AbsractBaseTestCase
   public void testReadWriteWithID3Header() {
-    File orig = new File("testdata", "test158.flac");
-    if (!orig.isFile()) {
-      System.err.println("Unable to test file - not available");
-      return;
-    }
 
     Exception exceptionCaught = null;
     try {
-      File testFile = AbstractTestCase.copyAudioToTmp(
+      File testFile = copyAudioToTmp(
         "test158.flac",
-        new File("test158write.flac")
+        "test158write.flac"
       );
       AudioFile f = AudioFileIO.read(testFile);
       System.out.println(f);
@@ -237,7 +223,6 @@ public class FlacHeaderTest {
       f = AudioFileIO.read(testFile);
       System.out.println(f);
     } catch (Exception e) {
-      e.printStackTrace();
       exceptionCaught = e;
     }
     assertNull(exceptionCaught);

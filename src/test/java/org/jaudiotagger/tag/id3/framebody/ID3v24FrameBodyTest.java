@@ -9,9 +9,7 @@ import org.slf4j.LoggerFactory;
 
 public class ID3v24FrameBodyTest {
 
-  private static final Logger log = LoggerFactory.getLogger(
-    ID3v24FrameBodyTest.class
-  );
+  protected final Logger log = LoggerFactory.getLogger(getClass());
 
   @Test
   public void testBodyImplementationsAreComplete() throws Exception {

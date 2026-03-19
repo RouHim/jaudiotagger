@@ -1,8 +1,5 @@
 package org.jaudiotagger.issues;
 
-import static org.junit.jupiter.api.Assertions.assertNull;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-
 import java.io.File;
 import org.jaudiotagger.AbstractTestCase;
 import org.jaudiotagger.audio.AudioFile;
@@ -12,6 +9,8 @@ import org.jaudiotagger.tag.id3.*;
 import org.jaudiotagger.tag.id3.framebody.FrameBodyTRDA;
 import org.jaudiotagger.tag.reference.ID3V2Version;
 import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 public class Issue435Test extends AbstractTestCase {
 
@@ -23,7 +22,7 @@ public class Issue435Test extends AbstractTestCase {
       FrameBodyTRDA fb = new FrameBodyTRDA((byte) 0, "2008");
       frame.setBody(fb);
 
-      File testFile = AbstractTestCase.copyAudioToTmp("testV25.mp3");
+      File testFile = copyAudioToTmp("testV25.mp3");
       AudioFile af = AudioFileIO.read(testFile);
       TagOptionSingleton.getInstance().setToDefault();
       TagOptionSingleton.getInstance().setID3V2Version(ID3V2Version.ID3_V23);
@@ -36,10 +35,8 @@ public class Issue435Test extends AbstractTestCase {
       TagOptionSingleton.getInstance().setID3V2Version(ID3V2Version.ID3_V24);
       af.getTagAndConvertOrCreateAndSetDefault();
       af.commit();
-      assertTrue(af.getTag() instanceof ID3v24Tag);
-      assertTrue(
-        ((ID3v24Tag) af.getTag()).getFrame("TDRC") instanceof AbstractID3v2Frame
-      );
+      assertInstanceOf(ID3v24Tag.class, af.getTag());
+      assertInstanceOf(AbstractID3v2Frame.class, ((ID3v24Tag) af.getTag()).getFrame("TDRC"));
 
       TagOptionSingleton.getInstance().setToDefault();
     } catch (Exception ex) {

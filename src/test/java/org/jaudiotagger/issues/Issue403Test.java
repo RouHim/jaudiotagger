@@ -1,8 +1,5 @@
 package org.jaudiotagger.issues;
 
-import static org.junit.jupiter.api.Assertions.assertNull;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-
 import org.jaudiotagger.AbstractTestCase;
 import org.jaudiotagger.tag.FieldKey;
 import org.jaudiotagger.tag.KeyNotFoundException;
@@ -10,6 +7,8 @@ import org.jaudiotagger.tag.Tag;
 import org.jaudiotagger.tag.id3.ID3v11Tag;
 import org.jaudiotagger.tag.id3.ID3v1Tag;
 import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 public class Issue403Test extends AbstractTestCase {
 
@@ -21,9 +20,8 @@ public class Issue403Test extends AbstractTestCase {
       v1Tag.setField(FieldKey.DISC_NO, "1");
     } catch (Exception e) {
       caught = e;
-      e.printStackTrace();
     }
-    assertTrue(caught instanceof KeyNotFoundException);
+    assertInstanceOf(KeyNotFoundException.class, caught);
   }
 
   @Test
@@ -34,9 +32,8 @@ public class Issue403Test extends AbstractTestCase {
       v1Tag.addField(FieldKey.DISC_NO, "1");
     } catch (Exception e) {
       caught = e;
-      e.printStackTrace();
     }
-    assertTrue(caught instanceof KeyNotFoundException);
+    assertInstanceOf(KeyNotFoundException.class, caught);
   }
 
   @Test
@@ -47,9 +44,8 @@ public class Issue403Test extends AbstractTestCase {
       v1Tag.createField(FieldKey.DISC_NO, "1");
     } catch (Exception e) {
       caught = e;
-      e.printStackTrace();
     }
-    assertTrue(caught instanceof KeyNotFoundException);
+    assertInstanceOf(KeyNotFoundException.class, caught);
   }
 
   @Test
@@ -60,7 +56,6 @@ public class Issue403Test extends AbstractTestCase {
       v1Tag.deleteField(FieldKey.DISC_NO);
     } catch (Exception e) {
       caught = e;
-      e.printStackTrace();
     }
     //No need to throw exception because no error ocurred
     assertNull(caught);
@@ -74,9 +69,8 @@ public class Issue403Test extends AbstractTestCase {
       v1Tag.setField(FieldKey.DISC_NO, "1");
     } catch (Exception e) {
       caught = e;
-      e.printStackTrace();
     }
-    assertTrue(caught instanceof KeyNotFoundException);
+    assertInstanceOf(KeyNotFoundException.class, caught);
   }
 
   @Test
@@ -87,9 +81,8 @@ public class Issue403Test extends AbstractTestCase {
       v1Tag.addField(FieldKey.DISC_NO, "1");
     } catch (Exception e) {
       caught = e;
-      e.printStackTrace();
     }
-    assertTrue(caught instanceof KeyNotFoundException);
+    assertInstanceOf(KeyNotFoundException.class, caught);
   }
 
   @Test
@@ -100,9 +93,8 @@ public class Issue403Test extends AbstractTestCase {
       v1Tag.createField(FieldKey.DISC_NO, "1");
     } catch (Exception e) {
       caught = e;
-      e.printStackTrace();
     }
-    assertTrue(caught instanceof KeyNotFoundException);
+    assertInstanceOf(KeyNotFoundException.class, caught);
   }
 
   @Test
@@ -113,7 +105,6 @@ public class Issue403Test extends AbstractTestCase {
       v1Tag.deleteField(FieldKey.DISC_NO);
     } catch (Exception e) {
       caught = e;
-      e.printStackTrace();
     }
     //No need to throw exception because no error ocurred
     assertNull(caught);

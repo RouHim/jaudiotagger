@@ -12,6 +12,7 @@ import org.jaudiotagger.tag.id3.ID3v22Tag;
 import org.jaudiotagger.tag.id3.ID3v23Tag;
 import org.jaudiotagger.tag.id3.ID3v24Tag;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.condition.EnabledIf;
 
 public class Issue233Test extends AbstractTestCase {
 
@@ -19,7 +20,7 @@ public class Issue233Test extends AbstractTestCase {
   public void testDeletingID3v2Tag() {
     Exception exceptionCaught = null;
     try {
-      File testFile = AbstractTestCase.copyAudioToTmp("testV1.mp3");
+      File testFile = copyAudioToTmp("testV1.mp3");
 
       //No Tags
       MP3File mp3File = new MP3File(testFile);
@@ -71,34 +72,25 @@ public class Issue233Test extends AbstractTestCase {
   }
 
   @Test
+  @EnabledIf("executeAlsoWithMissingResources") // to be configured in AbsractBaseTestCase
   public void testDeletingID3v1Tag() {
-    File orig = new File("testdata", "test32.mp3");
-    if (!orig.isFile()) {
-      return;
-    }
-
     Exception exceptionCaught = null;
     try {
-      File testFile = AbstractTestCase.copyAudioToTmp("test32.mp3");
+      File testFile = copyAudioToTmp("test32.mp3");
       AudioFile af = AudioFileIO.read(testFile);
       AudioFileIO.delete(af);
     } catch (Exception e) {
       exceptionCaught = e;
-      e.printStackTrace();
     }
     assertNull(exceptionCaught);
   }
 
   @Test
+  @EnabledIf("executeAlsoWithMissingResources") // to be configured in AbsractBaseTestCase
   public void testReadingID3v1Tag() {
-    File orig = new File("testdata", "test32.mp3");
-    if (!orig.isFile()) {
-      return;
-    }
-
     Exception exceptionCaught = null;
     try {
-      File testFile = AbstractTestCase.copyAudioToTmp("test32.mp3");
+      File testFile = copyAudioToTmp("test32.mp3");
       AudioFile af = AudioFileIO.read(testFile);
       MP3File mf = (MP3File) af;
       assertEquals("The Ides Of March", af.getTag().getFirst(FieldKey.TITLE));
@@ -107,7 +99,6 @@ public class Issue233Test extends AbstractTestCase {
       assertEquals("", af.getTag().getFirst(FieldKey.ARTIST));
     } catch (Exception e) {
       exceptionCaught = e;
-      e.printStackTrace();
     }
     assertNull(exceptionCaught);
   }

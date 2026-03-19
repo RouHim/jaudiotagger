@@ -28,9 +28,9 @@ public class Issue345Test extends AbstractTestCase {
     File testFile = null;
     Exception exceptionCaught = null;
     try {
-      testFile = AbstractTestCase.copyAudioToTmp(
+      testFile = copyAudioToTmp(
         "testV1.mp3",
-        new File("testWriteFieldsToMp3ID3v24.mp3")
+        "testWriteFieldsToMp3ID3v24.mp3"
       );
 
       //Read File okay
@@ -65,8 +65,8 @@ public class Issue345Test extends AbstractTestCase {
       );
       {
         TagField tagField = af.getTag().getFirstField(FieldKey.RATING);
-        assertTrue(tagField instanceof ID3v24Frame);
-        assertTrue(((ID3v24Frame) tagField).getBody() instanceof FrameBodyPOPM);
+        assertInstanceOf(ID3v24Frame.class, tagField);
+        assertInstanceOf(FrameBodyPOPM.class, ((ID3v24Frame) tagField).getBody());
       }
       af.commit();
       af = AudioFileIO.read(testFile);
@@ -79,8 +79,8 @@ public class Issue345Test extends AbstractTestCase {
       assertEquals("arrangervalue", af.getTag().getFirst(FieldKey.ARRANGER));
       {
         TagField tagField = af.getTag().getFirstField(FieldKey.RATING);
-        assertTrue(tagField instanceof ID3v24Frame);
-        assertTrue(((ID3v24Frame) tagField).getBody() instanceof FrameBodyPOPM);
+        assertInstanceOf(ID3v24Frame.class, tagField);
+        assertInstanceOf(FrameBodyPOPM.class, ((ID3v24Frame) tagField).getBody());
       }
 
       List<TagField> fields = tag.getFields(FieldKey.PRODUCER);
@@ -114,7 +114,6 @@ public class Issue345Test extends AbstractTestCase {
       assertEquals("", af.getTag().getFirst(FieldKey.ENGINEER));
       assertEquals("", af.getTag().getFirst(FieldKey.DJMIXER));
     } catch (Exception e) {
-      e.printStackTrace();
       exceptionCaught = e;
     }
 
@@ -129,9 +128,9 @@ public class Issue345Test extends AbstractTestCase {
     File testFile = null;
     Exception exceptionCaught = null;
     try {
-      testFile = AbstractTestCase.copyAudioToTmp(
+      testFile = copyAudioToTmp(
         "testV1.mp3",
-        new File("testWriteFieldsToMp3ID3v23.mp3")
+        "testWriteFieldsToMp3ID3v23.mp3"
       );
 
       AudioFile af = AudioFileIO.read(testFile);
@@ -201,7 +200,6 @@ public class Issue345Test extends AbstractTestCase {
       assertEquals("", af.getTag().getFirst(FieldKey.ENGINEER));
       assertEquals("", af.getTag().getFirst(FieldKey.DJMIXER));
     } catch (Exception e) {
-      e.printStackTrace();
       exceptionCaught = e;
     }
 
@@ -216,9 +214,9 @@ public class Issue345Test extends AbstractTestCase {
     File testFile = null;
     Exception exceptionCaught = null;
     try {
-      testFile = AbstractTestCase.copyAudioToTmp(
+      testFile = copyAudioToTmp(
         "testV1.mp3",
-        new File("testWriteFieldsToMp3ID3v22.mp3")
+        "testWriteFieldsToMp3ID3v22.mp3"
       );
 
       //Read File okay
@@ -293,7 +291,6 @@ public class Issue345Test extends AbstractTestCase {
       assertEquals("", tag.getFirst(FieldKey.ENGINEER));
       assertEquals("", tag.getFirst(FieldKey.DJMIXER));
     } catch (Exception e) {
-      e.printStackTrace();
       exceptionCaught = e;
     }
 
@@ -308,7 +305,7 @@ public class Issue345Test extends AbstractTestCase {
     File testFile = null;
     Exception exceptionCaught = null;
     try {
-      testFile = AbstractTestCase.copyAudioToTmp("test.ogg");
+      testFile = copyAudioToTmp("test.ogg");
 
       //Read File okay
       AudioFile af = AudioFileIO.read(testFile);
@@ -344,7 +341,6 @@ public class Issue345Test extends AbstractTestCase {
       assertEquals("producervalue", af.getTag().getFirst(FieldKey.PRODUCER));
       assertEquals("arrangervalue", af.getTag().getFirst(FieldKey.ARRANGER));
     } catch (Exception e) {
-      e.printStackTrace();
       exceptionCaught = e;
     }
 
@@ -359,7 +355,7 @@ public class Issue345Test extends AbstractTestCase {
     File testFile = null;
     Exception exceptionCaught = null;
     try {
-      testFile = AbstractTestCase.copyAudioToTmp("test.flac");
+      testFile = copyAudioToTmp("test.flac");
 
       //Read File okay
       AudioFile af = AudioFileIO.read(testFile);
@@ -386,7 +382,6 @@ public class Issue345Test extends AbstractTestCase {
       assertEquals("producervalue", af.getTag().getFirst(FieldKey.PRODUCER));
       assertEquals("arrangervalue", af.getTag().getFirst(FieldKey.ARRANGER));
     } catch (Exception e) {
-      e.printStackTrace();
       exceptionCaught = e;
     }
 
@@ -401,7 +396,7 @@ public class Issue345Test extends AbstractTestCase {
     File testFile = null;
     Exception exceptionCaught = null;
     try {
-      testFile = AbstractTestCase.copyAudioToTmp("test1.wma");
+      testFile = copyAudioToTmp("test1.wma");
 
       //Read File okay
       AudioFile af = AudioFileIO.read(testFile);
@@ -437,7 +432,6 @@ public class Issue345Test extends AbstractTestCase {
       assertEquals("producervalue", af.getTag().getFirst(FieldKey.PRODUCER));
       assertEquals("arrangervalue", af.getTag().getFirst(FieldKey.ARRANGER));
     } catch (Exception e) {
-      e.printStackTrace();
       exceptionCaught = e;
     }
 
@@ -452,7 +446,7 @@ public class Issue345Test extends AbstractTestCase {
     File testFile = null;
     Exception exceptionCaught = null;
     try {
-      testFile = AbstractTestCase.copyAudioToTmp("test.m4a");
+      testFile = copyAudioToTmp("test.m4a");
 
       //Read File okay
       AudioFile af = AudioFileIO.read(testFile);
@@ -488,7 +482,6 @@ public class Issue345Test extends AbstractTestCase {
       assertEquals("producervalue", af.getTag().getFirst(FieldKey.PRODUCER));
       assertEquals("arrangervalue", af.getTag().getFirst(FieldKey.ARRANGER));
     } catch (Exception e) {
-      e.printStackTrace();
       exceptionCaught = e;
     }
 
