@@ -3,7 +3,8 @@ package org.jaudiotagger.tag.id3;
 import static org.junit.jupiter.api.Assertions.*;
 
 import java.io.File;
-import org.jaudiotagger.AbstractTestCase;
+
+import org.jaudiotagger.AbstractBaseTestCase;
 import org.jaudiotagger.audio.mp3.MP3File;
 import org.jaudiotagger.tag.FieldKey;
 import org.jaudiotagger.tag.TagOptionSingleton;
@@ -11,7 +12,7 @@ import org.jaudiotagger.tag.TagTextField;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-public class ID3v11TagTest {
+public class ID3v11TagTest extends AbstractBaseTestCase {
 
   public static final String ARTIST = "artist";
   public static final String ALBUM = "album";
@@ -54,7 +55,8 @@ public class ID3v11TagTest {
   /**
    *
    */
-  protected void tearDown() {}
+  protected void tearDown() {
+  }
 
   /**
    *
@@ -65,7 +67,8 @@ public class ID3v11TagTest {
 
   /////////////////////////////////////////////////////////////////////////
   // Tests
-  /////////////////////////////////////////////////////////////////////////
+
+  /// //////////////////////////////////////////////////////////////////////
   @Test
   public void testCreateID3v11Tag() throws Exception {
     ID3v11Tag v11Tag = new ID3v11Tag();
@@ -176,8 +179,8 @@ public class ID3v11TagTest {
     assertEquals(
       "artist",
       ((TagTextField) (v1Tag
-            .getFields(FieldKey.ARTIST.name())
-            .get(0))).getContent()
+        .getFields(FieldKey.ARTIST.name())
+        .get(0))).getContent()
     );
 
     v1Tag.setField(new ID3v1TagField(FieldKey.ALBUM.name(), "album"));
@@ -301,12 +304,12 @@ public class ID3v11TagTest {
     } catch (Exception e) {
       exceptionCaught = e;
     }
-    assertTrue(exceptionCaught instanceof IllegalArgumentException);
+    assertInstanceOf(IllegalArgumentException.class, exceptionCaught);
   }
 
   @Test
   public void testSaveID3v11TagToFile() throws Exception {
-    File testFile = AbstractTestCase.copyAudioToTmp("testV1.mp3");
+    File testFile = copyAudioToTmp("testV1.mp3");
     MP3File mp3File = new MP3File(testFile);
 
     //Create v11 Tag

@@ -8,6 +8,7 @@ import org.jaudiotagger.audio.AudioFile;
 import org.jaudiotagger.audio.AudioFileIO;
 import org.jaudiotagger.audio.flac.FlacAudioHeader;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.condition.EnabledIf;
 
 public class Issue428Test extends AbstractTestCase {
 
@@ -15,9 +16,9 @@ public class Issue428Test extends AbstractTestCase {
   public void testGetMD5ForFlac() {
     Throwable e = null;
     try {
-      File testFile = AbstractTestCase.copyAudioToTmp("test.flac");
+      File testFile = copyAudioToTmp("test.flac");
       AudioFile af = AudioFileIO.read(testFile);
-      assertTrue(af.getAudioHeader() instanceof FlacAudioHeader);
+      assertInstanceOf(FlacAudioHeader.class, af.getAudioHeader());
       assertEquals(
         32,
         ((FlacAudioHeader) af.getAudioHeader()).getMd5().length()
@@ -33,18 +34,14 @@ public class Issue428Test extends AbstractTestCase {
   }
 
   @Test
+  @EnabledIf("executeAlsoWithMissingResources") // to be configured in AbsractBaseTestCase
   public void testGetMD5ForFlac2() {
-    File orig = new File("testdata", "test102.flac");
-    if (!orig.isFile()) {
-      System.err.println("Unable to test file - not available");
-      return;
-    }
 
     Throwable e = null;
     try {
-      File testFile = AbstractTestCase.copyAudioToTmp("test102.flac");
+      File testFile = copyAudioToTmp("test102.flac");
       AudioFile af = AudioFileIO.read(testFile);
-      assertTrue(af.getAudioHeader() instanceof FlacAudioHeader);
+      assertInstanceOf(FlacAudioHeader.class, af.getAudioHeader());
       assertEquals(
         32,
         ((FlacAudioHeader) af.getAudioHeader()).getMd5().length()

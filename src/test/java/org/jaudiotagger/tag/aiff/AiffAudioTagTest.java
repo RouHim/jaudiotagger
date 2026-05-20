@@ -26,32 +26,28 @@ import org.jaudiotagger.tag.id3.ID3v22Tag;
 import org.jaudiotagger.tag.id3.ID3v23Tag;
 import org.jaudiotagger.tag.reference.ID3V2Version;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.condition.EnabledIf;
 
-public class AiffAudioTagTest {
+public class AiffAudioTagTest extends FilePermissionsTest {
 
   @Test
   public void testReadAiff1() {
     Exception exceptionCaught = null;
 
     TagOptionSingleton.getInstance().setID3V2Version(ID3V2Version.ID3_V23);
-    File orig = new File("testdata", "test119.aif");
-    if (!orig.isFile()) {
-      System.err.println("Unable to test file - not available");
-      return;
-    }
 
-    File testFile = AbstractTestCase.copyAudioToTmp(
+    File testFile = copyAudioToTmp(
       "test119.aif",
-      new File("test119ReadAiffWithoutTag.aif")
+      "test119ReadAiffWithoutTag.aif"
     );
     try {
       AudioFile f = AudioFileIO.read(testFile);
       AudioHeader ah = f.getAudioHeader();
-      assertTrue(ah instanceof AiffAudioHeader);
+      assertInstanceOf(AiffAudioHeader.class, ah);
       Tag tag = f.getTag();
       System.out.println(tag);
-      assertTrue(tag instanceof AiffTag);
-      assertTrue(((AiffTag) tag).getID3Tag() instanceof ID3v23Tag);
+      assertInstanceOf(AiffTag.class, tag);
+      assertInstanceOf(ID3v23Tag.class, ((AiffTag) tag).getID3Tag());
       assertFalse(((AiffTag) tag).isExistingId3Tag());
       assertEquals(0L, ((AiffTag) tag).getSizeOfID3TagIncludingChunkHeader());
       assertEquals(0L, ((AiffTag) tag).getSizeOfID3TagOnly());
@@ -67,25 +63,20 @@ public class AiffAudioTagTest {
   public void testReadAiffChangeDefault() {
     Exception exceptionCaught = null;
 
-    File orig = new File("testdata", "test119.aif");
-    if (!orig.isFile()) {
-      System.err.println("Unable to test file - not available");
-      return;
-    }
 
-    File testFile = AbstractTestCase.copyAudioToTmp(
+    File testFile = copyAudioToTmp(
       "test119.aif",
-      new File("test119ReadAiffWithoutTag.aif")
+      "test119ReadAiffWithoutTag.aif"
     );
     try {
       TagOptionSingleton.getInstance().setID3V2Version(ID3V2Version.ID3_V22);
       AudioFile f = AudioFileIO.read(testFile);
       AudioHeader ah = f.getAudioHeader();
-      assertTrue(ah instanceof AiffAudioHeader);
+      assertInstanceOf(AiffAudioHeader.class, ah);
       Tag tag = f.getTag();
       System.out.println(tag);
-      assertTrue(tag instanceof AiffTag);
-      assertTrue(((AiffTag) tag).getID3Tag() instanceof ID3v22Tag);
+      assertInstanceOf(AiffTag.class, tag);
+      assertInstanceOf(ID3v22Tag.class, ((AiffTag) tag).getID3Tag());
       assertFalse(((AiffTag) tag).isExistingId3Tag());
       assertEquals(0L, ((AiffTag) tag).getSizeOfID3TagIncludingChunkHeader());
       assertEquals(0L, ((AiffTag) tag).getSizeOfID3TagOnly());
@@ -101,24 +92,19 @@ public class AiffAudioTagTest {
   public void testReadAiff2() {
     Exception exceptionCaught = null;
 
-    File orig = new File("testdata", "test120.aif");
-    if (!orig.isFile()) {
-      System.err.println("Unable to test file - not available");
-      return;
-    }
 
-    File testFile = AbstractTestCase.copyAudioToTmp(
+    File testFile = copyAudioToTmp(
       "test120.aif",
-      new File("test120ReadAiffWithTag.aif")
+      "test120ReadAiffWithTag.aif"
     );
     try {
       AudioFile f = AudioFileIO.read(testFile);
       AudioHeader ah = f.getAudioHeader();
-      assertTrue(ah instanceof AiffAudioHeader);
+      assertInstanceOf(AiffAudioHeader.class, ah);
       Tag tag = f.getTag();
       System.out.println(tag);
       assertNotNull(tag);
-      assertTrue(tag instanceof AiffTag);
+      assertInstanceOf(AiffTag.class, tag);
       assertTrue(((AiffTag) tag).isExistingId3Tag());
       assertEquals(10, tag.getFieldCount());
       assertEquals("Gary McGath", tag.getFirst(FieldKey.ARTIST));
@@ -147,20 +133,15 @@ public class AiffAudioTagTest {
   public void testReadAiff3() {
     Exception exceptionCaught = null;
 
-    File orig = new File("testdata", "test121.aif");
-    if (!orig.isFile()) {
-      System.err.println("Unable to test file - not available");
-      return;
-    }
 
-    File testFile = AbstractTestCase.copyAudioToTmp(
+    File testFile = copyAudioToTmp(
       "test121.aif",
-      new File("test121ReadAiffWithoutItunesTag.aif")
+      "test121ReadAiffWithoutItunesTag.aif"
     );
     try {
       AudioFile f = AudioFileIO.read(testFile);
       AudioHeader ah = f.getAudioHeader();
-      assertTrue(ah instanceof AiffAudioHeader);
+      assertInstanceOf(AiffAudioHeader.class, ah);
       Tag tag = f.getTag();
       System.out.println(ah);
       System.out.println(ah.getBitRate());
@@ -173,7 +154,7 @@ public class AiffAudioTagTest {
       System.out.println(tag);
       assertNotNull(tag);
       assertTrue(((AiffTag) tag).isExistingId3Tag());
-      assertTrue(tag instanceof AiffTag);
+      assertInstanceOf(AiffTag.class, tag);
       assertEquals(6, tag.getFieldCount());
       assertEquals("Coldplay", tag.getFirst(FieldKey.ARTIST));
       assertEquals("A Rush Of Blood To The Head", tag.getFirst(FieldKey.ALBUM));
@@ -198,20 +179,15 @@ public class AiffAudioTagTest {
   public void testReadAiff4() {
     Exception exceptionCaught = null;
 
-    File orig = new File("testdata", "test124.aif");
-    if (!orig.isFile()) {
-      System.err.println("Unable to test file - not available");
-      return;
-    }
 
-    File testFile = AbstractTestCase.copyAudioToTmp(
+    File testFile = copyAudioToTmp(
       "test124.aif",
-      new File("test124ReadAiffWithoutItunesTag.aif")
+      "test124ReadAiffWithoutItunesTag.aif"
     );
     try {
       AudioFile f = AudioFileIO.read(testFile);
       AudioHeader ah = f.getAudioHeader();
-      assertTrue(ah instanceof AiffAudioHeader);
+      assertInstanceOf(AiffAudioHeader.class, ah);
       Tag tag = f.getTag();
       System.out.println(ah);
       System.out.println(ah.getBitRate());
@@ -224,7 +200,7 @@ public class AiffAudioTagTest {
       System.out.println(tag);
       assertNotNull(tag);
       assertTrue(((AiffTag) tag).isExistingId3Tag());
-      assertTrue(tag instanceof AiffTag);
+      assertInstanceOf(AiffTag.class, tag);
       assertEquals(6, tag.getFieldCount());
       assertEquals("Coldplay", tag.getFirst(FieldKey.ARTIST));
       assertEquals("A Rush Of Blood To The Head", tag.getFirst(FieldKey.ALBUM));
@@ -249,20 +225,15 @@ public class AiffAudioTagTest {
   public void testWriteAiff3() {
     Exception exceptionCaught = null;
 
-    File orig = new File("testdata", "test121.aif");
-    if (!orig.isFile()) {
-      System.err.println("Unable to test file - not available");
-      return;
-    }
 
-    File testFile = AbstractTestCase.copyAudioToTmp(
+    File testFile = copyAudioToTmp(
       "test121.aif",
-      new File("test121WriteAiffWithTagAddPadding.aif")
+      "test121WriteAiffWithTagAddPadding.aif"
     );
     try {
       AudioFile f = AudioFileIO.read(testFile);
       AudioHeader ah = f.getAudioHeader();
-      assertTrue(ah instanceof AiffAudioHeader);
+      assertInstanceOf(AiffAudioHeader.class, ah);
       Tag tag = f.getTag();
       assertNotNull(tag);
       assertEquals(
@@ -312,20 +283,15 @@ public class AiffAudioTagTest {
   public void testWriteAiffWithoutTag() {
     Exception exceptionCaught = null;
 
-    File orig = new File("testdata", "test119.aif");
-    if (!orig.isFile()) {
-      System.err.println("Unable to test file - not available");
-      return;
-    }
 
-    File testFile = AbstractTestCase.copyAudioToTmp(
+    File testFile = copyAudioToTmp(
       "test119.aif",
-      new File("test119WriteAiffWithoutTag.aif")
+      "test119WriteAiffWithoutTag.aif"
     );
     try {
       AudioFile f = AudioFileIO.read(testFile);
       AudioHeader ah = f.getAudioHeader();
-      assertTrue(ah instanceof AiffAudioHeader);
+      assertInstanceOf(AiffAudioHeader.class, ah);
       Tag tag = f.getTag();
       assertNotNull(tag);
       System.out.println(tag);
@@ -348,21 +314,16 @@ public class AiffAudioTagTest {
   public void testDeleteAiff3() {
     Exception exceptionCaught = null;
 
-    File orig = new File("testdata", "test121.aif");
-    if (!orig.isFile()) {
-      System.err.println("Unable to test file - not available");
-      return;
-    }
 
-    File testFile = AbstractTestCase.copyAudioToTmp(
+    File testFile = copyAudioToTmp(
       "test121.aif",
-      new File("test121DeleteTag.aif")
+      "test121DeleteTag.aif"
     );
     try {
       final int oldSize = readAIFFFormSize(testFile);
       AudioFile f = AudioFileIO.read(testFile);
       AudioHeader ah = f.getAudioHeader();
-      assertTrue(ah instanceof AiffAudioHeader);
+      assertInstanceOf(AiffAudioHeader.class, ah);
       Tag tag = f.getTag();
       System.out.println(tag);
       assertNotNull(tag);
@@ -390,20 +351,22 @@ public class AiffAudioTagTest {
     assertNull(exceptionCaught);
   }
 
+  private static int readAIFFFormSize(final File file) throws IOException {
+    try (final RandomAccessFile raf = new RandomAccessFile(file, "r")) {
+      raf.seek(IffHeaderChunk.SIGNATURE_LENGTH);
+      return raf.readInt();
+    }
+  }
+
   @Test
   public void testDeleteAiff4() {
     Exception exceptionCaught = null;
 
-    File orig = new File("testdata", "test124.aif");
-    if (!orig.isFile()) {
-      System.err.println("Unable to test file - not available");
-      return;
-    }
 
     // test124.aif is special in that the ID3 chunk is right at the beginning, not the end.
-    File testFile = AbstractTestCase.copyAudioToTmp(
+    File testFile = copyAudioToTmp(
       "test124.aif",
-      new File("test124DeleteTag.aif")
+      "test124DeleteTag.aif"
     );
 
     try {
@@ -416,7 +379,7 @@ public class AiffAudioTagTest {
       final int oldSize = readAIFFFormSize(testFile);
       AudioFile f = AudioFileIO.read(testFile);
       AudioHeader ah = f.getAudioHeader();
-      assertTrue(ah instanceof AiffAudioHeader);
+      assertInstanceOf(AiffAudioHeader.class, ah);
       Tag tag = f.getTag();
       System.out.println(tag);
       assertNotNull(tag);
@@ -449,20 +412,31 @@ public class AiffAudioTagTest {
     assertNull(exceptionCaught);
   }
 
+  private static List<String> readChunkIds(final File file) throws IOException {
+    final List<String> chunkIds = new ArrayList<>();
+    try (final RandomAccessFile raf = new RandomAccessFile(file, "r")) {
+      raf.seek(IffHeaderChunk.HEADER_LENGTH);
+      final ChunkHeader chunkHeader = new ChunkHeader(ByteOrder.BIG_ENDIAN);
+
+      while (raf.getFilePointer() != raf.length()) {
+        if (chunkHeader.readHeader(raf)) {
+          chunkIds.add(chunkHeader.getID());
+        }
+        raf.skipBytes((int) chunkHeader.getSize());
+      }
+    }
+    return chunkIds;
+  }
+
   @Test
   public void testWriteNotLastChunk() {
     Exception exceptionCaught = null;
 
     // test124.aif is special in that the ID3 chunk is right at the beginning, not the end.
-    File orig = new File("testdata", "test124.aif");
-    if (!orig.isFile()) {
-      System.err.println("Unable to test file - not available");
-      return;
-    }
 
-    File testFile = AbstractTestCase.copyAudioToTmp(
+    File testFile = copyAudioToTmp(
       "test124.aif",
-      new File("test124WriteAiffWithChunkNotAtEnd.aif")
+      "test124WriteAiffWithChunkNotAtEnd.aif"
     );
     try {
       final List<String> oldChunkIds = readChunkIds(testFile);
@@ -473,7 +447,7 @@ public class AiffAudioTagTest {
 
       AudioFile f = AudioFileIO.read(testFile);
       AudioHeader ah = f.getAudioHeader();
-      assertTrue(ah instanceof AiffAudioHeader);
+      assertInstanceOf(AiffAudioHeader.class, ah);
       Tag tag = f.getTag();
       assertEquals(
         10274L,
@@ -519,47 +493,19 @@ public class AiffAudioTagTest {
     assertNull(exceptionCaught);
   }
 
-  private static int readAIFFFormSize(final File file) throws IOException {
-    try (final RandomAccessFile raf = new RandomAccessFile(file, "r")) {
-      raf.seek(IffHeaderChunk.SIGNATURE_LENGTH);
-      return raf.readInt();
-    }
-  }
-
-  private static List<String> readChunkIds(final File file) throws IOException {
-    final List<String> chunkIds = new ArrayList<>();
-    try (final RandomAccessFile raf = new RandomAccessFile(file, "r")) {
-      raf.seek(IffHeaderChunk.HEADER_LENGTH);
-      final ChunkHeader chunkHeader = new ChunkHeader(ByteOrder.BIG_ENDIAN);
-
-      while (raf.getFilePointer() != raf.length()) {
-        if (chunkHeader.readHeader(raf)) {
-          chunkIds.add(chunkHeader.getID());
-        }
-        raf.skipBytes((int) chunkHeader.getSize());
-      }
-    }
-    return chunkIds;
-  }
-
   @Test
   public void testWriteMetadataAifcWhenSSNDBeforeCOMMChunk() {
     Exception exceptionCaught = null;
 
-    File orig = new File("testdata", "test135.aif");
-    if (!orig.isFile()) {
-      System.err.println("Unable to test file - not available");
-      return;
-    }
 
-    File testFile = AbstractTestCase.copyAudioToTmp(
+    File testFile = copyAudioToTmp(
       "test136.aif",
-      new File("test135SSNDBeforeCOMMChunk.aif")
+      "test135SSNDBeforeCOMMChunk.aif"
     );
     try {
       AudioFile f = AudioFileIO.read(testFile);
       AudioHeader ah = f.getAudioHeader();
-      assertTrue(ah instanceof AiffAudioHeader);
+      assertInstanceOf(AiffAudioHeader.class, ah);
       System.out.println(ah);
 
       f.getTagOrCreateAndSetDefault().setField(FieldKey.ALBUM, "album");
@@ -567,11 +513,10 @@ public class AiffAudioTagTest {
 
       f = AudioFileIO.read(testFile);
       ah = f.getAudioHeader();
-      assertTrue(ah instanceof AiffAudioHeader);
+      assertInstanceOf(AiffAudioHeader.class, ah);
       System.out.println(ah);
       assertEquals("album", f.getTag().getFirst(FieldKey.ALBUM));
     } catch (Exception e) {
-      e.printStackTrace();
       exceptionCaught = e;
     }
     assertNull(exceptionCaught);
@@ -581,20 +526,15 @@ public class AiffAudioTagTest {
   public void testWriteMetadataAifcWithUnknonwExtraChunk() {
     Exception exceptionCaught = null;
 
-    File orig = new File("testdata", "test136.aif");
-    if (!orig.isFile()) {
-      System.err.println("Unable to test file - not available");
-      return;
-    }
 
-    File testFile = AbstractTestCase.copyAudioToTmp(
+    File testFile = copyAudioToTmp(
       "test136.aif",
-      new File("test136WriteMetadataWithUnknownExtraChunk.aif")
+      "test136WriteMetadataWithUnknownExtraChunk.aif"
     );
     try {
       AudioFile f = AudioFileIO.read(testFile);
       AudioHeader ah = f.getAudioHeader();
-      assertTrue(ah instanceof AiffAudioHeader);
+      assertInstanceOf(AiffAudioHeader.class, ah);
       System.out.println(ah);
       System.out.println(f.getTag());
 
@@ -603,12 +543,11 @@ public class AiffAudioTagTest {
 
       f = AudioFileIO.read(testFile);
       ah = f.getAudioHeader();
-      assertTrue(ah instanceof AiffAudioHeader);
+      assertInstanceOf(AiffAudioHeader.class, ah);
       System.out.println(ah);
       System.out.println(f.getTag());
       assertEquals("album", f.getTag().getFirst(FieldKey.ALBUM));
     } catch (Exception e) {
-      e.printStackTrace();
       exceptionCaught = e;
     }
     assertNull(exceptionCaught);
@@ -622,20 +561,15 @@ public class AiffAudioTagTest {
   public void testWriteMetadataAifcWithJunk() {
     Exception exceptionCaught = null;
 
-    File orig = new File("testdata", "test137.aif");
-    if (!orig.isFile()) {
-      System.err.println("Unable to test file - not available");
-      return;
-    }
 
-    File testFile = AbstractTestCase.copyAudioToTmp(
+    File testFile = copyAudioToTmp(
       "test137.aif",
-      new File("test137WriteMetadataWithJunkAtEnd.aif")
+      "test137WriteMetadataWithJunkAtEnd.aif"
     );
     try {
       AudioFile f = AudioFileIO.read(testFile);
       AudioHeader ah = f.getAudioHeader();
-      assertTrue(ah instanceof AiffAudioHeader);
+      assertInstanceOf(AiffAudioHeader.class, ah);
       System.out.println(ah);
 
       f.getTagOrCreateAndSetDefault().setField(FieldKey.ALBUM, "album");
@@ -643,11 +577,10 @@ public class AiffAudioTagTest {
 
       f = AudioFileIO.read(testFile);
       ah = f.getAudioHeader();
-      assertTrue(ah instanceof AiffAudioHeader);
+      assertInstanceOf(AiffAudioHeader.class, ah);
       System.out.println(ah);
       //            assertEquals("album", f.getTag().getFirst(FieldKey.ALBUM));
     } catch (Exception e) {
-      e.printStackTrace();
       exceptionCaught = e;
     }
     assertNull(exceptionCaught);
@@ -657,20 +590,15 @@ public class AiffAudioTagTest {
   public void testWriteMetadataAiffWithNameAndAuthorChunks() {
     Exception exceptionCaught = null;
 
-    File orig = new File("testdata", "test138.aiff");
-    if (!orig.isFile()) {
-      System.err.println("Unable to test file - not available");
-      return;
-    }
 
-    File testFile = AbstractTestCase.copyAudioToTmp(
+    File testFile = copyAudioToTmp(
       "test138.aiff",
-      new File("test138WriteMetadataWithNameAuthorChunks.aiff")
+      "test138WriteMetadataWithNameAuthorChunks.aiff"
     );
     try {
       AudioFile f = AudioFileIO.read(testFile);
       AudioHeader ah = f.getAudioHeader();
-      assertTrue(ah instanceof AiffAudioHeader);
+      assertInstanceOf(AiffAudioHeader.class, ah);
       System.out.println(ah);
 
       f.getTagOrCreateAndSetDefault().setField(FieldKey.ALBUM, "album");
@@ -678,11 +606,10 @@ public class AiffAudioTagTest {
 
       f = AudioFileIO.read(testFile);
       ah = f.getAudioHeader();
-      assertTrue(ah instanceof AiffAudioHeader);
+      assertInstanceOf(AiffAudioHeader.class, ah);
       System.out.println(ah);
       assertEquals("album", f.getTag().getFirst(FieldKey.ALBUM));
     } catch (Exception e) {
-      e.printStackTrace();
       exceptionCaught = e;
     }
     assertNull(exceptionCaught);
@@ -694,14 +621,10 @@ public class AiffAudioTagTest {
    * correctly work out ID3chunk is still at end of file.
    */
   @Test
+  @EnabledIf("executeAlsoWithMissingResources") // to be configured in AbsractBaseTestCase
   public void testOddLengthID3ChunkFile() {
     Exception exceptionCaught = null;
 
-    File orig = new File("testdata", "test144.aif");
-    if (!orig.isFile()) {
-      System.err.println("Unable to test file - not available");
-      return;
-    }
 
     TagOptionSingleton.getInstance().setWavOptions(
       WavOptions.READ_ID3_ONLY_AND_SYNC
@@ -709,9 +632,9 @@ public class AiffAudioTagTest {
     TagOptionSingleton.getInstance().setWavSaveOptions(
       WavSaveOptions.SAVE_BOTH_AND_SYNC
     );
-    File testFile = AbstractTestCase.copyAudioToTmp(
+    File testFile = copyAudioToTmp(
       "test144.aif",
-      new File("test144Odd.aif")
+      "test144Odd.aif"
     );
     try {
       AudioFile f = AudioFileIO.read(testFile);
@@ -725,21 +648,16 @@ public class AiffAudioTagTest {
       System.out.println(f.getTag());
       assertEquals(f.getTag().getFirst(FieldKey.ARTIST), "freddy");
     } catch (Exception e) {
-      e.printStackTrace();
       exceptionCaught = e;
     }
     assertNull(exceptionCaught);
   }
 
   @Test
+  @EnabledIf("executeAlsoWithMissingResources") // to be configured in AbsractBaseTestCase
   public void testDeleteOddLengthID3ChunkFile() {
     Exception exceptionCaught = null;
 
-    File orig = new File("testdata", "test144.aif");
-    if (!orig.isFile()) {
-      System.err.println("Unable to test file - not available");
-      return;
-    }
 
     TagOptionSingleton.getInstance().setWavOptions(
       WavOptions.READ_ID3_ONLY_AND_SYNC
@@ -747,9 +665,9 @@ public class AiffAudioTagTest {
     TagOptionSingleton.getInstance().setWavSaveOptions(
       WavSaveOptions.SAVE_BOTH_AND_SYNC
     );
-    File testFile = AbstractTestCase.copyAudioToTmp(
+    File testFile = copyAudioToTmp(
       "test144.aif",
-      new File("test144OddDelete.aif")
+      "test144OddDelete.aif"
     );
     try {
       AudioFile f = AudioFileIO.read(testFile);
@@ -769,7 +687,6 @@ public class AiffAudioTagTest {
       );
       assertEquals(0, ((AiffTag) f.getTag()).getSizeOfID3TagOnly());
     } catch (Exception e) {
-      e.printStackTrace();
       exceptionCaught = e;
     }
     assertNull(exceptionCaught);
@@ -779,16 +696,11 @@ public class AiffAudioTagTest {
   public void testDeleteAiff4Odd() {
     Exception exceptionCaught = null;
 
-    File orig = new File("testdata", "test124.aif");
-    if (!orig.isFile()) {
-      System.err.println("Unable to test file - not available");
-      return;
-    }
 
     // test124.aif is special in that the ID3 chunk is right at the beginning, not the end.
-    File testFile = AbstractTestCase.copyAudioToTmp(
+    File testFile = copyAudioToTmp(
       "test124.aif",
-      new File("test124DeleteOddTag.aif")
+      "test124DeleteOddTag.aif"
     );
 
     try {
@@ -801,7 +713,7 @@ public class AiffAudioTagTest {
       final int oldSize = readAIFFFormSize(testFile);
       AudioFile f = AudioFileIO.read(testFile);
       AudioHeader ah = f.getAudioHeader();
-      assertTrue(ah instanceof AiffAudioHeader);
+      assertInstanceOf(AiffAudioHeader.class, ah);
       Tag tag = f.getTag();
       System.out.println(tag);
       assertNotNull(tag);
@@ -838,21 +750,16 @@ public class AiffAudioTagTest {
   public void testWriteMetadataAifcWithUnknownExtraChunkID3DatSizeOdd() {
     Exception exceptionCaught = null;
 
-    File orig = new File("testdata", "test136.aif");
-    if (!orig.isFile()) {
-      System.err.println("Unable to test file - not available");
-      return;
-    }
 
-    File testFile = AbstractTestCase.copyAudioToTmp(
+    File testFile = copyAudioToTmp(
       "test136.aif",
-      new File("test136WriteMetadataWithUnknownExtraChunkID3DatSizeOdd.aif")
+      "test136WriteMetadataWithUnknownExtraChunkID3DatSizeOdd.aif"
     );
     try {
       TagOptionSingleton.getInstance().setID3V2Version(ID3V2Version.ID3_V22);
       AudioFile f = AudioFileIO.read(testFile);
       AudioHeader ah = f.getAudioHeader();
-      assertTrue(ah instanceof AiffAudioHeader);
+      assertInstanceOf(AiffAudioHeader.class, ah);
       System.out.println(ah);
       System.out.println(f.getTag());
 
@@ -860,7 +767,7 @@ public class AiffAudioTagTest {
       f.commit();
       f = AudioFileIO.read(testFile);
       ah = f.getAudioHeader();
-      assertTrue(ah instanceof AiffAudioHeader);
+      assertInstanceOf(AiffAudioHeader.class, ah);
       System.out.println(ah);
       System.out.println(f.getTag());
       assertEquals("albums", f.getTag().getFirst(FieldKey.ALBUM));
@@ -877,7 +784,7 @@ public class AiffAudioTagTest {
       f.commit();
       f = AudioFileIO.read(testFile);
       ah = f.getAudioHeader();
-      assertTrue(ah instanceof AiffAudioHeader);
+      assertInstanceOf(AiffAudioHeader.class, ah);
       System.out.println(ah);
       System.out.println(f.getTag());
       assertEquals("albuks", f.getTag().getFirst(FieldKey.ALBUM));
@@ -890,7 +797,6 @@ public class AiffAudioTagTest {
         ((AiffTag) f.getTag()).getEndLocationInFileOfId3Chunk()
       );
     } catch (Exception e) {
-      e.printStackTrace();
       exceptionCaught = e;
     }
     assertNull(exceptionCaught);
@@ -898,43 +804,38 @@ public class AiffAudioTagTest {
 
   @Test
   public void testWriteWriteProtectedFileWithCheckDisabled() throws Exception {
-    FilePermissionsTest.runWriteWriteProtectedFileWithCheckDisabled(
+    runWriteWriteProtectedFileWithCheckDisabled(
       "test121.aif"
     );
   }
 
   @Test
   public void testWriteWriteProtectedFileWithCheckEnabled() throws Exception {
-    FilePermissionsTest.runWriteWriteProtectedFileWithCheckEnabled(
+    runWriteWriteProtectedFileWithCheckEnabled(
       "test121.aif"
     );
   }
 
   @Test
   public void testWriteReadOnlyFileWithCheckDisabled() throws Exception {
-    FilePermissionsTest.runWriteReadOnlyFileWithCheckDisabled("test121.aif");
+    runWriteReadOnlyFileWithCheckDisabled("test121.aif");
   }
 
   @Test
   public void testDeleteArtworkField() {
     Exception exceptionCaught = null;
 
-    File orig = new File("testdata", "test157.aif");
-    if (!orig.isFile()) {
-      System.err.println("Unable to test file - not available");
-      return;
-    }
 
-    File testFile = AbstractTestCase.copyAudioToTmp(
+    File testFile = copyAudioToTmp(
       "test157.aif",
-      new File("testDeleteArtworkField.aif")
+      "testDeleteArtworkField.aif"
     );
     try {
       AudioFile f = AudioFileIO.read(testFile);
       Tag tag = f.getTag();
       System.out.println(tag);
       assertNotNull(tag);
-      assertTrue(tag instanceof AiffTag);
+      assertInstanceOf(AiffTag.class, tag);
       assertTrue(((AiffTag) tag).isExistingId3Tag());
       assertEquals(2, tag.getArtworkList().size());
 

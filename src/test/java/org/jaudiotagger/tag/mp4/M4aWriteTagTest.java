@@ -8,6 +8,8 @@ import java.io.File;
 import java.io.IOException;
 import java.io.RandomAccessFile;
 import java.util.List;
+
+import org.jaudiotagger.AbstractBaseTestCase;
 import org.jaudiotagger.AbstractTestCase;
 import org.jaudiotagger.audio.AudioFile;
 import org.jaudiotagger.audio.AudioFileIO;
@@ -24,8 +26,9 @@ import org.jaudiotagger.tag.mp4.field.Mp4TrackField;
 import org.jcodec.containers.mp4.MP4Util;
 import org.json.JSONObject;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.condition.EnabledIf;
 
-public class M4aWriteTagTest {
+public class M4aWriteTagTest extends AbstractBaseTestCase {
 
   private static final long TEST_FILE1_SIZE = 3883555;
   private static final long TEST_FILE2_SIZE = 3884505;
@@ -38,9 +41,9 @@ public class M4aWriteTagTest {
   public void testWriteFileSameSize() {
     Exception exceptionCaught = null;
     try {
-      File testFile = AbstractTestCase.copyAudioToTmp(
+      File testFile = copyAudioToTmp(
         "test.m4a",
-        new File("testWriteFileSameSize.m4a")
+        "testWriteFileSameSize.m4a"
       );
       AudioFile f = AudioFileIO.read(testFile);
       Tag tag = f.getTag();
@@ -128,32 +131,32 @@ public class M4aWriteTagTest {
       assertEquals(
         "2/12",
         ((Mp4TagTextNumberField) mp4tag
-            .get(Mp4FieldKey.TRACK)
-            .get(0)).getContent()
+          .get(Mp4FieldKey.TRACK)
+          .get(0)).getContent()
       );
       assertEquals(
         Short.valueOf("0"),
         ((Mp4TagTextNumberField) mp4tag
-            .get(Mp4FieldKey.TRACK)
-            .get(0)).getNumbers().get(0)
+          .get(Mp4FieldKey.TRACK)
+          .get(0)).getNumbers().get(0)
       );
       assertEquals(
         Short.valueOf("2"),
         ((Mp4TagTextNumberField) mp4tag
-            .get(Mp4FieldKey.TRACK)
-            .get(0)).getNumbers().get(1)
+          .get(Mp4FieldKey.TRACK)
+          .get(0)).getNumbers().get(1)
       );
       assertEquals(
         Short.valueOf("12"),
         ((Mp4TagTextNumberField) mp4tag
-            .get(Mp4FieldKey.TRACK)
-            .get(0)).getNumbers().get(2)
+          .get(Mp4FieldKey.TRACK)
+          .get(0)).getNumbers().get(2)
       );
       assertEquals(
         Short.valueOf("0"),
         ((Mp4TagTextNumberField) mp4tag
-            .get(Mp4FieldKey.TRACK)
-            .get(0)).getNumbers().get(3)
+          .get(Mp4FieldKey.TRACK)
+          .get(0)).getNumbers().get(3)
       );
 
       //Not sure why there are 4 values, only understand 2nd and third
@@ -161,26 +164,26 @@ public class M4aWriteTagTest {
       assertEquals(
         "4/15",
         ((Mp4TagTextNumberField) mp4tag
-            .get(Mp4FieldKey.DISCNUMBER)
-            .get(0)).getContent()
+          .get(Mp4FieldKey.DISCNUMBER)
+          .get(0)).getContent()
       );
       assertEquals(
         Short.valueOf("0"),
         ((Mp4TagTextNumberField) mp4tag
-            .get(Mp4FieldKey.DISCNUMBER)
-            .get(0)).getNumbers().get(0)
+          .get(Mp4FieldKey.DISCNUMBER)
+          .get(0)).getNumbers().get(0)
       );
       assertEquals(
         Short.valueOf("4"),
         ((Mp4TagTextNumberField) mp4tag
-            .get(Mp4FieldKey.DISCNUMBER)
-            .get(0)).getNumbers().get(1)
+          .get(Mp4FieldKey.DISCNUMBER)
+          .get(0)).getNumbers().get(1)
       );
       assertEquals(
         Short.valueOf("15"),
         ((Mp4TagTextNumberField) mp4tag
-            .get(Mp4FieldKey.DISCNUMBER)
-            .get(0)).getNumbers().get(2)
+          .get(Mp4FieldKey.DISCNUMBER)
+          .get(0)).getNumbers().get(2)
       );
 
       assertEquals("composer", mp4tag.getFirst(Mp4FieldKey.COMPOSER));
@@ -263,7 +266,6 @@ public class M4aWriteTagTest {
       assertEquals(0xff, coverArtField.getData()[2] & 0xff);
       assertEquals(0xe0, coverArtField.getData()[3] & 0xff);
     } catch (Exception e) {
-      e.printStackTrace();
       exceptionCaught = e;
     }
     assertNull(exceptionCaught);
@@ -276,9 +278,9 @@ public class M4aWriteTagTest {
   public void testWriteFileSmallerSize() {
     Exception exceptionCaught = null;
     try {
-      File testFile = AbstractTestCase.copyAudioToTmp(
+      File testFile = copyAudioToTmp(
         "test.m4a",
-        new File("testWriteFileSmallerSize.m4a")
+        "testWriteFileSmallerSize.m4a"
       );
       AudioFile f = AudioFileIO.read(testFile);
       Tag tag = f.getTag();
@@ -355,32 +357,32 @@ public class M4aWriteTagTest {
       assertEquals(
         "1/10",
         ((Mp4TagTextNumberField) mp4tag
-            .get(Mp4FieldKey.TRACK)
-            .get(0)).getContent()
+          .get(Mp4FieldKey.TRACK)
+          .get(0)).getContent()
       );
       assertEquals(
         Short.valueOf("0"),
         ((Mp4TagTextNumberField) mp4tag
-            .get(Mp4FieldKey.TRACK)
-            .get(0)).getNumbers().get(0)
+          .get(Mp4FieldKey.TRACK)
+          .get(0)).getNumbers().get(0)
       );
       assertEquals(
         Short.valueOf("1"),
         ((Mp4TagTextNumberField) mp4tag
-            .get(Mp4FieldKey.TRACK)
-            .get(0)).getNumbers().get(1)
+          .get(Mp4FieldKey.TRACK)
+          .get(0)).getNumbers().get(1)
       );
       assertEquals(
         Short.valueOf("10"),
         ((Mp4TagTextNumberField) mp4tag
-            .get(Mp4FieldKey.TRACK)
-            .get(0)).getNumbers().get(2)
+          .get(Mp4FieldKey.TRACK)
+          .get(0)).getNumbers().get(2)
       );
       assertEquals(
         Short.valueOf("0"),
         ((Mp4TagTextNumberField) mp4tag
-            .get(Mp4FieldKey.TRACK)
-            .get(0)).getNumbers().get(3)
+          .get(Mp4FieldKey.TRACK)
+          .get(0)).getNumbers().get(3)
       );
 
       //Not sure why there are 4 values, only understand 2nd and third
@@ -388,26 +390,26 @@ public class M4aWriteTagTest {
       assertEquals(
         "1/10",
         ((Mp4TagTextNumberField) mp4tag
-            .get(Mp4FieldKey.DISCNUMBER)
-            .get(0)).getContent()
+          .get(Mp4FieldKey.DISCNUMBER)
+          .get(0)).getContent()
       );
       assertEquals(
         Short.valueOf("0"),
         ((Mp4TagTextNumberField) mp4tag
-            .get(Mp4FieldKey.DISCNUMBER)
-            .get(0)).getNumbers().get(0)
+          .get(Mp4FieldKey.DISCNUMBER)
+          .get(0)).getNumbers().get(0)
       );
       assertEquals(
         Short.valueOf("1"),
         ((Mp4TagTextNumberField) mp4tag
-            .get(Mp4FieldKey.DISCNUMBER)
-            .get(0)).getNumbers().get(1)
+          .get(Mp4FieldKey.DISCNUMBER)
+          .get(0)).getNumbers().get(1)
       );
       assertEquals(
         Short.valueOf("10"),
         ((Mp4TagTextNumberField) mp4tag
-            .get(Mp4FieldKey.DISCNUMBER)
-            .get(0)).getNumbers().get(2)
+          .get(Mp4FieldKey.DISCNUMBER)
+          .get(0)).getNumbers().get(2)
       );
 
       assertEquals("composer", mp4tag.getFirst(Mp4FieldKey.COMPOSER));
@@ -490,7 +492,6 @@ public class M4aWriteTagTest {
       assertEquals(0xff, coverArtField.getData()[2] & 0xff);
       assertEquals(0xe0, coverArtField.getData()[3] & 0xff);
     } catch (Exception e) {
-      e.printStackTrace();
       exceptionCaught = e;
     }
     assertNull(exceptionCaught);
@@ -504,9 +505,9 @@ public class M4aWriteTagTest {
   public void testWriteFileLargerSize() {
     Exception exceptionCaught = null;
     try {
-      File testFile = AbstractTestCase.copyAudioToTmp(
+      File testFile = copyAudioToTmp(
         "test.m4a",
-        new File("testWriteFileLargerSize.m4a")
+        "testWriteFileLargerSize.m4a"
       );
       AudioFile f = AudioFileIO.read(testFile);
       Tag tag = f.getTag();
@@ -583,32 +584,32 @@ public class M4aWriteTagTest {
       assertEquals(
         "1/10",
         ((Mp4TagTextNumberField) mp4tag
-            .get(Mp4FieldKey.TRACK)
-            .get(0)).getContent()
+          .get(Mp4FieldKey.TRACK)
+          .get(0)).getContent()
       );
       assertEquals(
         Short.valueOf("0"),
         ((Mp4TagTextNumberField) mp4tag
-            .get(Mp4FieldKey.TRACK)
-            .get(0)).getNumbers().get(0)
+          .get(Mp4FieldKey.TRACK)
+          .get(0)).getNumbers().get(0)
       );
       assertEquals(
         Short.valueOf("1"),
         ((Mp4TagTextNumberField) mp4tag
-            .get(Mp4FieldKey.TRACK)
-            .get(0)).getNumbers().get(1)
+          .get(Mp4FieldKey.TRACK)
+          .get(0)).getNumbers().get(1)
       );
       assertEquals(
         Short.valueOf("10"),
         ((Mp4TagTextNumberField) mp4tag
-            .get(Mp4FieldKey.TRACK)
-            .get(0)).getNumbers().get(2)
+          .get(Mp4FieldKey.TRACK)
+          .get(0)).getNumbers().get(2)
       );
       assertEquals(
         Short.valueOf("0"),
         ((Mp4TagTextNumberField) mp4tag
-            .get(Mp4FieldKey.TRACK)
-            .get(0)).getNumbers().get(3)
+          .get(Mp4FieldKey.TRACK)
+          .get(0)).getNumbers().get(3)
       );
 
       //Not sure why there are 4 values, only understand 2nd and third
@@ -616,26 +617,26 @@ public class M4aWriteTagTest {
       assertEquals(
         "1/10",
         ((Mp4TagTextNumberField) mp4tag
-            .get(Mp4FieldKey.DISCNUMBER)
-            .get(0)).getContent()
+          .get(Mp4FieldKey.DISCNUMBER)
+          .get(0)).getContent()
       );
       assertEquals(
         Short.valueOf("0"),
         ((Mp4TagTextNumberField) mp4tag
-            .get(Mp4FieldKey.DISCNUMBER)
-            .get(0)).getNumbers().get(0)
+          .get(Mp4FieldKey.DISCNUMBER)
+          .get(0)).getNumbers().get(0)
       );
       assertEquals(
         Short.valueOf("1"),
         ((Mp4TagTextNumberField) mp4tag
-            .get(Mp4FieldKey.DISCNUMBER)
-            .get(0)).getNumbers().get(1)
+          .get(Mp4FieldKey.DISCNUMBER)
+          .get(0)).getNumbers().get(1)
       );
       assertEquals(
         Short.valueOf("10"),
         ((Mp4TagTextNumberField) mp4tag
-            .get(Mp4FieldKey.DISCNUMBER)
-            .get(0)).getNumbers().get(2)
+          .get(Mp4FieldKey.DISCNUMBER)
+          .get(0)).getNumbers().get(2)
       );
 
       assertEquals("composer", mp4tag.getFirst(Mp4FieldKey.COMPOSER));
@@ -718,7 +719,6 @@ public class M4aWriteTagTest {
       assertEquals(0xff, coverArtField.getData()[2] & 0xff);
       assertEquals(0xe0, coverArtField.getData()[3] & 0xff);
     } catch (Exception e) {
-      e.printStackTrace();
       exceptionCaught = e;
     }
     assertNull(exceptionCaught);
@@ -733,9 +733,9 @@ public class M4aWriteTagTest {
   public void testWriteFileAlotLargerSize() {
     Exception exceptionCaught = null;
     try {
-      File testFile = AbstractTestCase.copyAudioToTmp(
+      File testFile = copyAudioToTmp(
         "test.m4a",
-        new File("testWriteFileAlot.m4a")
+        "testWriteFileAlot.m4a"
       );
 
       //Starting filesize
@@ -746,7 +746,7 @@ public class M4aWriteTagTest {
 
       //Add new image
       RandomAccessFile imageFile = new RandomAccessFile(
-        new File("testdata", "coverart_small.png"),
+        fileResource("testdata", "coverart_small.png"),
         "r"
       );
       byte[] imagedata = new byte[(int) imageFile.length()];
@@ -823,26 +823,26 @@ public class M4aWriteTagTest {
       assertEquals(
         Short.valueOf("0"),
         ((Mp4TagTextNumberField) tag
-            .get(Mp4FieldKey.TRACK)
-            .get(0)).getNumbers().get(0)
+          .get(Mp4FieldKey.TRACK)
+          .get(0)).getNumbers().get(0)
       );
       assertEquals(
         Short.valueOf("1"),
         ((Mp4TagTextNumberField) tag
-            .get(Mp4FieldKey.TRACK)
-            .get(0)).getNumbers().get(1)
+          .get(Mp4FieldKey.TRACK)
+          .get(0)).getNumbers().get(1)
       );
       assertEquals(
         Short.valueOf("10"),
         ((Mp4TagTextNumberField) tag
-            .get(Mp4FieldKey.TRACK)
-            .get(0)).getNumbers().get(2)
+          .get(Mp4FieldKey.TRACK)
+          .get(0)).getNumbers().get(2)
       );
       assertEquals(
         Short.valueOf("0"),
         ((Mp4TagTextNumberField) tag
-            .get(Mp4FieldKey.TRACK)
-            .get(0)).getNumbers().get(3)
+          .get(Mp4FieldKey.TRACK)
+          .get(0)).getNumbers().get(3)
       );
 
       //Not sure why there are 4 values, only understand 2nd and third
@@ -850,26 +850,26 @@ public class M4aWriteTagTest {
       assertEquals(
         "1/10",
         ((Mp4TagTextNumberField) tag
-            .get(Mp4FieldKey.DISCNUMBER)
-            .get(0)).getContent()
+          .get(Mp4FieldKey.DISCNUMBER)
+          .get(0)).getContent()
       );
       assertEquals(
         Short.valueOf("0"),
         ((Mp4TagTextNumberField) tag
-            .get(Mp4FieldKey.DISCNUMBER)
-            .get(0)).getNumbers().get(0)
+          .get(Mp4FieldKey.DISCNUMBER)
+          .get(0)).getNumbers().get(0)
       );
       assertEquals(
         Short.valueOf("1"),
         ((Mp4TagTextNumberField) tag
-            .get(Mp4FieldKey.DISCNUMBER)
-            .get(0)).getNumbers().get(1)
+          .get(Mp4FieldKey.DISCNUMBER)
+          .get(0)).getNumbers().get(1)
       );
       assertEquals(
         Short.valueOf("10"),
         ((Mp4TagTextNumberField) tag
-            .get(Mp4FieldKey.DISCNUMBER)
-            .get(0)).getNumbers().get(2)
+          .get(Mp4FieldKey.DISCNUMBER)
+          .get(0)).getNumbers().get(2)
       );
 
       assertEquals("composer", tag.getFirst(Mp4FieldKey.COMPOSER));
@@ -961,7 +961,6 @@ public class M4aWriteTagTest {
       assertEquals(0x4e, coverArtField.getData()[2] & 0xff);
       assertEquals(0x47, coverArtField.getData()[3] & 0xff);
     } catch (Exception e) {
-      e.printStackTrace();
       exceptionCaught = e;
     }
     assertNull(exceptionCaught);
@@ -976,9 +975,9 @@ public class M4aWriteTagTest {
   public void testWriteFileMuchLargerSize() {
     Exception exceptionCaught = null;
     try {
-      File testFile = AbstractTestCase.copyAudioToTmp(
+      File testFile = copyAudioToTmp(
         "test.m4a",
-        new File("testWriteFileMuchLargerSize.m4a")
+        "testWriteFileMuchLargerSize.m4a"
       );
 
       //Starting filesize
@@ -989,7 +988,7 @@ public class M4aWriteTagTest {
 
       //Add new image
       RandomAccessFile imageFile = new RandomAccessFile(
-        new File("testdata", "coverart.png"),
+        fileResource("testdata", "coverart.png"),
         "r"
       );
       byte[] imagedata = new byte[(int) imageFile.length()];
@@ -1069,26 +1068,26 @@ public class M4aWriteTagTest {
       assertEquals(
         Short.valueOf("0"),
         ((Mp4TagTextNumberField) tag
-            .get(Mp4FieldKey.TRACK)
-            .get(0)).getNumbers().get(0)
+          .get(Mp4FieldKey.TRACK)
+          .get(0)).getNumbers().get(0)
       );
       assertEquals(
         Short.valueOf("1"),
         ((Mp4TagTextNumberField) tag
-            .get(Mp4FieldKey.TRACK)
-            .get(0)).getNumbers().get(1)
+          .get(Mp4FieldKey.TRACK)
+          .get(0)).getNumbers().get(1)
       );
       assertEquals(
         Short.valueOf("10"),
         ((Mp4TagTextNumberField) tag
-            .get(Mp4FieldKey.TRACK)
-            .get(0)).getNumbers().get(2)
+          .get(Mp4FieldKey.TRACK)
+          .get(0)).getNumbers().get(2)
       );
       assertEquals(
         Short.valueOf("0"),
         ((Mp4TagTextNumberField) tag
-            .get(Mp4FieldKey.TRACK)
-            .get(0)).getNumbers().get(3)
+          .get(Mp4FieldKey.TRACK)
+          .get(0)).getNumbers().get(3)
       );
 
       //Not sure why there are 4 values, only understand 2nd and third
@@ -1096,26 +1095,26 @@ public class M4aWriteTagTest {
       assertEquals(
         "1/10",
         ((Mp4TagTextNumberField) tag
-            .get(Mp4FieldKey.DISCNUMBER)
-            .get(0)).getContent()
+          .get(Mp4FieldKey.DISCNUMBER)
+          .get(0)).getContent()
       );
       assertEquals(
         Short.valueOf("0"),
         ((Mp4TagTextNumberField) tag
-            .get(Mp4FieldKey.DISCNUMBER)
-            .get(0)).getNumbers().get(0)
+          .get(Mp4FieldKey.DISCNUMBER)
+          .get(0)).getNumbers().get(0)
       );
       assertEquals(
         Short.valueOf("1"),
         ((Mp4TagTextNumberField) tag
-            .get(Mp4FieldKey.DISCNUMBER)
-            .get(0)).getNumbers().get(1)
+          .get(Mp4FieldKey.DISCNUMBER)
+          .get(0)).getNumbers().get(1)
       );
       assertEquals(
         Short.valueOf("10"),
         ((Mp4TagTextNumberField) tag
-            .get(Mp4FieldKey.DISCNUMBER)
-            .get(0)).getNumbers().get(2)
+          .get(Mp4FieldKey.DISCNUMBER)
+          .get(0)).getNumbers().get(2)
       );
 
       assertEquals("composer", tag.getFirst(Mp4FieldKey.COMPOSER));
@@ -1207,7 +1206,6 @@ public class M4aWriteTagTest {
       assertEquals(0x4e, coverArtField.getData()[2] & 0xff);
       assertEquals(0x47, coverArtField.getData()[3] & 0xff);
     } catch (Exception e) {
-      e.printStackTrace();
       exceptionCaught = e;
     }
     assertNull(exceptionCaught);
@@ -1220,9 +1218,9 @@ public class M4aWriteTagTest {
   public void testDeleteTag() {
     Exception exceptionCaught = null;
     try {
-      File testFile = AbstractTestCase.copyAudioToTmp(
+      File testFile = copyAudioToTmp(
         "test.m4a",
-        new File("testDeleteMeta.m4a")
+        "testDeleteMeta.m4a"
       );
       AudioFile f = AudioFileIO.read(testFile);
       AudioFileIO.delete(f);
@@ -1232,7 +1230,6 @@ public class M4aWriteTagTest {
       System.out.println(f.getTag());
       assertEquals(0, f.getTag().getFieldCount());
     } catch (Exception e) {
-      e.printStackTrace();
       exceptionCaught = e;
     }
     assertNull(exceptionCaught);
@@ -1245,9 +1242,9 @@ public class M4aWriteTagTest {
   public void testDeleteTag2() {
     Exception exceptionCaught = null;
     try {
-      File testFile = AbstractTestCase.copyAudioToTmp(
+      File testFile = copyAudioToTmp(
         "test3.m4a",
-        new File("testDeleteMeta2.m4a")
+        "testDeleteMeta2.m4a"
       );
       AudioFile f = AudioFileIO.read(testFile);
       AudioFileIO.delete(f);
@@ -1257,7 +1254,6 @@ public class M4aWriteTagTest {
       System.out.println(f.getTag());
       assertEquals(0, f.getTag().getFieldCount());
     } catch (Exception e) {
-      e.printStackTrace();
       exceptionCaught = e;
     }
     assertNull(exceptionCaught);
@@ -1270,9 +1266,9 @@ public class M4aWriteTagTest {
   public void testWriteFileSameSizeNoMetaFreeAtom() {
     Exception exceptionCaught = null;
     try {
-      File testFile = AbstractTestCase.copyAudioToTmp(
+      File testFile = copyAudioToTmp(
         "test3.m4a",
-        new File("testWriteFileSameSizeNoMetaFree.m4a")
+        "testWriteFileSameSizeNoMetaFree.m4a"
       );
       AudioFile f = AudioFileIO.read(testFile);
       Tag tag = f.getTag();
@@ -1355,32 +1351,32 @@ public class M4aWriteTagTest {
       assertEquals(
         "2/12",
         ((Mp4TagTextNumberField) mp4tag
-            .get(Mp4FieldKey.TRACK)
-            .get(0)).getContent()
+          .get(Mp4FieldKey.TRACK)
+          .get(0)).getContent()
       );
       assertEquals(
         Short.valueOf("0"),
         ((Mp4TagTextNumberField) mp4tag
-            .get(Mp4FieldKey.TRACK)
-            .get(0)).getNumbers().get(0)
+          .get(Mp4FieldKey.TRACK)
+          .get(0)).getNumbers().get(0)
       );
       assertEquals(
         Short.valueOf("2"),
         ((Mp4TagTextNumberField) mp4tag
-            .get(Mp4FieldKey.TRACK)
-            .get(0)).getNumbers().get(1)
+          .get(Mp4FieldKey.TRACK)
+          .get(0)).getNumbers().get(1)
       );
       assertEquals(
         Short.valueOf("12"),
         ((Mp4TagTextNumberField) mp4tag
-            .get(Mp4FieldKey.TRACK)
-            .get(0)).getNumbers().get(2)
+          .get(Mp4FieldKey.TRACK)
+          .get(0)).getNumbers().get(2)
       );
       assertEquals(
         Short.valueOf("0"),
         ((Mp4TagTextNumberField) mp4tag
-            .get(Mp4FieldKey.TRACK)
-            .get(0)).getNumbers().get(3)
+          .get(Mp4FieldKey.TRACK)
+          .get(0)).getNumbers().get(3)
       );
 
       //Not sure why there are 4 values, only understand 2nd and third
@@ -1388,26 +1384,26 @@ public class M4aWriteTagTest {
       assertEquals(
         "4/15",
         ((Mp4TagTextNumberField) mp4tag
-            .get(Mp4FieldKey.DISCNUMBER)
-            .get(0)).getContent()
+          .get(Mp4FieldKey.DISCNUMBER)
+          .get(0)).getContent()
       );
       assertEquals(
         Short.valueOf("0"),
         ((Mp4TagTextNumberField) mp4tag
-            .get(Mp4FieldKey.DISCNUMBER)
-            .get(0)).getNumbers().get(0)
+          .get(Mp4FieldKey.DISCNUMBER)
+          .get(0)).getNumbers().get(0)
       );
       assertEquals(
         Short.valueOf("4"),
         ((Mp4TagTextNumberField) mp4tag
-            .get(Mp4FieldKey.DISCNUMBER)
-            .get(0)).getNumbers().get(1)
+          .get(Mp4FieldKey.DISCNUMBER)
+          .get(0)).getNumbers().get(1)
       );
       assertEquals(
         Short.valueOf("15"),
         ((Mp4TagTextNumberField) mp4tag
-            .get(Mp4FieldKey.DISCNUMBER)
-            .get(0)).getNumbers().get(2)
+          .get(Mp4FieldKey.DISCNUMBER)
+          .get(0)).getNumbers().get(2)
       );
 
       assertEquals("composer", mp4tag.getFirst(Mp4FieldKey.COMPOSER));
@@ -1490,7 +1486,6 @@ public class M4aWriteTagTest {
       assertEquals(0xff, coverArtField.getData()[2] & 0xff);
       assertEquals(0xe0, coverArtField.getData()[3] & 0xff);
     } catch (Exception e) {
-      e.printStackTrace();
       exceptionCaught = e;
     }
     assertNull(exceptionCaught);
@@ -1503,9 +1498,9 @@ public class M4aWriteTagTest {
   public void testWriteFileSmallerSizeMoreThanEightBytesSmallerNoMetaFreeAtom() {
     Exception exceptionCaught = null;
     try {
-      File testFile = AbstractTestCase.copyAudioToTmp(
+      File testFile = copyAudioToTmp(
         "test3.m4a",
-        new File("testWriteFileSmallerSizeNoMetaFreeMoreThanEight.m4a")
+        "testWriteFileSmallerSizeNoMetaFreeMoreThanEight.m4a"
       );
       AudioFile f = AudioFileIO.read(testFile);
       Tag tag = f.getTag();
@@ -1583,32 +1578,32 @@ public class M4aWriteTagTest {
       assertEquals(
         "1/10",
         ((Mp4TagTextNumberField) mp4tag
-            .get(Mp4FieldKey.TRACK)
-            .get(0)).getContent()
+          .get(Mp4FieldKey.TRACK)
+          .get(0)).getContent()
       );
       assertEquals(
         Short.valueOf("0"),
         ((Mp4TagTextNumberField) mp4tag
-            .get(Mp4FieldKey.TRACK)
-            .get(0)).getNumbers().get(0)
+          .get(Mp4FieldKey.TRACK)
+          .get(0)).getNumbers().get(0)
       );
       assertEquals(
         Short.valueOf("1"),
         ((Mp4TagTextNumberField) mp4tag
-            .get(Mp4FieldKey.TRACK)
-            .get(0)).getNumbers().get(1)
+          .get(Mp4FieldKey.TRACK)
+          .get(0)).getNumbers().get(1)
       );
       assertEquals(
         Short.valueOf("10"),
         ((Mp4TagTextNumberField) mp4tag
-            .get(Mp4FieldKey.TRACK)
-            .get(0)).getNumbers().get(2)
+          .get(Mp4FieldKey.TRACK)
+          .get(0)).getNumbers().get(2)
       );
       assertEquals(
         Short.valueOf("0"),
         ((Mp4TagTextNumberField) mp4tag
-            .get(Mp4FieldKey.TRACK)
-            .get(0)).getNumbers().get(3)
+          .get(Mp4FieldKey.TRACK)
+          .get(0)).getNumbers().get(3)
       );
 
       //Not sure why there are 4 values, only understand 2nd and third
@@ -1616,26 +1611,26 @@ public class M4aWriteTagTest {
       assertEquals(
         "1/10",
         ((Mp4TagTextNumberField) mp4tag
-            .get(Mp4FieldKey.DISCNUMBER)
-            .get(0)).getContent()
+          .get(Mp4FieldKey.DISCNUMBER)
+          .get(0)).getContent()
       );
       assertEquals(
         Short.valueOf("0"),
         ((Mp4TagTextNumberField) mp4tag
-            .get(Mp4FieldKey.DISCNUMBER)
-            .get(0)).getNumbers().get(0)
+          .get(Mp4FieldKey.DISCNUMBER)
+          .get(0)).getNumbers().get(0)
       );
       assertEquals(
         Short.valueOf("1"),
         ((Mp4TagTextNumberField) mp4tag
-            .get(Mp4FieldKey.DISCNUMBER)
-            .get(0)).getNumbers().get(1)
+          .get(Mp4FieldKey.DISCNUMBER)
+          .get(0)).getNumbers().get(1)
       );
       assertEquals(
         Short.valueOf("10"),
         ((Mp4TagTextNumberField) mp4tag
-            .get(Mp4FieldKey.DISCNUMBER)
-            .get(0)).getNumbers().get(2)
+          .get(Mp4FieldKey.DISCNUMBER)
+          .get(0)).getNumbers().get(2)
       );
 
       assertEquals("composer", mp4tag.getFirst(Mp4FieldKey.COMPOSER));
@@ -1718,7 +1713,6 @@ public class M4aWriteTagTest {
       assertEquals(0xff, coverArtField.getData()[2] & 0xff);
       assertEquals(0xe0, coverArtField.getData()[3] & 0xff);
     } catch (Exception e) {
-      e.printStackTrace();
       exceptionCaught = e;
     }
     assertNull(exceptionCaught);
@@ -1732,9 +1726,9 @@ public class M4aWriteTagTest {
   public void testWriteFileSmallerSizeLessThanEightBytesNoMetaFreeAtom() {
     Exception exceptionCaught = null;
     try {
-      File testFile = AbstractTestCase.copyAudioToTmp(
+      File testFile = copyAudioToTmp(
         "test3.m4a",
-        new File("testWriteFileLessThanEight2.m4a")
+        "testWriteFileLessThanEight2.m4a"
       );
       AudioFile f = AudioFileIO.read(testFile);
       Tag tag = f.getTag();
@@ -1810,32 +1804,32 @@ public class M4aWriteTagTest {
       assertEquals(
         "1/10",
         ((Mp4TagTextNumberField) mp4tag
-            .get(Mp4FieldKey.TRACK)
-            .get(0)).getContent()
+          .get(Mp4FieldKey.TRACK)
+          .get(0)).getContent()
       );
       assertEquals(
         Short.valueOf("0"),
         ((Mp4TagTextNumberField) mp4tag
-            .get(Mp4FieldKey.TRACK)
-            .get(0)).getNumbers().get(0)
+          .get(Mp4FieldKey.TRACK)
+          .get(0)).getNumbers().get(0)
       );
       assertEquals(
         Short.valueOf("1"),
         ((Mp4TagTextNumberField) mp4tag
-            .get(Mp4FieldKey.TRACK)
-            .get(0)).getNumbers().get(1)
+          .get(Mp4FieldKey.TRACK)
+          .get(0)).getNumbers().get(1)
       );
       assertEquals(
         Short.valueOf("10"),
         ((Mp4TagTextNumberField) mp4tag
-            .get(Mp4FieldKey.TRACK)
-            .get(0)).getNumbers().get(2)
+          .get(Mp4FieldKey.TRACK)
+          .get(0)).getNumbers().get(2)
       );
       assertEquals(
         Short.valueOf("0"),
         ((Mp4TagTextNumberField) mp4tag
-            .get(Mp4FieldKey.TRACK)
-            .get(0)).getNumbers().get(3)
+          .get(Mp4FieldKey.TRACK)
+          .get(0)).getNumbers().get(3)
       );
 
       //Not sure why there are 4 values, only understand 2nd and third
@@ -1843,26 +1837,26 @@ public class M4aWriteTagTest {
       assertEquals(
         "1/10",
         ((Mp4TagTextNumberField) mp4tag
-            .get(Mp4FieldKey.DISCNUMBER)
-            .get(0)).getContent()
+          .get(Mp4FieldKey.DISCNUMBER)
+          .get(0)).getContent()
       );
       assertEquals(
         Short.valueOf("0"),
         ((Mp4TagTextNumberField) mp4tag
-            .get(Mp4FieldKey.DISCNUMBER)
-            .get(0)).getNumbers().get(0)
+          .get(Mp4FieldKey.DISCNUMBER)
+          .get(0)).getNumbers().get(0)
       );
       assertEquals(
         Short.valueOf("1"),
         ((Mp4TagTextNumberField) mp4tag
-            .get(Mp4FieldKey.DISCNUMBER)
-            .get(0)).getNumbers().get(1)
+          .get(Mp4FieldKey.DISCNUMBER)
+          .get(0)).getNumbers().get(1)
       );
       assertEquals(
         Short.valueOf("10"),
         ((Mp4TagTextNumberField) mp4tag
-            .get(Mp4FieldKey.DISCNUMBER)
-            .get(0)).getNumbers().get(2)
+          .get(Mp4FieldKey.DISCNUMBER)
+          .get(0)).getNumbers().get(2)
       );
 
       assertEquals("composer", mp4tag.getFirst(Mp4FieldKey.COMPOSER));
@@ -1945,7 +1939,6 @@ public class M4aWriteTagTest {
       assertEquals(0xff, coverArtField.getData()[2] & 0xff);
       assertEquals(0xe0, coverArtField.getData()[3] & 0xff);
     } catch (Exception e) {
-      e.printStackTrace();
       exceptionCaught = e;
     }
     assertNull(exceptionCaught);
@@ -1959,9 +1952,9 @@ public class M4aWriteTagTest {
   public void testWriteFileSmallerSizeLessThanEightBytesNoFreeAtoms() {
     Exception exceptionCaught = null;
     try {
-      File testFile = AbstractTestCase.copyAudioToTmp(
+      File testFile = copyAudioToTmp(
         "test8.m4a",
-        new File("testWriteFileLessThanEight3.m4a")
+        "testWriteFileLessThanEight3.m4a"
       );
       AudioFile f = AudioFileIO.read(testFile);
       Tag tag = f.getTag();
@@ -2037,32 +2030,32 @@ public class M4aWriteTagTest {
       assertEquals(
         "1/10",
         ((Mp4TagTextNumberField) mp4tag
-            .get(Mp4FieldKey.TRACK)
-            .get(0)).getContent()
+          .get(Mp4FieldKey.TRACK)
+          .get(0)).getContent()
       );
       assertEquals(
         Short.valueOf("0"),
         ((Mp4TagTextNumberField) mp4tag
-            .get(Mp4FieldKey.TRACK)
-            .get(0)).getNumbers().get(0)
+          .get(Mp4FieldKey.TRACK)
+          .get(0)).getNumbers().get(0)
       );
       assertEquals(
         Short.valueOf("1"),
         ((Mp4TagTextNumberField) mp4tag
-            .get(Mp4FieldKey.TRACK)
-            .get(0)).getNumbers().get(1)
+          .get(Mp4FieldKey.TRACK)
+          .get(0)).getNumbers().get(1)
       );
       assertEquals(
         Short.valueOf("10"),
         ((Mp4TagTextNumberField) mp4tag
-            .get(Mp4FieldKey.TRACK)
-            .get(0)).getNumbers().get(2)
+          .get(Mp4FieldKey.TRACK)
+          .get(0)).getNumbers().get(2)
       );
       assertEquals(
         Short.valueOf("0"),
         ((Mp4TagTextNumberField) mp4tag
-            .get(Mp4FieldKey.TRACK)
-            .get(0)).getNumbers().get(3)
+          .get(Mp4FieldKey.TRACK)
+          .get(0)).getNumbers().get(3)
       );
 
       //Not sure why there are 4 values, only understand 2nd and third
@@ -2070,26 +2063,26 @@ public class M4aWriteTagTest {
       assertEquals(
         "1/10",
         ((Mp4TagTextNumberField) mp4tag
-            .get(Mp4FieldKey.DISCNUMBER)
-            .get(0)).getContent()
+          .get(Mp4FieldKey.DISCNUMBER)
+          .get(0)).getContent()
       );
       assertEquals(
         Short.valueOf("0"),
         ((Mp4TagTextNumberField) mp4tag
-            .get(Mp4FieldKey.DISCNUMBER)
-            .get(0)).getNumbers().get(0)
+          .get(Mp4FieldKey.DISCNUMBER)
+          .get(0)).getNumbers().get(0)
       );
       assertEquals(
         Short.valueOf("1"),
         ((Mp4TagTextNumberField) mp4tag
-            .get(Mp4FieldKey.DISCNUMBER)
-            .get(0)).getNumbers().get(1)
+          .get(Mp4FieldKey.DISCNUMBER)
+          .get(0)).getNumbers().get(1)
       );
       assertEquals(
         Short.valueOf("10"),
         ((Mp4TagTextNumberField) mp4tag
-            .get(Mp4FieldKey.DISCNUMBER)
-            .get(0)).getNumbers().get(2)
+          .get(Mp4FieldKey.DISCNUMBER)
+          .get(0)).getNumbers().get(2)
       );
 
       assertEquals("composer", mp4tag.getFirst(Mp4FieldKey.COMPOSER));
@@ -2172,7 +2165,6 @@ public class M4aWriteTagTest {
       assertEquals(0xff, coverArtField.getData()[2] & 0xff);
       assertEquals(0xe0, coverArtField.getData()[3] & 0xff);
     } catch (Exception e) {
-      e.printStackTrace();
       exceptionCaught = e;
     }
     assertNull(exceptionCaught);
@@ -2186,9 +2178,9 @@ public class M4aWriteTagTest {
   public void testWriteFileSmallerNoFreeAtoms() {
     Exception exceptionCaught = null;
     try {
-      File testFile = AbstractTestCase.copyAudioToTmp(
+      File testFile = copyAudioToTmp(
         "test8.m4a",
-        new File("testWriteFileNoFreeAtom2.m4a")
+        "testWriteFileNoFreeAtom2.m4a"
       );
       AudioFile f = AudioFileIO.read(testFile);
       Tag tag = f.getTag();
@@ -2268,32 +2260,32 @@ public class M4aWriteTagTest {
       assertEquals(
         "1/10",
         ((Mp4TagTextNumberField) mp4tag
-            .get(Mp4FieldKey.TRACK)
-            .get(0)).getContent()
+          .get(Mp4FieldKey.TRACK)
+          .get(0)).getContent()
       );
       assertEquals(
         Short.valueOf("0"),
         ((Mp4TagTextNumberField) mp4tag
-            .get(Mp4FieldKey.TRACK)
-            .get(0)).getNumbers().get(0)
+          .get(Mp4FieldKey.TRACK)
+          .get(0)).getNumbers().get(0)
       );
       assertEquals(
         Short.valueOf("1"),
         ((Mp4TagTextNumberField) mp4tag
-            .get(Mp4FieldKey.TRACK)
-            .get(0)).getNumbers().get(1)
+          .get(Mp4FieldKey.TRACK)
+          .get(0)).getNumbers().get(1)
       );
       assertEquals(
         Short.valueOf("10"),
         ((Mp4TagTextNumberField) mp4tag
-            .get(Mp4FieldKey.TRACK)
-            .get(0)).getNumbers().get(2)
+          .get(Mp4FieldKey.TRACK)
+          .get(0)).getNumbers().get(2)
       );
       assertEquals(
         Short.valueOf("0"),
         ((Mp4TagTextNumberField) mp4tag
-            .get(Mp4FieldKey.TRACK)
-            .get(0)).getNumbers().get(3)
+          .get(Mp4FieldKey.TRACK)
+          .get(0)).getNumbers().get(3)
       );
 
       //Not sure why there are 4 values, only understand 2nd and third
@@ -2301,26 +2293,26 @@ public class M4aWriteTagTest {
       assertEquals(
         "1/10",
         ((Mp4TagTextNumberField) mp4tag
-            .get(Mp4FieldKey.DISCNUMBER)
-            .get(0)).getContent()
+          .get(Mp4FieldKey.DISCNUMBER)
+          .get(0)).getContent()
       );
       assertEquals(
         Short.valueOf("0"),
         ((Mp4TagTextNumberField) mp4tag
-            .get(Mp4FieldKey.DISCNUMBER)
-            .get(0)).getNumbers().get(0)
+          .get(Mp4FieldKey.DISCNUMBER)
+          .get(0)).getNumbers().get(0)
       );
       assertEquals(
         Short.valueOf("1"),
         ((Mp4TagTextNumberField) mp4tag
-            .get(Mp4FieldKey.DISCNUMBER)
-            .get(0)).getNumbers().get(1)
+          .get(Mp4FieldKey.DISCNUMBER)
+          .get(0)).getNumbers().get(1)
       );
       assertEquals(
         Short.valueOf("10"),
         ((Mp4TagTextNumberField) mp4tag
-            .get(Mp4FieldKey.DISCNUMBER)
-            .get(0)).getNumbers().get(2)
+          .get(Mp4FieldKey.DISCNUMBER)
+          .get(0)).getNumbers().get(2)
       );
 
       assertEquals("composer", mp4tag.getFirst(Mp4FieldKey.COMPOSER));
@@ -2394,7 +2386,6 @@ public class M4aWriteTagTest {
       //Should be one image
       assertEquals(2, coverart.size());
     } catch (Exception e) {
-      e.printStackTrace();
       exceptionCaught = e;
     }
     assertNull(exceptionCaught);
@@ -2402,9 +2393,9 @@ public class M4aWriteTagTest {
 
   @Test
   public void testWriteFragmented() throws Exception {
-    File testFile = AbstractTestCase.copyAudioToTmp(
+    File testFile = copyAudioToTmp(
       "test.m4a",
-      new File("testFragmentedTemp.m4a")
+      "testFragmentedTemp.m4a"
     );
     AudioFile f = AudioFileIO.read(testFile);
     Tag tag = f.getTag();
@@ -2427,9 +2418,9 @@ public class M4aWriteTagTest {
     TagOptionSingleton.getInstance().setWriteChunkSize(1000000);
     Exception exceptionCaught = null;
     try {
-      File testFile = AbstractTestCase.copyAudioToTmp(
+      File testFile = copyAudioToTmp(
         "test3.m4a",
-        new File("testWriteFileLargerSizeNoMetaFree.m4a")
+        "testWriteFileLargerSizeNoMetaFree.m4a"
       );
       AudioFile f = AudioFileIO.read(testFile);
       Tag tag = f.getTag();
@@ -2504,32 +2495,32 @@ public class M4aWriteTagTest {
       assertEquals(
         "1/10",
         ((Mp4TagTextNumberField) mp4tag
-            .get(Mp4FieldKey.TRACK)
-            .get(0)).getContent()
+          .get(Mp4FieldKey.TRACK)
+          .get(0)).getContent()
       );
       assertEquals(
         Short.valueOf("0"),
         ((Mp4TagTextNumberField) mp4tag
-            .get(Mp4FieldKey.TRACK)
-            .get(0)).getNumbers().get(0)
+          .get(Mp4FieldKey.TRACK)
+          .get(0)).getNumbers().get(0)
       );
       assertEquals(
         Short.valueOf("1"),
         ((Mp4TagTextNumberField) mp4tag
-            .get(Mp4FieldKey.TRACK)
-            .get(0)).getNumbers().get(1)
+          .get(Mp4FieldKey.TRACK)
+          .get(0)).getNumbers().get(1)
       );
       assertEquals(
         Short.valueOf("10"),
         ((Mp4TagTextNumberField) mp4tag
-            .get(Mp4FieldKey.TRACK)
-            .get(0)).getNumbers().get(2)
+          .get(Mp4FieldKey.TRACK)
+          .get(0)).getNumbers().get(2)
       );
       assertEquals(
         Short.valueOf("0"),
         ((Mp4TagTextNumberField) mp4tag
-            .get(Mp4FieldKey.TRACK)
-            .get(0)).getNumbers().get(3)
+          .get(Mp4FieldKey.TRACK)
+          .get(0)).getNumbers().get(3)
       );
 
       //Not sure why there are 4 values, only understand 2nd and third
@@ -2537,26 +2528,26 @@ public class M4aWriteTagTest {
       assertEquals(
         "1/10",
         ((Mp4TagTextNumberField) mp4tag
-            .get(Mp4FieldKey.DISCNUMBER)
-            .get(0)).getContent()
+          .get(Mp4FieldKey.DISCNUMBER)
+          .get(0)).getContent()
       );
       assertEquals(
         Short.valueOf("0"),
         ((Mp4TagTextNumberField) mp4tag
-            .get(Mp4FieldKey.DISCNUMBER)
-            .get(0)).getNumbers().get(0)
+          .get(Mp4FieldKey.DISCNUMBER)
+          .get(0)).getNumbers().get(0)
       );
       assertEquals(
         Short.valueOf("1"),
         ((Mp4TagTextNumberField) mp4tag
-            .get(Mp4FieldKey.DISCNUMBER)
-            .get(0)).getNumbers().get(1)
+          .get(Mp4FieldKey.DISCNUMBER)
+          .get(0)).getNumbers().get(1)
       );
       assertEquals(
         Short.valueOf("10"),
         ((Mp4TagTextNumberField) mp4tag
-            .get(Mp4FieldKey.DISCNUMBER)
-            .get(0)).getNumbers().get(2)
+          .get(Mp4FieldKey.DISCNUMBER)
+          .get(0)).getNumbers().get(2)
       );
 
       assertEquals("composer", mp4tag.getFirst(Mp4FieldKey.COMPOSER));
@@ -2639,7 +2630,6 @@ public class M4aWriteTagTest {
       assertEquals(0xff, coverArtField.getData()[2] & 0xff);
       assertEquals(0xe0, coverArtField.getData()[3] & 0xff);
     } catch (Exception e) {
-      e.printStackTrace();
       exceptionCaught = e;
     }
     assertNull(exceptionCaught);
@@ -2652,9 +2642,9 @@ public class M4aWriteTagTest {
   public void testWriteFileWhichHasUtdataMetaAndHdlrButNotIlst() {
     Exception exceptionCaught = null;
     try {
-      File testFile = AbstractTestCase.copyAudioToTmp(
+      File testFile = copyAudioToTmp(
         "test4.m4a",
-        new File("testWriteNewMetadata.m4a")
+        "testWriteNewMetadata.m4a"
       );
       MP4Util.Movie mp4 = MP4Util.parseFullMovie(testFile);
       String json = new JSONObject(mp4.getMoov().toString()).toString(2);
@@ -2669,7 +2659,7 @@ public class M4aWriteTagTest {
 
       //Add new image
       RandomAccessFile imageFile = new RandomAccessFile(
-        new File("testdata", "coverart.png"),
+        fileResource("testdata", "coverart.png"),
         "r"
       );
       byte[] imagedata = new byte[(int) imageFile.length()];
@@ -2678,7 +2668,7 @@ public class M4aWriteTagTest {
 
       //Add second image
       imageFile = new RandomAccessFile(
-        new File("testdata", "coverart_small.png"),
+        fileResource("testdata", "coverart_small.png"),
         "r"
       );
       imagedata = new byte[(int) imageFile.length()];
@@ -2721,7 +2711,6 @@ public class M4aWriteTagTest {
       assertEquals(0x4e, coverArtField.getData()[2] & 0xff);
       assertEquals(0x47, coverArtField.getData()[3] & 0xff);
     } catch (Exception e) {
-      e.printStackTrace();
       exceptionCaught = e;
     }
     assertNull(exceptionCaught);
@@ -2731,17 +2720,13 @@ public class M4aWriteTagTest {
    * Test to write tag data, there is no top level free atom (there is a meta free atom).
    */
   @Test
+  @EnabledIf("executeAlsoWithMissingResources") // to be configured in AbsractBaseTestCase
   public void testWriteFileLargerSizeNoTopLevelFreeAtom() {
-    File orig = new File("testdata", "test6.m4p");
-    if (!orig.isFile()) {
-      return;
-    }
-
     Exception exceptionCaught = null;
     try {
-      File testFile = AbstractTestCase.copyAudioToTmp(
+      File testFile = copyAudioToTmp(
         "test6.m4a",
-        new File("testWriteNoTopFree.m4a")
+        "testWriteNoTopFree.m4a"
       );
       AudioFile f = AudioFileIO.read(testFile);
       Tag tag = f.getTag();
@@ -2776,7 +2761,6 @@ public class M4aWriteTagTest {
         tag.getFirst(FieldKey.MUSICBRAINZ_ARTISTID)
       );
     } catch (Exception e) {
-      e.printStackTrace();
       exceptionCaught = e;
     }
     assertNull(exceptionCaught);
@@ -2790,9 +2774,9 @@ public class M4aWriteTagTest {
   public void testWriteFileLargerSizeEqualToTopLevelFreeSpace() {
     Exception exceptionCaught = null;
     try {
-      File testFile = AbstractTestCase.copyAudioToTmp(
+      File testFile = copyAudioToTmp(
         "test3.m4a",
-        new File("testWriteFileEqualToFreeSpace.m4a")
+        "testWriteFileEqualToFreeSpace.m4a"
       );
       AudioFile f = AudioFileIO.read(testFile);
       Tag tag = f.getTag();
@@ -2872,32 +2856,32 @@ public class M4aWriteTagTest {
       assertEquals(
         "1/10",
         ((Mp4TagTextNumberField) mp4tag
-            .get(Mp4FieldKey.TRACK)
-            .get(0)).getContent()
+          .get(Mp4FieldKey.TRACK)
+          .get(0)).getContent()
       );
       assertEquals(
         Short.valueOf("0"),
         ((Mp4TagTextNumberField) mp4tag
-            .get(Mp4FieldKey.TRACK)
-            .get(0)).getNumbers().get(0)
+          .get(Mp4FieldKey.TRACK)
+          .get(0)).getNumbers().get(0)
       );
       assertEquals(
         Short.valueOf("1"),
         ((Mp4TagTextNumberField) mp4tag
-            .get(Mp4FieldKey.TRACK)
-            .get(0)).getNumbers().get(1)
+          .get(Mp4FieldKey.TRACK)
+          .get(0)).getNumbers().get(1)
       );
       assertEquals(
         Short.valueOf("10"),
         ((Mp4TagTextNumberField) mp4tag
-            .get(Mp4FieldKey.TRACK)
-            .get(0)).getNumbers().get(2)
+          .get(Mp4FieldKey.TRACK)
+          .get(0)).getNumbers().get(2)
       );
       assertEquals(
         Short.valueOf("0"),
         ((Mp4TagTextNumberField) mp4tag
-            .get(Mp4FieldKey.TRACK)
-            .get(0)).getNumbers().get(3)
+          .get(Mp4FieldKey.TRACK)
+          .get(0)).getNumbers().get(3)
       );
 
       //Not sure why there are 4 values, only understand 2nd and third
@@ -2905,26 +2889,26 @@ public class M4aWriteTagTest {
       assertEquals(
         "1/10",
         ((Mp4TagTextNumberField) mp4tag
-            .get(Mp4FieldKey.DISCNUMBER)
-            .get(0)).getContent()
+          .get(Mp4FieldKey.DISCNUMBER)
+          .get(0)).getContent()
       );
       assertEquals(
         Short.valueOf("0"),
         ((Mp4TagTextNumberField) mp4tag
-            .get(Mp4FieldKey.DISCNUMBER)
-            .get(0)).getNumbers().get(0)
+          .get(Mp4FieldKey.DISCNUMBER)
+          .get(0)).getNumbers().get(0)
       );
       assertEquals(
         Short.valueOf("1"),
         ((Mp4TagTextNumberField) mp4tag
-            .get(Mp4FieldKey.DISCNUMBER)
-            .get(0)).getNumbers().get(1)
+          .get(Mp4FieldKey.DISCNUMBER)
+          .get(0)).getNumbers().get(1)
       );
       assertEquals(
         Short.valueOf("10"),
         ((Mp4TagTextNumberField) mp4tag
-            .get(Mp4FieldKey.DISCNUMBER)
-            .get(0)).getNumbers().get(2)
+          .get(Mp4FieldKey.DISCNUMBER)
+          .get(0)).getNumbers().get(2)
       );
 
       assertEquals("composer", mp4tag.getFirst(Mp4FieldKey.COMPOSER));
@@ -2998,7 +2982,6 @@ public class M4aWriteTagTest {
       //Should be one image
       assertEquals(2, coverart.size());
     } catch (Exception e) {
-      e.printStackTrace();
       exceptionCaught = e;
     }
     assertNull(exceptionCaught);
@@ -3013,9 +2996,9 @@ public class M4aWriteTagTest {
   public void testWriteAllFields() {
     Exception exceptionCaught = null;
     try {
-      File testFile = AbstractTestCase.copyAudioToTmp(
+      File testFile = copyAudioToTmp(
         "test5.m4a",
-        new File("testWriteAllFields.m4a")
+        "testWriteAllFields.m4a"
       );
       AudioFile f = AudioFileIO.read(testFile);
       Tag tag = f.getTag();
@@ -3169,7 +3152,6 @@ public class M4aWriteTagTest {
       assertEquals("1/11", tag.getFirst("trkn"));
       assertEquals("1/3", tag.getFirst("disk"));
     } catch (Exception e) {
-      e.printStackTrace();
       exceptionCaught = e;
     }
     assertNull(exceptionCaught);
@@ -3180,9 +3162,9 @@ public class M4aWriteTagTest {
    */
   @Test
   public void testWriteGenres() throws Exception {
-    File testFile = AbstractTestCase.copyAudioToTmp(
+    File testFile = copyAudioToTmp(
       "test5.m4a",
-      new File("testWriteGenres0.m4a")
+      "testWriteGenres0.m4a"
     );
     AudioFile f = AudioFileIO.read(testFile);
     Mp4Tag tag = (Mp4Tag) f.getTag();
@@ -3247,9 +3229,9 @@ public class M4aWriteTagTest {
   public void testWriteGenres2() {
     Exception exceptionCaught = null;
     try {
-      File testFile = AbstractTestCase.copyAudioToTmp(
+      File testFile = copyAudioToTmp(
         "test5.m4a",
-        new File("testWriteGenres2.m4a")
+        "testWriteGenres2.m4a"
       );
       AudioFile f = AudioFileIO.read(testFile);
       Mp4Tag tag = (Mp4Tag) f.getTag();
@@ -3274,7 +3256,6 @@ public class M4aWriteTagTest {
       assertEquals("", tag.getFirst(Mp4FieldKey.GENRE));
       assertEquals("Slimey", tag.getFirst(Mp4FieldKey.GENRE_CUSTOM));
     } catch (Exception e) {
-      e.printStackTrace();
       exceptionCaught = e;
     }
     assertNull(exceptionCaught);
@@ -3289,9 +3270,9 @@ public class M4aWriteTagTest {
    */
   @Test
   public void testWriteGenres3() throws Exception {
-    File testFile = AbstractTestCase.copyAudioToTmp(
+    File testFile = copyAudioToTmp(
       "test5.m4a",
-      new File("testWriteGenres3.m4a")
+      "testWriteGenres3.m4a"
     );
     AudioFile f = AudioFileIO.read(testFile);
     Mp4Tag tag = (Mp4Tag) f.getTag();
@@ -3319,9 +3300,9 @@ public class M4aWriteTagTest {
   public void testWriteGenres4() {
     Exception exceptionCaught = null;
     try {
-      File testFile = AbstractTestCase.copyAudioToTmp(
+      File testFile = copyAudioToTmp(
         "test5.m4a",
-        new File("testWriteGenres4.m4a")
+        "testWriteGenres4.m4a"
       );
       AudioFile f = AudioFileIO.read(testFile);
       Mp4Tag tag = (Mp4Tag) f.getTag();
@@ -3338,7 +3319,6 @@ public class M4aWriteTagTest {
       assertEquals("", tag.getFirst(Mp4FieldKey.GENRE));
       assertEquals("Tangoey", tag.getFirst(Mp4FieldKey.GENRE_CUSTOM));
     } catch (Exception e) {
-      e.printStackTrace();
       exceptionCaught = e;
     }
     assertNull(exceptionCaught);
@@ -3349,41 +3329,34 @@ public class M4aWriteTagTest {
    * way round or there is no free atom.
    */
   @Test
+  @EnabledIf("executeAlsoWithMissingResources") // to be configured in AbsractBaseTestCase
   public void testWriteWhenFreeisAfterMdat() {
     Exception exceptionCaught = null;
     try {
-      File orig = new File("testdata", "unable_to_write.m4p");
-      if (!orig.isFile()) {
-        return;
-      }
-      File testFile = AbstractTestCase.copyAudioToTmp("unable_to_write.m4p");
+      File testFile = copyAudioToTmp("unable_to_write.m4p");
 
       AudioFile f = AudioFileIO.read(testFile);
       Tag tag = f.getTag();
       tag.setField(FieldKey.TITLE, "tit2");
       f.commit();
     } catch (Exception e) {
-      e.printStackTrace();
       exceptionCaught = e;
     }
     assertNull(exceptionCaught);
   }
 
   @Test
+  @EnabledIf("executeAlsoWithMissingResources") // to be configured in AbsractBaseTestCase
   public void testWriteMuchLargerWhenFreeIsAfterMdat() {
     Exception exceptionCaught = null;
     try {
-      File orig = new File("testdata", "unable_to_write.m4p");
-      if (!orig.isFile()) {
-        return;
-      }
-      File testFile = AbstractTestCase.copyAudioToTmp("unable_to_write.m4p");
+      File testFile = copyAudioToTmp("unable_to_write.m4p");
 
       AudioFile f = AudioFileIO.read(testFile);
       Tag tag = f.getTag();
 
       RandomAccessFile imageFile = new RandomAccessFile(
-        new File("testdata", "coverart.png"),
+        fileResource("testdata", "coverart.png"),
         "r"
       );
       byte[] imagedata = new byte[(int) imageFile.length()];
@@ -3391,21 +3364,18 @@ public class M4aWriteTagTest {
       tag.addField(((Mp4Tag) tag).createArtworkField(imagedata));
       f.commit();
     } catch (Exception e) {
-      e.printStackTrace();
       exceptionCaught = e;
     }
     assertNull(exceptionCaught);
   }
 
   @Test
+  @EnabledIf("executeAlsoWithMissingResources") // to be configured in AbsractBaseTestCase
   public void testWriteFileLargerSizeLessThanTopLevelFreeWhenFreeAafterMdat() {
     Exception exceptionCaught = null;
     try {
-      File orig = new File("testdata", "unable_to_write.m4p");
-      if (!orig.isFile()) {
-        return;
-      }
-      File testFile = AbstractTestCase.copyAudioToTmp("unable_to_write.m4p");
+      File orig = fileResource("testdata", "unable_to_write.m4p");
+      File testFile = copyAudioToTmp("unable_to_write.m4p");
 
       AudioFile f = AudioFileIO.read(testFile);
       Tag tag = f.getTag();
@@ -3421,21 +3391,17 @@ public class M4aWriteTagTest {
       tag.addField(((Mp4Tag) tag).createArtworkField(imagedata));
       f.commit();
     } catch (Exception e) {
-      e.printStackTrace();
       exceptionCaught = e;
     }
     assertNull(exceptionCaught);
   }
 
   @Test
+  @EnabledIf("executeAlsoWithMissingResources") // to be configured in AbsractBaseTestCase
   public void testWriteFileLargerSizeEqualToTopLevelFreeWhenFreeAafterMdat() {
     Exception exceptionCaught = null;
     try {
-      File orig = new File("testdata", "unable_to_write.m4p");
-      if (!orig.isFile()) {
-        return;
-      }
-      File testFile = AbstractTestCase.copyAudioToTmp("unable_to_write.m4p");
+      File testFile = copyAudioToTmp("unable_to_write.m4p");
 
       AudioFile f = AudioFileIO.read(testFile);
       Tag tag = f.getTag();
@@ -3451,7 +3417,6 @@ public class M4aWriteTagTest {
       tag.addField(((Mp4Tag) tag).createArtworkField(imagedata));
       f.commit();
     } catch (Exception e) {
-      e.printStackTrace();
       exceptionCaught = e;
     }
     assertNull(exceptionCaught);
@@ -3461,17 +3426,13 @@ public class M4aWriteTagTest {
    * Test writing mp4 file.
    */
   @Test
+  @EnabledIf("executeAlsoWithMissingResources") // to be configured in AbsractBaseTestCase
   public void testWritingIssue198() throws Exception {
-    File orig = new File("testdata", "test27.m4a");
-    if (!orig.isFile()) {
-      return;
-    }
-
     Exception exceptionCaught = null;
     try {
-      File testFile = AbstractTestCase.copyAudioToTmp(
+      File testFile = copyAudioToTmp(
         "test27.m4a",
-        new File("rvdnswithoutdata.m4a")
+        "rvdnswithoutdata.m4a"
       );
 
       AudioFile f = AudioFileIO.read(testFile);
@@ -3497,7 +3458,6 @@ public class M4aWriteTagTest {
       System.out.println(f.getAudioHeader());
       System.out.println(tag);
     } catch (IOException e) {
-      e.printStackTrace();
       exceptionCaught = e;
     }
     assertNull(exceptionCaught);
@@ -3505,9 +3465,9 @@ public class M4aWriteTagTest {
 
   @Test
   public void testWriteMultipleFields() throws Exception {
-    File testFile = AbstractTestCase.copyAudioToTmp(
+    File testFile = copyAudioToTmp(
       "test.m4a",
-      new File("testWriteMultiple.m4a")
+      "testWriteMultiple.m4a"
     );
     AudioFile f = AudioFileIO.read(testFile);
     List<TagField> tagFields = f.getTag().getFields(FieldKey.ALBUM_ARTIST_SORT);
@@ -3522,9 +3482,9 @@ public class M4aWriteTagTest {
 
   @Test
   public void testDeleteFields() throws Exception {
-    File testFile = AbstractTestCase.copyAudioToTmp(
+    File testFile = copyAudioToTmp(
       "test.m4a",
-      new File("testDeleteFields.m4a")
+      "testDeleteFields.m4a"
     );
 
     //Delete using generic key
@@ -3555,9 +3515,9 @@ public class M4aWriteTagTest {
 
   @Test
   public void testReadWriteM4a() throws Exception {
-    File testFile = AbstractTestCase.copyAudioToTmp(
+    File testFile = copyAudioToTmp(
       "test.m4a",
-      new File("testDeleteFields.m4a")
+      "testDeleteFields.m4a"
     );
     AudioFile audioFile = AudioFileIO.read(testFile);
     audioFile.commit();

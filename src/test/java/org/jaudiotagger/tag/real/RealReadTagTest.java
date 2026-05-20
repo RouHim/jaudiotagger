@@ -20,7 +20,7 @@ public class RealReadTagTest extends AbstractTestCase {
   @Test
   public void test01()
     throws InvalidAudioFrameException, IOException, ReadOnlyFileException, TagException, CannotReadException {
-    File testFile = AbstractTestCase.copyAudioToTmp("test01.ra");
+    File testFile = copyAudioToTmp("test01.ra");
     AudioFile f = AudioFileIO.read(testFile);
     Tag tag = f.getTag();
     assertEquals(3, tag.getFieldCount()); // If this line fails we need to update our test as the RealMedia tag parser has been augmented
@@ -32,7 +32,7 @@ public class RealReadTagTest extends AbstractTestCase {
   @Test
   public void test02()
     throws InvalidAudioFrameException, IOException, ReadOnlyFileException, TagException, CannotReadException {
-    File testFile = AbstractTestCase.copyAudioToTmp("test02.ra");
+    File testFile = copyAudioToTmp("test02.ra");
     AudioFile f = AudioFileIO.read(testFile);
     Tag tag = f.getTag();
     assertEquals(3, tag.getFieldCount()); // If this line fails we need to update our test as the RealMedia tag parser has been augmented
@@ -47,7 +47,7 @@ public class RealReadTagTest extends AbstractTestCase {
   @Test
   public void test03()
     throws InvalidAudioFrameException, IOException, ReadOnlyFileException, TagException, CannotReadException {
-    File testFile = AbstractTestCase.copyAudioToTmp("test03.ra");
+    File testFile = copyAudioToTmp("test03.ra");
     AudioFile f = AudioFileIO.read(testFile);
     Tag tag = f.getTag();
     assertEquals(3, tag.getFieldCount()); // If this line fails we need to update our test as the RealMedia tag parser has been augmented
@@ -59,7 +59,7 @@ public class RealReadTagTest extends AbstractTestCase {
   @Test
   public void test04()
     throws InvalidAudioFrameException, IOException, ReadOnlyFileException, TagException, CannotReadException {
-    File testFile = AbstractTestCase.copyAudioToTmp("test04.ra");
+    File testFile = copyAudioToTmp("test04.ra");
     AudioFile f = AudioFileIO.read(testFile);
     Tag tag = f.getTag();
     assertEquals(3, tag.getFieldCount()); // If this line fails we need to update our test as the RealMedia tag parser has been augmented
@@ -71,7 +71,7 @@ public class RealReadTagTest extends AbstractTestCase {
   @Test
   public void test05ra()
     throws InvalidAudioFrameException, IOException, ReadOnlyFileException, TagException, CannotReadException {
-    File testFile = AbstractTestCase.copyAudioToTmp("test05.ra");
+    File testFile = copyAudioToTmp("test05.ra");
     AudioFile f = AudioFileIO.read(testFile);
     Tag tag = f.getTag();
     assertEquals(3, tag.getFieldCount()); // If this line fails we need to update our test as the RealMedia tag parser has been augmented
@@ -89,7 +89,7 @@ public class RealReadTagTest extends AbstractTestCase {
   @Test
   public void test05rm()
     throws InvalidAudioFrameException, IOException, ReadOnlyFileException, TagException, CannotReadException {
-    File testFile = AbstractTestCase.copyAudioToTmp("test05.rm");
+    File testFile = copyAudioToTmp("test05.rm");
     AudioFile f = AudioFileIO.read(testFile);
     Tag tag = f.getTag();
     assertEquals(3, tag.getFieldCount()); // If this line fails we need to update our test as the RealMedia tag parser has been augmented
@@ -107,7 +107,7 @@ public class RealReadTagTest extends AbstractTestCase {
   @Test
   public void test06()
     throws InvalidAudioFrameException, IOException, ReadOnlyFileException, TagException, CannotReadException {
-    File testFile = AbstractTestCase.copyAudioToTmp("test06.rm");
+    File testFile = copyAudioToTmp("test06.rm");
     AudioFile f = AudioFileIO.read(testFile);
     Tag tag = f.getTag();
     assertEquals(3, tag.getFieldCount()); // If this line fails we need to update our test as the RealMedia tag parser has been augmented
@@ -122,7 +122,7 @@ public class RealReadTagTest extends AbstractTestCase {
   @Test
   public void test07()
     throws InvalidAudioFrameException, IOException, ReadOnlyFileException, TagException, CannotReadException {
-    File testFile = AbstractTestCase.copyAudioToTmp("test07.rm");
+    File testFile = copyAudioToTmp("test07.rm");
     AudioFile f = AudioFileIO.read(testFile);
     Tag tag = f.getTag();
     assertEquals(3, tag.getFieldCount()); // If this line fails we need to update our test as the RealMedia tag parser has been augmented
@@ -143,7 +143,7 @@ public class RealReadTagTest extends AbstractTestCase {
   @Test
   public void test08()
     throws InvalidAudioFrameException, IOException, ReadOnlyFileException, TagException, CannotReadException {
-    File testFile = AbstractTestCase.copyAudioToTmp("test08.rm");
+    File testFile = copyAudioToTmp("test08.rm");
     AudioFile f = AudioFileIO.read(testFile);
     Tag tag = f.getTag();
     assertEquals(3, tag.getFieldCount()); // If this line fails we need to update our test as the RealMedia tag parser has been augmented
@@ -164,7 +164,7 @@ public class RealReadTagTest extends AbstractTestCase {
   @Test
   public void test09()
     throws InvalidAudioFrameException, IOException, ReadOnlyFileException, TagException, CannotReadException {
-    File testFile = AbstractTestCase.copyAudioToTmp("test09.rm");
+    File testFile = copyAudioToTmp("test09.rm");
     AudioFile f = AudioFileIO.read(testFile);
     Tag tag = f.getTag();
     assertEquals(3, tag.getFieldCount()); // If this line fails we need to update our test as the RealMedia tag parser has been augmented
@@ -179,7 +179,7 @@ public class RealReadTagTest extends AbstractTestCase {
   @Test
   public void test10()
     throws InvalidAudioFrameException, IOException, ReadOnlyFileException, TagException, CannotReadException {
-    File testFile = AbstractTestCase.copyAudioToTmp("test10.rm");
+    File testFile = copyAudioToTmp("test10.rm");
     AudioFile f = AudioFileIO.read(testFile);
     Tag tag = f.getTag();
     assertEquals(3, tag.getFieldCount()); // If this line fails we need to update our test as the RealMedia tag parser has been augmented

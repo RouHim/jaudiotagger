@@ -15,6 +15,7 @@ import org.jaudiotagger.audio.AudioFile;
 import org.jaudiotagger.audio.AudioFileIO;
 import org.jaudiotagger.tag.images.Artwork;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.condition.EnabledIf;
 
 public class VorbisImageTest extends AbstractTestCase {
 
@@ -27,7 +28,7 @@ public class VorbisImageTest extends AbstractTestCase {
   public void testReadFileWithSmallImageTag() {
     Exception exceptionCaught = null;
     try {
-      File testFile = AbstractTestCase.copyAudioToTmp("testsmallimage.ogg");
+      File testFile = copyAudioToTmp("testsmallimage.ogg");
       AudioFile f = AudioFileIO.read(testFile);
       String mimeType = ((VorbisCommentTag) f.getTag()).getFirst(
         VorbisCommentFieldKey.COVERARTMIME
@@ -54,7 +55,7 @@ public class VorbisImageTest extends AbstractTestCase {
   public void testReadFileWithLargeImageTag() {
     Exception exceptionCaught = null;
     try {
-      File testFile = AbstractTestCase.copyAudioToTmp("testlargeimage.ogg");
+      File testFile = copyAudioToTmp("testlargeimage.ogg");
       AudioFile f = AudioFileIO.read(testFile);
       String mimeType = ((VorbisCommentTag) f.getTag()).getFirst(
         VorbisCommentFieldKey.COVERARTMIME
@@ -67,7 +68,6 @@ public class VorbisImageTest extends AbstractTestCase {
         assertEquals(1013576, imageRawData.length());
       }
     } catch (Exception e) {
-      e.printStackTrace();
       exceptionCaught = e;
     }
     assertNull(exceptionCaught);
@@ -79,16 +79,16 @@ public class VorbisImageTest extends AbstractTestCase {
   @Test
   public void testWriteImage1() {
     try {
-      File testFile = AbstractTestCase.copyAudioToTmp(
+      File testFile = copyAudioToTmp(
         "test.ogg",
-        new File("testWriteImage1.ogg")
+        "testWriteImage1.ogg"
       );
       AudioFile f = AudioFileIO.read(testFile);
       VorbisCommentTag tag = (VorbisCommentTag) f.getTag();
 
       //Add new image, requires two fields in oggVorbis with data in  base64 encoded form
       RandomAccessFile imageFile = new RandomAccessFile(
-        new File("testdata", "coverart.png"),
+        fileResource("testdata", "coverart.png"),
         "r"
       );
       byte[] imagedata = new byte[(int) imageFile.length()];
@@ -122,7 +122,6 @@ public class VorbisImageTest extends AbstractTestCase {
       );
       assertNotNull(bi);
     } catch (Exception e) {
-      e.printStackTrace();
     }
   }
 
@@ -132,16 +131,16 @@ public class VorbisImageTest extends AbstractTestCase {
   @Test
   public void testWriteImage2() {
     try {
-      File testFile = AbstractTestCase.copyAudioToTmp(
+      File testFile = copyAudioToTmp(
         "test.ogg",
-        new File("testWriteImage2.ogg")
+        "testWriteImage2.ogg"
       );
       AudioFile f = AudioFileIO.read(testFile);
       VorbisCommentTag tag = (VorbisCommentTag) f.getTag();
 
       //Add new image using purpose built method
       RandomAccessFile imageFile = new RandomAccessFile(
-        new File("testdata", "coverart.png"),
+        fileResource("testdata", "coverart.png"),
         "r"
       );
       byte[] imagedata = new byte[(int) imageFile.length()];
@@ -171,7 +170,6 @@ public class VorbisImageTest extends AbstractTestCase {
       );
       assertNotNull(bi);
     } catch (Exception e) {
-      e.printStackTrace();
     }
   }
 
@@ -181,16 +179,16 @@ public class VorbisImageTest extends AbstractTestCase {
   @Test
   public void testWriteImage3() {
     try {
-      File testFile = AbstractTestCase.copyAudioToTmp(
+      File testFile = copyAudioToTmp(
         "test.ogg",
-        new File("testWriteImage3.ogg")
+        "testWriteImage3.ogg"
       );
       AudioFile f = AudioFileIO.read(testFile);
       VorbisCommentTag tag = (VorbisCommentTag) f.getTag();
 
       //Add new image, requires two fields in oggVorbis with data in  base64 encoded form
       RandomAccessFile imageFile = new RandomAccessFile(
-        new File("testdata", "coverart.png"),
+        fileResource("testdata", "coverart.png"),
         "r"
       );
       byte[] imagedata = new byte[(int) imageFile.length()];
@@ -215,7 +213,6 @@ public class VorbisImageTest extends AbstractTestCase {
       );
       assertNotNull(bi);
     } catch (Exception e) {
-      e.printStackTrace();
     }
   }
 
@@ -223,23 +220,19 @@ public class VorbisImageTest extends AbstractTestCase {
    * Test can read file with base64 encoded image which has newlines in it
    */
   @Test
+  @EnabledIf("executeAlsoWithMissingResources") // to be configured in AbsractBaseTestCase
   public void testReadFileWithNewlinesInBase64() {
-    File orig = new File("testdata", "testnewlineimage.small.ogg");
-    if (!orig.isFile()) {
-      System.err.println("Unable to test file - not available");
-      return;
-    }
 
     Exception exceptionCaught = null;
     try {
-      File testFile = AbstractTestCase.copyAudioToTmp(
+      File testFile = copyAudioToTmp(
         "testnewlineimage.small.ogg"
       );
       AudioFile f = AudioFileIO.read(testFile);
       List<Artwork> artwork = f.getTag().getArtworkList();
       assertEquals(1, artwork.size());
       final Artwork next = artwork.iterator().next();
-      final FileOutputStream fos = new FileOutputStream(new File("test.jpg"));
+      final FileOutputStream fos = new FileOutputStream("test.jpg");
       for (byte b : next.getBinaryData()) {
         fos.write(b);
       }

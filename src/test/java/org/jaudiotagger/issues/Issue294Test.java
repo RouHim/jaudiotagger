@@ -16,21 +16,16 @@ import org.jaudiotagger.tag.images.Artwork;
 import org.jaudiotagger.tag.images.ArtworkFactory;
 import org.jaudiotagger.tag.images.Images;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.condition.EnabledIf;
 
 public class Issue294Test extends AbstractTestCase {
 
   @Test
+  @EnabledIf("executeAlsoWithMissingResources") // to be configured in AbsractBaseTestCase
   public void testSavingArtworkToMp3File() {
-    File orig = new File("testdata", "test70.mp3");
-    if (!orig.isFile()) {
-      System.err.println("Unable to test file - not available");
-      return;
-    }
 
-    File testFile = AbstractTestCase.copyAudioToTmp("test70.mp3");
-    File testPix = AbstractTestCase.copyAudioToTmp("test70.jpg");
-
-    File originalFileBackup = null;
+    File testFile = copyAudioToTmp("test70.mp3");
+    File testPix = copyAudioToTmp("test70.jpg");
 
     Exception exceptionCaught = null;
     try {
@@ -127,7 +122,6 @@ public class Issue294Test extends AbstractTestCase {
       assertEquals(500, Images.getImage(artwork).getHeight());
       assertEquals(500, Images.getImage(artwork).getWidth());
     } catch (Exception e) {
-      e.printStackTrace();
       exceptionCaught = e;
     }
     assertNull(exceptionCaught);

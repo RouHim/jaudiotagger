@@ -1,7 +1,7 @@
 package org.jaudiotagger.tag.id3;
 
+import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.io.File;
 import java.util.List;
@@ -17,7 +17,7 @@ public class DeprecatedFrameTest extends AbstractTestCase {
   @Test
   public void testv24TagWithDeprecatedFrameShouldCreateAsDeprecated()
     throws Exception {
-    File testFile = AbstractTestCase.copyAudioToTmp(
+    File testFile = prependAudioToTmp(
       "Issue88.id3",
       "testV1.mp3"
     );
@@ -28,13 +28,13 @@ public class DeprecatedFrameTest extends AbstractTestCase {
       .getID3v2Tag()
       .getFrame(ID3v23Frames.FRAME_ID_V3_TYER);
     assertNotNull(v24frame);
-    assertTrue(v24frame.getBody() instanceof FrameBodyDeprecated);
+    assertInstanceOf(FrameBodyDeprecated.class, v24frame.getBody());
   }
 
   @Test
   public void testConvertTagWithDeprecatedFrameToTagWhereFrameShouldNoLongerBeDeprecated()
     throws Exception {
-    File testFile = AbstractTestCase.copyAudioToTmp(
+    File testFile = prependAudioToTmp(
       "Issue88.id3",
       "testV1.mp3"
     );
@@ -43,13 +43,13 @@ public class DeprecatedFrameTest extends AbstractTestCase {
 
     ID3v23Tag v23Tag = new ID3v23Tag(mp3File.getID3v2Tag());
     ID3v23Frame v23frame = (ID3v23Frame) ((List) v23Tag.getFrame(
-        ID3v23Frames.FRAME_ID_V3_TYER
-      )).get(0);
-    assertTrue(v23frame.getBody() instanceof FrameBodyTYER);
+      ID3v23Frames.FRAME_ID_V3_TYER
+    )).get(0);
+    assertInstanceOf(FrameBodyTYER.class, v23frame.getBody());
     v23frame = (ID3v23Frame) ((List) v23Tag.getFrame(
-        ID3v23Frames.FRAME_ID_V3_TYER
-      )).get(1);
-    assertTrue(v23frame.getBody() instanceof FrameBodyTYER);
+      ID3v23Frames.FRAME_ID_V3_TYER
+    )).get(1);
+    assertInstanceOf(FrameBodyTYER.class, v23frame.getBody());
 
     mp3File.setID3v2Tag(v23Tag);
     mp3File.save();
@@ -57,12 +57,12 @@ public class DeprecatedFrameTest extends AbstractTestCase {
     mp3File = new MP3File(testFile);
     v23Tag = (ID3v23Tag) mp3File.getID3v2Tag();
     v23frame = (ID3v23Frame) v23Tag.getFrame(ID3v23Frames.FRAME_ID_V3_TYER);
-    assertTrue(v23frame.getBody() instanceof FrameBodyTYER);
+    assertInstanceOf(FrameBodyTYER.class, v23frame.getBody());
   }
 
   @Test
   public void testSavingV24DeprecatedTIMETagToV23() throws Exception {
-    File testFile = AbstractTestCase.copyAudioToTmp(
+    File testFile = prependAudioToTmp(
       "Issue122-1.id3",
       "testV1.mp3"
     );
@@ -72,7 +72,7 @@ public class DeprecatedFrameTest extends AbstractTestCase {
       ID3v23Frames.FRAME_ID_V3_TIME
     );
     assertNotNull(v24frame);
-    assertTrue(v24frame.getBody() instanceof FrameBodyDeprecated);
+    assertInstanceOf(FrameBodyDeprecated.class, v24frame.getBody());
 
     //Save as V23
     ID3v23Tag v23Tag = new ID3v23Tag(v24Tag);
@@ -84,12 +84,12 @@ public class DeprecatedFrameTest extends AbstractTestCase {
     ID3v23Frame v23frame = (ID3v23Frame) v23Tag.getFrame(
       ID3v23Frames.FRAME_ID_V3_TIME
     );
-    assertTrue(v23frame.getBody() instanceof FrameBodyTIME);
+    assertInstanceOf(FrameBodyTIME.class, v23frame.getBody());
   }
 
   @Test
   public void testSavingV24DeprecatedEmptyTDATTagToV23() throws Exception {
-    File testFile = AbstractTestCase.copyAudioToTmp(
+    File testFile = prependAudioToTmp(
       "Issue122-2.id3",
       "testV1.mp3"
     );
@@ -99,7 +99,7 @@ public class DeprecatedFrameTest extends AbstractTestCase {
       ID3v23Frames.FRAME_ID_V3_TDAT
     );
     assertNotNull(v24frame);
-    assertTrue(v24frame.getBody() instanceof FrameBodyDeprecated);
+    assertInstanceOf(FrameBodyDeprecated.class, v24frame.getBody());
 
     //Save as V23
     ID3v23Tag v23Tag = new ID3v23Tag(v24Tag);
@@ -110,8 +110,6 @@ public class DeprecatedFrameTest extends AbstractTestCase {
     v23Tag = (ID3v23Tag) mp3File.getID3v2Tag();
     Object v23frame = v23Tag.getFrame(ID3v23Frames.FRAME_ID_V3_TYER);
     assertNotNull(v23frame);
-    assertTrue(
-      ((AbstractID3v2Frame) v23frame).getBody() instanceof FrameBodyTYER
-    );
+    assertInstanceOf(FrameBodyTYER.class, ((AbstractID3v2Frame) v23frame).getBody());
   }
 }
