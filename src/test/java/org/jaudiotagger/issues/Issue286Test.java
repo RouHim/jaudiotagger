@@ -21,7 +21,7 @@ public class Issue286Test extends AbstractTestCase {
    */
   @Test
   public void testReadVorbisCoverartOne() throws Exception {
-    File file = new File("testdata", "test76.ogg");
+    File file = fileResource("testdata", "test76.ogg");
     AudioFile af = AudioFileIO.read(file);
     assertEquals(1, af.getTag().getArtworkList().size());
     Artwork artwork = af.getTag().getFirstArtwork();
@@ -38,7 +38,7 @@ public class Issue286Test extends AbstractTestCase {
    */
   @Test
   public void testReadVorbisCoverartTwo() throws Exception {
-    File file = new File("testdata", "test77.ogg");
+    File file = fileResource("testdata", "test77.ogg");
     AudioFile af = AudioFileIO.read(file);
     assertEquals(1, af.getTag().getArtworkList().size());
     Artwork artwork = af.getTag().getFirstArtwork();
@@ -57,14 +57,14 @@ public class Issue286Test extends AbstractTestCase {
     File testFile = null;
     Exception exceptionCaught = null;
     try {
-      testFile = AbstractTestCase.copyAudioToTmp("test3.ogg");
+      testFile = copyAudioToTmp("test3.ogg");
 
       //Read File okay
       AudioFile af = AudioFileIO.read(testFile);
       Tag tag = af.getTag();
 
       assertEquals(1, tag.getArtworkList().size());
-      assertTrue(tag.getArtworkList().get(0) instanceof Artwork);
+      assertInstanceOf(Artwork.class, tag.getArtworkList().get(0));
       Artwork artwork = tag.getFirstArtwork();
       assertEquals("image/png", artwork.getMimeType());
       assertNotNull(artwork.getImage());
@@ -73,7 +73,7 @@ public class Issue286Test extends AbstractTestCase {
 
       //Now add new image
       Artwork newartwork = ArtworkFactory.createArtworkFromFile(
-        new File("testdata", "coverart.png")
+        fileResource("testdata", "coverart.png")
       );
       newartwork.setDescription("A new file");
       assertTrue(ImageFormats.isPortableFormat(newartwork.getBinaryData()));
@@ -83,21 +83,20 @@ public class Issue286Test extends AbstractTestCase {
       tag = af.getTag();
       assertEquals(2, tag.getArtworkList().size());
 
-      assertTrue(tag.getArtworkList().get(0) instanceof Artwork);
+      assertInstanceOf(Artwork.class, tag.getArtworkList().get(0));
       artwork = tag.getFirstArtwork();
       assertEquals("image/png", artwork.getMimeType());
       assertNotNull(artwork.getImage());
       assertEquals("", artwork.getDescription());
       assertEquals(200, Images.getImage(artwork).getWidth());
 
-      assertTrue(tag.getArtworkList().get(1) instanceof Artwork);
+      assertInstanceOf(Artwork.class, tag.getArtworkList().get(1));
       artwork = tag.getArtworkList().get(1);
       assertEquals("image/png", artwork.getMimeType());
       assertNotNull(artwork.getImage());
       assertEquals("A new file", artwork.getDescription());
       assertEquals(200, Images.getImage(artwork).getWidth());
     } catch (Exception e) {
-      e.printStackTrace();
       exceptionCaught = e;
     }
 

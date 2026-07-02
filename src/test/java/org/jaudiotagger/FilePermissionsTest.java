@@ -12,9 +12,9 @@ import org.jaudiotagger.tag.Tag;
 import org.jaudiotagger.tag.TagException;
 import org.jaudiotagger.tag.TagOptionSingleton;
 
-public class FilePermissionsTest {
+public class FilePermissionsTest extends AbstractBaseTestCase {
 
-  public static void runWriteWriteProtectedFileWithCheckDisabled(
+  public void runWriteWriteProtectedFileWithCheckDisabled(
     String sourceFile
   ) throws Exception {
     File testFile = createFile(sourceFile);
@@ -37,7 +37,7 @@ public class FilePermissionsTest {
     }
   }
 
-  public static void runWriteWriteProtectedFileWithCheckEnabled(
+  public void runWriteWriteProtectedFileWithCheckEnabled(
     String sourceFile
   ) throws Exception {
     File testFile = createFile(sourceFile);
@@ -60,7 +60,7 @@ public class FilePermissionsTest {
     }
   }
 
-  public static void runWriteReadOnlyFileWithCheckDisabled(String sourceFile)
+  public void runWriteReadOnlyFileWithCheckDisabled(String sourceFile)
     throws Exception {
     File testFile = createFile(sourceFile);
     assertTrue(testFile.exists(), "Test file must exist");
@@ -83,11 +83,11 @@ public class FilePermissionsTest {
     }
   }
 
-  private static File createFile(String sourceFile) {
+  private File createFile(String sourceFile) {
     String[] baseNameAndExt = sourceFile.split("\\.(?=[^\\.]+$)");
-    File testFile = AbstractTestCase.copyAudioToTmp(
+    File testFile = copyAudioToTmp(
       sourceFile,
-      new File(baseNameAndExt[0] + "WriteProtected." + baseNameAndExt[1])
+      baseNameAndExt[0] + "WriteProtected." + baseNameAndExt[1]
     );
     return testFile;
   }

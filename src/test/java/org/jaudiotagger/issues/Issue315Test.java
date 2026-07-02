@@ -8,6 +8,7 @@ import org.jaudiotagger.audio.AudioFile;
 import org.jaudiotagger.audio.AudioFileIO;
 import org.jaudiotagger.tag.FieldKey;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.condition.EnabledIf;
 
 public class Issue315Test extends AbstractTestCase {
 
@@ -16,16 +17,12 @@ public class Issue315Test extends AbstractTestCase {
    * @throws Exception
    */
   @Test
+  @EnabledIf("executeAlsoWithMissingResources") // to be configured in AbsractBaseTestCase
   public void testReadWriteTagWithPictureBlockAtStart() {
-    File orig = new File("testdata", "test54.flac");
-    if (!orig.isFile()) {
-      System.err.println("Unable to test file - not available");
-      return;
-    }
 
     Exception e = null;
     try {
-      final File testFile = AbstractTestCase.copyAudioToTmp("test54.flac");
+      final File testFile = copyAudioToTmp("test54.flac");
       AudioFile af = AudioFileIO.read(testFile);
 
       //Modify File

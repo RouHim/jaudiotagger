@@ -1,8 +1,5 @@
 package org.jaudiotagger.tag.vorbiscomment;
 
-import static org.junit.jupiter.api.Assertions.assertNull;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-
 import java.io.File;
 import java.io.RandomAccessFile;
 import org.jaudiotagger.AbstractTestCase;
@@ -12,6 +9,9 @@ import org.jaudiotagger.audio.exceptions.CannotReadException;
 import org.jaudiotagger.audio.ogg.OggFileReader;
 import org.jaudiotagger.tag.FieldKey;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.condition.EnabledIf;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 public class VorbisReadTagTest extends AbstractTestCase {
 
@@ -20,22 +20,17 @@ public class VorbisReadTagTest extends AbstractTestCase {
    * so no error found in this test.
    */
   @Test
+  @EnabledIf("executeAlsoWithMissingResources") // to be configured in AbsractBaseTestCase
   public void testReadCorruptOgg() {
-    File orig = new File("testdata", "test6.ogg");
-    if (!orig.isFile()) {
-      return;
-    }
-
     Exception exceptionCaught = null;
     try {
       //Can summarize file
-      File testFile = AbstractTestCase.copyAudioToTmp("test6.ogg");
+      File testFile = copyAudioToTmp("test6.ogg");
       RandomAccessFile raf = new RandomAccessFile(testFile, "r");
       OggFileReader oggFileReader = new OggFileReader();
       oggFileReader.summarizeOggPageHeaders(testFile);
       raf.close();
     } catch (Exception e) {
-      e.printStackTrace();
       exceptionCaught = e;
     }
     assertNull(exceptionCaught);
@@ -46,22 +41,17 @@ public class VorbisReadTagTest extends AbstractTestCase {
    * are 6 it should throw appropriate error
    */
   @Test
+  @EnabledIf("executeAlsoWithMissingResources") // to be configured in AbsractBaseTestCase
   public void testReadCorruptOgg2() {
-    File orig = new File("testdata", "test6.ogg");
-    if (!orig.isFile()) {
-      return;
-    }
-
     Exception exceptionCaught = null;
     try {
       //Can summarize file
-      File testFile = AbstractTestCase.copyAudioToTmp("test6.ogg");
+      File testFile = copyAudioToTmp("test6.ogg");
       AudioFileIO.read(testFile);
     } catch (Exception e) {
-      e.printStackTrace();
       exceptionCaught = e;
     }
-    assertTrue(exceptionCaught instanceof CannotReadException);
+    assertInstanceOf(CannotReadException.class, exceptionCaught);
   }
 
   /**
@@ -72,9 +62,9 @@ public class VorbisReadTagTest extends AbstractTestCase {
   public void testCreateCorruptFile() {
     Exception exceptionCaught = null;
     try {
-      File testFile = AbstractTestCase.copyAudioToTmp(
+      File testFile = copyAudioToTmp(
         "test.ogg",
-        new File("testWithEmptyField.ogg")
+        "testWithEmptyField.ogg"
       );
       AudioFile file = AudioFileIO.read(testFile);
       file.getTag().setField(FieldKey.YEAR, "");

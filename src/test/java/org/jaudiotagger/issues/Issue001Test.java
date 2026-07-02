@@ -18,9 +18,9 @@ public class Issue001Test extends AbstractTestCase {
   public void testHandlingOfUnmappedChars() {
     Exception ex = null;
     try {
-      File testFile = AbstractTestCase.copyAudioToTmp(
+      File testFile = copyAudioToTmp(
         "testV1.mp3",
-        new File("test1001.mp3")
+        "test1001.mp3"
       );
       MP3File mp3File = new MP3File(testFile);
 
@@ -37,7 +37,6 @@ public class Issue001Test extends AbstractTestCase {
       mp3File.setID3v2Tag(tag);
       mp3File.save();
     } catch (Exception e) {
-      e.printStackTrace();
       ex = e;
     }
     assertNull(ex);
@@ -47,9 +46,9 @@ public class Issue001Test extends AbstractTestCase {
   public void testHandlingOfUnmappedChars2() {
     Exception ex = null;
     try {
-      File testFile = AbstractTestCase.copyAudioToTmp(
+      File testFile = copyAudioToTmp(
         "testV1.mp3",
-        new File("test1001.mp3")
+        "test1001.mp3"
       );
       MP3File mp3File = new MP3File(testFile);
 
@@ -65,7 +64,6 @@ public class Issue001Test extends AbstractTestCase {
       mp3File.setID3v2Tag(tag);
       mp3File.save();
     } catch (Exception e) {
-      e.printStackTrace();
       ex = e;
     }
     assertNull(ex);

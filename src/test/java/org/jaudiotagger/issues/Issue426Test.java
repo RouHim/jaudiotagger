@@ -15,7 +15,7 @@ public class Issue426Test extends AbstractTestCase {
 
   @Test
   public void testHasField() throws Exception {
-    File testFile = AbstractTestCase.copyAudioToTmp("testV25.mp3");
+    File testFile = copyAudioToTmp("testV25.mp3");
     AudioFile f = AudioFileIO.read(testFile);
     Tag tag = f.getTagOrCreateAndSetDefault();
     tag.setField(FieldKey.ARTIST, "fred");
