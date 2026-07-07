@@ -17,9 +17,9 @@ public class Issue327Test extends AbstractTestCase {
 
   @Test
   public void testUTF16BOMMultipleFieldSeperators() throws Exception {
-    File testFile = AbstractTestCase.copyAudioToTmp(
+    File testFile = copyAudioToTmp(
       "testV1.mp3",
-      new File("testUTF16BOMMultipleFieldSeperators.mp3")
+      "testUTF16BOMMultipleFieldSeperators.mp3"
     );
     MP3File f = (MP3File) AudioFileIO.read(testFile);
     f.setID3v2Tag(new ID3v23Tag());

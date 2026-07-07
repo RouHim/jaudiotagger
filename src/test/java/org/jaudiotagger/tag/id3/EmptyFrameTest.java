@@ -4,17 +4,18 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.io.File;
-import org.jaudiotagger.AbstractTestCase;
+
+import org.jaudiotagger.AbstractBaseTestCase;
 import org.jaudiotagger.audio.mp3.MP3File;
 import org.jaudiotagger.tag.id3.framebody.FrameBodyWOAF;
 import org.jaudiotagger.tag.id3.framebody.FrameBodyWORS;
 import org.junit.jupiter.api.Test;
 
-public class EmptyFrameTest {
+public class EmptyFrameTest extends AbstractBaseTestCase {
 
   @Test
   public void testWriteID3v23TagWithEmptyFrameFirst() throws Exception {
-    File testFile = AbstractTestCase.copyAudioToTmp("testV1Cbr128ID3v2.mp3");
+    File testFile = copyAudioToTmp("testV1Cbr128ID3v2.mp3");
 
     MP3File mp3File = null;
     mp3File = new MP3File(testFile);
@@ -44,7 +45,7 @@ public class EmptyFrameTest {
 
   @Test
   public void testWriteID3v24TagWithEmptyFrameFirst() throws Exception {
-    File testFile = AbstractTestCase.copyAudioToTmp("testV1Cbr128ID3v2.mp3");
+    File testFile = copyAudioToTmp("testV1Cbr128ID3v2.mp3");
 
     MP3File mp3File = null;
     mp3File = new MP3File(testFile);
@@ -80,7 +81,7 @@ public class EmptyFrameTest {
 
   @Test
   public void testWriteID3v22TagWithEmptyFrameFirst() throws Exception {
-    File testFile = AbstractTestCase.copyAudioToTmp("testV1Cbr128ID3v2.mp3");
+    File testFile = copyAudioToTmp("testV1Cbr128ID3v2.mp3");
 
     MP3File mp3File = null;
     mp3File = new MP3File(testFile);

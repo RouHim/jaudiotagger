@@ -22,7 +22,7 @@ public class CompressedTest extends AbstractTestCase {
   public void testv23TagReadCompressedCommentFrame() throws Exception {
     final String COMM_TEXT = "[P-M-S] Teampms [P-M-S]";
 
-    File testFile = AbstractTestCase.copyAudioToTmp(
+    File testFile = prependAudioToTmp(
       "Issue98-1.id3",
       "testV1.mp3"
     );
@@ -53,7 +53,7 @@ public class CompressedTest extends AbstractTestCase {
   public void testv23TagReadCompressedAPICFrame() throws Exception {
     final int FRAME_SIZE = 3220;
     final String TITLE_TEXT = "Crazy Train";
-    File testFile = AbstractTestCase.copyAudioToTmp(
+    File testFile = prependAudioToTmp(
       "Issue98-2.id3",
       "testV1.mp3"
     );
@@ -88,7 +88,7 @@ public class CompressedTest extends AbstractTestCase {
    */
   @Test
   public void testv24TagReadCompressedPictureFrame() throws Exception {
-    File testFile = AbstractTestCase.copyAudioToTmp(
+    File testFile = prependAudioToTmp(
       "Issue98-3.id3",
       "testV1.mp3"
     );

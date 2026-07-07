@@ -1,7 +1,7 @@
 package org.jaudiotagger.issues;
 
-import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import static org.junit.jupiter.api.Assertions.*;
 import java.io.FileOutputStream;
 import org.jaudiotagger.AbstractTestCase;
 import org.jaudiotagger.tag.FieldKey;
@@ -21,10 +21,9 @@ public class Issue221Test extends AbstractTestCase {
       Mp4Tag tag = new Mp4Tag();
       tag.setField(FieldKey.TITLE, (String) null);
     } catch (Exception e) {
-      e.printStackTrace();
       exceptionCaught = e;
     }
-    assertTrue(exceptionCaught instanceof IllegalArgumentException);
+    assertInstanceOf(IllegalArgumentException.class, exceptionCaught);
   }
 
   @Test
@@ -34,10 +33,9 @@ public class Issue221Test extends AbstractTestCase {
       VorbisCommentTag tag = VorbisCommentTag.createNewTag();
       tag.setField(FieldKey.TITLE, (String) null);
     } catch (Exception e) {
-      e.printStackTrace();
       exceptionCaught = e;
     }
-    assertTrue(exceptionCaught instanceof IllegalArgumentException);
+    assertInstanceOf(IllegalArgumentException.class, exceptionCaught);
   }
 
   @Test
@@ -47,15 +45,14 @@ public class Issue221Test extends AbstractTestCase {
       ID3v23Tag tag = new ID3v23Tag();
       tag.setField(FieldKey.TITLE, (String) null);
       FileOutputStream os = new FileOutputStream(
-        "testdatatmp/issue_221_title_v23.mp3"
+        tempFileResource("issue_221_title_v23.mp3")
       );
       tag.write(os.getChannel(), 0);
       os.close();
     } catch (Exception e) {
-      e.printStackTrace();
       exceptionCaught = e;
     }
-    assertTrue(exceptionCaught instanceof IllegalArgumentException);
+    assertInstanceOf(IllegalArgumentException.class, exceptionCaught);
   }
 
   @Test
@@ -65,15 +62,14 @@ public class Issue221Test extends AbstractTestCase {
       ID3v23Tag tag = new ID3v23Tag();
       tag.setField(FieldKey.ALBUM, (String) null);
       FileOutputStream os = new FileOutputStream(
-        "testdatatmp/issue_221_title_v23.mp3"
+        tempFileResource("issue_221_title_v23.mp3")
       );
       tag.write(os.getChannel(), 0);
       os.close();
     } catch (Exception e) {
-      e.printStackTrace();
       exceptionCaught = e;
     }
-    assertTrue(exceptionCaught instanceof IllegalArgumentException);
+    assertInstanceOf(IllegalArgumentException.class, exceptionCaught);
   }
 
   @Test
@@ -83,15 +79,14 @@ public class Issue221Test extends AbstractTestCase {
       ID3v23Tag tag = new ID3v23Tag();
       tag.setField(FieldKey.ARTIST, (String) null);
       FileOutputStream os = new FileOutputStream(
-        "testdatatmp/issue_221_title_v23.mp3"
+        tempFileResource("issue_221_title_v23.mp3")
       );
       tag.write(os.getChannel(), 0);
       os.close();
     } catch (Exception e) {
-      e.printStackTrace();
       exceptionCaught = e;
     }
-    assertTrue(exceptionCaught instanceof IllegalArgumentException);
+    assertInstanceOf(IllegalArgumentException.class, exceptionCaught);
   }
 
   @Test
@@ -101,15 +96,14 @@ public class Issue221Test extends AbstractTestCase {
       ID3v23Tag tag = new ID3v23Tag();
       tag.setField(FieldKey.COMMENT, (String) null);
       FileOutputStream os = new FileOutputStream(
-        "testdatatmp/issue_221_title_v23.mp3"
+        tempFileResource("issue_221_title_v23.mp3")
       );
       tag.write(os.getChannel(), 0);
       os.close();
     } catch (Exception e) {
-      e.printStackTrace();
       exceptionCaught = e;
     }
-    assertTrue(exceptionCaught instanceof IllegalArgumentException);
+    assertInstanceOf(IllegalArgumentException.class, exceptionCaught);
   }
 
   @Test
@@ -119,15 +113,14 @@ public class Issue221Test extends AbstractTestCase {
       ID3v23Tag tag = new ID3v23Tag();
       tag.setField(FieldKey.GENRE, (String) null);
       FileOutputStream os = new FileOutputStream(
-        "testdatatmp/issue_221_title_v23.mp3"
+        tempFileResource("issue_221_title_v23.mp3")
       );
       tag.write(os.getChannel(), 0);
       os.close();
     } catch (Exception e) {
-      e.printStackTrace();
       exceptionCaught = e;
     }
-    assertTrue(exceptionCaught instanceof IllegalArgumentException);
+    assertInstanceOf(IllegalArgumentException.class, exceptionCaught);
   }
 
   @Test
@@ -137,15 +130,14 @@ public class Issue221Test extends AbstractTestCase {
       ID3v23Tag tag = new ID3v23Tag();
       tag.setField(FieldKey.TRACK, (String) null);
       FileOutputStream os = new FileOutputStream(
-        "testdatatmp/issue_221_title_v23.mp3"
+        tempFileResource("issue_221_title_v23.mp3")
       );
       tag.write(os.getChannel(), 0);
       os.close();
     } catch (Exception e) {
-      e.printStackTrace();
       exceptionCaught = e;
     }
-    assertTrue(exceptionCaught instanceof IllegalArgumentException);
+    assertInstanceOf(IllegalArgumentException.class, exceptionCaught);
   }
 
   @Test
@@ -155,16 +147,15 @@ public class Issue221Test extends AbstractTestCase {
       ID3v24Tag tag = new ID3v24Tag();
       tag.setField(FieldKey.TITLE, (String) null);
       FileOutputStream os = new FileOutputStream(
-        "testdatatmp/issue_221_title_v24.mp3"
+        "issue_221_title_v24.mp3"
       );
       tag.write(os.getChannel(), 0);
       os.close();
     } catch (Exception e) {
-      e.printStackTrace();
       exceptionCaught = e;
     }
 
-    assertTrue(exceptionCaught instanceof IllegalArgumentException);
+    assertInstanceOf(IllegalArgumentException.class, exceptionCaught);
   }
 
   @Test
@@ -174,15 +165,14 @@ public class Issue221Test extends AbstractTestCase {
       ID3v22Tag tag = new ID3v22Tag();
       tag.setField(FieldKey.TITLE, (String) null);
       FileOutputStream os = new FileOutputStream(
-        "testdatatmp/issue_221_title_v24.mp3"
+        "issue_221_title_v24.mp3"
       );
       tag.write(os.getChannel(), 0);
       os.close();
     } catch (Exception e) {
-      e.printStackTrace();
       exceptionCaught = e;
     }
 
-    assertTrue(exceptionCaught instanceof IllegalArgumentException);
+    assertInstanceOf(IllegalArgumentException.class, exceptionCaught);
   }
 }

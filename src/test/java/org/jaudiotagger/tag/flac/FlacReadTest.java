@@ -3,15 +3,17 @@ package org.jaudiotagger.tag.flac;
 import static org.junit.jupiter.api.Assertions.*;
 
 import java.io.File;
-import org.jaudiotagger.AbstractTestCase;
+
+import org.jaudiotagger.AbstractBaseTestCase;
 import org.jaudiotagger.audio.AudioFile;
 import org.jaudiotagger.audio.AudioFileIO;
 import org.jaudiotagger.audio.exceptions.CannotReadException;
 import org.jaudiotagger.audio.flac.FlacInfoReader;
 import org.jaudiotagger.audio.flac.metadatablock.MetadataBlockDataPicture;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.condition.EnabledIf;
 
-public class FlacReadTest {
+public class FlacReadTest extends AbstractBaseTestCase {
 
   /**
    * Read Flac File
@@ -20,9 +22,9 @@ public class FlacReadTest {
   public void testReadTwoChannelFile() {
     Exception exceptionCaught = null;
     try {
-      File testFile = AbstractTestCase.copyAudioToTmp(
+      File testFile = copyAudioToTmp(
         "test2.flac",
-        new File("test2read.flac")
+        "test2read.flac"
       );
       AudioFile f = AudioFileIO.read(testFile);
 
@@ -32,7 +34,6 @@ public class FlacReadTest {
       assertEquals("44100", f.getAudioHeader().getSampleRate());
       assertEquals(5, f.getAudioHeader().getTrackLength());
     } catch (Exception e) {
-      e.printStackTrace();
       exceptionCaught = e;
     }
     assertNull(exceptionCaught);
@@ -45,9 +46,9 @@ public class FlacReadTest {
   public void testReadSingleChannelFile() {
     Exception exceptionCaught = null;
     try {
-      File testFile = AbstractTestCase.copyAudioToTmp(
+      File testFile = copyAudioToTmp(
         "test3.flac",
-        new File("test3read.flac")
+        "test3read.flac"
       );
       AudioFile f = AudioFileIO.read(testFile);
 
@@ -57,7 +58,6 @@ public class FlacReadTest {
       assertEquals(1, f.getAudioHeader().getTrackLength());
       assertEquals("47", f.getAudioHeader().getBitRate()); //is this correct value
     } catch (Exception e) {
-      e.printStackTrace();
       exceptionCaught = e;
     }
     assertNull(exceptionCaught);
@@ -70,16 +70,15 @@ public class FlacReadTest {
   public void testNotFlac() {
     Exception exceptionCaught = null;
     try {
-      File testFile = AbstractTestCase.copyAudioToTmp(
+      File testFile = copyAudioToTmp(
         "testV1.mp3",
-        new File("testV1noFlac.flac")
+        "testV1noFlac.flac"
       );
       AudioFile f = AudioFileIO.read(testFile);
     } catch (Exception e) {
-      e.printStackTrace();
       exceptionCaught = e;
     }
-    assertTrue(exceptionCaught instanceof CannotReadException);
+    assertInstanceOf(CannotReadException.class, exceptionCaught);
   }
 
   /**
@@ -89,12 +88,11 @@ public class FlacReadTest {
   public void testReadCueSheet() {
     Exception exceptionCaught = null;
     try {
-      File testFile = AbstractTestCase.copyAudioToTmp("test3.flac");
+      File testFile = copyAudioToTmp("test3.flac");
       AudioFile f = AudioFileIO.read(testFile);
       FlacInfoReader infoReader = new FlacInfoReader();
       assertEquals(5, infoReader.countMetaBlocks(f.getFile()));
     } catch (Exception e) {
-      e.printStackTrace();
       exceptionCaught = e;
     }
     assertNull(exceptionCaught);
@@ -104,25 +102,18 @@ public class FlacReadTest {
    * test read flac file with preceding ID3 header
    */
   @Test
+  @EnabledIf("executeAlsoWithMissingResources") // to be configured in AbsractBaseTestCase
   public void testReadFileWithId3Header() {
     Exception exceptionCaught = null;
     try {
-      File orig = new File("testdata", "test22.flac");
-      if (!orig.isFile()) {
-        System.out.println(
-          "Test cannot be run because test file not available"
-        );
-        return;
-      }
-      File testFile = AbstractTestCase.copyAudioToTmp(
+      File testFile = copyAudioToTmp(
         "test22.flac",
-        new File("testreadFlacWithId3.flac")
+        "testreadFlacWithId3.flac"
       );
       AudioFile f = AudioFileIO.read(testFile);
       FlacInfoReader infoReader = new FlacInfoReader();
       assertEquals(4, infoReader.countMetaBlocks(f.getFile()));
     } catch (Exception e) {
-      e.printStackTrace();
       exceptionCaught = e;
     }
     assertNull(exceptionCaught);
@@ -132,25 +123,18 @@ public class FlacReadTest {
    * test read flac file with no header
    */
   @Test
+  @EnabledIf("executeAlsoWithMissingResources") // to be configured in AbsractBaseTestCase
   public void testReadFileWithOnlyStreamInfoAndPaddingHeader() {
     Exception exceptionCaught = null;
     try {
-      File orig = new File("testdata", "test102.flac");
-      if (!orig.isFile()) {
-        System.out.println(
-          "Test cannot be run because test file not available"
-        );
-        return;
-      }
-      File testFile = AbstractTestCase.copyAudioToTmp(
+      File testFile = copyAudioToTmp(
         "test102.flac",
-        new File("test102.flac")
+        "test102.flac"
       );
       AudioFile f = AudioFileIO.read(testFile);
       FlacInfoReader infoReader = new FlacInfoReader();
       assertEquals(2, infoReader.countMetaBlocks(f.getFile()));
     } catch (Exception e) {
-      e.printStackTrace();
       exceptionCaught = e;
     }
     assertNull(exceptionCaught);
@@ -160,27 +144,20 @@ public class FlacReadTest {
    * test read flac file with no header
    */
   @Test
+  @EnabledIf("executeAlsoWithMissingResources") // to be configured in AbsractBaseTestCase
   public void testReadArtwork() {
     Exception exceptionCaught = null;
     try {
-      File orig = new File("testdata", "test154.flac");
-      if (!orig.isFile()) {
-        System.out.println(
-          "Test cannot be run because test file not available"
-        );
-        return;
-      }
-      File testFile = AbstractTestCase.copyAudioToTmp(
+      File testFile = copyAudioToTmp(
         "test154.flac",
-        new File("test154.flac")
+        "test154.flac"
       );
       AudioFile f = AudioFileIO.read(testFile);
       MetadataBlockDataPicture mbdp = (((FlacTag) f.getTag()).getImages().get(
-          0
-        ));
+        0
+      ));
       System.out.println(mbdp);
     } catch (Exception e) {
-      e.printStackTrace();
       exceptionCaught = e;
     }
     assertNull(exceptionCaught);
