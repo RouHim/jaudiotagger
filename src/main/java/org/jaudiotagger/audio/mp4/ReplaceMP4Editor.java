@@ -4,7 +4,6 @@ import java.io.IOException;
 import java.nio.channels.FileChannel;
 import org.jcodec.containers.mp4.MP4Util;
 import org.jcodec.containers.mp4.MP4Util.Movie;
-import org.jcodec.containers.mp4.boxes.Box;
 import org.jcodec.containers.mp4.boxes.MovieBox;
 
 /**
@@ -27,11 +26,8 @@ public class ReplaceMP4Editor {
 
   public void copy(FileChannel src, FileChannel dst, MovieBox edit)
     throws IOException {
-    final Movie movie = MP4Util.parseFullMovieChannel(src);
-
-    for (Box box : edit.getBoxes()) {
-      movie.getMoov().replaceBox(box);
-    }
+    final Movie source = MP4Util.parseFullMovieChannel(src);
+    final Movie movie = new Movie(source.getFtyp(), edit, source.getOthers());
 
     Flatten fl = new Flatten();
     fl.flattenChannel(movie, dst);
