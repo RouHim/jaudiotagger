@@ -37,8 +37,11 @@ public class RelocateMP4Editor {
     ByteBuffer moovBuffer = fetchBox(fi, moovAtom);
     MovieBox moovBox = (MovieBox) parseBox(moovBuffer);
 
+    // Preserve duplicate boxes (e.g. multiple `trak`) — `replaceBox` removes all
+    // children with the same fourcc, so iterating it would keep only the last trak.
+    moovBox.getBoxes().clear();
     for (Box box : edit.getBoxes()) {
-      moovBox.replaceBox(box);
+      moovBox.add(box);
     }
 
     if (moovAtom.getOffset() + moovAtom.getHeader().getSize() < fi.size()) {
