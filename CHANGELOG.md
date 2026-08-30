@@ -1,3 +1,11 @@
+## [2.0.31](https://github.com/RouHim/jaudiotagger/compare/2.0.30...2.0.31) (2026-08-30)
+
+### Bug Fixes
+
+* **ci:** install missing semantic-release plugins for release ([a683f31](https://github.com/RouHim/jaudiotagger/commit/a683f31c66b350596e961aa9ed9bcf56286588e9))
+* **ci:** pin conventional-changelog-conventionalcommits to v9 ([2a89302](https://github.com/RouHim/jaudiotagger/commit/2a8930239de619bc92d4ca9609d310f4e144ebd6))
+* **mp4:** preserve duplicate trak boxes during tag rewrite ([#14](https://github.com/RouHim/jaudiotagger/issues/14)) ([03bb24b](https://github.com/RouHim/jaudiotagger/commit/03bb24b53c3a2d57422b31bed1a944985f23f7cb)), closes [#13](https://github.com/RouHim/jaudiotagger/issues/13) [#13](https://github.com/RouHim/jaudiotagger/issues/13)
+
 ## [2.0.30](https://github.com/RouHim/jaudiotagger/compare/2.0.29...2.0.30) (2026-08-14)
 
 ## [2.0.29](https://github.com/RouHim/jaudiotagger/compare/2.0.28...2.0.29) (2026-08-05)
