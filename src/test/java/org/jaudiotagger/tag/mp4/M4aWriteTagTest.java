@@ -22,6 +22,7 @@ import org.jaudiotagger.tag.mp4.field.Mp4TagReverseDnsField;
 import org.jaudiotagger.tag.mp4.field.Mp4TagTextNumberField;
 import org.jaudiotagger.tag.mp4.field.Mp4TrackField;
 import org.jcodec.containers.mp4.MP4Util;
+import org.jcodec.containers.mp4.boxes.TrakBox;
 import org.json.JSONObject;
 import org.junit.jupiter.api.Test;
 
@@ -30,6 +31,23 @@ public class M4aWriteTagTest {
   private static final long TEST_FILE1_SIZE = 3883555;
   private static final long TEST_FILE2_SIZE = 3884505;
   private static final long TEST_FILE5_SIZE = 119472;
+
+  @Test
+  public void testGrowingTagPreservesAllTracks() throws Exception {
+    File testFile = AbstractTestCase.copyAudioToTmp(
+      "test16.m4a",
+      new File("testGrowingTagPreservesAllTracks.m4a")
+    );
+    AudioFile audioFile = AudioFileIO.read(testFile);
+    audioFile.getTag().setField(FieldKey.COMMENT, "x".repeat(100_000));
+    audioFile.commit();
+
+    assertThat(MP4Util.parseFullMovie(testFile).getMoov().getTracks())
+      .extracting(TrakBox::getHandlerType)
+      .containsExactly("soun", "odsm", "sdsm");
+    assertThat(AudioFileIO.read(testFile).getAudioHeader().getTrackLength())
+      .isPositive();
+  }
 
   /**
    * Test to write tag data, new tagdata identical size to existing data.
