@@ -51,17 +51,17 @@ jobs:
         uses: actions/setup-node@v7
         with:
           node-version: 24
-
       - name: Install Dependencies
         run: |
           npm install -g \
              semantic-release  \
-            @semantic-release/git  \
-            @semantic-release/gitlab  \
             @semantic-release/changelog  \
-            @semantic-release/exec \
+            @semantic-release/git  \
+            @semantic-release/github  \
             @semantic-release/commit-analyzer \
-            conventional-changelog-conventionalcommits
+            @semantic-release/release-notes-generator \
+            conventional-changelog-conventionalcommits \
+            conventional-changelog-writer
 
       - name: Generate Semantic Release Notes and Create Release
         env:
