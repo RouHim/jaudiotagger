@@ -60,8 +60,7 @@ jobs:
             @semantic-release/github  \
             @semantic-release/commit-analyzer \
             @semantic-release/release-notes-generator \
-            conventional-changelog-conventionalcommits \
-            conventional-changelog-writer
+            conventional-changelog-conventionalcommits@9
 
       - name: Generate Semantic Release Notes and Create Release
         env:
