@@ -1,3 +1,5 @@
+## [2.0.32](https://github.com/RouHim/jaudiotagger/compare/2.0.31...2.0.32) (2026-08-31)
+
 ## [2.0.31](https://github.com/RouHim/jaudiotagger/compare/2.0.30...2.0.31) (2026-08-30)
 
 ### Bug Fixes
