@@ -14,27 +14,24 @@ import org.jaudiotagger.tag.FieldKey;
 import org.jaudiotagger.tag.Tag;
 import org.jaudiotagger.tag.TagOptionSingleton;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.condition.EnabledIf;
 
 public class Issue093Test extends AbstractTestCase {
 
   @Test
+  @EnabledIf("executeAlsoWithMissingResources") // to be configured in AbsractBaseTestCase
   public void testWriteAiffWithCorruptID3Tag1() {
     Exception exceptionCaught = null;
 
-    File orig = new File("testdata", "test145.aiff");
-    if (!orig.isFile()) {
-      System.err.println("Unable to test file - not available");
-      return;
-    }
 
-    File testFile = AbstractTestCase.copyAudioToTmp(
+    File testFile = copyAudioToTmp(
       "test145.aiff",
-      new File("test145CorruptedID3.aiff")
+      "test145CorruptedID3.aiff"
     );
     try {
       AudioFile f = AudioFileIO.read(testFile);
       AudioHeader ah = f.getAudioHeader();
-      assertTrue(ah instanceof AiffAudioHeader);
+      assertInstanceOf(AiffAudioHeader.class, ah);
       Tag tag = f.getTag();
       System.out.println(tag);
       f.getTag().setField(FieldKey.ARTIST, "Jonathon");
@@ -54,20 +51,15 @@ public class Issue093Test extends AbstractTestCase {
   public void testWriteAiffWithCorruptID3Tag2() {
     Exception exceptionCaught = null;
 
-    File orig = new File("testdata", "test152.aiff");
-    if (!orig.isFile()) {
-      System.err.println("Unable to test file - not available");
-      return;
-    }
 
-    File testFile = AbstractTestCase.copyAudioToTmp(
+    File testFile = copyAudioToTmp(
       "test152.aiff",
-      new File("test152MissingByteId3.aiff")
+      "test152MissingByteId3.aiff"
     );
     try {
       AudioFile f = AudioFileIO.read(testFile);
       AudioHeader ah = f.getAudioHeader();
-      assertTrue(ah instanceof AiffAudioHeader);
+      assertInstanceOf(AiffAudioHeader.class, ah);
       Tag tag = f.getTag();
       System.out.println(tag);
       f.getTag().setField(FieldKey.ARTIST, "fred");
@@ -84,12 +76,8 @@ public class Issue093Test extends AbstractTestCase {
   }
 
   @Test
+  @EnabledIf("executeAlsoWithMissingResources") // to be configured in AbsractBaseTestCase
   public void testNaimRipMultipleTagsFixId3() {
-    File orig = new File("testdata", "test152.wav");
-    if (!orig.isFile()) {
-      System.err.println("Unable to test file - not available");
-      return;
-    }
 
     TagOptionSingleton.getInstance().setWavOptions(WavOptions.READ_ID3_ONLY);
     TagOptionSingleton.getInstance().setWavSaveOptions(
@@ -98,9 +86,9 @@ public class Issue093Test extends AbstractTestCase {
 
     Exception exceptionCaught = null;
     try {
-      File testFile = AbstractTestCase.copyAudioToTmp(
+      File testFile = copyAudioToTmp(
         "test152.wav",
-        new File("test152_id3.wav")
+        "test152_id3.wav"
       );
       AudioFile f = AudioFileIO.read(testFile);
       System.out.println(f.getAudioHeader());
@@ -112,19 +100,14 @@ public class Issue093Test extends AbstractTestCase {
       System.out.println(tag);
       assertEquals("fred", tag.getFirst(FieldKey.ARTIST));
     } catch (Exception e) {
-      e.printStackTrace();
       exceptionCaught = e;
     }
     assertNull(exceptionCaught);
   }
 
   @Test
+  @EnabledIf("executeAlsoWithMissingResources") // to be configured in AbsractBaseTestCase
   public void testNaimRipMultipleFixTagsExistingInfo() {
-    File orig = new File("testdata", "test152.wav");
-    if (!orig.isFile()) {
-      System.err.println("Unable to test file - not available");
-      return;
-    }
 
     TagOptionSingleton.getInstance().setWavOptions(WavOptions.READ_INFO_ONLY);
     TagOptionSingleton.getInstance().setWavSaveOptions(
@@ -133,9 +116,9 @@ public class Issue093Test extends AbstractTestCase {
 
     Exception exceptionCaught = null;
     try {
-      File testFile = AbstractTestCase.copyAudioToTmp(
+      File testFile = copyAudioToTmp(
         "test152.wav",
-        new File("test152_existing_info.wav")
+        "test152_existing_info.wav"
       );
       AudioFile f = AudioFileIO.read(testFile);
       System.out.println(f.getAudioHeader());
@@ -147,19 +130,14 @@ public class Issue093Test extends AbstractTestCase {
       System.out.println(tag);
       assertEquals("fred", tag.getFirst(FieldKey.ARTIST));
     } catch (Exception e) {
-      e.printStackTrace();
       exceptionCaught = e;
     }
     assertNull(exceptionCaught);
   }
 
   @Test
+  @EnabledIf("executeAlsoWithMissingResources") // to be configured in AbsractBaseTestCase
   public void testNaimRipMultipleTagsFixId3BothSync() {
-    File orig = new File("testdata", "test152.wav");
-    if (!orig.isFile()) {
-      System.err.println("Unable to test file - not available");
-      return;
-    }
 
     TagOptionSingleton.getInstance().setWavOptions(WavOptions.READ_ID3_ONLY);
     TagOptionSingleton.getInstance().setWavSaveOptions(
@@ -168,9 +146,9 @@ public class Issue093Test extends AbstractTestCase {
 
     Exception exceptionCaught = null;
     try {
-      File testFile = AbstractTestCase.copyAudioToTmp(
+      File testFile = copyAudioToTmp(
         "test152.wav",
-        new File("test152_existing_id3_both_sync.wav")
+        "test152_existing_id3_both_sync.wav"
       );
       AudioFile f = AudioFileIO.read(testFile);
       System.out.println(f.getAudioHeader());
@@ -182,7 +160,6 @@ public class Issue093Test extends AbstractTestCase {
       System.out.println(tag);
       assertEquals("fred", tag.getFirst(FieldKey.ARTIST));
     } catch (Exception e) {
-      e.printStackTrace();
       exceptionCaught = e;
     }
     assertNull(exceptionCaught);

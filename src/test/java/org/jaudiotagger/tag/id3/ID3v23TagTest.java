@@ -19,7 +19,6 @@ import static org.junit.jupiter.api.Assertions.*;
 
 import java.io.File;
 import java.util.List;
-import org.jaudiotagger.AbstractTestCase;
 import org.jaudiotagger.FilePermissionsTest;
 import org.jaudiotagger.audio.AudioFile;
 import org.jaudiotagger.audio.AudioFileIO;
@@ -31,19 +30,18 @@ import org.jaudiotagger.tag.datatype.DataTypes;
 import org.jaudiotagger.tag.id3.framebody.*;
 import org.junit.jupiter.api.Test;
 
-public class ID3v23TagTest {
+public class ID3v23TagTest extends FilePermissionsTest {
 
   @Test
   public void testReadID3v1ID3v23Tag() {
     Exception exceptionCaught = null;
-    File testFile = AbstractTestCase.copyAudioToTmp("testV1Cbr128ID3v1v2.mp3");
+    File testFile = copyAudioToTmp("testV1Cbr128ID3v1v2.mp3");
 
     MP3File mp3File = null;
 
     try {
       mp3File = new MP3File(testFile);
     } catch (Exception e) {
-      e.printStackTrace();
       exceptionCaught = e;
     }
 
@@ -55,14 +53,13 @@ public class ID3v23TagTest {
   @Test
   public void testReadID3v23Tag() {
     Exception exceptionCaught = null;
-    File testFile = AbstractTestCase.copyAudioToTmp("testV1Cbr128ID3v2.mp3");
+    File testFile = copyAudioToTmp("testV1Cbr128ID3v2.mp3");
 
     MP3File mp3File = null;
 
     try {
       mp3File = new MP3File(testFile);
     } catch (Exception e) {
-      e.printStackTrace();
       exceptionCaught = e;
     }
 
@@ -74,7 +71,7 @@ public class ID3v23TagTest {
   @Test
   public void testReadPaddedID3v23Tag() {
     Exception exceptionCaught = null;
-    File testFile = AbstractTestCase.copyAudioToTmp("testV1Cbr128ID3v2pad.mp3");
+    File testFile = copyAudioToTmp("testV1Cbr128ID3v2pad.mp3");
 
     MP3File mp3File = null;
 
@@ -92,7 +89,7 @@ public class ID3v23TagTest {
   @Test
   public void testDeleteID3v23Tag() {
     Exception exceptionCaught = null;
-    File testFile = AbstractTestCase.copyAudioToTmp("testV1Cbr128ID3v1v2.mp3");
+    File testFile = copyAudioToTmp("testV1Cbr128ID3v1v2.mp3");
 
     MP3File mp3File = null;
 
@@ -135,45 +132,45 @@ public class ID3v23TagTest {
     assertEquals(
       ID3v11TagTest.ARTIST,
       ((FrameBodyTPE1) ((ID3v23Frame) v2Tag.getFrame(
-            ID3v23Frames.FRAME_ID_V3_ARTIST
-          )).getBody()).getText()
+        ID3v23Frames.FRAME_ID_V3_ARTIST
+      )).getBody()).getText()
     );
     assertEquals(
       ID3v11TagTest.ALBUM,
       ((FrameBodyTALB) ((ID3v23Frame) v2Tag.getFrame(
-            ID3v23Frames.FRAME_ID_V3_ALBUM
-          )).getBody()).getText()
+        ID3v23Frames.FRAME_ID_V3_ALBUM
+      )).getBody()).getText()
     );
     assertEquals(
       ID3v11TagTest.COMMENT,
       ((FrameBodyCOMM) ((ID3v23Frame) v2Tag.getFrame(
-            ID3v23Frames.FRAME_ID_V3_COMMENT
-          )).getBody()).getText()
+        ID3v23Frames.FRAME_ID_V3_COMMENT
+      )).getBody()).getText()
     );
     assertEquals(
       ID3v11TagTest.TITLE,
       ((FrameBodyTIT2) ((ID3v23Frame) v2Tag.getFrame(
-            ID3v23Frames.FRAME_ID_V3_TITLE
-          )).getBody()).getText()
+        ID3v23Frames.FRAME_ID_V3_TITLE
+      )).getBody()).getText()
     );
     assertEquals(
       ID3v11TagTest.TRACK_VALUE,
       String.valueOf(
         ((FrameBodyTRCK) ((ID3v23Frame) v2Tag.getFrame(
-              ID3v23Frames.FRAME_ID_V3_TRACK
-            )).getBody()).getTrackNo()
+          ID3v23Frames.FRAME_ID_V3_TRACK
+        )).getBody()).getTrackNo()
       )
     );
     assertTrue(
       ((FrameBodyTCON) ((ID3v23Frame) v2Tag.getFrame(
-            ID3v23Frames.FRAME_ID_V3_GENRE
-          )).getBody()).getText().endsWith(ID3v11TagTest.GENRE_VAL)
+        ID3v23Frames.FRAME_ID_V3_GENRE
+      )).getBody()).getText().endsWith(ID3v11TagTest.GENRE_VAL)
     );
     assertEquals(
       ID3v11TagTest.YEAR,
       ((FrameBodyTYER) ((ID3v23Frame) v2Tag.getFrame(
-            ID3v23Frames.FRAME_ID_V3_TYER
-          )).getBody()).getText()
+        ID3v23Frames.FRAME_ID_V3_TYER
+      )).getBody()).getText()
     );
 
     assertEquals((byte) 2, v2Tag.getRelease());
@@ -190,7 +187,7 @@ public class ID3v23TagTest {
    */
   @Test
   public void testCreateID3v23FromID3v24knownInV3() throws Exception {
-    File testFile = AbstractTestCase.copyAudioToTmp("testV1.mp3");
+    File testFile = copyAudioToTmp("testV1.mp3");
     MP3File mp3File = null;
     mp3File = new MP3File(testFile);
 
@@ -211,7 +208,7 @@ public class ID3v23TagTest {
     ID3v23Tag v23tag = new ID3v23Tag(mp3File.getID3v2TagAsv24());
     ID3v23Frame v23frame = (ID3v23Frame) v23tag.getFrame("TIT2");
     assertNotNull(v23frame);
-    assertTrue(v23frame.getBody() instanceof FrameBodyTIT2);
+    assertInstanceOf(FrameBodyTIT2.class, v23frame.getBody());
 
     //Save as v23 tag (side effect convert v23 to v24 tag as well)
     mp3File.setID3v2Tag(v23tag);
@@ -224,7 +221,7 @@ public class ID3v23TagTest {
     v23tag = (ID3v23Tag) mp3File.getID3v2Tag();
     v23frame = (ID3v23Frame) v23tag.getFrame("TIT2");
     assertNotNull(v23frame);
-    assertTrue(v23frame.getBody() instanceof FrameBodyTIT2);
+    assertInstanceOf(FrameBodyTIT2.class, v23frame.getBody());
 
     //Save as v23 tag (side effect convert v23 to v24 tag as well)
     mp3File.setID3v2Tag(v23tag);
@@ -234,8 +231,8 @@ public class ID3v23TagTest {
     assertEquals(
       "title",
       ((FrameBodyTIT2) ((ID3v24Frame) mp3File
-            .getID3v2TagAsv24()
-            .getFrame("TIT2")).getBody()).getText()
+        .getID3v2TagAsv24()
+        .getFrame("TIT2")).getBody()).getText()
     );
   }
 
@@ -248,7 +245,7 @@ public class ID3v23TagTest {
    */
   @Test
   public void testCreateID3v23FromID3v24UnknownInV3() throws Exception {
-    File testFile = AbstractTestCase.copyAudioToTmp("testV1.mp3");
+    File testFile = copyAudioToTmp("testV1.mp3");
     MP3File mp3File = null;
     mp3File = new MP3File(testFile);
 
@@ -269,7 +266,7 @@ public class ID3v23TagTest {
     ID3v23Tag v23tag = new ID3v23Tag(mp3File.getID3v2TagAsv24());
     ID3v23Frame v23frame = (ID3v23Frame) v23tag.getFrame("TDRL");
     assertNotNull(v23frame);
-    assertTrue(v23frame.getBody() instanceof FrameBodyUnsupported);
+    assertInstanceOf(FrameBodyUnsupported.class, v23frame.getBody());
 
     //Save as v23 tag (side effect convert v23 to v24 tag as well)
     mp3File.setID3v2Tag(v23tag);
@@ -282,7 +279,7 @@ public class ID3v23TagTest {
     v23tag = (ID3v23Tag) mp3File.getID3v2Tag();
     v23frame = (ID3v23Frame) v23tag.getFrame("TDRL");
     assertNotNull(v23frame);
-    assertTrue(v23frame.getBody() instanceof FrameBodyUnsupported);
+    assertInstanceOf(FrameBodyUnsupported.class, v23frame.getBody());
 
     //Save as v23 tag (side effect convert v23 to v24 tag as well)
     mp3File.setID3v2Tag(v23tag);
@@ -313,7 +310,7 @@ public class ID3v23TagTest {
     v23tag = (ID3v23Tag) mp3File.getID3v2Tag();
     v23frame = (ID3v23Frame) v23tag.getFrame("TDRL");
     assertNotNull(v23frame);
-    assertTrue(v23frame.getBody() instanceof FrameBodyUnsupported);
+    assertInstanceOf(FrameBodyUnsupported.class, v23frame.getBody());
 
     //Check value maintained, can only see as bytes
     v23FrameBody = (FrameBodyUnsupported) v23frame.getBody();
@@ -345,7 +342,7 @@ public class ID3v23TagTest {
     v23tag = (ID3v23Tag) mp3File.getID3v2Tag();
     v23frame = (ID3v23Frame) v23tag.getFrame("TDRL");
     assertNotNull(v23frame);
-    assertTrue(v23frame.getBody() instanceof FrameBodyUnsupported);
+    assertInstanceOf(FrameBodyUnsupported.class, v23frame.getBody());
 
     //Check value maintained, can only see as bytes
     v23FrameBody = (FrameBodyUnsupported) v23frame.getBody();
@@ -369,7 +366,7 @@ public class ID3v23TagTest {
 
   @Test
   public void testDeleteFields() throws Exception {
-    File testFile = AbstractTestCase.copyAudioToTmp("testV1.mp3");
+    File testFile = copyAudioToTmp("testV1.mp3");
     MP3File mp3File = new MP3File(testFile);
     ID3v23Tag v2Tag = new ID3v23Tag();
     mp3File.setID3v2Tag(v2Tag);
@@ -404,7 +401,7 @@ public class ID3v23TagTest {
 
   @Test
   public void testWriteWriteProtectedFileWithCheckEnabled() throws Exception {
-    FilePermissionsTest.runWriteWriteProtectedFileWithCheckEnabled(
+    runWriteWriteProtectedFileWithCheckEnabled(
       "testV1Cbr128ID3v2.mp3"
     );
   }
@@ -412,7 +409,7 @@ public class ID3v23TagTest {
   @Test
   public void testWriteMultipleGenresToID3v23TagUsingDefault()
     throws Exception {
-    File testFile = AbstractTestCase.copyAudioToTmp("testV1Cbr128ID3v2.mp3");
+    File testFile = copyAudioToTmp("testV1Cbr128ID3v2.mp3");
     MP3File file = null;
     file = new MP3File(testFile);
     assertNull(file.getID3v1Tag());
@@ -456,7 +453,7 @@ public class ID3v23TagTest {
   @Test
   public void testWriteMultipleGenresToID3v23TagUsingCreateField()
     throws Exception {
-    File testFile = AbstractTestCase.copyAudioToTmp("testV1.mp3");
+    File testFile = copyAudioToTmp("testV1.mp3");
     MP3File file = null;
     file = new MP3File(testFile);
     assertNull(file.getID3v1Tag());
@@ -509,7 +506,7 @@ public class ID3v23TagTest {
   @Test
   public void testWriteMultipleGenresToID3v23TagUsingV23CreateField()
     throws Exception {
-    File testFile = AbstractTestCase.copyAudioToTmp("testV1.mp3");
+    File testFile = copyAudioToTmp("testV1.mp3");
     MP3File file = null;
     file = new MP3File(testFile);
     assertNull(file.getID3v1Tag());

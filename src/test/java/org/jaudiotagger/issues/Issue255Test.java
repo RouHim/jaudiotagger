@@ -11,6 +11,7 @@ import org.jaudiotagger.tag.FieldKey;
 import org.jcodec.containers.mp4.MP4Util;
 import org.json.JSONObject;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.condition.EnabledIf;
 
 public class Issue255Test extends AbstractTestCase {
 
@@ -18,24 +19,19 @@ public class Issue255Test extends AbstractTestCase {
    * Test Mp4 with padding after last atom
    */
   @Test
+  @EnabledIf("executeAlsoWithMissingResources") // to be configured in AbsractBaseTestCase
   public void testReadMp4FileWithPaddingAfterLastAtom() {
-    File orig = new File("testdata", "test35.m4a");
-    if (!orig.isFile()) {
-      System.err.println("Unable to test file - not available");
-      return;
-    }
 
     File testFile = null;
     Exception exceptionCaught = null;
     try {
-      testFile = AbstractTestCase.copyAudioToTmp("test35.m4a");
+      testFile = copyAudioToTmp("test35.m4a");
 
       //Read File
       AudioFile af = AudioFileIO.read(testFile);
 
       //Print Out Tree
     } catch (Exception e) {
-      e.printStackTrace();
       exceptionCaught = e;
     }
 
@@ -47,7 +43,6 @@ public class Issue255Test extends AbstractTestCase {
       String json = new JSONObject(mp4.getMoov().toString()).toString(2);
       System.out.println(json);
     } catch (Exception e) {
-      e.printStackTrace();
       exceptionCaught = e;
     }
     assertNull(exceptionCaught);
@@ -58,50 +53,40 @@ public class Issue255Test extends AbstractTestCase {
    * <p/>
    */
   @Test
+  @EnabledIf("executeAlsoWithMissingResources") // to be configured in AbsractBaseTestCase
   public void testReadFileWithInvalidPadding() {
-    File orig = new File("testdata", "test28.m4p");
-    if (!orig.isFile()) {
-      System.err.println("Unable to test file - not available");
-      return;
-    }
 
     Exception exceptionCaught = null;
     try {
-      File testFile = AbstractTestCase.copyAudioToTmp(
+      File testFile = copyAudioToTmp(
         "test28.m4p",
-        new File("WriteFileWithInvalidFreeAtom.m4p")
+        "WriteFileWithInvalidFreeAtom.m4p"
       );
 
       AudioFile f = AudioFileIO.read(testFile);
     } catch (Exception e) {
-      e.printStackTrace();
       exceptionCaught = e;
     }
-    assertTrue(exceptionCaught instanceof CannotReadException);
+    assertInstanceOf(CannotReadException.class, exceptionCaught);
   }
 
   /**
    * Test Mp4 with padding after last atom
    */
   @Test
+  @EnabledIf("executeAlsoWithMissingResources") // to be configured in AbsractBaseTestCase
   public void testWriteMp4FileWithPaddingAfterLastAtom() {
-    File orig = new File("testdata", "test35.m4a");
-    if (!orig.isFile()) {
-      System.err.println("Unable to test file - not available");
-      return;
-    }
 
     File testFile = null;
     Exception exceptionCaught = null;
     try {
-      testFile = AbstractTestCase.copyAudioToTmp("test35.m4a");
+      testFile = copyAudioToTmp("test35.m4a");
 
       //Add a v24Tag
       AudioFile af = AudioFileIO.read(testFile);
       af.getTag().setField(FieldKey.ALBUM, "NewValue");
       af.commit();
     } catch (Exception e) {
-      e.printStackTrace();
       exceptionCaught = e;
     }
 

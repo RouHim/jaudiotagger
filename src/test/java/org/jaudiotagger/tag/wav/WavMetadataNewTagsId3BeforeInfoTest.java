@@ -31,9 +31,9 @@ public class WavMetadataNewTagsId3BeforeInfoTest extends AbstractTestCase {
 
     Exception exceptionCaught = null;
     try {
-      File testFile = AbstractTestCase.copyAudioToTmp(
+      File testFile = copyAudioToTmp(
         "test123.wav",
-        new File("test123ModifyMetadataSaveBothNew.wav")
+        "test123ModifyMetadataSaveBothNew.wav"
       );
       AudioFile f = AudioFileIO.read(testFile);
       System.out.println(f.getAudioHeader());
@@ -41,7 +41,7 @@ public class WavMetadataNewTagsId3BeforeInfoTest extends AbstractTestCase {
       assertEquals("1", f.getAudioHeader().getChannels());
       assertEquals("22050", f.getAudioHeader().getSampleRate());
 
-      assertTrue(f.getTag() instanceof WavTag);
+      assertInstanceOf(WavTag.class, f.getTag());
       WavTag tag = (WavTag) f.getTag();
 
       assertTrue(tag.isExistingInfoTag());
@@ -71,7 +71,7 @@ public class WavMetadataNewTagsId3BeforeInfoTest extends AbstractTestCase {
 
       //Read modified metadata now in file
       f = AudioFileIO.read(testFile);
-      assertTrue(f.getTag() instanceof WavTag);
+      assertInstanceOf(WavTag.class, f.getTag());
       tag = (WavTag) f.getTag();
       System.out.println(tag.getInfoTag());
       assertEquals("fred", tag.getFirst(FieldKey.ARTIST));
@@ -89,7 +89,6 @@ public class WavMetadataNewTagsId3BeforeInfoTest extends AbstractTestCase {
       assertEquals(926264L, tag.getStartLocationInFileOfId3Chunk());
       assertEquals(18L, tag.getSizeOfID3TagIncludingChunkHeader());
     } catch (Exception e) {
-      e.printStackTrace();
       exceptionCaught = e;
     }
     assertNull(exceptionCaught);
@@ -110,9 +109,9 @@ public class WavMetadataNewTagsId3BeforeInfoTest extends AbstractTestCase {
 
     Exception exceptionCaught = null;
     try {
-      File testFile = AbstractTestCase.copyAudioToTmp(
+      File testFile = copyAudioToTmp(
         "test123.wav",
-        new File("test123ModifyMoreMetadataNew.wav")
+        "test123ModifyMoreMetadataNew.wav"
       );
       AudioFile f = AudioFileIO.read(testFile);
       System.out.println(f.getAudioHeader());
@@ -120,7 +119,7 @@ public class WavMetadataNewTagsId3BeforeInfoTest extends AbstractTestCase {
       assertEquals("1", f.getAudioHeader().getChannels());
       assertEquals("22050", f.getAudioHeader().getSampleRate());
 
-      assertTrue(f.getTag() instanceof WavTag);
+      assertInstanceOf(WavTag.class, f.getTag());
       WavTag tag = (WavTag) f.getTag();
 
       assertEquals(
@@ -156,7 +155,7 @@ public class WavMetadataNewTagsId3BeforeInfoTest extends AbstractTestCase {
 
       //Read modified metadata now in file
       f = AudioFileIO.read(testFile);
-      assertTrue(f.getTag() instanceof WavTag);
+      assertInstanceOf(WavTag.class, f.getTag());
       tag = (WavTag) f.getTag();
       System.out.println(tag.getInfoTag());
       assertEquals(
@@ -181,7 +180,6 @@ public class WavMetadataNewTagsId3BeforeInfoTest extends AbstractTestCase {
       assertEquals(926264L, tag.getStartLocationInFileOfId3Chunk());
       assertEquals(18L, tag.getSizeOfID3TagIncludingChunkHeader());
     } catch (Exception e) {
-      e.printStackTrace();
       exceptionCaught = e;
     }
     assertNull(exceptionCaught);
@@ -201,9 +199,9 @@ public class WavMetadataNewTagsId3BeforeInfoTest extends AbstractTestCase {
     );
     Exception exceptionCaught = null;
     try {
-      File testFile = AbstractTestCase.copyAudioToTmp(
+      File testFile = copyAudioToTmp(
         "test123.wav",
-        new File("test123ModifyMetadataSaveExistingActiveId3New.wav")
+        "test123ModifyMetadataSaveExistingActiveId3New.wav"
       );
       AudioFile f = AudioFileIO.read(testFile);
       System.out.println(f.getAudioHeader());
@@ -211,7 +209,7 @@ public class WavMetadataNewTagsId3BeforeInfoTest extends AbstractTestCase {
       assertEquals("1", f.getAudioHeader().getChannels());
       assertEquals("22050", f.getAudioHeader().getSampleRate());
 
-      assertTrue(f.getTag() instanceof WavTag);
+      assertInstanceOf(WavTag.class, f.getTag());
       WavTag tag = (WavTag) f.getTag();
 
       assertTrue(tag.isExistingInfoTag());
@@ -242,7 +240,7 @@ public class WavMetadataNewTagsId3BeforeInfoTest extends AbstractTestCase {
 
       //Read modified metadata now in file
       f = AudioFileIO.read(testFile);
-      assertTrue(f.getTag() instanceof WavTag);
+      assertInstanceOf(WavTag.class, f.getTag());
       tag = (WavTag) f.getTag();
       System.out.println(tag.getInfoTag());
       assertEquals("fred", tag.getFirst(FieldKey.ARTIST));
@@ -260,7 +258,6 @@ public class WavMetadataNewTagsId3BeforeInfoTest extends AbstractTestCase {
       assertEquals(926264L, tag.getStartLocationInFileOfId3Chunk());
       assertEquals(34L, tag.getSizeOfID3TagIncludingChunkHeader());
     } catch (Exception e) {
-      e.printStackTrace();
       exceptionCaught = e;
     }
     assertNull(exceptionCaught);
@@ -281,9 +278,9 @@ public class WavMetadataNewTagsId3BeforeInfoTest extends AbstractTestCase {
 
     Exception exceptionCaught = null;
     try {
-      File testFile = AbstractTestCase.copyAudioToTmp(
+      File testFile = copyAudioToTmp(
         "test123.wav",
-        new File("test123ModifyMetadataSaveActiveId3New.wav")
+        "test123ModifyMetadataSaveActiveId3New.wav"
       );
       AudioFile f = AudioFileIO.read(testFile);
       System.out.println(f.getAudioHeader());
@@ -291,7 +288,7 @@ public class WavMetadataNewTagsId3BeforeInfoTest extends AbstractTestCase {
       assertEquals("1", f.getAudioHeader().getChannels());
       assertEquals("22050", f.getAudioHeader().getSampleRate());
 
-      assertTrue(f.getTag() instanceof WavTag);
+      assertInstanceOf(WavTag.class, f.getTag());
       WavTag tag = (WavTag) f.getTag();
 
       assertTrue(tag.isExistingInfoTag());
@@ -322,7 +319,7 @@ public class WavMetadataNewTagsId3BeforeInfoTest extends AbstractTestCase {
 
       //Read modified metadata now in file
       f = AudioFileIO.read(testFile);
-      assertTrue(f.getTag() instanceof WavTag);
+      assertInstanceOf(WavTag.class, f.getTag());
       tag = (WavTag) f.getTag();
       System.out.println(tag.getInfoTag());
       assertEquals("fred", tag.getFirst(FieldKey.ARTIST));
@@ -339,7 +336,6 @@ public class WavMetadataNewTagsId3BeforeInfoTest extends AbstractTestCase {
       assertEquals(926264L, tag.getStartLocationInFileOfId3Chunk());
       assertEquals(34L, tag.getSizeOfID3TagIncludingChunkHeader());
     } catch (Exception e) {
-      e.printStackTrace();
       exceptionCaught = e;
     }
     assertNull(exceptionCaught);
@@ -360,9 +356,9 @@ public class WavMetadataNewTagsId3BeforeInfoTest extends AbstractTestCase {
 
     Exception exceptionCaught = null;
     try {
-      File testFile = AbstractTestCase.copyAudioToTmp(
+      File testFile = copyAudioToTmp(
         "test126.wav",
-        new File("test126ModifyMetadataSaveActiveId3New.wav")
+        "test126ModifyMetadataSaveActiveId3New.wav"
       );
       AudioFile f = AudioFileIO.read(testFile);
       System.out.println(f.getAudioHeader());
@@ -370,7 +366,7 @@ public class WavMetadataNewTagsId3BeforeInfoTest extends AbstractTestCase {
       assertEquals("1", f.getAudioHeader().getChannels());
       assertEquals("22050", f.getAudioHeader().getSampleRate());
 
-      assertTrue(f.getTag() instanceof WavTag);
+      assertInstanceOf(WavTag.class, f.getTag());
       WavTag tag = (WavTag) f.getTag();
 
       assertFalse(tag.isExistingInfoTag());
@@ -395,7 +391,7 @@ public class WavMetadataNewTagsId3BeforeInfoTest extends AbstractTestCase {
 
       //Read modified metadata now in file
       f = AudioFileIO.read(testFile);
-      assertTrue(f.getTag() instanceof WavTag);
+      assertInstanceOf(WavTag.class, f.getTag());
       tag = (WavTag) f.getTag();
       System.out.println(tag.getInfoTag());
 
@@ -413,7 +409,6 @@ public class WavMetadataNewTagsId3BeforeInfoTest extends AbstractTestCase {
       assertEquals(926264L, tag.getStartLocationInFileOfId3Chunk());
       assertEquals(34L, tag.getSizeOfID3TagIncludingChunkHeader());
     } catch (Exception e) {
-      e.printStackTrace();
       exceptionCaught = e;
     }
     assertNull(exceptionCaught);
@@ -428,11 +423,6 @@ public class WavMetadataNewTagsId3BeforeInfoTest extends AbstractTestCase {
   public void testFileDeleteWithInfoAndOddLengthData() {
     Exception exceptionCaught = null;
 
-    File orig = new File("testdata", "test129.wav");
-    if (!orig.isFile()) {
-      System.err.println("Unable to test file - not available");
-      return;
-    }
 
     TagOptionSingleton.getInstance().setWavOptions(WavOptions.READ_INFO_ONLY);
     TagOptionSingleton.getInstance().setWavSaveOptions(
@@ -442,15 +432,14 @@ public class WavMetadataNewTagsId3BeforeInfoTest extends AbstractTestCase {
       WavSaveOrder.ID3_THEN_INFO
     );
 
-    File testFile = AbstractTestCase.copyAudioToTmp(
+    File testFile = copyAudioToTmp(
       "test129.wav",
-      new File("test128OddData.wav")
+      "test128OddData.wav"
     );
     try {
       AudioFile f = AudioFileIO.read(testFile);
       f.delete();
     } catch (Exception e) {
-      e.printStackTrace();
       exceptionCaught = e;
     }
     assertNull(exceptionCaught);

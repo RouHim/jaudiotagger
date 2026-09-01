@@ -66,7 +66,7 @@ public class FrameTRCKTest extends AbstractTestCase {
 
   @Test
   public void testSaveToFile() throws Exception {
-    File testFile = AbstractTestCase.copyAudioToTmp("testV1.mp3");
+    File testFile = copyAudioToTmp("testV1.mp3");
     MP3File mp3File = new MP3File(testFile);
 
     //Create and Save
@@ -87,7 +87,7 @@ public class FrameTRCKTest extends AbstractTestCase {
 
   @Test
   public void testSaveEmptyFrameToFile() throws Exception {
-    File testFile = AbstractTestCase.copyAudioToTmp("testV1.mp3");
+    File testFile = copyAudioToTmp("testV1.mp3");
     MP3File mp3File = new MP3File(testFile);
 
     ID3v24Frame frame = new ID3v24Frame(ID3v24Frames.FRAME_ID_TRACK);
@@ -116,6 +116,6 @@ public class FrameTRCKTest extends AbstractTestCase {
     tag.setField(tag.createField(FieldKey.TRACK_TOTAL, "10"));
     assertEquals("1", tag.getFirst(FieldKey.TRACK));
     assertEquals("10", tag.getFirst(FieldKey.TRACK_TOTAL));
-    assertTrue(tag.getFrame("TRCK") instanceof AbstractID3v2Frame);
+    assertInstanceOf(AbstractID3v2Frame.class, tag.getFrame("TRCK"));
   }
 }

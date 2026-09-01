@@ -5,7 +5,8 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 
 import java.io.File;
 import java.util.List;
-import org.jaudiotagger.AbstractTestCase;
+
+import org.jaudiotagger.AbstractBaseTestCase;
 import org.jaudiotagger.audio.AudioFile;
 import org.jaudiotagger.audio.AudioFileIO;
 import org.jaudiotagger.audio.mp4.EncoderType;
@@ -14,23 +15,20 @@ import org.jaudiotagger.tag.FieldKey;
 import org.jaudiotagger.tag.Tag;
 import org.jcodec.containers.mp4.boxes.EsdsBox;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.condition.EnabledIf;
 
-public class M4aReadDrmTagTest {
+public class M4aReadDrmTagTest extends AbstractBaseTestCase {
 
   /**
    * Test to read all metadata from an Apple iTunes encoded mp4 file, note also uses fixed genre rather than
    * custom genre
    */
   @Test
+  @EnabledIf("executeAlsoWithMissingResources") // to be configured in AbsractBaseTestCase
   public void testReadFile() {
     Exception exceptionCaught = null;
     try {
-      File orig = new File("testdata", "test9.m4p");
-      if (!orig.isFile()) {
-        return;
-      }
-
-      File testFile = AbstractTestCase.copyAudioToTmp("test9.m4p");
+      File testFile = copyAudioToTmp("test9.m4p");
       AudioFile f = AudioFileIO.read(testFile);
       Tag tag = f.getTag();
 
@@ -85,7 +83,6 @@ public class M4aReadDrmTagTest {
       //Should be one image
       assertEquals(1, coverart.size());
     } catch (Exception e) {
-      e.printStackTrace();
       exceptionCaught = e;
     }
     assertNull(exceptionCaught);

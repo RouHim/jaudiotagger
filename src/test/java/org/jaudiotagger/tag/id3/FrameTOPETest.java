@@ -1,6 +1,6 @@
 package org.jaudiotagger.tag.id3;
 
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 
 import java.io.File;
 import org.jaudiotagger.AbstractTestCase;
@@ -12,7 +12,7 @@ public class FrameTOPETest extends AbstractTestCase {
 
   @Test
   public void testSavingV24ToV23() throws Exception {
-    File testFile = AbstractTestCase.copyAudioToTmp(
+    File testFile = prependAudioToTmp(
       "Issue122.id3",
       "testV1.mp3"
     );
@@ -29,6 +29,6 @@ public class FrameTOPETest extends AbstractTestCase {
     ID3v23Frame v23frame = (ID3v23Frame) v23Tag.getFrame(
       ID3v23Frames.FRAME_ID_V3_ORIGARTIST
     );
-    assertTrue(v23frame.getBody() instanceof FrameBodyTOPE);
+    assertInstanceOf(FrameBodyTOPE.class, v23frame.getBody());
   }
 }

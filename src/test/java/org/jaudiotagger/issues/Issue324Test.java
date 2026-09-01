@@ -9,18 +9,15 @@ import org.jaudiotagger.audio.mp3.MP3File;
 import org.jaudiotagger.tag.FieldKey;
 import org.jaudiotagger.tag.id3.ID3v11Tag;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.condition.EnabledIf;
 
 public class Issue324Test extends AbstractTestCase {
 
   @Test
+  @EnabledIf("executeAlsoWithMissingResources") // to be configured in AbsractBaseTestCase
   public void testID3v1TagHandling() throws Exception {
-    File orig = new File("testdata", "test32.mp3");
-    if (!orig.isFile()) {
-      System.err.println("Unable to test file - not available");
-      return;
-    }
 
-    File testFile = AbstractTestCase.copyAudioToTmp("test32.mp3");
+    File testFile = copyAudioToTmp("test32.mp3");
     assertEquals(1853744, testFile.length());
     MP3File f = (MP3File) AudioFileIO.read(testFile);
     assertEquals("Iron Maiden", f.getID3v1Tag().getFirst(FieldKey.ARTIST));

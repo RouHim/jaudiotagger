@@ -91,9 +91,9 @@ public class FrameTIPLTest extends AbstractTestCase {
 
   @Test
   public void testSaveToFile() throws Exception {
-    File testFile = AbstractTestCase.copyAudioToTmp(
+    File testFile = copyAudioToTmp(
       "testV1.mp3",
-      new File("test1016.mp3")
+      "test1016.mp3"
     );
     MP3File mp3File = new MP3File(testFile);
 
@@ -114,9 +114,9 @@ public class FrameTIPLTest extends AbstractTestCase {
 
   @Test
   public void testSaveToFileOdd() throws Exception {
-    File testFile = AbstractTestCase.copyAudioToTmp(
+    File testFile = copyAudioToTmp(
       "testV1.mp3",
-      new File("test1016.mp3")
+      "test1016.mp3"
     );
     MP3File mp3File = new MP3File(testFile);
 
@@ -137,9 +137,9 @@ public class FrameTIPLTest extends AbstractTestCase {
 
   @Test
   public void testSaveEmptyFrameToFile() throws Exception {
-    File testFile = AbstractTestCase.copyAudioToTmp(
+    File testFile = copyAudioToTmp(
       "testV1.mp3",
-      new File("test1004.mp3")
+      "test1004.mp3"
     );
     MP3File mp3File = new MP3File(testFile);
 
@@ -163,9 +163,9 @@ public class FrameTIPLTest extends AbstractTestCase {
 
   @Test
   public void testConvertV24ToV23() throws Exception {
-    File testFile = AbstractTestCase.copyAudioToTmp(
+    File testFile = copyAudioToTmp(
       "testV1.mp3",
-      new File("test1005.mp3")
+      "test1005.mp3"
     );
     MP3File mp3File = new MP3File(testFile);
 

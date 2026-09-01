@@ -17,7 +17,7 @@ public class Issue397Test extends AbstractTestCase {
 
   @Test
   public void testSetSubtitleForMp4() throws Exception {
-    File testFile = AbstractTestCase.copyAudioToTmp("test2.m4a");
+    File testFile = copyAudioToTmp("test2.m4a");
     AudioFile f = AudioFileIO.read(testFile);
     Tag tag = f.getTag();
     tag.setField(FieldKey.DISC_SUBTITLE, "discsubtitle");
@@ -41,9 +41,9 @@ public class Issue397Test extends AbstractTestCase {
 
   @Test
   public void testSetSubtitleForMp3v22() throws Exception {
-    File testFile = AbstractTestCase.copyAudioToTmp(
+    File testFile = copyAudioToTmp(
       "testV1.mp3",
-      new File("testSetSubtitleForMp3v22.mp3")
+      "testSetSubtitleForMp3v22.mp3"
     );
     AudioFile f = AudioFileIO.read(testFile);
     TagOptionSingleton.getInstance().setID3V2Version(ID3V2Version.ID3_V22);
@@ -69,9 +69,9 @@ public class Issue397Test extends AbstractTestCase {
 
   @Test
   public void testSetSubtitleForMp3v23() throws Exception {
-    File testFile = AbstractTestCase.copyAudioToTmp(
+    File testFile = copyAudioToTmp(
       "testV1.mp3",
-      new File("testSetSubtitleForMp3v23.mp3")
+      "testSetSubtitleForMp3v23.mp3"
     );
     AudioFile f = AudioFileIO.read(testFile);
     TagOptionSingleton.getInstance().setID3V2Version(ID3V2Version.ID3_V23);
@@ -97,9 +97,9 @@ public class Issue397Test extends AbstractTestCase {
 
   @Test
   public void testSetSubtitleForMp3v24() throws Exception {
-    File testFile = AbstractTestCase.copyAudioToTmp(
+    File testFile = copyAudioToTmp(
       "testV1.mp3",
-      new File("testSetSubtitleForMp3v24.mp3")
+      "testSetSubtitleForMp3v24.mp3"
     );
     AudioFile f = AudioFileIO.read(testFile);
     TagOptionSingleton.getInstance().setID3V2Version(ID3V2Version.ID3_V24);
@@ -125,7 +125,7 @@ public class Issue397Test extends AbstractTestCase {
 
   @Test
   public void testSetSubtitleForOgg() throws Exception {
-    File testFile = AbstractTestCase.copyAudioToTmp("test.ogg");
+    File testFile = copyAudioToTmp("test.ogg");
     AudioFile f = AudioFileIO.read(testFile);
     Tag tag = f.getTagOrCreateDefault();
     tag.setField(FieldKey.DISC_SUBTITLE, "discsubtitle");
@@ -149,7 +149,7 @@ public class Issue397Test extends AbstractTestCase {
 
   @Test
   public void testSetSubtitleForFlac() throws Exception {
-    File testFile = AbstractTestCase.copyAudioToTmp("test.flac");
+    File testFile = copyAudioToTmp("test.flac");
     AudioFile f = AudioFileIO.read(testFile);
     Tag tag = f.getTagOrCreateDefault();
     tag.setField(FieldKey.DISC_SUBTITLE, "discsubtitle");
@@ -173,7 +173,7 @@ public class Issue397Test extends AbstractTestCase {
 
   @Test
   public void testSetSubtitleForWma() throws Exception {
-    File testFile = AbstractTestCase.copyAudioToTmp("test1.wma");
+    File testFile = copyAudioToTmp("test1.wma");
     AudioFile f = AudioFileIO.read(testFile);
     Tag tag = f.getTagOrCreateDefault();
     tag.setField(FieldKey.DISC_SUBTITLE, "discsubtitle");

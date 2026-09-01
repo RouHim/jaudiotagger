@@ -4,7 +4,8 @@ import static org.junit.jupiter.api.Assertions.*;
 
 import java.io.File;
 import java.util.List;
-import org.jaudiotagger.AbstractTestCase;
+
+import org.jaudiotagger.AbstractBaseTestCase;
 import org.jaudiotagger.audio.AudioFile;
 import org.jaudiotagger.audio.AudioFileIO;
 import org.jaudiotagger.audio.mp3.MP3File;
@@ -14,8 +15,9 @@ import org.jaudiotagger.tag.TagOptionSingleton;
 import org.jaudiotagger.tag.id3.framebody.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.condition.EnabledIf;
 
-public class ID3v22TagTest {
+public class ID3v22TagTest extends AbstractBaseTestCase {
 
   /////////////////////////////////////////////////////////////////////////
   // TestCase classes to override
@@ -32,7 +34,8 @@ public class ID3v22TagTest {
   /**
    *
    */
-  protected void tearDown() {}
+  protected void tearDown() {
+  }
 
   /**
    *
@@ -43,7 +46,8 @@ public class ID3v22TagTest {
 
   /////////////////////////////////////////////////////////////////////////
   // Tests
-  /////////////////////////////////////////////////////////////////////////
+
+  /// //////////////////////////////////////////////////////////////////////
   @Test
   public void testCreateIDv22Tag() {
     ID3v22Tag v2Tag = new ID3v22Tag();
@@ -61,47 +65,47 @@ public class ID3v22TagTest {
     assertEquals(
       ID3v11TagTest.ARTIST,
       ((FrameBodyTPE1) ((ID3v22Frame) v2Tag.getFrame(
-            ID3v22Frames.FRAME_ID_V2_ARTIST
-          )).getBody()).getText()
+        ID3v22Frames.FRAME_ID_V2_ARTIST
+      )).getBody()).getText()
     );
     assertEquals(
       ID3v11TagTest.ALBUM,
       ((FrameBodyTALB) ((ID3v22Frame) v2Tag.getFrame(
-            ID3v22Frames.FRAME_ID_V2_ALBUM
-          )).getBody()).getText()
+        ID3v22Frames.FRAME_ID_V2_ALBUM
+      )).getBody()).getText()
     );
     assertEquals(
       ID3v11TagTest.COMMENT,
       ((FrameBodyCOMM) ((ID3v22Frame) v2Tag.getFrame(
-            ID3v22Frames.FRAME_ID_V2_COMMENT
-          )).getBody()).getText()
+        ID3v22Frames.FRAME_ID_V2_COMMENT
+      )).getBody()).getText()
     );
     assertEquals(
       ID3v11TagTest.TITLE,
       ((FrameBodyTIT2) ((ID3v22Frame) v2Tag.getFrame(
-            ID3v22Frames.FRAME_ID_V2_TITLE
-          )).getBody()).getText()
+        ID3v22Frames.FRAME_ID_V2_TITLE
+      )).getBody()).getText()
     );
     assertEquals(
       ID3v11TagTest.TRACK_VALUE,
       String.valueOf(
         ((FrameBodyTRCK) ((ID3v22Frame) v2Tag.getFrame(
-              ID3v22Frames.FRAME_ID_V2_TRACK
-            )).getBody()).getTrackNo()
+          ID3v22Frames.FRAME_ID_V2_TRACK
+        )).getBody()).getTrackNo()
       )
     );
     assertTrue(
       ((FrameBodyTCON) ((ID3v22Frame) v2Tag.getFrame(
-            ID3v22Frames.FRAME_ID_V2_GENRE
-          )).getBody()).getText().endsWith(ID3v11TagTest.GENRE_VAL)
+        ID3v22Frames.FRAME_ID_V2_GENRE
+      )).getBody()).getText().endsWith(ID3v11TagTest.GENRE_VAL)
     );
 
     //TODO:Note confusingly V22 YEAR Frame shave v2 identifier but use TDRC behind the scenes, is confusing
     assertEquals(
       ID3v11TagTest.YEAR,
       ((FrameBodyTDRC) ((ID3v22Frame) v2Tag.getFrame(
-            ID3v22Frames.FRAME_ID_V2_TYER
-          )).getBody()).getText()
+        ID3v22Frames.FRAME_ID_V2_TYER
+      )).getBody()).getText()
     );
 
     assertEquals((byte) 2, v2Tag.getRelease());
@@ -113,7 +117,7 @@ public class ID3v22TagTest {
   public void testCreateIDv22TagAndSave() {
     Exception exception = null;
     try {
-      File testFile = AbstractTestCase.copyAudioToTmp("testV1.mp3");
+      File testFile = copyAudioToTmp("testV1.mp3");
       MP3File mp3File = new MP3File(testFile);
       ID3v22Tag v2Tag = new ID3v22Tag();
       v2Tag.setField(FieldKey.TITLE, "fred");
@@ -149,15 +153,11 @@ public class ID3v22TagTest {
   }
 
   @Test
+  @EnabledIf("executeAlsoWithMissingResources") // to be configured in AbsractBaseTestCase
   public void testv22TagWithUnneccessaryTrailingNulls() {
-    File orig = new File("testdata", "test24.mp3");
-    if (!orig.isFile()) {
-      return;
-    }
-
     Exception exception = null;
     try {
-      File testFile = AbstractTestCase.copyAudioToTmp("test24.mp3");
+      File testFile = copyAudioToTmp("test24.mp3");
       AudioFile af = AudioFileIO.read(testFile);
       MP3File m = (MP3File) af;
 
@@ -251,7 +251,6 @@ public class ID3v22TagTest {
       frame = (ID3v22Frame) v2Tag.getFrame(ID3v22Frames.FRAME_ID_V2_TRACK);
       assertEquals("01/11:", ((FrameBodyTRCK) frame.getBody()).getText() + ":");
     } catch (Exception e) {
-      e.printStackTrace();
       exception = e;
     }
     assertNull(exception);
@@ -259,7 +258,7 @@ public class ID3v22TagTest {
 
   @Test
   public void testDeleteFields() throws Exception {
-    File testFile = AbstractTestCase.copyAudioToTmp("testV1.mp3");
+    File testFile = copyAudioToTmp("testV1.mp3");
     MP3File mp3File = new MP3File(testFile);
     ID3v22Tag v2Tag = new ID3v22Tag();
     mp3File.setID3v2Tag(v2Tag);
@@ -295,7 +294,7 @@ public class ID3v22TagTest {
   @Test
   public void testWriteMultipleGenresToID3v22TagUsingDefault()
     throws Exception {
-    File testFile = AbstractTestCase.copyAudioToTmp("testV1.mp3");
+    File testFile = copyAudioToTmp("testV1.mp3");
     MP3File file = null;
     file = new MP3File(testFile);
     assertNull(file.getID3v1Tag());
@@ -340,7 +339,7 @@ public class ID3v22TagTest {
   @Test
   public void testWriteMultipleGenresToID3v22TagUsingCreateField()
     throws Exception {
-    File testFile = AbstractTestCase.copyAudioToTmp("testV1.mp3");
+    File testFile = copyAudioToTmp("testV1.mp3");
     MP3File file = null;
     file = new MP3File(testFile);
     assertNull(file.getID3v1Tag());
@@ -393,7 +392,7 @@ public class ID3v22TagTest {
   @Test
   public void testWriteMultipleGenresToID3v22TagUsingV22CreateField()
     throws Exception {
-    File testFile = AbstractTestCase.copyAudioToTmp("testV1.mp3");
+    File testFile = copyAudioToTmp("testV1.mp3");
     MP3File file = null;
     file = new MP3File(testFile);
     assertNull(file.getID3v1Tag());

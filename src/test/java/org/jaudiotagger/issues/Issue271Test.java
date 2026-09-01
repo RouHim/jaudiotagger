@@ -14,6 +14,7 @@ import org.jaudiotagger.tag.id3.ID3v22Tag;
 import org.jaudiotagger.tag.id3.ID3v23Frames;
 import org.jaudiotagger.tag.id3.ID3v23Tag;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.condition.EnabledIf;
 
 public class Issue271Test extends AbstractTestCase {
 
@@ -21,17 +22,13 @@ public class Issue271Test extends AbstractTestCase {
    * Test read mp3 that says it has extended header but doesn't really
    */
   @Test
+  @EnabledIf("executeAlsoWithMissingResources") // to be configured in AbsractBaseTestCase
   public void testReadMp3WithExtendedHeaderFlagSetButNoExtendedHeader() {
-    File orig = new File("testdata", "test46.mp3");
-    if (!orig.isFile()) {
-      System.err.println("Unable to test file - not available");
-      return;
-    }
 
     File testFile = null;
     Exception exceptionCaught = null;
     try {
-      testFile = AbstractTestCase.copyAudioToTmp("test46.mp3");
+      testFile = copyAudioToTmp("test46.mp3");
 
       //Read File okay
       AudioFile af = AudioFileIO.read(testFile);
@@ -48,7 +45,6 @@ public class Issue271Test extends AbstractTestCase {
       System.out.println(af.getTag().toString());
       assertEquals("FRED", af.getTag().getFirst(FieldKey.ALBUM));
     } catch (Exception e) {
-      e.printStackTrace();
       exceptionCaught = e;
     }
 
@@ -60,16 +56,11 @@ public class Issue271Test extends AbstractTestCase {
    */
   @Test
   public void testReadMp3WithExtendedHeaderAndCrc() {
-    File orig = new File("testdata", "test47.mp3");
-    if (!orig.isFile()) {
-      System.err.println("Unable to test file - not available");
-      return;
-    }
 
     File testFile = null;
     Exception exceptionCaught = null;
     try {
-      testFile = AbstractTestCase.copyAudioToTmp("test47.mp3");
+      testFile = copyAudioToTmp("test47.mp3");
 
       //Read File okay
       AudioFile af = AudioFileIO.read(testFile);
@@ -90,7 +81,6 @@ public class Issue271Test extends AbstractTestCase {
       System.out.println(af.getTag().toString());
       assertEquals("FRED", af.getTag().getFirst(FieldKey.ALBUM));
     } catch (Exception e) {
-      e.printStackTrace();
       exceptionCaught = e;
     }
 
@@ -104,16 +94,11 @@ public class Issue271Test extends AbstractTestCase {
    */
   @Test
   public void testReadMp3WithEncryptedField() {
-    File orig = new File("testdata", "test48.mp3");
-    if (!orig.isFile()) {
-      System.err.println("Unable to test file - not available");
-      return;
-    }
 
     File testFile = null;
     Exception exceptionCaught = null;
     try {
-      testFile = AbstractTestCase.copyAudioToTmp("test48.mp3");
+      testFile = copyAudioToTmp("test48.mp3");
 
       //Read File okay
       AudioFile af = AudioFileIO.read(testFile);
@@ -137,7 +122,6 @@ public class Issue271Test extends AbstractTestCase {
       System.out.println(af.getTag().toString());
       assertEquals("FRED", af.getTag().getFirst(FieldKey.ALBUM));
     } catch (Exception e) {
-      e.printStackTrace();
       exceptionCaught = e;
     }
 
@@ -149,16 +133,11 @@ public class Issue271Test extends AbstractTestCase {
    */
   @Test
   public void testReadFlagsCompressed() {
-    File orig = new File("testdata", "test51.mp3");
-    if (!orig.isFile()) {
-      System.err.println("Unable to test file - not available");
-      return;
-    }
 
     File testFile = null;
     Exception exceptionCaught = null;
     try {
-      testFile = AbstractTestCase.copyAudioToTmp("test51.mp3");
+      testFile = copyAudioToTmp("test51.mp3");
 
       //Read File okay
       AudioFile af = AudioFileIO.read(testFile);
@@ -189,7 +168,6 @@ public class Issue271Test extends AbstractTestCase {
       assertEquals("B new start", v22tag.getFirst(FieldKey.TITLE));
       TagOptionSingleton.getInstance().setUnsyncTags(false);
     } catch (Exception e) {
-      e.printStackTrace();
       exceptionCaught = e;
     }
 
@@ -201,16 +179,11 @@ public class Issue271Test extends AbstractTestCase {
    */
   @Test
   public void testReadFlagsUnsyced() {
-    File orig = new File("testdata", "test52.mp3");
-    if (!orig.isFile()) {
-      System.err.println("Unable to test file - not available");
-      return;
-    }
 
     File testFile = null;
     Exception exceptionCaught = null;
     try {
-      testFile = AbstractTestCase.copyAudioToTmp("test52.mp3");
+      testFile = copyAudioToTmp("test52.mp3");
 
       //Read File okay
       AudioFile af = AudioFileIO.read(testFile);
@@ -242,7 +215,6 @@ public class Issue271Test extends AbstractTestCase {
       assertEquals("B new start", v22tag.getFirst(FieldKey.TITLE));
       TagOptionSingleton.getInstance().setUnsyncTags(false);
     } catch (Exception e) {
-      e.printStackTrace();
       exceptionCaught = e;
     }
 
@@ -254,16 +226,11 @@ public class Issue271Test extends AbstractTestCase {
    */
   @Test
   public void testReadFlagsUnsycedCompressed() {
-    File orig = new File("testdata", "test53.mp3");
-    if (!orig.isFile()) {
-      System.err.println("Unable to test file - not available");
-      return;
-    }
 
     File testFile = null;
     Exception exceptionCaught = null;
     try {
-      testFile = AbstractTestCase.copyAudioToTmp("test53.mp3");
+      testFile = copyAudioToTmp("test53.mp3");
 
       //Read File okay
       AudioFile af = AudioFileIO.read(testFile);
@@ -295,7 +262,6 @@ public class Issue271Test extends AbstractTestCase {
       assertEquals("B new start", v22tag.getFirst(FieldKey.TITLE));
       TagOptionSingleton.getInstance().setUnsyncTags(false);
     } catch (Exception e) {
-      e.printStackTrace();
       exceptionCaught = e;
     }
 

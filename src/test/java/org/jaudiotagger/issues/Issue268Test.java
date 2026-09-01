@@ -9,6 +9,7 @@ import org.jaudiotagger.audio.AudioFile;
 import org.jaudiotagger.audio.AudioFileIO;
 import org.jaudiotagger.tag.FieldKey;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.condition.EnabledIf;
 
 public class Issue268Test extends AbstractTestCase {
 
@@ -16,17 +17,13 @@ public class Issue268Test extends AbstractTestCase {
    * Test read wma with NonArtwork Binary Data
    */
   @Test
+  @EnabledIf("executeAlsoWithMissingResources") // to be configured in AbsractBaseTestCase
   public void testReadWma() {
-    File orig = new File("testdata", "test8.wma");
-    if (!orig.isFile()) {
-      System.err.println("Unable to test file - not available");
-      return;
-    }
 
     File testFile = null;
     Exception exceptionCaught = null;
     try {
-      testFile = AbstractTestCase.copyAudioToTmp("test8.wma");
+      testFile = copyAudioToTmp("test8.wma");
 
       //Read File okay
       AudioFile af = AudioFileIO.read(testFile);
@@ -38,7 +35,6 @@ public class Issue268Test extends AbstractTestCase {
       System.out.println(af.getTag().toString());
       assertEquals("FRED", af.getTag().getFirst(FieldKey.ALBUM));
     } catch (Exception e) {
-      e.printStackTrace();
       exceptionCaught = e;
     }
 

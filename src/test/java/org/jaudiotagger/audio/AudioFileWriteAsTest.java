@@ -21,9 +21,9 @@ public class AudioFileWriteAsTest extends AbstractTestCase {
   @BeforeEach
   public void setUp() {
     super.setUp();
-    File orig = new File("testdata", "01.mp3");
+    File orig = fileResource("testdata", "01.mp3");
     try {
-      sourceFile = AbstractTestCase.copyAudioToTmp(orig.getName());
+      sourceFile = copyAudioToTmp(orig.getName());
       af = AudioFileIO.read(sourceFile);
     } catch (Throwable e) {
       throw new RuntimeException("Can't setUp test.", e);
@@ -36,7 +36,7 @@ public class AudioFileWriteAsTest extends AbstractTestCase {
     af.commit();
 
     final String parent = sourceFile.getParent();
-    File destinationNoExtension = new File(parent, DESTINATION_FILE_NAME);
+    File destinationNoExtension = tempFileResource(DESTINATION_FILE_NAME);
     AudioFileIO.writeAs(af, destinationNoExtension.getPath());
 
     assertEquals(

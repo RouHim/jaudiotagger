@@ -30,9 +30,9 @@ public class Issue084Test extends AbstractTestCase {
         TagOptionSingleton.getInstance().setWavSaveOptions(
           WavSaveOptions.SAVE_EXISTING_AND_ACTIVE
         );
-        File testFile = AbstractTestCase.copyAudioToTmp(
+        File testFile = copyAudioToTmp(
           "test123.wav",
-          new File("test123Synced.wav")
+          "test123Synced.wav"
         );
         AudioFile f = AudioFileIO.read(testFile);
         Tag tag = f.getTag();
@@ -65,7 +65,6 @@ public class Issue084Test extends AbstractTestCase {
         assertEquals("artistName", tag.getFirst(FieldKey.ARTIST));
       }
     } catch (Exception e) {
-      e.printStackTrace();
       exceptionCaught = e;
     }
     assertNull(exceptionCaught);
@@ -82,9 +81,9 @@ public class Issue084Test extends AbstractTestCase {
         TagOptionSingleton.getInstance().setWavSaveOptions(
           WavSaveOptions.SAVE_BOTH
         );
-        File testFile = AbstractTestCase.copyAudioToTmp(
+        File testFile = copyAudioToTmp(
           "test126.wav",
-          new File("test126Synced.wav")
+          "test126Synced.wav"
         );
         AudioFile f = AudioFileIO.read(testFile);
         Tag tag = f.getTag();
@@ -113,7 +112,6 @@ public class Issue084Test extends AbstractTestCase {
         assertEquals("fred", tag.getFirst(FieldKey.ARTIST));
       }
     } catch (Exception e) {
-      e.printStackTrace();
       exceptionCaught = e;
     }
     assertNull(exceptionCaught);
@@ -130,9 +128,9 @@ public class Issue084Test extends AbstractTestCase {
         TagOptionSingleton.getInstance().setWavSaveOptions(
           WavSaveOptions.SAVE_BOTH
         );
-        File testFile = AbstractTestCase.copyAudioToTmp(
+        File testFile = copyAudioToTmp(
           "test126.wav",
-          new File("test126SyncedAfterRead.wav")
+          "test126SyncedAfterRead.wav"
         );
         AudioFile f = AudioFileIO.read(testFile);
         Tag tag = f.getTag();
@@ -167,7 +165,6 @@ public class Issue084Test extends AbstractTestCase {
         f.commit();
       }
     } catch (Exception e) {
-      e.printStackTrace();
       exceptionCaught = e;
     }
     assertNull(exceptionCaught);
@@ -184,9 +181,9 @@ public class Issue084Test extends AbstractTestCase {
         TagOptionSingleton.getInstance().setWavSaveOptions(
           WavSaveOptions.SAVE_BOTH
         );
-        File testFile = AbstractTestCase.copyAudioToTmp(
+        File testFile = copyAudioToTmp(
           "test126.wav",
-          new File("test126SyncedAfterRead.wav")
+          "test126SyncedAfterRead.wav"
         );
         AudioFile f = AudioFileIO.read(testFile);
         Tag tag = f.getTag();
@@ -201,7 +198,6 @@ public class Issue084Test extends AbstractTestCase {
         assertEquals("fred\0", tag.getFirst(FieldKey.ARTIST));
       }
     } catch (Exception e) {
-      e.printStackTrace();
       exceptionCaught = e;
     }
     assertNull(exceptionCaught);
@@ -218,9 +214,9 @@ public class Issue084Test extends AbstractTestCase {
         TagOptionSingleton.getInstance().setWavSaveOptions(
           WavSaveOptions.SAVE_BOTH
         );
-        File testFile = AbstractTestCase.copyAudioToTmp(
+        File testFile = copyAudioToTmp(
           "test123.wav",
-          new File("test123AutoSyncedAfterRead.wav")
+          "test123AutoSyncedAfterRead.wav"
         );
         AudioFile f = AudioFileIO.read(testFile);
         Tag tag = f.getTag();
@@ -235,7 +231,6 @@ public class Issue084Test extends AbstractTestCase {
         assertEquals("artistName", tag.getFirst(FieldKey.ARTIST));
       }
     } catch (Exception e) {
-      e.printStackTrace();
       exceptionCaught = e;
     }
     assertNull(exceptionCaught);
@@ -252,9 +247,9 @@ public class Issue084Test extends AbstractTestCase {
         TagOptionSingleton.getInstance().setWavSaveOptions(
           WavSaveOptions.SAVE_BOTH_AND_SYNC
         );
-        File testFile = AbstractTestCase.copyAudioToTmp(
+        File testFile = copyAudioToTmp(
           "test123.wav",
-          new File("test123AutoSyncedAfterReadBeforeWrite.wav")
+          "test123AutoSyncedAfterReadBeforeWrite.wav"
         );
         AudioFile f = AudioFileIO.read(testFile);
         Tag tag = f.getTag();
@@ -285,7 +280,6 @@ public class Issue084Test extends AbstractTestCase {
         assertEquals("fred", tag.getFirst(FieldKey.ARTIST));
       }
     } catch (Exception e) {
-      e.printStackTrace();
       exceptionCaught = e;
     }
     assertNull(exceptionCaught);
@@ -302,9 +296,9 @@ public class Issue084Test extends AbstractTestCase {
         TagOptionSingleton.getInstance().setWavSaveOptions(
           WavSaveOptions.SAVE_BOTH_AND_SYNC
         );
-        File testFile = AbstractTestCase.copyAudioToTmp(
+        File testFile = copyAudioToTmp(
           "test126.wav",
-          new File("test126AutoSyncedAfterReadBeforeWrite.wav")
+          "test126AutoSyncedAfterReadBeforeWrite.wav"
         );
         AudioFile f = AudioFileIO.read(testFile);
         Tag tag = f.getTag();
@@ -335,7 +329,6 @@ public class Issue084Test extends AbstractTestCase {
         assertEquals("tim", tag.getFirst(FieldKey.ARTIST));
       }
     } catch (Exception e) {
-      e.printStackTrace();
       exceptionCaught = e;
     }
     assertNull(exceptionCaught);

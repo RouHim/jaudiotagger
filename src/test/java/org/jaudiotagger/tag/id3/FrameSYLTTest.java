@@ -20,7 +20,7 @@ public class FrameSYLTTest extends AbstractTestCase {
 
   @Test
   public void testWriteFrame() throws Exception {
-    File testFile = AbstractTestCase.copyAudioToTmp("testV1.mp3");
+    File testFile = copyAudioToTmp("testV1.mp3");
     MP3File mp3File = new MP3File(testFile);
 
     ID3v24Tag id3 = new ID3v24Tag();

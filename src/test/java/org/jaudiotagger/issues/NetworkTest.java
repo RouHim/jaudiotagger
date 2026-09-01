@@ -8,6 +8,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 import org.jaudiotagger.AbstractTestCase;
 import org.jaudiotagger.audio.AudioFileFilter;
 import org.jaudiotagger.audio.AudioFileIO;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 public class NetworkTest extends AbstractTestCase {
@@ -33,18 +34,18 @@ public class NetworkTest extends AbstractTestCase {
   }
 
   @Test
+  @Disabled("Works only on dev machine")
   public void testNetworkSpeed() {
     Exception caught = null;
     try {
       System.out.println("Start:" + new Date());
       File file = new File("Z:\\Music\\Replay Music Recordings");
-      //File file = new File("C:\\Users\\MESH\\Music\\Replay Music Recordings");
+      //File file = "C:\\Users\\MESH\\Music\\Replay Music Recordings";
       loadFiles(file);
       System.out.println("Loaded:" + count.get());
       System.out.println("End:" + new Date());
     } catch (Exception e) {
       caught = e;
-      e.printStackTrace();
     }
     assertNull(caught);
   }
@@ -53,7 +54,7 @@ public class NetworkTest extends AbstractTestCase {
     @Test
     public void testDataCopySpeed() throws Exception
     {
-        File file = new File("Z:\\Music\\Replay Music Recordings\\Beirut\\The Rip Tide\\Beirut-The Rip Tide-05-Payne's Bay.mp3");
+        File file = "Z:\\Music\\Replay Music Recordings\\Beirut\\The Rip Tide\\Beirut-The Rip Tide-05-Payne's Bay.mp3";
         
         System.out.println("start:"+new Date());
         FileChannel fc = new FileInputStream(file).getChannel();
@@ -66,7 +67,7 @@ public class NetworkTest extends AbstractTestCase {
     @Test
     public void testDataCopySpeed2() throws Exception
     {
-        File file = new File("Z:\\Music\\Replay Music Recordings\\Beirut\\The Rip Tide\\Beirut-The Rip Tide-05-Payne's Bay.mp3");
+        File file = "Z:\\Music\\Replay Music Recordings\\Beirut\\The Rip Tide\\Beirut-The Rip Tide-05-Payne's Bay.mp3";
 
         System.out.println("start:"+new Date());
         FileChannel fc = new FileInputStream(file).getChannel();
@@ -80,7 +81,7 @@ public class NetworkTest extends AbstractTestCase {
   /*public void testDataCopyBufferedStream() throws Exception
     {
 
-        File file = new File("Z:\\Music\\Replay Music Recordings\\Beirut\\The Rip Tide\\Beirut-The Rip Tide-05-Payne's Bay.mp3");
+        File file = "Z:\\Music\\Replay Music Recordings\\Beirut\\The Rip Tide\\Beirut-The Rip Tide-05-Payne's Bay.mp3";
         Date start = new Date();
 
         FileChannel fc = new FileInputStream(file).getChannel();

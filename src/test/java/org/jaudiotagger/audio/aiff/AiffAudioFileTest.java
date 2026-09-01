@@ -3,30 +3,25 @@ package org.jaudiotagger.audio.aiff;
 import static org.junit.jupiter.api.Assertions.*;
 
 import java.io.File;
-import org.jaudiotagger.AbstractTestCase;
+
+import org.jaudiotagger.AbstractBaseTestCase;
 import org.jaudiotagger.audio.AudioFile;
 import org.jaudiotagger.audio.AudioFileIO;
 import org.jaudiotagger.audio.AudioHeader;
 import org.junit.jupiter.api.Test;
 
-public class AiffAudioFileTest {
+public class AiffAudioFileTest extends AbstractBaseTestCase {
 
   @Test
   public void testReadAifcNotCompressed() {
     Exception exceptionCaught = null;
 
-    File orig = new File("testdata", "test119.aif");
-    if (!orig.isFile()) {
-      System.err.println("Unable to test file - not available");
-      return;
-    }
 
-    File testFile = AbstractTestCase.copyAudioToTmp("test119.aif");
+    File testFile = copyAudioToTmp("test119.aif");
     try {
       AudioFile f = AudioFileIO.read(testFile);
       AudioHeader ah = f.getAudioHeader();
-      assertTrue(ah instanceof AiffAudioHeader);
-      System.out.println(ah);
+      assertInstanceOf(AiffAudioHeader.class, ah);
       AiffAudioHeader aah = (AiffAudioHeader) ah;
       assertEquals("128", ah.getBitRate());
       assertEquals(128, ah.getBitRateAsNumber());
@@ -43,7 +38,6 @@ public class AiffAudioFileTest {
       assertEquals(1, aah.getAnnotations().size());
       //assertEquals("AFspdate: 2003-01-30 03:28:35 UTC\u0000user: kabal@CAPELLA\u0000program: CopyAudio ", aah.getAnnotations().get(0));
     } catch (Exception e) {
-      e.printStackTrace();
       exceptionCaught = e;
     }
     assertNull(exceptionCaught);
@@ -53,20 +47,14 @@ public class AiffAudioFileTest {
   public void testReadAiff2() {
     Exception exceptionCaught = null;
 
-    File orig = new File("testdata", "test120.aif");
-    if (!orig.isFile()) {
-      System.err.println("Unable to test file - not available");
-      return;
-    }
 
-    File testFile = AbstractTestCase.copyAudioToTmp("test120.aif");
+    File testFile = copyAudioToTmp("test120.aif");
     try {
       AudioFile f = AudioFileIO.read(testFile);
       AudioHeader ah = f.getAudioHeader();
-      assertTrue(ah instanceof AiffAudioHeader);
+      assertInstanceOf(AiffAudioHeader.class, ah);
       AiffAudioHeader aah = (AiffAudioHeader) ah;
 
-      System.out.println(ah);
 
       assertEquals("1411", ah.getBitRate());
       assertEquals(1411, ah.getBitRateAsNumber());
@@ -82,7 +70,6 @@ public class AiffAudioFileTest {
       assertTrue(aah.getComments().isEmpty());
       assertTrue(aah.getAnnotations().isEmpty());
     } catch (Exception e) {
-      e.printStackTrace();
       exceptionCaught = e;
     }
     assertNull(exceptionCaught);
@@ -92,20 +79,14 @@ public class AiffAudioFileTest {
   public void testReadAiff3() {
     Exception exceptionCaught = null;
 
-    File orig = new File("testdata", "test121.aif");
-    if (!orig.isFile()) {
-      System.err.println("Unable to test file - not available");
-      return;
-    }
 
-    File testFile = AbstractTestCase.copyAudioToTmp("test121.aif");
+    File testFile = copyAudioToTmp("test121.aif");
     try {
       AudioFile f = AudioFileIO.read(testFile);
       AudioHeader ah = f.getAudioHeader();
-      assertTrue(ah instanceof AiffAudioHeader);
+      assertInstanceOf(AiffAudioHeader.class, ah);
       AiffAudioHeader aah = (AiffAudioHeader) ah;
 
-      System.out.println(ah);
 
       assertEquals("1411", ah.getBitRate());
       assertEquals(1411, ah.getBitRateAsNumber());
@@ -121,7 +102,6 @@ public class AiffAudioFileTest {
       assertTrue(aah.getComments().isEmpty());
       assertTrue(aah.getAnnotations().isEmpty());
     } catch (Exception e) {
-      e.printStackTrace();
       exceptionCaught = e;
     }
     assertNull(exceptionCaught);
@@ -131,18 +111,12 @@ public class AiffAudioFileTest {
   public void testReadAifcCompressedAlaw() {
     Exception exceptionCaught = null;
 
-    File orig = new File("testdata", "test132.aif");
-    if (!orig.isFile()) {
-      System.err.println("Unable to test file - not available");
-      return;
-    }
 
-    File testFile = AbstractTestCase.copyAudioToTmp("test132.aif");
+    File testFile = copyAudioToTmp("test132.aif");
     try {
       AudioFile f = AudioFileIO.read(testFile);
       AudioHeader ah = f.getAudioHeader();
-      assertTrue(ah instanceof AiffAudioHeader);
-      System.out.println(ah);
+      assertInstanceOf(AiffAudioHeader.class, ah);
       AiffAudioHeader aah = (AiffAudioHeader) ah;
       assertEquals("128", ah.getBitRate());
       assertEquals(128, ah.getBitRateAsNumber());
@@ -159,7 +133,6 @@ public class AiffAudioFileTest {
       assertEquals(1, aah.getAnnotations().size());
       //assertEquals("AFspdate: 2003-01-30 03:28:35 UTC\u0000user: kabal@CAPELLA\u0000program: CopyAudio ", aah.getAnnotations().get(0));
     } catch (Exception e) {
-      e.printStackTrace();
       exceptionCaught = e;
     }
     assertNull(exceptionCaught);
@@ -169,18 +142,12 @@ public class AiffAudioFileTest {
   public void testReadAifcCompressedUlaw() {
     Exception exceptionCaught = null;
 
-    File orig = new File("testdata", "test133.aif");
-    if (!orig.isFile()) {
-      System.err.println("Unable to test file - not available");
-      return;
-    }
 
-    File testFile = AbstractTestCase.copyAudioToTmp("test133.aif");
+    File testFile = copyAudioToTmp("test133.aif");
     try {
       AudioFile f = AudioFileIO.read(testFile);
       AudioHeader ah = f.getAudioHeader();
-      assertTrue(ah instanceof AiffAudioHeader);
-      System.out.println(ah);
+      assertInstanceOf(AiffAudioHeader.class, ah);
       AiffAudioHeader aah = (AiffAudioHeader) ah;
       assertEquals("128", ah.getBitRate());
       assertEquals(128, ah.getBitRateAsNumber());
@@ -197,7 +164,6 @@ public class AiffAudioFileTest {
       assertEquals(1, aah.getAnnotations().size());
       //assertEquals("AFspdate: 2003-01-30 03:28:35 UTC\u0000user: kabal@CAPELLA\u0000program: CopyAudio ", aah.getAnnotations().get(0));
     } catch (Exception e) {
-      e.printStackTrace();
       exceptionCaught = e;
     }
     assertNull(exceptionCaught);
@@ -207,18 +173,12 @@ public class AiffAudioFileTest {
   public void testReadAifcFloating64() {
     Exception exceptionCaught = null;
 
-    File orig = new File("testdata", "test134.aif");
-    if (!orig.isFile()) {
-      System.err.println("Unable to test file - not available");
-      return;
-    }
 
-    File testFile = AbstractTestCase.copyAudioToTmp("test134.aif");
+    File testFile = copyAudioToTmp("test134.aif");
     try {
       AudioFile f = AudioFileIO.read(testFile);
       AudioHeader ah = f.getAudioHeader();
-      assertTrue(ah instanceof AiffAudioHeader);
-      System.out.println(ah);
+      assertInstanceOf(AiffAudioHeader.class, ah);
       AiffAudioHeader aah = (AiffAudioHeader) ah;
       assertEquals("1024", ah.getBitRate());
       assertEquals(1024, ah.getBitRateAsNumber());
@@ -235,7 +195,6 @@ public class AiffAudioFileTest {
       assertEquals(1, aah.getAnnotations().size());
       //assertEquals("AFspdate: 2003-01-30 03:28:35 UTC\u0000user: kabal@CAPELLA\u0000program: CopyAudio ", aah.getAnnotations().get(0));
     } catch (Exception e) {
-      e.printStackTrace();
       exceptionCaught = e;
     }
     assertNull(exceptionCaught);
@@ -245,18 +204,12 @@ public class AiffAudioFileTest {
   public void testReadAifcSSNDBeforeCOMMChunk() {
     Exception exceptionCaught = null;
 
-    File orig = new File("testdata", "test135.aif");
-    if (!orig.isFile()) {
-      System.err.println("Unable to test file - not available");
-      return;
-    }
 
-    File testFile = AbstractTestCase.copyAudioToTmp("test135.aif");
+    File testFile = copyAudioToTmp("test135.aif");
     try {
       AudioFile f = AudioFileIO.read(testFile);
       AudioHeader ah = f.getAudioHeader();
-      assertTrue(ah instanceof AiffAudioHeader);
-      System.out.println(ah);
+      assertInstanceOf(AiffAudioHeader.class, ah);
       AiffAudioHeader aah = (AiffAudioHeader) ah;
       assertEquals("199", ah.getBitRate());
       assertEquals(199, ah.getBitRateAsNumber());
@@ -272,7 +225,6 @@ public class AiffAudioFileTest {
       assertTrue(aah.getComments().isEmpty());
       assertEquals(0, aah.getAnnotations().size());
     } catch (Exception e) {
-      e.printStackTrace();
       exceptionCaught = e;
     }
     assertNull(exceptionCaught);
@@ -282,18 +234,12 @@ public class AiffAudioFileTest {
   public void testReadAifcWithOddChunk() {
     Exception exceptionCaught = null;
 
-    File orig = new File("testdata", "test136.aif");
-    if (!orig.isFile()) {
-      System.err.println("Unable to test file - not available");
-      return;
-    }
 
-    File testFile = AbstractTestCase.copyAudioToTmp("test136.aif");
+    File testFile = copyAudioToTmp("test136.aif");
     try {
       AudioFile f = AudioFileIO.read(testFile);
       AudioHeader ah = f.getAudioHeader();
-      assertTrue(ah instanceof AiffAudioHeader);
-      System.out.println(ah);
+      assertInstanceOf(AiffAudioHeader.class, ah);
       AiffAudioHeader aah = (AiffAudioHeader) ah;
       assertEquals("199", ah.getBitRate());
       assertEquals(199, ah.getBitRateAsNumber());
@@ -309,7 +255,6 @@ public class AiffAudioFileTest {
       assertTrue(aah.getComments().isEmpty());
       assertEquals(0, aah.getAnnotations().size());
     } catch (Exception e) {
-      e.printStackTrace();
       exceptionCaught = e;
     }
     assertNull(exceptionCaught);
@@ -319,18 +264,12 @@ public class AiffAudioFileTest {
   public void testReadAifcWithJunk() {
     Exception exceptionCaught = null;
 
-    File orig = new File("testdata", "test137.aif");
-    if (!orig.isFile()) {
-      System.err.println("Unable to test file - not available");
-      return;
-    }
 
-    File testFile = AbstractTestCase.copyAudioToTmp("test137.aif");
+    File testFile = copyAudioToTmp("test137.aif");
     try {
       AudioFile f = AudioFileIO.read(testFile);
       AudioHeader ah = f.getAudioHeader();
-      assertTrue(ah instanceof AiffAudioHeader);
-      System.out.println(ah);
+      assertInstanceOf(AiffAudioHeader.class, ah);
       AiffAudioHeader aah = (AiffAudioHeader) ah;
       assertEquals("199", ah.getBitRate());
       assertEquals(199, ah.getBitRateAsNumber());
@@ -346,7 +285,6 @@ public class AiffAudioFileTest {
       assertTrue(aah.getComments().isEmpty());
       assertEquals(0, aah.getAnnotations().size());
     } catch (Exception e) {
-      e.printStackTrace();
       exceptionCaught = e;
     }
     assertNull(exceptionCaught);
@@ -356,18 +294,12 @@ public class AiffAudioFileTest {
   public void testReadAiffUnknownCompressionAndNameChunkAndCopyrightChunks() {
     Exception exceptionCaught = null;
 
-    File orig = new File("testdata", "test138.aiff");
-    if (!orig.isFile()) {
-      System.err.println("Unable to test file - not available");
-      return;
-    }
 
-    File testFile = AbstractTestCase.copyAudioToTmp("test138.aiff");
+    File testFile = copyAudioToTmp("test138.aiff");
     try {
       AudioFile f = AudioFileIO.read(testFile);
       AudioHeader ah = f.getAudioHeader();
-      assertTrue(ah instanceof AiffAudioHeader);
-      System.out.println(ah);
+      assertInstanceOf(AiffAudioHeader.class, ah);
       AiffAudioHeader aah = (AiffAudioHeader) ah;
       assertEquals("19", ah.getBitRate());
       assertEquals(19, ah.getBitRateAsNumber());
@@ -383,7 +315,6 @@ public class AiffAudioFileTest {
       assertTrue(aah.getComments().isEmpty());
       assertEquals(0, aah.getAnnotations().size());
     } catch (Exception e) {
-      e.printStackTrace();
       exceptionCaught = e;
     }
     assertNull(exceptionCaught);

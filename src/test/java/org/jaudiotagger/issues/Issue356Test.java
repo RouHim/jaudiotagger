@@ -23,9 +23,9 @@ public class Issue356Test extends AbstractTestCase {
     AudioFile audioFile;
     final String IMAGE_URL = "http://www.google.com/image.jpg";
 
-    File testFile = AbstractTestCase.copyAudioToTmp(
+    File testFile = copyAudioToTmp(
       "testV1.mp3",
-      new File("testWritingLinkedUrlToID3v24.mp3")
+      "testWritingLinkedUrlToID3v24.mp3"
     );
     audioFile = AudioFileIO.read(testFile);
     audioFile.setTag(new ID3v24Tag());
@@ -49,9 +49,9 @@ public class Issue356Test extends AbstractTestCase {
     AudioFile audioFile;
     final String IMAGE_URL = "http://www.google.com/image.jpg";
 
-    File testFile = AbstractTestCase.copyAudioToTmp(
+    File testFile = copyAudioToTmp(
       "testV1.mp3",
-      new File("testWritingLinkedUrlToID3v23.mp3")
+      "testWritingLinkedUrlToID3v23.mp3"
     );
     audioFile = AudioFileIO.read(testFile);
     audioFile.setTag(new ID3v23Tag());
@@ -75,9 +75,9 @@ public class Issue356Test extends AbstractTestCase {
     AudioFile audioFile;
     final String IMAGE_URL = "http://www.google.com/image.jpg";
 
-    File testFile = AbstractTestCase.copyAudioToTmp(
+    File testFile = copyAudioToTmp(
       "testV1.mp3",
-      new File("testWritingLinkedUrlToID3v22.mp3")
+      "testWritingLinkedUrlToID3v22.mp3"
     );
     audioFile = AudioFileIO.read(testFile);
     audioFile.setTag(new ID3v22Tag());

@@ -7,18 +7,15 @@ import org.jaudiotagger.audio.AudioFileIO;
 import org.jaudiotagger.tag.FieldKey;
 import org.jaudiotagger.tag.Tag;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.condition.EnabledIf;
 
 public class Issue146Test extends AbstractTestCase {
 
   @Test
+  @EnabledIf("executeAlsoWithMissingResources") // to be configured in AbsractBaseTestCase
   public void testIssue146() throws Exception {
-    File orig = new File("testdata", "test158.mp3");
-    if (!orig.isFile()) {
-      System.err.println("Unable to test file - not available");
-      return;
-    }
 
-    File file = AbstractTestCase.copyAudioToTmp("test158.mp3");
+    File file = copyAudioToTmp("test158.mp3");
 
     if (file.exists()) {
       AudioFile afile = AudioFileIO.read(file);

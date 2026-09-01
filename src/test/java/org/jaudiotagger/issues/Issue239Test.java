@@ -20,7 +20,7 @@ public class Issue239Test extends AbstractTestCase {
   public void testDeletingCOMMFrames() {
     Exception exceptionCaught = null;
     try {
-      File testFile = AbstractTestCase.copyAudioToTmp("testV1.mp3");
+      File testFile = copyAudioToTmp("testV1.mp3");
 
       //Add a v24Tag
       AudioFile af = AudioFileIO.read(testFile);
@@ -47,7 +47,7 @@ public class Issue239Test extends AbstractTestCase {
       af = AudioFileIO.read(testFile);
       mp3File = (MP3File) af;
       //Check mapped okay ands empty
-      assertTrue(mp3File.getTag() instanceof ID3v23Tag);
+      assertInstanceOf(ID3v23Tag.class, mp3File.getTag());
       assertEquals(2, mp3File.getTag().getFields(FieldKey.COMMENT).size());
 
       //Delete Fields
@@ -60,7 +60,6 @@ public class Issue239Test extends AbstractTestCase {
       assertEquals(0, mp3File.getTag().getFields(FieldKey.COMMENT).size());
     } catch (Exception e) {
       exceptionCaught = e;
-      e.printStackTrace();
     }
     assertNull(exceptionCaught);
   }
@@ -72,7 +71,7 @@ public class Issue239Test extends AbstractTestCase {
   public void testDeletingFieldThatUsesCOMMFrames() {
     Exception exceptionCaught = null;
     try {
-      File testFile = AbstractTestCase.copyAudioToTmp("testV1.mp3");
+      File testFile = copyAudioToTmp("testV1.mp3");
 
       //Add a v24Tag
       AudioFile af = AudioFileIO.read(testFile);
@@ -99,7 +98,7 @@ public class Issue239Test extends AbstractTestCase {
       af = AudioFileIO.read(testFile);
       mp3File = (MP3File) af;
       //Check mapped okay ands empty
-      assertTrue(mp3File.getTag() instanceof ID3v23Tag);
+      assertInstanceOf(ID3v23Tag.class, mp3File.getTag());
       assertEquals(2, mp3File.getTag().getFields(FieldKey.CUSTOM1).size());
 
       //Delete Fields
@@ -112,7 +111,6 @@ public class Issue239Test extends AbstractTestCase {
       assertEquals(0, mp3File.getTag().getFields(FieldKey.CUSTOM1).size());
     } catch (Exception e) {
       exceptionCaught = e;
-      e.printStackTrace();
     }
     assertNull(exceptionCaught);
   }
@@ -124,7 +122,7 @@ public class Issue239Test extends AbstractTestCase {
   public void testDeletingFieldThatUsesCOMMFramesDoesntDeleteOtherCOMMFrame() {
     Exception exceptionCaught = null;
     try {
-      File testFile = AbstractTestCase.copyAudioToTmp("testV1.mp3");
+      File testFile = copyAudioToTmp("testV1.mp3");
 
       //Add a v24Tag
       AudioFile af = AudioFileIO.read(testFile);
@@ -151,7 +149,7 @@ public class Issue239Test extends AbstractTestCase {
       af = AudioFileIO.read(testFile);
       mp3File = (MP3File) af;
       //Check mapped okay ands empty
-      assertTrue(mp3File.getTag() instanceof ID3v23Tag);
+      assertInstanceOf(ID3v23Tag.class, mp3File.getTag());
       assertEquals(1, mp3File.getTag().getFields(FieldKey.CUSTOM1).size());
 
       //Delete Fields
@@ -166,7 +164,6 @@ public class Issue239Test extends AbstractTestCase {
       assertEquals(1, mp3File.getTag().getFields(FieldKey.CUSTOM2).size());
     } catch (Exception e) {
       exceptionCaught = e;
-      e.printStackTrace();
     }
     assertNull(exceptionCaught);
   }

@@ -1,12 +1,13 @@
 package org.jaudiotagger.audio.asf.data;
 
-import static org.junit.jupiter.api.Assertions.*;
+import org.junit.jupiter.api.Test;
 
 import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 public class MetadataContainerTest
   extends AbstractMetadataContainer<MetadataContainer> {
@@ -32,7 +33,7 @@ public class MetadataContainerTest
   ) {
     assertTrue(
       Arrays.asList(
-        new ContainerType[] {
+        new ContainerType[]{
           ContainerType.EXTENDED_CONTENT,
           ContainerType.METADATA_LIBRARY_OBJECT,
           ContainerType.METADATA_OBJECT,
@@ -41,7 +42,7 @@ public class MetadataContainerTest
     );
     final List<MetadataDescriptor> supported = new ArrayList<
       MetadataDescriptor
-    >();
+      >();
     for (int nameCount = 0; nameCount < 5; nameCount++) {
       int typeCount = container.getContainerType().isGuidEnabled() ? 6 : 5; // 6 is the GUID
       for (int type = 0; type <= typeCount; type++) {
@@ -51,7 +52,7 @@ public class MetadataContainerTest
         String descName = "name" + nameCount + "type" + type;
         final List<MetadataDescriptor> tmp = new ArrayList<
           MetadataDescriptor
-        >();
+          >();
         tmp.add(
           new MetadataDescriptor(
             container.getContainerType(),
@@ -109,18 +110,6 @@ public class MetadataContainerTest
   }
 
   /**
-   * {@inheritDoc}
-   */
-  @Override
-  protected MetadataContainer[] createTestContainers() {
-    return new MetadataContainer[] {
-      new MetadataContainer(ContainerType.EXTENDED_CONTENT),
-      new MetadataContainer(ContainerType.METADATA_OBJECT),
-      new MetadataContainer(ContainerType.METADATA_LIBRARY_OBJECT),
-    };
-  }
-
-  /**
    * Test method for
    * {@link org.jaudiotagger.audio.asf.data.MetadataContainer#assertDescriptor(java.lang.String)}
    * .
@@ -131,6 +120,18 @@ public class MetadataContainerTest
       curr.assertDescriptor("testKey");
       assertTrue(curr.hasDescriptor("testKey"));
     }
+  }
+
+  /**
+   * {@inheritDoc}
+   */
+  @Override
+  protected MetadataContainer[] createTestContainers() {
+    return new MetadataContainer[]{
+      new MetadataContainer(ContainerType.EXTENDED_CONTENT),
+      new MetadataContainer(ContainerType.METADATA_OBJECT),
+      new MetadataContainer(ContainerType.METADATA_LIBRARY_OBJECT),
+    };
   }
 
   /**

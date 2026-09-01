@@ -24,14 +24,6 @@ public class FrameTMOOTest extends AbstractTestCase {
     return frame;
   }
 
-  /*public static ID3v23Frame getV23InitialisedFrame()
-    {
-        ID3v23Frame frame = new ID3v23Frame(ID3v23Frames.FRAME_ID_V3_USER_DEFINED_INFO);
-        FrameBodyXSOP fb = FrameBodyXSOPTest.getInitialisedBody();
-        frame.setBody(fb);
-        return frame;
-    } */
-
   @Test
   public void testCreateID3v24Frame() {
     Exception exceptionCaught = null;
@@ -57,62 +49,11 @@ public class FrameTMOOTest extends AbstractTestCase {
     assertEquals(FrameBodyTMOOTest.MOOD, fb.getText());
   }
 
-  /*
-public void testCreateID3v23Frame()
-{
-Exception exceptionCaught = null;
-ID3v23Frame frame = null;
-FrameBodyXSOP fb = null;
-try
-{
-frame = new ID3v23Frame(ID3v23Frames.FRAME_ID_V3_ARTIST_SORT_ORDER_MUSICBRAINZ);
-fb = FrameBodyXSOPTest.getInitialisedBody();
-frame.setBody(fb);
-}
-catch (Exception e)
-{
-exceptionCaught = e;
-}
-
-assertNull(exceptionCaught);
-assertEquals(ID3v23Frames.FRAME_ID_V3_ARTIST_SORT_ORDER_MUSICBRAINZ, frame.getIdentifier());
-assertEquals(TextEncoding.ISO_8859_1, fb.getTextEncoding());
-assertTrue(ID3v23Frames.getInstanceOf().isExtensionFrames(frame.getIdentifier()));
-assertFalse(ID3v23Frames.getInstanceOf().isSupportedFrames(frame.getIdentifier()));
-assertEquals(FrameBodyTSOPTest.ARTIST_SORT, fb.getText());
-
-}                             */
-  /*
-public void testCreateID3v22Frame()
-{
-  Exception exceptionCaught = null;
-  ID3v22Frame frame = null;
-  FrameBodyTSOP fb = null;
-  try
-  {
-      frame = new ID3v22Frame(ID3v22Frames.FRAME_ID_V2_ARTIST_SORT_ORDER_ITUNES);
-      fb = FrameBodyTSOPTest.getInitialisedBody();
-      frame.setBody(fb);
-  }
-  catch (Exception e)
-  {
-      exceptionCaught = e;
-  }
-
-  assertNull(exceptionCaught);
-  assertEquals(ID3v22Frames.FRAME_ID_V2_ARTIST_SORT_ORDER_ITUNES, frame.getIdentifier());
-  assertEquals(TextEncoding.ISO_8859_1, fb.getTextEncoding());
-  assertTrue(ID3v22Frames.getInstanceOf().isExtensionFrames(frame.getIdentifier()));
-  assertFalse(ID3v22Frames.getInstanceOf().isSupportedFrames(frame.getIdentifier()));
-  assertEquals(FrameBodyTSOPTest.ARTIST_SORT, fb.getText());
-
-}
-    */
   @Test
   public void testSaveToFile() throws Exception {
-    File testFile = AbstractTestCase.copyAudioToTmp(
+    File testFile = copyAudioToTmp(
       "testV1.mp3",
-      new File("test1016.mp3")
+      "test1016.mp3"
     );
     MP3File mp3File = new MP3File(testFile);
 
@@ -133,9 +74,9 @@ public void testCreateID3v22Frame()
 
   @Test
   public void testSaveEmptyFrameToFile() throws Exception {
-    File testFile = AbstractTestCase.copyAudioToTmp(
+    File testFile = copyAudioToTmp(
       "testV1.mp3",
-      new File("test1004.mp3")
+      "test1004.mp3"
     );
     MP3File mp3File = new MP3File(testFile);
 
@@ -165,9 +106,9 @@ public void testCreateID3v22Frame()
    */
   @Test
   public void testConvertV24ToV23() throws Exception {
-    File testFile = AbstractTestCase.copyAudioToTmp(
+    File testFile = copyAudioToTmp(
       "testV1.mp3",
-      new File("test1005.mp3")
+      "test1005.mp3"
     );
     MP3File mp3File = new MP3File(testFile);
 
@@ -193,15 +134,15 @@ public void testCreateID3v22Frame()
     //Reload
     mp3File = new MP3File(testFile);
     ID3v23Frame frame = (ID3v23Frame) ((List) mp3File
-        .getID3v2Tag()
-        .getFrame(ID3v23Frames.FRAME_ID_V3_USER_DEFINED_INFO)).get(0);
+      .getID3v2Tag()
+      .getFrame(ID3v23Frames.FRAME_ID_V3_USER_DEFINED_INFO)).get(0);
     FrameBodyTXXX body = (FrameBodyTXXX) frame.getBody();
     assertEquals(TextEncoding.ISO_8859_1, body.getTextEncoding());
     assertEquals(FrameBodyTXXXTest.TXXX_TEST_DESC, body.getText());
 
     frame = (ID3v23Frame) ((List) mp3File
-        .getID3v2Tag()
-        .getFrame(ID3v23Frames.FRAME_ID_V3_USER_DEFINED_INFO)).get(1);
+      .getID3v2Tag()
+      .getFrame(ID3v23Frames.FRAME_ID_V3_USER_DEFINED_INFO)).get(1);
     body = (FrameBodyTXXX) frame.getBody();
     assertEquals(TextEncoding.ISO_8859_1, body.getTextEncoding());
     assertEquals(FrameBodyTMOOTest.MOOD, body.getText());
@@ -215,9 +156,9 @@ public void testCreateID3v22Frame()
    */
   @Test
   public void testConvertV23ToV24() throws Exception {
-    File testFile = AbstractTestCase.copyAudioToTmp(
+    File testFile = copyAudioToTmp(
       "testV1.mp3",
-      new File("test1005.mp3")
+      "test1005.mp3"
     );
     MP3File mp3File = new MP3File(testFile);
 
@@ -243,16 +184,16 @@ public void testCreateID3v22Frame()
     }
     assertEquals(1, v24Tag.getFieldCount());
     ID3v24Frame v24frame = (ID3v24Frame) v24Tag.getFrame("TMOO");
-    assertTrue(v24frame.getBody() instanceof FrameBodyTMOO);
+    assertInstanceOf(FrameBodyTMOO.class, v24frame.getBody());
     FrameBodyTMOO v24framebody = (FrameBodyTMOO) v24frame.getBody();
     assertEquals("Tranquil", v24framebody.getText());
   }
 
   @Test
   public void testConvertMultiV23ToV24() throws Exception {
-    File testFile = AbstractTestCase.copyAudioToTmp(
+    File testFile = copyAudioToTmp(
       "testV1.mp3",
-      new File("test1005.mp3")
+      "test1005.mp3"
     );
     MP3File mp3File = new MP3File(testFile);
 
@@ -293,7 +234,7 @@ public void testCreateID3v22Frame()
     assertEquals(2, v24Tag.getFieldCount());
     ID3v24Frame v24frame = (ID3v24Frame) v24Tag.getFrame("TMOO");
     assertNotNull(v24frame);
-    assertTrue(v24frame.getBody() instanceof FrameBodyTMOO);
+    assertInstanceOf(FrameBodyTMOO.class, v24frame.getBody());
     FrameBodyTMOO v24framebody = (FrameBodyTMOO) v24frame.getBody();
     assertEquals("Tranquil", v24framebody.getText());
   }

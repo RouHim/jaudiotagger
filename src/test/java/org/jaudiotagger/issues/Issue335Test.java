@@ -11,20 +11,16 @@ import org.jaudiotagger.tag.Tag;
 import org.jaudiotagger.tag.id3.*;
 import org.jaudiotagger.tag.id3.framebody.AbstractFrameBodyTextInfo;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.condition.EnabledIf;
 
 public class Issue335Test extends AbstractTestCase {
 
   @Test
+  @EnabledIf("executeAlsoWithMissingResources") // to be configured in AbsractBaseTestCase
   public void testConvertv24Tov23ConvertsUTF8ToISO8859IfItCan()
     throws Exception {
-    File orig = new File("testdata", "test79.mp3");
-    if (!orig.isFile()) {
-      System.err.println("Unable to test file - not available");
-      return;
-    }
-
     //TagOptionSingleton.getInstance().setResetTextEncodingForExistingFrames(false);
-    File testFile = AbstractTestCase.copyAudioToTmp("test79.mp3");
+    File testFile = copyAudioToTmp("test79.mp3");
     MP3File f = (MP3File) AudioFileIO.read(testFile);
     assertEquals("Familial", f.getID3v2Tag().getFirst("TALB"));
     AbstractID3v2Frame frame = (AbstractID3v2Frame) f
@@ -46,16 +42,12 @@ public class Issue335Test extends AbstractTestCase {
   }
 
   @Test
+  @EnabledIf("executeAlsoWithMissingResources") // to be configured in AbsractBaseTestCase
   public void testConvertv24Tov23OnlyConvertsUTF8ToISO8859IfItCan()
     throws Exception {
-    File orig = new File("testdata", "test79.mp3");
-    if (!orig.isFile()) {
-      System.err.println("Unable to test file - not available");
-      return;
-    }
 
     //TagOptionSingleton.getInstance().setResetTextEncodingForExistingFrames(false);
-    File testFile = AbstractTestCase.copyAudioToTmp("test79.mp3");
+    File testFile = copyAudioToTmp("test79.mp3");
     MP3File f = (MP3File) AudioFileIO.read(testFile);
     assertEquals("Familial", f.getID3v2Tag().getFirst("TALB"));
     assertEquals(4, f.getID3v2Tag().getMajorVersion());
@@ -85,15 +77,11 @@ public class Issue335Test extends AbstractTestCase {
   }
 
   @Test
+  @EnabledIf("executeAlsoWithMissingResources") // to be configured in AbsractBaseTestCase
   public void testConvertv23Twice() throws Exception {
-    File orig = new File("testdata", "test79.mp3");
-    if (!orig.isFile()) {
-      System.err.println("Unable to test file - not available");
-      return;
-    }
 
     //TagOptionSingleton.getInstance().setResetTextEncodingForExistingFrames(false);
-    File testFile = AbstractTestCase.copyAudioToTmp("test79.mp3");
+    File testFile = copyAudioToTmp("test79.mp3");
     MP3File f = (MP3File) AudioFileIO.read(testFile);
     assertEquals("Familial", f.getID3v2Tag().getFirst("TALB"));
     assertEquals(4, f.getID3v2Tag().getMajorVersion());
@@ -135,13 +123,9 @@ public class Issue335Test extends AbstractTestCase {
   }
 
   @Test
+  @EnabledIf("executeAlsoWithMissingResources") // to be configured in AbsractBaseTestCase
   public void testConvertCharsAtStartOfFile() throws Exception {
-    File orig = new File("testdata", "test79.mp3");
-    if (!orig.isFile()) {
-      System.err.println("Unable to test file - not available");
-      return;
-    }
-
+    File orig = fileResource("testdata", "test79.mp3");
     boolean isMP3v2 = false;
     ID3v24Tag v24tag = null;
     Tag tag = null;
