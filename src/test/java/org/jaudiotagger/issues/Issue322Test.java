@@ -20,7 +20,7 @@ public class Issue322Test extends AbstractTestCase {
 
   @Test
   public void testNumberFieldHandling() throws Exception {
-    File testFile = AbstractTestCase.copyAudioToTmp("test.m4a");
+    File testFile = copyAudioToTmp("test.m4a");
     AudioFile f = AudioFileIO.read(testFile);
     Tag tag = f.getTag();
     Exception expected = null;
@@ -31,7 +31,7 @@ public class Issue322Test extends AbstractTestCase {
     }
 
     assertNotNull(expected);
-    assertTrue(expected instanceof FieldDataInvalidException);
+    assertInstanceOf(FieldDataInvalidException.class, expected);
 
     expected = null;
     try {

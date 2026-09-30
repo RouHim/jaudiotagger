@@ -36,7 +36,7 @@ public class ItunesTest extends AbstractTestCase {
    */
   @Test
   public void testv24TagWithNonSyncSafeFrame() throws Exception {
-    File testFile = AbstractTestCase.copyAudioToTmp(
+    File testFile = prependAudioToTmp(
       "Issue96-1.id3",
       "testV1.mp3"
     );
@@ -59,7 +59,7 @@ public class ItunesTest extends AbstractTestCase {
    */
   @Test
   public void testv24TagWithNonSyncSafeFrame2() throws Exception {
-    File testFile = AbstractTestCase.copyAudioToTmp(
+    File testFile = prependAudioToTmp(
       "Issue96-3.id3",
       "testV1.mp3"
     );
@@ -83,7 +83,7 @@ public class ItunesTest extends AbstractTestCase {
    */
   @Test
   public void testv24TagWithNonSyncSafeFrame3() throws Exception {
-    File testFile = AbstractTestCase.copyAudioToTmp(
+    File testFile = prependAudioToTmp(
       "Issue96-4.id3",
       "testV1.mp3"
     );
@@ -105,7 +105,7 @@ public class ItunesTest extends AbstractTestCase {
    */
   @Test
   public void testv24TagWithSyncSafeFrame() throws Exception {
-    File testFile = AbstractTestCase.copyAudioToTmp(
+    File testFile = prependAudioToTmp(
       "Issue96-2.id3",
       "testV1.mp3"
     );
@@ -128,7 +128,7 @@ public class ItunesTest extends AbstractTestCase {
    */
   @Test
   public void testCanIgnoreSpuriousNullCharacters() throws Exception {
-    File testFile = AbstractTestCase.copyAudioToTmp(
+    File testFile = prependAudioToTmp(
       "Issue92.id3",
       "testV1.mp3"
     );
@@ -191,7 +191,7 @@ public class ItunesTest extends AbstractTestCase {
    */
   @Test
   public void testCanReadEmptyString() throws Exception {
-    File testFile = AbstractTestCase.copyAudioToTmp(
+    File testFile = prependAudioToTmp(
       "Issue92-2.id3",
       "testV1.mp3"
     );
@@ -212,7 +212,7 @@ public class ItunesTest extends AbstractTestCase {
   public void testCanFindStartOfMp3AudioWithinUTF16LETag() throws Exception {
     long START_OF_AUDIO_LOCATION = 2048;
     int FRAME_COUNT = 11;
-    File testFile = AbstractTestCase.copyAudioToTmp(
+    File testFile = prependAudioToTmp(
       "Issue104-1.id3",
       "testV1.mp3"
     );
@@ -238,7 +238,7 @@ public class ItunesTest extends AbstractTestCase {
    */
   @Test
   public void testv24TagWithlargeSyncSafeFrameAndNoPadding() throws Exception {
-    File testFile = AbstractTestCase.copyAudioToTmp(
+    File testFile = prependAudioToTmp(
       "issue115.id3",
       "testV1.mp3"
     );

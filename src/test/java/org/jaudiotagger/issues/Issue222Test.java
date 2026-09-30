@@ -16,22 +16,16 @@ public class Issue222Test extends AbstractTestCase {
    */
   @Test
   public void testreadMp4WithoutUUuidButNoUdta() {
-    File orig = new File("testdata", "test4.m4a");
-    if (!orig.isFile()) {
-      System.err.println("Unable to test file - not available");
-      return;
-    }
 
     File testFile = null;
     Exception exceptionCaught = null;
     try {
-      testFile = AbstractTestCase.copyAudioToTmp("test4.m4a");
+      testFile = copyAudioToTmp("test4.m4a");
 
       //Read File okay
       AudioFile af = AudioFileIO.read(testFile);
       assertTrue(af.getTag().isEmpty()); //But empty
     } catch (Exception e) {
-      e.printStackTrace();
       exceptionCaught = e;
     }
 

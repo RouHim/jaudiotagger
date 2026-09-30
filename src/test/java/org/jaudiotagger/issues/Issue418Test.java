@@ -16,7 +16,7 @@ public class Issue418Test extends AbstractTestCase {
 
   @Test
   public void testGetCustomGenreField() throws Exception {
-    File testFile = AbstractTestCase.copyAudioToTmp("test.m4a");
+    File testFile = copyAudioToTmp("test.m4a");
     AudioFile f = AudioFileIO.read(testFile);
     Tag tag = f.getTag();
     assertEquals("Genre", tag.getFirst(FieldKey.GENRE));

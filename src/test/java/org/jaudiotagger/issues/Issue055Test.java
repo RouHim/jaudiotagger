@@ -21,9 +21,9 @@ public class Issue055Test extends AbstractTestCase {
   public void testId3v23GenreWritingDefault() {
     Exception ex = null;
     try {
-      File testFile = AbstractTestCase.copyAudioToTmp(
+      File testFile = copyAudioToTmp(
         "01.mp3",
-        new File("issue55.mp3")
+        "issue55.mp3"
       );
       MP3File mp3File = new MP3File(testFile);
       TagOptionSingleton.getInstance().setWriteMp3GenresAsText(false);
@@ -32,20 +32,19 @@ public class Issue055Test extends AbstractTestCase {
       //Create and Save Genre passing text value
       mp3File.getTagOrCreateAndSetDefault().addField(FieldKey.GENRE, "Rock");
       assertEquals("Rock", mp3File.getID3v2Tag().getFirst(FieldKey.GENRE));
-      assertTrue(mp3File.getID3v2Tag() instanceof ID3v23Tag);
+      assertInstanceOf(ID3v23Tag.class, mp3File.getID3v2Tag());
       FrameBodyTCON tconbody = (FrameBodyTCON) ((ID3v23Frame) mp3File
-          .getID3v2Tag()
-          .getFrame("TCON")).getBody();
+        .getID3v2Tag()
+        .getFrame("TCON")).getBody();
       assertEquals("(17)", tconbody.getFirstTextValue());
       mp3File.save();
       assertEquals("Rock", mp3File.getID3v2Tag().getFirst(FieldKey.GENRE));
-      assertTrue(mp3File.getID3v2Tag() instanceof ID3v23Tag);
+      assertInstanceOf(ID3v23Tag.class, mp3File.getID3v2Tag());
       tconbody = (FrameBodyTCON) ((ID3v23Frame) mp3File
-          .getID3v2Tag()
-          .getFrame("TCON")).getBody();
+        .getID3v2Tag()
+        .getFrame("TCON")).getBody();
       assertEquals("(17)", tconbody.getFirstTextValue());
     } catch (Exception e) {
-      e.printStackTrace();
       ex = e;
     }
     assertNull(ex);
@@ -55,9 +54,9 @@ public class Issue055Test extends AbstractTestCase {
   public void testId3v23GenreWritingDefaultcaseInsensitive() {
     Exception ex = null;
     try {
-      File testFile = AbstractTestCase.copyAudioToTmp(
+      File testFile = copyAudioToTmp(
         "01.mp3",
-        new File("issue55.mp3")
+        "issue55.mp3"
       );
       MP3File mp3File = new MP3File(testFile);
       TagOptionSingleton.getInstance().setWriteMp3GenresAsText(false);
@@ -66,20 +65,19 @@ public class Issue055Test extends AbstractTestCase {
       //Create and Save Genre passing text value
       mp3File.getTagOrCreateAndSetDefault().addField(FieldKey.GENRE, "rock");
       assertEquals("Rock", mp3File.getID3v2Tag().getFirst(FieldKey.GENRE));
-      assertTrue(mp3File.getID3v2Tag() instanceof ID3v23Tag);
+      assertInstanceOf(ID3v23Tag.class, mp3File.getID3v2Tag());
       FrameBodyTCON tconbody = (FrameBodyTCON) ((ID3v23Frame) mp3File
-          .getID3v2Tag()
-          .getFrame("TCON")).getBody();
+        .getID3v2Tag()
+        .getFrame("TCON")).getBody();
       assertEquals("(17)", tconbody.getFirstTextValue());
       mp3File.save();
       assertEquals("Rock", mp3File.getID3v2Tag().getFirst(FieldKey.GENRE));
-      assertTrue(mp3File.getID3v2Tag() instanceof ID3v23Tag);
+      assertInstanceOf(ID3v23Tag.class, mp3File.getID3v2Tag());
       tconbody = (FrameBodyTCON) ((ID3v23Frame) mp3File
-          .getID3v2Tag()
-          .getFrame("TCON")).getBody();
+        .getID3v2Tag()
+        .getFrame("TCON")).getBody();
       assertEquals("(17)", tconbody.getFirstTextValue());
     } catch (Exception e) {
-      e.printStackTrace();
       ex = e;
     }
     assertNull(ex);
@@ -89,9 +87,9 @@ public class Issue055Test extends AbstractTestCase {
   public void testId3v23GenreWritingTextAlways() {
     Exception ex = null;
     try {
-      File testFile = AbstractTestCase.copyAudioToTmp(
+      File testFile = copyAudioToTmp(
         "01.mp3",
-        new File("issue55.mp3")
+        "issue55.mp3"
       );
       MP3File mp3File = new MP3File(testFile);
       TagOptionSingleton.getInstance().setWriteMp3GenresAsText(true);
@@ -100,20 +98,19 @@ public class Issue055Test extends AbstractTestCase {
       //Create and Save Genre passing text value
       mp3File.getTagOrCreateAndSetDefault().addField(FieldKey.GENRE, "Rock");
       assertEquals("Rock", mp3File.getID3v2Tag().getFirst(FieldKey.GENRE));
-      assertTrue(mp3File.getID3v2Tag() instanceof ID3v23Tag);
+      assertInstanceOf(ID3v23Tag.class, mp3File.getID3v2Tag());
       FrameBodyTCON tconbody = (FrameBodyTCON) ((ID3v23Frame) mp3File
-          .getID3v2Tag()
-          .getFrame("TCON")).getBody();
+        .getID3v2Tag()
+        .getFrame("TCON")).getBody();
       assertEquals("Rock", tconbody.getFirstTextValue());
       mp3File.save();
       assertEquals("Rock", mp3File.getID3v2Tag().getFirst(FieldKey.GENRE));
-      assertTrue(mp3File.getID3v2Tag() instanceof ID3v23Tag);
+      assertInstanceOf(ID3v23Tag.class, mp3File.getID3v2Tag());
       tconbody = (FrameBodyTCON) ((ID3v23Frame) mp3File
-          .getID3v2Tag()
-          .getFrame("TCON")).getBody();
+        .getID3v2Tag()
+        .getFrame("TCON")).getBody();
       assertEquals("Rock", tconbody.getFirstTextValue());
     } catch (Exception e) {
-      e.printStackTrace();
       ex = e;
     }
     assertNull(ex);
@@ -123,9 +120,9 @@ public class Issue055Test extends AbstractTestCase {
   public void testId3v24GenreWritingDefault() {
     Exception ex = null;
     try {
-      File testFile = AbstractTestCase.copyAudioToTmp(
+      File testFile = copyAudioToTmp(
         "01.mp3",
-        new File("issue55.mp3")
+        "issue55.mp3"
       );
       MP3File mp3File = new MP3File(testFile);
       TagOptionSingleton.getInstance().setWriteMp3GenresAsText(false);
@@ -134,20 +131,19 @@ public class Issue055Test extends AbstractTestCase {
       //Create and Save Genre passing text value
       mp3File.getTagOrCreateAndSetDefault().addField(FieldKey.GENRE, "Rock");
       assertEquals("Rock", mp3File.getID3v2Tag().getFirst(FieldKey.GENRE));
-      assertTrue(mp3File.getID3v2Tag() instanceof ID3v24Tag);
+      assertInstanceOf(ID3v24Tag.class, mp3File.getID3v2Tag());
       FrameBodyTCON tconbody = (FrameBodyTCON) ((ID3v24Frame) mp3File
-          .getID3v2Tag()
-          .getFrame("TCON")).getBody();
+        .getID3v2Tag()
+        .getFrame("TCON")).getBody();
       assertEquals("17", tconbody.getFirstTextValue());
       mp3File.save();
       assertEquals("Rock", mp3File.getID3v2Tag().getFirst(FieldKey.GENRE));
-      assertTrue(mp3File.getID3v2Tag() instanceof ID3v24Tag);
+      assertInstanceOf(ID3v24Tag.class, mp3File.getID3v2Tag());
       tconbody = (FrameBodyTCON) ((ID3v24Frame) mp3File
-          .getID3v2Tag()
-          .getFrame("TCON")).getBody();
+        .getID3v2Tag()
+        .getFrame("TCON")).getBody();
       assertEquals("17", tconbody.getFirstTextValue());
     } catch (Exception e) {
-      e.printStackTrace();
       ex = e;
     }
     assertNull(ex);
@@ -157,9 +153,9 @@ public class Issue055Test extends AbstractTestCase {
   public void testId3v24GenreWritingDefaultcaseInsensitive() {
     Exception ex = null;
     try {
-      File testFile = AbstractTestCase.copyAudioToTmp(
+      File testFile = copyAudioToTmp(
         "01.mp3",
-        new File("issue55.mp3")
+        "issue55.mp3"
       );
       MP3File mp3File = new MP3File(testFile);
       TagOptionSingleton.getInstance().setWriteMp3GenresAsText(false);
@@ -168,20 +164,19 @@ public class Issue055Test extends AbstractTestCase {
       //Create and Save Genre passing text value
       mp3File.getTagOrCreateAndSetDefault().addField(FieldKey.GENRE, "rock");
       assertEquals("Rock", mp3File.getID3v2Tag().getFirst(FieldKey.GENRE));
-      assertTrue(mp3File.getID3v2Tag() instanceof ID3v24Tag);
+      assertInstanceOf(ID3v24Tag.class, mp3File.getID3v2Tag());
       FrameBodyTCON tconbody = (FrameBodyTCON) ((ID3v24Frame) mp3File
-          .getID3v2Tag()
-          .getFrame("TCON")).getBody();
+        .getID3v2Tag()
+        .getFrame("TCON")).getBody();
       assertEquals("17", tconbody.getFirstTextValue());
       mp3File.save();
       assertEquals("Rock", mp3File.getID3v2Tag().getFirst(FieldKey.GENRE));
-      assertTrue(mp3File.getID3v2Tag() instanceof ID3v24Tag);
+      assertInstanceOf(ID3v24Tag.class, mp3File.getID3v2Tag());
       tconbody = (FrameBodyTCON) ((ID3v24Frame) mp3File
-          .getID3v2Tag()
-          .getFrame("TCON")).getBody();
+        .getID3v2Tag()
+        .getFrame("TCON")).getBody();
       assertEquals("17", tconbody.getFirstTextValue());
     } catch (Exception e) {
-      e.printStackTrace();
       ex = e;
     }
     assertNull(ex);
@@ -191,9 +186,9 @@ public class Issue055Test extends AbstractTestCase {
   public void testId3v24GenreWritingTextAlways() {
     Exception ex = null;
     try {
-      File testFile = AbstractTestCase.copyAudioToTmp(
+      File testFile = copyAudioToTmp(
         "01.mp3",
-        new File("issue55.mp3")
+        "issue55.mp3"
       );
       MP3File mp3File = new MP3File(testFile);
       TagOptionSingleton.getInstance().setWriteMp3GenresAsText(true);
@@ -202,20 +197,19 @@ public class Issue055Test extends AbstractTestCase {
       //Create and Save Genre passing text value
       mp3File.getTagOrCreateAndSetDefault().addField(FieldKey.GENRE, "Rock");
       assertEquals("Rock", mp3File.getID3v2Tag().getFirst(FieldKey.GENRE));
-      assertTrue(mp3File.getID3v2Tag() instanceof ID3v24Tag);
+      assertInstanceOf(ID3v24Tag.class, mp3File.getID3v2Tag());
       FrameBodyTCON tconbody = (FrameBodyTCON) ((ID3v24Frame) mp3File
-          .getID3v2Tag()
-          .getFrame("TCON")).getBody();
+        .getID3v2Tag()
+        .getFrame("TCON")).getBody();
       assertEquals("Rock", tconbody.getFirstTextValue());
       mp3File.save();
       assertEquals("Rock", mp3File.getID3v2Tag().getFirst(FieldKey.GENRE));
-      assertTrue(mp3File.getID3v2Tag() instanceof ID3v24Tag);
+      assertInstanceOf(ID3v24Tag.class, mp3File.getID3v2Tag());
       tconbody = (FrameBodyTCON) ((ID3v24Frame) mp3File
-          .getID3v2Tag()
-          .getFrame("TCON")).getBody();
+        .getID3v2Tag()
+        .getFrame("TCON")).getBody();
       assertEquals("Rock", tconbody.getFirstTextValue());
     } catch (Exception e) {
-      e.printStackTrace();
       ex = e;
     }
     assertNull(ex);

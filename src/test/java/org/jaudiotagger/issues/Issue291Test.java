@@ -11,21 +11,18 @@ import org.jaudiotagger.tag.FieldKey;
 import org.jcodec.containers.mp4.MP4Util;
 import org.json.JSONObject;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.condition.EnabledIf;
 
 public class Issue291Test extends AbstractTestCase {
 
   @Test
+  @EnabledIf("executeAlsoWithMissingResources") // to be configured in AbsractBaseTestCase
   public void testSavingFile() {
-    File orig = new File("testdata", "test83.mp4");
-    if (!orig.isFile()) {
-      System.err.println("Unable to test file - not available");
-      return;
-    }
 
     File testFile = null;
     Exception exceptionCaught = null;
     try {
-      testFile = AbstractTestCase.copyAudioToTmp("test83.mp4");
+      testFile = copyAudioToTmp("test83.mp4");
       AudioFile af = AudioFileIO.read(testFile);
       System.out.println("Tag is" + af.getTag().toString());
       af
@@ -35,7 +32,6 @@ public class Issue291Test extends AbstractTestCase {
       af = AudioFileIO.read(testFile);
       assertEquals("Kenny Rankin1", af.getTag().getFirst(FieldKey.ARTIST));
     } catch (Exception e) {
-      e.printStackTrace();
       exceptionCaught = e;
     }
 
@@ -43,22 +39,17 @@ public class Issue291Test extends AbstractTestCase {
   }
 
   @Test
+  @EnabledIf("executeAlsoWithMissingResources") // to be configured in AbsractBaseTestCase
   public void testPrintAtomTree() {
-    File orig = new File("testdata", "test83.mp4");
-    if (!orig.isFile()) {
-      System.err.println("Unable to test file - not available");
-      return;
-    }
 
     File testFile = null;
     Exception exceptionCaught = null;
     try {
-      testFile = AbstractTestCase.copyAudioToTmp("test83.mp4");
+      testFile = copyAudioToTmp("test83.mp4");
       MP4Util.Movie mp4 = MP4Util.parseFullMovie(testFile);
       String json = new JSONObject(mp4.getMoov().toString()).toString(2);
       System.out.println(json);
     } catch (Exception e) {
-      e.printStackTrace();
       exceptionCaught = e;
     }
 

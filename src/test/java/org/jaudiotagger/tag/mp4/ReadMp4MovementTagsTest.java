@@ -8,20 +8,17 @@ import org.jaudiotagger.audio.AudioFile;
 import org.jaudiotagger.audio.AudioFileIO;
 import org.jaudiotagger.tag.FieldKey;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.condition.EnabledIf;
 
 public class ReadMp4MovementTagsTest extends AbstractTestCase {
 
   @Test
+  @EnabledIf("executeAlsoWithMissingResources") // to be configured in AbsractBaseTestCase
   public void testReadMovementFieldsFromITunes() {
-    File orig = new File("testdata", "test161.m4a");
-    if (!orig.isFile()) {
-      System.err.println("Unable to test file - not available");
-      return;
-    }
 
     Exception ex = null;
     try {
-      File testFile = AbstractTestCase.copyAudioToTmp("test161.m4a");
+      File testFile = copyAudioToTmp("test161.m4a");
       AudioFile af = AudioFileIO.read(testFile);
       assertNotNull(af.getTag());
       assertEquals(
@@ -44,7 +41,6 @@ public class ReadMp4MovementTagsTest extends AbstractTestCase {
       assertEquals("1", af.getTag().getFirst(FieldKey.MOVEMENT_NO));
       assertEquals("7", af.getTag().getFirst(FieldKey.MOVEMENT_TOTAL));
     } catch (Exception e) {
-      e.printStackTrace();
       ex = e;
     }
     assertNull(ex);

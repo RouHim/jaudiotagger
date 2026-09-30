@@ -13,7 +13,7 @@ public class Issue248Test extends AbstractTestCase {
 
   @Test
   public void testMultiThreadedMP3HeaderAccess() throws Exception {
-    final File testFile = AbstractTestCase.copyAudioToTmp("testV1vbrOld0.mp3");
+    final File testFile = copyAudioToTmp("testV1vbrOld0.mp3");
     final MP3File mp3File = new MP3File(testFile);
     final Thread[] threads = new Thread[1000];
     for (int i = 0; i < 1000; i++) {
@@ -24,10 +24,8 @@ public class Issue248Test extends AbstractTestCase {
             try {
               //System.out.println("Output is"+mp3File.getMP3AudioHeader().getTrackLengthAsString());
             } catch (RuntimeException e) {
-              e.printStackTrace();
               countExceptions++;
             } catch (Exception e) {
-              e.printStackTrace();
               countExceptions++;
             }
           }

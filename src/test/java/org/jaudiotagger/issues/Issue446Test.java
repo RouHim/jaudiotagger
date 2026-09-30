@@ -13,22 +13,19 @@ import org.jaudiotagger.tag.id3.ID3v23Tag;
 import org.jaudiotagger.tag.id3.ID3v24Tag;
 import org.jaudiotagger.tag.id3.framebody.FrameBodyTXXX;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.condition.EnabledIf;
 
 public class Issue446Test extends AbstractTestCase {
 
   @Test
+  @EnabledIf("executeAlsoWithMissingResources") // to be configured in AbsractBaseTestCase
   public void testReadReplayGain() throws Exception {
     boolean isMatchedPeak = false;
     boolean isMatchedGain = false;
 
     Exception ex = null;
-    File orig = new File("testdata", "test110.mp3");
-    if (!orig.isFile()) {
-      System.err.println("Unable to test file - not available");
-      return;
-    }
 
-    File testFile = AbstractTestCase.copyAudioToTmp("test110.mp3");
+    File testFile = copyAudioToTmp("test110.mp3");
     MP3File mp3File = new MP3File(testFile);
     ID3v24Tag v24Tag = mp3File.getID3v2TagAsv24();
 
@@ -50,14 +47,10 @@ public class Issue446Test extends AbstractTestCase {
   }
 
   @Test
+  @EnabledIf("executeAlsoWithMissingResources") // to be configured in AbsractBaseTestCase
   public void testWriteReplayGain() throws Exception {
-    File orig = new File("testdata", "test110.mp3");
-    if (!orig.isFile()) {
-      System.err.println("Unable to test file - not available");
-      return;
-    }
 
-    File testFile = AbstractTestCase.copyAudioToTmp("test110.mp3");
+    File testFile = copyAudioToTmp("test110.mp3");
     MP3File mp3File = new MP3File(testFile);
     ID3v23Tag v2Tag = (ID3v23Tag) mp3File.getID3v2Tag();
 
