@@ -16,7 +16,7 @@ public class FrameULSTTest extends AbstractTestCase {
 
   @Test
   public void testReadULST() throws Exception {
-    File testFile = AbstractTestCase.copyAudioToTmp("test23.mp3");
+    File testFile = copyAudioToTmp("test23.mp3");
 
     MP3File mp3File = new MP3File(testFile);
     ID3v24Frame v24frame = (ID3v24Frame) mp3File
@@ -36,7 +36,7 @@ public class FrameULSTTest extends AbstractTestCase {
 
   @Test
   public void testWriteULSTID3v24() throws Exception {
-    File testFile = AbstractTestCase.copyAudioToTmp("test23.mp3");
+    File testFile = copyAudioToTmp("test23.mp3");
 
     MP3File mp3File = new MP3File(testFile);
     ID3v24Frame v24frame = (ID3v24Frame) mp3File
@@ -91,7 +91,7 @@ public class FrameULSTTest extends AbstractTestCase {
 
   @Test
   public void testWriteULSTID3v23() throws Exception {
-    File testFile = AbstractTestCase.copyAudioToTmp("testV1.mp3");
+    File testFile = copyAudioToTmp("testV1.mp3");
 
     MP3File mp3File = new MP3File(testFile);
     ID3v23Tag tag = new ID3v23Tag();
@@ -159,7 +159,7 @@ public class FrameULSTTest extends AbstractTestCase {
 
   @Test
   public void testWriteULSTID3v23Test2() throws Exception {
-    File testFile = AbstractTestCase.copyAudioToTmp("testV1.mp3");
+    File testFile = copyAudioToTmp("testV1.mp3");
 
     MP3File mp3File = new MP3File(testFile);
     ID3v23Tag tag = new ID3v23Tag();
@@ -196,7 +196,7 @@ public class FrameULSTTest extends AbstractTestCase {
    */
   @Test
   public void testWriteULSTID3v23Test3() throws Exception {
-    File testFile = AbstractTestCase.copyAudioToTmp("testV1.mp3");
+    File testFile = copyAudioToTmp("testV1.mp3");
 
     MP3File mp3File = new MP3File(testFile);
     ID3v23Tag tag = new ID3v23Tag();
@@ -231,7 +231,7 @@ public class FrameULSTTest extends AbstractTestCase {
    */
   @Test
   public void testWriteULSTID3v23Test4() throws Exception {
-    File testFile = AbstractTestCase.copyAudioToTmp("testV1.mp3");
+    File testFile = copyAudioToTmp("testV1.mp3");
 
     MP3File mp3File = new MP3File(testFile);
     ID3v23Tag tag = new ID3v23Tag();

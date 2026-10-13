@@ -49,7 +49,6 @@ public class Issue398Test extends AbstractTestCase {
       tag.setField(FieldKey.TRACK, "1");
     } catch (Exception e) {
       caught = e;
-      e.printStackTrace();
     }
     assertNull(caught);
   }
@@ -80,7 +79,6 @@ public class Issue398Test extends AbstractTestCase {
       assertFalse(tag.hasField(FieldKey.TRACK_TOTAL));
     } catch (Exception e) {
       caught = e;
-      e.printStackTrace();
     }
     assertNull(caught);
   }
@@ -111,7 +109,6 @@ public class Issue398Test extends AbstractTestCase {
       assertFalse(tag.hasField(FieldKey.TRACK_TOTAL));
     } catch (Exception e) {
       caught = e;
-      e.printStackTrace();
     }
     assertNull(caught);
   }
@@ -129,7 +126,6 @@ public class Issue398Test extends AbstractTestCase {
       assertTrue(tag.hasField("artist"));
     } catch (Exception e) {
       caught = e;
-      e.printStackTrace();
     }
     assertNull(caught);
   }
@@ -170,7 +166,6 @@ public class Issue398Test extends AbstractTestCase {
       assertFalse(tag.hasField(FieldKey.URL_DISCOGS_RELEASE_SITE));
     } catch (Exception e) {
       caught = e;
-      e.printStackTrace();
     }
     assertNull(caught);
   }
@@ -195,7 +190,6 @@ public class Issue398Test extends AbstractTestCase {
       assertEquals(1, tag.getAll(FieldKey.TRACK).size());
     } catch (Exception e) {
       caught = e;
-      e.printStackTrace();
     }
     assertNull(caught);
   }
@@ -246,7 +240,6 @@ public class Issue398Test extends AbstractTestCase {
       assertFalse(tag.hasField(FieldKey.TRACK_TOTAL));
     } catch (Exception e) {
       caught = e;
-      e.printStackTrace();
     }
     assertNull(caught);
   }
@@ -297,7 +290,6 @@ public class Issue398Test extends AbstractTestCase {
       assertFalse(tag.hasField(FieldKey.TRACK_TOTAL));
     } catch (Exception e) {
       caught = e;
-      e.printStackTrace();
     }
     assertNull(caught);
   }
@@ -328,7 +320,6 @@ public class Issue398Test extends AbstractTestCase {
       assertFalse(tag.hasField(FieldKey.TRACK_TOTAL));
     } catch (Exception e) {
       caught = e;
-      e.printStackTrace();
     }
     assertNull(caught);
   }

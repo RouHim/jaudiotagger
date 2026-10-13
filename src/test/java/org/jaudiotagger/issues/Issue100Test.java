@@ -20,7 +20,7 @@ public class Issue100Test extends AbstractTestCase {
   public void testID3v24WriteFieldsInPreferredOrder() {
     Exception exceptionCaught = null;
     try {
-      File testFile = AbstractTestCase.copyAudioToTmp("testV1.mp3");
+      File testFile = copyAudioToTmp("testV1.mp3");
 
       //Create tag
       ID3v24Tag tag = new ID3v24Tag();
@@ -64,7 +64,7 @@ public class Issue100Test extends AbstractTestCase {
   public void testID3v23WriteFieldsInPreferredOrder() {
     Exception exceptionCaught = null;
     try {
-      File testFile = AbstractTestCase.copyAudioToTmp("testV1.mp3");
+      File testFile = copyAudioToTmp("testV1.mp3");
 
       //Create tag
       ID3v23Tag tag = new ID3v23Tag();
@@ -108,7 +108,7 @@ public class Issue100Test extends AbstractTestCase {
   public void testID3v22WriteFieldsInPreferredOrder() {
     Exception exceptionCaught = null;
     try {
-      File testFile = AbstractTestCase.copyAudioToTmp("testV1.mp3");
+      File testFile = copyAudioToTmp("testV1.mp3");
 
       //Create tag
       ID3v22Tag tag = new ID3v22Tag();

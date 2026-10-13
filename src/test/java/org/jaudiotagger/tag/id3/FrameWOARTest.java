@@ -66,7 +66,7 @@ public class FrameWOARTest extends AbstractTestCase {
       exceptionCaught = e;
     }
     assertNull(exceptionCaught);
-    assertTrue(frame.getBody() instanceof FrameBodyWOAR);
+    assertInstanceOf(FrameBodyWOAR.class, frame.getBody());
     assertEquals(ID3v24Frames.FRAME_ID_URL_ARTIST_WEB, frame.getIdentifier());
     assertEquals(TextEncoding.ISO_8859_1, frame.getBody().getTextEncoding());
     assertFalse(
@@ -83,7 +83,7 @@ public class FrameWOARTest extends AbstractTestCase {
 
   @Test
   public void testSaveToFile() throws Exception {
-    File testFile = AbstractTestCase.copyAudioToTmp("testV1.mp3");
+    File testFile = copyAudioToTmp("testV1.mp3");
     MP3File mp3File = new MP3File(testFile);
 
     //Create and Save
@@ -97,7 +97,7 @@ public class FrameWOARTest extends AbstractTestCase {
     ID3v24Frame frame = (ID3v24Frame) mp3File
       .getID3v2Tag()
       .getFrame(ID3v24Frames.FRAME_ID_URL_ARTIST_WEB);
-    assertTrue(frame.getBody() instanceof FrameBodyWOAR);
+    assertInstanceOf(FrameBodyWOAR.class, frame.getBody());
     assertEquals(ID3v24Frames.FRAME_ID_URL_ARTIST_WEB, frame.getIdentifier());
     assertEquals(TextEncoding.ISO_8859_1, frame.getBody().getTextEncoding());
     assertFalse(
@@ -122,7 +122,7 @@ public class FrameWOARTest extends AbstractTestCase {
       exceptionCaught = e;
     }
     assertNull(exceptionCaught);
-    assertTrue(frame.getBody() instanceof FrameBodyWOAR);
+    assertInstanceOf(FrameBodyWOAR.class, frame.getBody());
     assertEquals(ID3v24Frames.FRAME_ID_URL_ARTIST_WEB, frame.getIdentifier());
     assertEquals(TextEncoding.ISO_8859_1, frame.getBody().getTextEncoding());
     assertFalse(
@@ -140,7 +140,7 @@ public class FrameWOARTest extends AbstractTestCase {
   //This fails beccause cant save Unicode to WOAR fields
   @Test
   public void testSaveUnicodeToFile() throws Exception {
-    File testFile = AbstractTestCase.copyAudioToTmp("testV1.mp3");
+    File testFile = copyAudioToTmp("testV1.mp3");
     MP3File mp3File = new MP3File(testFile);
 
     //Create and Save
@@ -154,7 +154,7 @@ public class FrameWOARTest extends AbstractTestCase {
     ID3v24Frame frame = (ID3v24Frame) mp3File
       .getID3v2Tag()
       .getFrame(ID3v24Frames.FRAME_ID_URL_ARTIST_WEB);
-    assertTrue(frame.getBody() instanceof FrameBodyWOAR);
+    assertInstanceOf(FrameBodyWOAR.class, frame.getBody());
     assertEquals(ID3v24Frames.FRAME_ID_URL_ARTIST_WEB, frame.getIdentifier());
     assertEquals(TextEncoding.ISO_8859_1, frame.getBody().getTextEncoding());
     assertFalse(
@@ -172,7 +172,7 @@ public class FrameWOARTest extends AbstractTestCase {
   //This fails beccause cant save Unicode to WOAR fields
   @Test
   public void testSaveUnicodeToFile2() throws Exception {
-    File testFile = AbstractTestCase.copyAudioToTmp("testV1.mp3");
+    File testFile = copyAudioToTmp("testV1.mp3");
     MP3File mp3File = new MP3File(testFile);
 
     //Create and Save
@@ -186,7 +186,7 @@ public class FrameWOARTest extends AbstractTestCase {
     ID3v24Frame frame = (ID3v24Frame) mp3File
       .getID3v2Tag()
       .getFrame(ID3v24Frames.FRAME_ID_URL_ARTIST_WEB);
-    assertTrue(frame.getBody() instanceof FrameBodyWOAR);
+    assertInstanceOf(FrameBodyWOAR.class, frame.getBody());
     assertEquals(ID3v24Frames.FRAME_ID_URL_ARTIST_WEB, frame.getIdentifier());
     assertEquals(TextEncoding.ISO_8859_1, frame.getBody().getTextEncoding());
     assertFalse(

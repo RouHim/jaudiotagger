@@ -19,7 +19,8 @@ import static org.junit.jupiter.api.Assertions.*;
 
 import java.io.File;
 import java.util.List;
-import org.jaudiotagger.AbstractTestCase;
+
+import org.jaudiotagger.AbstractBaseTestCase;
 import org.jaudiotagger.audio.AudioFile;
 import org.jaudiotagger.audio.AudioFileIO;
 import org.jaudiotagger.audio.mp3.MP3File;
@@ -29,8 +30,9 @@ import org.jaudiotagger.tag.TagOptionSingleton;
 import org.jaudiotagger.tag.id3.framebody.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.condition.EnabledIf;
 
-public class ID3v24TagTest {
+public class ID3v24TagTest extends AbstractBaseTestCase {
 
   /////////////////////////////////////////////////////////////////////////
   // TestCase classes to override
@@ -47,7 +49,8 @@ public class ID3v24TagTest {
   /**
    *
    */
-  protected void tearDown() {}
+  protected void tearDown() {
+  }
 
   /**
    *
@@ -58,7 +61,8 @@ public class ID3v24TagTest {
 
   /////////////////////////////////////////////////////////////////////////
   // Tests
-  /////////////////////////////////////////////////////////////////////////
+
+  /// //////////////////////////////////////////////////////////////////////
   @Test
   public void testCreateTag() {
     ID3v24Tag tag = new ID3v24Tag();
@@ -68,14 +72,13 @@ public class ID3v24TagTest {
   @Test
   public void testCreateID3v24FromID3v11AndSave() {
     Exception exceptionCaught = null;
-    File testFile = AbstractTestCase.copyAudioToTmp("testV1.mp3");
+    File testFile = copyAudioToTmp("testV1.mp3");
 
     MP3File mp3File = null;
 
     try {
       mp3File = new MP3File(testFile);
     } catch (Exception e) {
-      e.printStackTrace();
       exceptionCaught = e;
     }
 
@@ -92,24 +95,22 @@ public class ID3v24TagTest {
     try {
       mp3File.save();
     } catch (Exception e) {
-      e.printStackTrace();
       exceptionCaught = e;
     }
     assertNull(exceptionCaught);
     assertTrue(mp3File.hasID3v1Tag());
     assertTrue(mp3File.hasID3v2Tag());
-    assertTrue(mp3File.getID3v2Tag() instanceof ID3v24Tag);
+    assertInstanceOf(ID3v24Tag.class, mp3File.getID3v2Tag());
 
     //Reload
     try {
       mp3File = new MP3File(testFile);
     } catch (Exception e) {
-      e.printStackTrace();
       exceptionCaught = e;
     }
     assertTrue(mp3File.hasID3v1Tag());
     assertTrue(mp3File.hasID3v2Tag());
-    assertTrue(mp3File.getID3v2Tag() instanceof ID3v24Tag);
+    assertInstanceOf(ID3v24Tag.class, mp3File.getID3v2Tag());
   }
 
   @Test
@@ -129,45 +130,45 @@ public class ID3v24TagTest {
     assertEquals(
       ID3v11TagTest.ARTIST,
       ((FrameBodyTPE1) ((ID3v24Frame) v2Tag.getFrame(
-            ID3v24Frames.FRAME_ID_ARTIST
-          )).getBody()).getText()
+        ID3v24Frames.FRAME_ID_ARTIST
+      )).getBody()).getText()
     );
     assertEquals(
       ID3v11TagTest.ALBUM,
       ((FrameBodyTALB) ((ID3v24Frame) v2Tag.getFrame(
-            ID3v24Frames.FRAME_ID_ALBUM
-          )).getBody()).getText()
+        ID3v24Frames.FRAME_ID_ALBUM
+      )).getBody()).getText()
     );
     assertEquals(
       ID3v11TagTest.COMMENT,
       ((FrameBodyCOMM) ((ID3v24Frame) v2Tag.getFrame(
-            ID3v24Frames.FRAME_ID_COMMENT
-          )).getBody()).getText()
+        ID3v24Frames.FRAME_ID_COMMENT
+      )).getBody()).getText()
     );
     assertEquals(
       ID3v11TagTest.TITLE,
       ((FrameBodyTIT2) ((ID3v24Frame) v2Tag.getFrame(
-            ID3v24Frames.FRAME_ID_TITLE
-          )).getBody()).getText()
+        ID3v24Frames.FRAME_ID_TITLE
+      )).getBody()).getText()
     );
     assertEquals(
       ID3v11TagTest.TRACK_VALUE,
       String.valueOf(
         ((FrameBodyTRCK) ((ID3v24Frame) v2Tag.getFrame(
-              ID3v24Frames.FRAME_ID_TRACK
-            )).getBody()).getTrackNo()
+          ID3v24Frames.FRAME_ID_TRACK
+        )).getBody()).getTrackNo()
       )
     );
     assertTrue(
       ((FrameBodyTCON) ((ID3v24Frame) v2Tag.getFrame(
-            ID3v24Frames.FRAME_ID_GENRE
-          )).getBody()).getText().endsWith(ID3v11TagTest.GENRE_VAL)
+        ID3v24Frames.FRAME_ID_GENRE
+      )).getBody()).getText().endsWith(ID3v11TagTest.GENRE_VAL)
     );
     assertEquals(
       ID3v11TagTest.YEAR,
       ((FrameBodyTDRC) ((ID3v24Frame) v2Tag.getFrame(
-            ID3v24Frames.FRAME_ID_YEAR
-          )).getBody()).getText()
+        ID3v24Frames.FRAME_ID_YEAR
+      )).getBody()).getText()
     );
     assertEquals((byte) 2, v2Tag.getRelease());
     assertEquals((byte) 4, v2Tag.getMajorVersion());
@@ -193,8 +194,8 @@ public class ID3v24TagTest {
     assertEquals(
       ID3v11TagTest.ARTIST,
       ((AbstractFrameBodyTextInfo) v2Tag
-          .getFirstField(ID3v24Frames.FRAME_ID_ARTIST)
-          .getBody()).getFirstTextValue()
+        .getFirstField(ID3v24Frames.FRAME_ID_ARTIST)
+        .getBody()).getFirstTextValue()
     );
   }
 
@@ -207,9 +208,9 @@ public class ID3v24TagTest {
    */
   @Test
   public void testWriteMultipleTextFields() throws Exception {
-    File testFile = AbstractTestCase.copyAudioToTmp(
+    File testFile = copyAudioToTmp(
       "testV1.mp3",
-      new File("testWriteMultipleText.mp3")
+      "testWriteMultipleText.mp3"
     );
     AudioFile f = AudioFileIO.read(testFile);
     assertNull(f.getTag());
@@ -274,9 +275,9 @@ public class ID3v24TagTest {
    */
   @Test
   public void testWriteMultipleTextTXXXFields() throws Exception {
-    File testFile = AbstractTestCase.copyAudioToTmp(
+    File testFile = copyAudioToTmp(
       "testV1.mp3",
-      new File("testWriteMultipleTextTXXX.mp3")
+      "testWriteMultipleTextTXXX.mp3"
     );
     AudioFile f = AudioFileIO.read(testFile);
     assertNull(f.getTag());
@@ -304,9 +305,9 @@ public class ID3v24TagTest {
    */
   @Test
   public void testWriteMultipleDifferentTextTXXXFields() throws Exception {
-    File testFile = AbstractTestCase.copyAudioToTmp(
+    File testFile = copyAudioToTmp(
       "testV1.mp3",
-      new File("testWriteMultipleTextTXXX.mp3")
+      "testWriteMultipleTextTXXX.mp3"
     );
     AudioFile f = AudioFileIO.read(testFile);
     assertNull(f.getTag());
@@ -331,9 +332,9 @@ public class ID3v24TagTest {
 
   @Test
   public void testWriteMultipleFields() throws Exception {
-    File testFile = AbstractTestCase.copyAudioToTmp(
+    File testFile = copyAudioToTmp(
       "testV1.mp3",
-      new File("testWriteMultiple.mp3")
+      "testWriteMultiple.mp3"
     );
     AudioFile f = AudioFileIO.read(testFile);
     assertNull(f.getTag());
@@ -368,7 +369,7 @@ public class ID3v24TagTest {
 
   @Test
   public void testDeleteFields() throws Exception {
-    File testFile = AbstractTestCase.copyAudioToTmp("testV1.mp3");
+    File testFile = copyAudioToTmp("testV1.mp3");
     MP3File mp3File = new MP3File(testFile);
     ID3v23Tag v2Tag = new ID3v23Tag();
     mp3File.setID3v2Tag(v2Tag);
@@ -407,14 +408,10 @@ public class ID3v24TagTest {
    * @throws Exception
    */
   @Test
+  @EnabledIf("executeAlsoWithMissingResources") // to be configured in AbsractBaseTestCase
   public void testDeleteTag() throws Exception {
-    File orig = new File("testdata", "test70.mp3");
-    if (!orig.isFile()) {
-      System.err.println("Unable to test file - not available");
-      return;
-    }
 
-    File testFile = AbstractTestCase.copyAudioToTmp("test70.mp3");
+    File testFile = copyAudioToTmp("test70.mp3");
     MP3File audioFile = new MP3File(testFile);
 
     ID3v1Tag v1tag = audioFile.getID3v1Tag();
@@ -433,16 +430,12 @@ public class ID3v24TagTest {
   }
 
   @Test
+  @EnabledIf("executeAlsoWithMissingResources") // to be configured in AbsractBaseTestCase
   public void testWriteTagUsingAudioIOMethod() {
-    File orig = new File("testdata", "test70.mp3");
-    if (!orig.isFile()) {
-      System.err.println("Unable to test file - not available");
-      return;
-    }
 
     Exception exceptionCaught = null;
     try {
-      File testFile = AbstractTestCase.copyAudioToTmp("test70.mp3");
+      File testFile = copyAudioToTmp("test70.mp3");
       MP3File audioFile = new MP3File(testFile);
       AudioFileIO.write(audioFile);
     } catch (Exception e) {
@@ -454,9 +447,9 @@ public class ID3v24TagTest {
   @Test
   public void testWriteMultipleGenresToID3v24TagUsingDefault()
     throws Exception {
-    File testFile = AbstractTestCase.copyAudioToTmp(
+    File testFile = copyAudioToTmp(
       "testV1.mp3",
-      new File("testWriteMultipleV24.mp3")
+      "testWriteMultipleV24.mp3"
     );
     AudioFile file = AudioFileIO.read(testFile);
     assertNull(file.getTag());
@@ -499,7 +492,7 @@ public class ID3v24TagTest {
   @Test
   public void testWriteMultipleGenresToID3v24TagUsingCreateField()
     throws Exception {
-    File testFile = AbstractTestCase.copyAudioToTmp("testV1.mp3");
+    File testFile = copyAudioToTmp("testV1.mp3");
     MP3File file = null;
     file = new MP3File(testFile);
     assertNull(file.getID3v1Tag());
@@ -552,7 +545,7 @@ public class ID3v24TagTest {
   @Test
   public void testWriteMultipleGenresToID3v24TagUsingV24CreateField()
     throws Exception {
-    File testFile = AbstractTestCase.copyAudioToTmp("testV1.mp3");
+    File testFile = copyAudioToTmp("testV1.mp3");
     MP3File file = null;
     file = new MP3File(testFile);
     assertNull(file.getID3v1Tag());

@@ -11,12 +11,15 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.xpath.XPath;
 import javax.xml.xpath.XPathExpression;
 import javax.xml.xpath.XPathFactory;
-import org.jaudiotagger.AbstractTestCase;
+
+import org.jaudiotagger.AbstractBaseTestCase;
 import org.junit.jupiter.api.Test;
 import org.w3c.dom.Document;
 import org.xml.sax.InputSource;
 
-public class LoggingTest {
+public class LoggingTest extends AbstractBaseTestCase {
+
+  public static int count = 0;
 
   /**
    * Check that xml is in xml format, and cleared out for each file
@@ -27,7 +30,7 @@ public class LoggingTest {
     XPath path = xpf.newXPath();
     XPathExpression xpath1 = path.compile("/file/tag/body/frame/@id");
 
-    File testFile = AbstractTestCase.copyAudioToTmp(
+    File testFile = prependAudioToTmp(
       "Issue92.id3",
       "testV1.mp3"
     );
@@ -40,7 +43,7 @@ public class LoggingTest {
       )
     );
 
-    File testFile2 = AbstractTestCase.copyAudioToTmp(
+    File testFile2 = prependAudioToTmp(
       "Issue96-1.id3",
       "testV1.mp3"
     );
@@ -100,8 +103,6 @@ public class LoggingTest {
     assertEquals("59:32", timeOutFormat.format(timeIn));
   }
 
-  public static int count = 0;
-
   @Test
   public void testMultiThreadedSimpleDataAccess() {
     final SimpleDateFormat timeInFormat = new SimpleDateFormat("ss");
@@ -117,10 +118,8 @@ public class LoggingTest {
                 Date timeIn = timeInFormat.parse(String.valueOf(-28.05122222d));
               }
             } catch (RuntimeException e) {
-              e.printStackTrace();
               count++;
             } catch (Exception e) {
-              e.printStackTrace();
               count++;
             }
           }

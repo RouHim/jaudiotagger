@@ -17,26 +17,16 @@ public class Issue374Test extends AbstractTestCase {
 
   @Test
   public void testIssue() {
-    File testdatadir = new File("testdata");
+    File testdatadir = fileResource("testdata");
     int count = 0;
     for (File next : testdatadir.listFiles(new MP3FileFilter())) {
       count++;
       System.out.println("Checking:" + next.getName());
       Exception caught = null;
       try {
-        File orig = new File("testdata", next.getName());
-        if (!orig.isFile()) {
-          System.err.println("Unable to test file - not available");
-          return;
-        }
-
-        File testFile = AbstractTestCase.copyAudioToTmp(
+        File testFile = copyAudioToTmp(
           next.getName(),
-          new File(
-            next.getName().substring(0, next.getName().length() - 4) +
-              count +
-              ".mp3"
-          )
+          next.getName().substring(0, next.getName().length() - 4) + count + ".mp3"
         );
 
         AudioFile af = AudioFileIO.read(testFile);
@@ -51,7 +41,7 @@ public class Issue374Test extends AbstractTestCase {
         }
         tag.addField(
           ArtworkFactory.createArtworkFromFile(
-            new File("testdata", "coverart_large.jpg")
+            fileResource("testdata", "coverart_large.jpg")
           )
         );
         af.commit();
@@ -67,7 +57,6 @@ public class Issue374Test extends AbstractTestCase {
         assertTrue(af.getTag().getFields(FieldKey.COVER_ART).size() > 0);
       } catch (Exception e) {
         caught = e;
-        e.printStackTrace();
         assertNull(caught);
       }
     }
@@ -111,18 +100,18 @@ public class Issue374Test extends AbstractTestCase {
     public boolean accept(final File file) {
       if (
         file.getName().equals("corrupt.mp3") ||
-        file.getName().equals("Issue79.mp3") ||
-        file.getName().equals("test22.mp3") ||
-        file.getName().equals("test92.mp3") ||
-        file.getName().equals("issue52.mp3") ||
-        file.getName().equals("Issue81.mp3")
+          file.getName().equals("Issue79.mp3") ||
+          file.getName().equals("test22.mp3") ||
+          file.getName().equals("test92.mp3") ||
+          file.getName().equals("issue52.mp3") ||
+          file.getName().equals("Issue81.mp3")
       ) {
         return false;
       }
 
       return (
         ((file.getName()).toLowerCase().endsWith(".mp3")) ||
-        (file.isDirectory() && (this.allowDirectories))
+          (file.isDirectory() && (this.allowDirectories))
       );
     }
   }

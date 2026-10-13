@@ -20,16 +20,10 @@ public class Issue412Test extends AbstractTestCase {
   public void testTXXXSameDescription() {
     Exception caught = null;
     try {
-      File orig = new File("testdata", "01.mp3");
-      if (!orig.isFile()) {
-        System.err.println("Unable to test file - not available");
-        return;
-      }
-
-      File testFile = AbstractTestCase.copyAudioToTmp("01.mp3");
+      File testFile = copyAudioToTmp("01.mp3");
       AudioFile af = AudioFileIO.read(testFile);
       af.getTagOrCreateAndSetDefault().setField(FieldKey.BARCODE, "BARCODE1");
-      assertTrue(af.getTag() instanceof ID3v23Tag);
+      assertInstanceOf(ID3v23Tag.class, af.getTag());
       af.commit();
       af = AudioFileIO.read(testFile);
       assertEquals("BARCODE1", af.getTag().getFirst(FieldKey.BARCODE));
@@ -47,7 +41,6 @@ public class Issue412Test extends AbstractTestCase {
       assertEquals(1, af.getTag().getFields(FieldKey.BARCODE).size());
     } catch (Exception e) {
       caught = e;
-      e.printStackTrace();
     }
     assertNull(caught);
   }
@@ -56,16 +49,10 @@ public class Issue412Test extends AbstractTestCase {
   public void testTXXXDifferentDescription() {
     Exception caught = null;
     try {
-      File orig = new File("testdata", "01.mp3");
-      if (!orig.isFile()) {
-        System.err.println("Unable to test file - not available");
-        return;
-      }
-
-      File testFile = AbstractTestCase.copyAudioToTmp("01.mp3");
+      File testFile = copyAudioToTmp("01.mp3");
       AudioFile af = AudioFileIO.read(testFile);
       af.getTagOrCreateAndSetDefault().setField(FieldKey.BARCODE, "BARCODE1");
-      assertTrue(af.getTag() instanceof ID3v23Tag);
+      assertInstanceOf(ID3v23Tag.class, af.getTag());
       af.commit();
       af = AudioFileIO.read(testFile);
       assertEquals("BARCODE1", af.getTag().getFirst(FieldKey.BARCODE));
@@ -89,7 +76,6 @@ public class Issue412Test extends AbstractTestCase {
       assertEquals(1, af.getTag().getFields(FieldKey.CATALOG_NO).size());
     } catch (Exception e) {
       caught = e;
-      e.printStackTrace();
     }
     assertNull(caught);
   }
@@ -98,13 +84,7 @@ public class Issue412Test extends AbstractTestCase {
   public void testWXXXSameDescription() {
     Exception caught = null;
     try {
-      File orig = new File("testdata", "01.mp3");
-      if (!orig.isFile()) {
-        System.err.println("Unable to test file - not available");
-        return;
-      }
-
-      File testFile = AbstractTestCase.copyAudioToTmp("01.mp3");
+      File testFile = copyAudioToTmp("01.mp3");
       AudioFile af = AudioFileIO.read(testFile);
       af
         .getTagOrCreateAndSetDefault()
@@ -112,7 +92,7 @@ public class Issue412Test extends AbstractTestCase {
           FieldKey.URL_DISCOGS_ARTIST_SITE,
           "http://www.wrathrecords.co.uk/afarm.htm"
         );
-      assertTrue(af.getTag() instanceof ID3v23Tag);
+      assertInstanceOf(ID3v23Tag.class, af.getTag());
       af.commit();
       af = AudioFileIO.read(testFile);
       assertEquals(
@@ -153,7 +133,6 @@ public class Issue412Test extends AbstractTestCase {
       );
     } catch (Exception e) {
       caught = e;
-      e.printStackTrace();
     }
     assertNull(caught);
   }
@@ -162,16 +141,10 @@ public class Issue412Test extends AbstractTestCase {
   public void testTXXXSameDescriptionMultiples() {
     Exception caught = null;
     try {
-      File orig = new File("testdata", "01.mp3");
-      if (!orig.isFile()) {
-        System.err.println("Unable to test file - not available");
-        return;
-      }
-
-      File testFile = AbstractTestCase.copyAudioToTmp("01.mp3");
+      File testFile = copyAudioToTmp("01.mp3");
       AudioFile af = AudioFileIO.read(testFile);
       af.getTagOrCreateAndSetDefault().setField(FieldKey.BARCODE, "BARCODE1");
-      assertTrue(af.getTag() instanceof ID3v23Tag);
+      assertInstanceOf(ID3v23Tag.class, af.getTag());
       af.commit();
       af = AudioFileIO.read(testFile);
       assertEquals("BARCODE1", af.getTag().getFirst(FieldKey.BARCODE));
@@ -191,7 +164,6 @@ public class Issue412Test extends AbstractTestCase {
       assertEquals(1, af.getTag().getFields(FieldKey.BARCODE).size());
     } catch (Exception e) {
       caught = e;
-      e.printStackTrace();
     }
     assertNull(caught);
   }
@@ -200,18 +172,12 @@ public class Issue412Test extends AbstractTestCase {
   public void testWXXXSameDescriptionMultiples() {
     Exception caught = null;
     try {
-      File orig = new File("testdata", "01.mp3");
-      if (!orig.isFile()) {
-        System.err.println("Unable to test file - not available");
-        return;
-      }
-
-      File testFile = AbstractTestCase.copyAudioToTmp("01.mp3");
+      File testFile = copyAudioToTmp("01.mp3");
       AudioFile af = AudioFileIO.read(testFile);
       af
         .getTagOrCreateAndSetDefault()
         .setField(FieldKey.URL_DISCOGS_ARTIST_SITE, "BARCODE1");
-      assertTrue(af.getTag() instanceof ID3v23Tag);
+      assertInstanceOf(ID3v23Tag.class, af.getTag());
       af.commit();
       af = AudioFileIO.read(testFile);
       assertEquals(
@@ -249,7 +215,6 @@ public class Issue412Test extends AbstractTestCase {
       );
     } catch (Exception e) {
       caught = e;
-      e.printStackTrace();
     }
     assertNull(caught);
   }
@@ -258,16 +223,10 @@ public class Issue412Test extends AbstractTestCase {
   public void testTCOMMultiples() {
     Exception caught = null;
     try {
-      File orig = new File("testdata", "01.mp3");
-      if (!orig.isFile()) {
-        System.err.println("Unable to test file - not available");
-        return;
-      }
-
-      File testFile = AbstractTestCase.copyAudioToTmp("01.mp3");
+      File testFile = copyAudioToTmp("01.mp3");
       AudioFile af = AudioFileIO.read(testFile);
       af.getTagOrCreateAndSetDefault().setField(FieldKey.COMPOSER, "composer1");
-      assertTrue(af.getTag() instanceof ID3v23Tag);
+      assertInstanceOf(ID3v23Tag.class, af.getTag());
       af.commit();
       af = AudioFileIO.read(testFile);
       assertEquals("composer1", af.getTag().getFirst(FieldKey.COMPOSER));
@@ -287,7 +246,6 @@ public class Issue412Test extends AbstractTestCase {
       assertEquals(1, af.getTag().getFields(FieldKey.COMPOSER).size());
     } catch (Exception e) {
       caught = e;
-      e.printStackTrace();
     }
     assertNull(caught);
   }
@@ -296,13 +254,9 @@ public class Issue412Test extends AbstractTestCase {
   public void testTrackNoTotalCombinations() {
     Exception caught = null;
     try {
-      File orig = new File("testdata", "01.mp3");
-      if (!orig.isFile()) {
-        System.err.println("Unable to test file - not available");
-        return;
-      }
+      File orig = fileResource("testdata", "01.mp3");
 
-      File testFile = AbstractTestCase.copyAudioToTmp("01.mp3");
+      File testFile = copyAudioToTmp("01.mp3");
       AudioFile af = AudioFileIO.read(testFile);
       af.getTagOrCreateAndSetDefault();
       af.commit();
@@ -320,7 +274,6 @@ public class Issue412Test extends AbstractTestCase {
       assertEquals("11", tag.getFirst(FieldKey.TRACK_TOTAL));
     } catch (Exception e) {
       caught = e;
-      e.printStackTrace();
     }
     assertNull(caught);
   }
@@ -329,13 +282,7 @@ public class Issue412Test extends AbstractTestCase {
   public void testTrackNoTotalAddCombinations() {
     Exception caught = null;
     try {
-      File orig = new File("testdata", "01.mp3");
-      if (!orig.isFile()) {
-        System.err.println("Unable to test file - not available");
-        return;
-      }
-
-      File testFile = AbstractTestCase.copyAudioToTmp("01.mp3");
+      File testFile = copyAudioToTmp("01.mp3");
       AudioFile af = AudioFileIO.read(testFile);
       af.getTagOrCreateAndSetDefault();
       af.commit();
@@ -353,7 +300,6 @@ public class Issue412Test extends AbstractTestCase {
       assertEquals("11", tag.getFirst(FieldKey.TRACK_TOTAL));
     } catch (Exception e) {
       caught = e;
-      e.printStackTrace();
     }
     assertNull(caught);
   }
@@ -362,13 +308,7 @@ public class Issue412Test extends AbstractTestCase {
   public void testDiscNoTotalCombinations() {
     Exception caught = null;
     try {
-      File orig = new File("testdata", "01.mp3");
-      if (!orig.isFile()) {
-        System.err.println("Unable to test file - not available");
-        return;
-      }
-
-      File testFile = AbstractTestCase.copyAudioToTmp("01.mp3");
+      File testFile = copyAudioToTmp("01.mp3");
       AudioFile af = AudioFileIO.read(testFile);
       af.getTagOrCreateAndSetDefault();
       af.commit();
@@ -386,7 +326,6 @@ public class Issue412Test extends AbstractTestCase {
       assertEquals("11", tag.getFirst(FieldKey.DISC_TOTAL));
     } catch (Exception e) {
       caught = e;
-      e.printStackTrace();
     }
     assertNull(caught);
   }
@@ -395,13 +334,7 @@ public class Issue412Test extends AbstractTestCase {
   public void testDiscNoTotalAddCombinations() {
     Exception caught = null;
     try {
-      File orig = new File("testdata", "01.mp3");
-      if (!orig.isFile()) {
-        System.err.println("Unable to test file - not available");
-        return;
-      }
-
-      File testFile = AbstractTestCase.copyAudioToTmp("01.mp3");
+      File testFile = copyAudioToTmp("01.mp3");
       AudioFile af = AudioFileIO.read(testFile);
       af.getTagOrCreateAndSetDefault();
       af.commit();
@@ -425,7 +358,6 @@ public class Issue412Test extends AbstractTestCase {
       assertEquals("11", tag.getFirst(FieldKey.DISC_TOTAL));
     } catch (Exception e) {
       caught = e;
-      e.printStackTrace();
     }
     assertNull(caught);
   }
@@ -434,14 +366,8 @@ public class Issue412Test extends AbstractTestCase {
   public void testDiscNoTotalAddCombinationsWithPadding() {
     Exception caught = null;
     try {
-      File orig = new File("testdata", "01.mp3");
-      if (!orig.isFile()) {
-        System.err.println("Unable to test file - not available");
-        return;
-      }
-
       TagOptionSingleton.getInstance().setPadNumbers(true);
-      File testFile = AbstractTestCase.copyAudioToTmp("01.mp3");
+      File testFile = copyAudioToTmp("01.mp3");
       AudioFile af = AudioFileIO.read(testFile);
       af.getTagOrCreateAndSetDefault();
       af.commit();
@@ -468,7 +394,6 @@ public class Issue412Test extends AbstractTestCase {
       assertEquals("11", tag.getFirst(FieldKey.DISC_TOTAL));
     } catch (Exception e) {
       caught = e;
-      e.printStackTrace();
     }
     assertNull(caught);
   }
@@ -477,14 +402,8 @@ public class Issue412Test extends AbstractTestCase {
   public void testDiscNoTotalAddCombinationsWithPaddingFlac() {
     Exception caught = null;
     try {
-      File orig = new File("testdata", "test.flac");
-      if (!orig.isFile()) {
-        System.err.println("Unable to test file - not available");
-        return;
-      }
-
       TagOptionSingleton.getInstance().setPadNumbers(true);
-      File testFile = AbstractTestCase.copyAudioToTmp("test.flac");
+      File testFile = copyAudioToTmp("test.flac");
       AudioFile af = AudioFileIO.read(testFile);
       af.getTagOrCreateAndSetDefault();
       af.commit();
@@ -502,7 +421,6 @@ public class Issue412Test extends AbstractTestCase {
       assertEquals("11", tag.getFirst(FieldKey.DISC_TOTAL));
     } catch (Exception e) {
       caught = e;
-      e.printStackTrace();
     }
     assertNull(caught);
   }

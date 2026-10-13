@@ -4,7 +4,8 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
 
 import java.io.File;
-import org.jaudiotagger.AbstractTestCase;
+
+import org.jaudiotagger.AbstractBaseTestCase;
 import org.jaudiotagger.audio.AudioFile;
 import org.jaudiotagger.audio.AudioFileIO;
 import org.jaudiotagger.tag.FieldKey;
@@ -13,7 +14,7 @@ import org.jcodec.containers.mp4.MP4Util;
 import org.json.JSONObject;
 import org.junit.jupiter.api.Test;
 
-public class M4aWriteDataBeforeMoovTagTest {
+public class M4aWriteDataBeforeMoovTagTest extends AbstractBaseTestCase {
 
   /**
    * Test to write file that has MDAT at start BEFORE MOOV atom, this is what Facc 1.25 does
@@ -23,9 +24,9 @@ public class M4aWriteDataBeforeMoovTagTest {
   public void testWriteFileOption1SameSize() {
     Exception exceptionCaught = null;
     try {
-      File testFile = AbstractTestCase.copyAudioToTmp(
+      File testFile = copyAudioToTmp(
         "test15.m4a",
-        new File("testWriteWhenMDatAtStart1.m4a")
+        "testWriteWhenMDatAtStart1.m4a"
       );
 
       //First lets just createField tree
@@ -53,7 +54,6 @@ public class M4aWriteDataBeforeMoovTagTest {
       //Ease of use methods for common fields
       assertEquals("AUTHOR", tag.getFirst(FieldKey.ARTIST));
     } catch (Exception e) {
-      e.printStackTrace();
       exceptionCaught = e;
     }
     assertNull(exceptionCaught);
@@ -67,9 +67,9 @@ public class M4aWriteDataBeforeMoovTagTest {
   public void testWriteFileOption3SmallerSizeCreateFree() {
     Exception exceptionCaught = null;
     try {
-      File testFile = AbstractTestCase.copyAudioToTmp(
+      File testFile = copyAudioToTmp(
         "test15.m4a",
-        new File("testWriteWhenMDatAtStart2.m4a")
+        "testWriteWhenMDatAtStart2.m4a"
       );
 
       //First lets just createField tree
@@ -102,7 +102,6 @@ public class M4aWriteDataBeforeMoovTagTest {
       assertEquals("AL", tag.getFirst(FieldKey.ALBUM));
       assertEquals("T", tag.getFirst(FieldKey.TITLE));
     } catch (Exception e) {
-      e.printStackTrace();
       exceptionCaught = e;
     }
     assertNull(exceptionCaught);
@@ -116,9 +115,9 @@ public class M4aWriteDataBeforeMoovTagTest {
   public void testWriteFileOption4SmallerSizeNoFree() {
     Exception exceptionCaught = null;
     try {
-      File testFile = AbstractTestCase.copyAudioToTmp(
+      File testFile = copyAudioToTmp(
         "test15.m4a",
-        new File("testWriteWhenMDatAtStart3.m4a")
+        "testWriteWhenMDatAtStart3.m4a"
       );
 
       //First lets just createField tree
@@ -146,7 +145,6 @@ public class M4aWriteDataBeforeMoovTagTest {
       //Ease of use methods for common fields
       assertEquals("AR", tag.getFirst(FieldKey.ARTIST));
     } catch (Exception e) {
-      e.printStackTrace();
       exceptionCaught = e;
     }
     assertNull(exceptionCaught);
@@ -161,9 +159,9 @@ public class M4aWriteDataBeforeMoovTagTest {
   public void testWriteFileOption8CannoutUseTopLevelFree() {
     Exception exceptionCaught = null;
     try {
-      File testFile = AbstractTestCase.copyAudioToTmp(
+      File testFile = copyAudioToTmp(
         "test15.m4a",
-        new File("testWriteWhenMDatAtStart8.m4a")
+        "testWriteWhenMDatAtStart8.m4a"
       );
       AudioFile f = AudioFileIO.read(testFile);
 
@@ -244,7 +242,6 @@ public class M4aWriteDataBeforeMoovTagTest {
       assertEquals("9", tag.getFirst(FieldKey.MUSICIP_ID));
       assertEquals("Classic Rock", tag.getFirst(FieldKey.GENRE));
     } catch (Exception e) {
-      e.printStackTrace();
       exceptionCaught = e;
     }
     assertNull(exceptionCaught);
@@ -258,9 +255,9 @@ public class M4aWriteDataBeforeMoovTagTest {
   public void testWriteFileOption9CannotUseTopLevelFree() {
     Exception exceptionCaught = null;
     try {
-      File testFile = AbstractTestCase.copyAudioToTmp(
+      File testFile = copyAudioToTmp(
         "test19.m4a",
-        new File("testWriteWhenMDatAtStart9.m4a")
+        "testWriteWhenMDatAtStart9.m4a"
       );
       AudioFile f = AudioFileIO.read(testFile);
       Tag tag = f.getTag();
@@ -330,7 +327,6 @@ public class M4aWriteDataBeforeMoovTagTest {
       assertEquals("9", tag.getFirst(FieldKey.MUSICIP_ID));
       assertEquals("Classic Rock", tag.getFirst(FieldKey.GENRE));
     } catch (Exception e) {
-      e.printStackTrace();
       exceptionCaught = e;
     }
     assertNull(exceptionCaught);
