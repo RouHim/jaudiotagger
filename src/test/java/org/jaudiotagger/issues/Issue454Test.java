@@ -7,19 +7,16 @@ import org.jaudiotagger.AbstractTestCase;
 import org.jaudiotagger.audio.mp3.MP3AudioHeader;
 import org.jaudiotagger.audio.mp3.MP3File;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.condition.EnabledIf;
 
 public class Issue454Test extends AbstractTestCase {
 
   @Test
+  @EnabledIf("executeAlsoWithMissingResources") // to be configured in AbsractBaseTestCase
   public void testMpeg3layer2_64bit() throws Exception {
     Exception ex = null;
-    File orig = new File("testdata", "test114.mp3");
-    if (!orig.isFile()) {
-      System.err.println("Unable to test file - not available");
-      return;
-    }
 
-    File testFile = AbstractTestCase.copyAudioToTmp("test114.mp3");
+    File testFile = copyAudioToTmp("test114.mp3");
     MP3File mp3File = new MP3File(testFile);
     MP3AudioHeader audio = mp3File.getMP3AudioHeader();
     assertEquals("64", audio.getBitRate());

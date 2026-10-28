@@ -11,7 +11,8 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.NoSuchElementException;
 import javax.imageio.ImageIO;
-import org.jaudiotagger.AbstractTestCase;
+
+import org.jaudiotagger.AbstractBaseTestCase;
 import org.jaudiotagger.audio.AudioFile;
 import org.jaudiotagger.audio.AudioFileIO;
 import org.jaudiotagger.audio.mp3.MP3File;
@@ -24,13 +25,13 @@ import org.jaudiotagger.tag.id3.framebody.*;
 import org.jaudiotagger.tag.id3.valuepair.TextEncoding;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.condition.EnabledIf;
 
-public class NewInterfaceTest {
-
-  private static final String V1_ARTIST = "V1ARTIST";
+public class NewInterfaceTest extends AbstractBaseTestCase {
 
   public static final String ALBUM_TEST_STRING = "mellow gold";
   public static final String ALBUM_TEST_STRING2 = "odelay";
+  private static final String V1_ARTIST = "V1ARTIST";
 
   /**
    *
@@ -43,15 +44,16 @@ public class NewInterfaceTest {
   /**
    *
    */
-  protected void tearDown() {}
+  protected void tearDown() {
+  }
 
   @Test
   public void testBasicWrite() {
     Exception ex = null;
     try {
-      File testFile = AbstractTestCase.copyAudioToTmp(
+      File testFile = copyAudioToTmp(
         "testV1.mp3",
-        new File("testBasicWrite.mp3")
+        "testBasicWrite.mp3"
       );
       org.jaudiotagger.audio.AudioFile audioFile =
         org.jaudiotagger.audio.AudioFileIO.read(testFile);
@@ -89,8 +91,8 @@ public class NewInterfaceTest {
       assertEquals("year", newTag.getFirst(FieldKey.YEAR));
       assertEquals("1", newTag.getFirst(FieldKey.TRACK));
       AbstractTagFrameBody body = (((ID3v23Frame) newTag.getFirstField(
-            ID3v23FieldKey.ALBUM.getFrameId()
-          )).getBody());
+        ID3v23FieldKey.ALBUM.getFrameId()
+      )).getBody());
       assertEquals(TextEncoding.ISO_8859_1, body.getTextEncoding());
 
       TagOptionSingleton.getInstance().setId3v23DefaultTextEncoding(
@@ -110,8 +112,8 @@ public class NewInterfaceTest {
       assertEquals("year", newTag.getFirst(FieldKey.YEAR));
       assertEquals("1", newTag.getFirst(FieldKey.TRACK));
       body = (((ID3v23Frame) newTag.getFirstField(
-            ID3v23FieldKey.ALBUM.getFrameId()
-          )).getBody());
+        ID3v23FieldKey.ALBUM.getFrameId()
+      )).getBody());
       assertEquals(TextEncoding.UTF_16, body.getTextEncoding());
 
       TagOptionSingleton.getInstance().setId3v23DefaultTextEncoding(
@@ -124,8 +126,8 @@ public class NewInterfaceTest {
       audioFile = org.jaudiotagger.audio.AudioFileIO.read(testFile);
       newTag = audioFile.getTag();
       body = (((ID3v23Frame) newTag.getFirstField(
-            ID3v23FieldKey.ALBUM.getFrameId()
-          )).getBody());
+        ID3v23FieldKey.ALBUM.getFrameId()
+      )).getBody());
       assertEquals(TextEncoding.ISO_8859_1, body.getTextEncoding());
       TagOptionSingleton.getInstance().setResetTextEncodingForExistingFrames(
         false
@@ -140,9 +142,9 @@ public class NewInterfaceTest {
   @Test
   public void testNewInterfaceBasicReadandWriteID3v1() throws Exception {
     Exception e = null;
-    File testFile = AbstractTestCase.copyAudioToTmp(
+    File testFile = copyAudioToTmp(
       "testV1.mp3",
-      new File("testnewIntId3v1.mp3")
+      "testnewIntId3v1.mp3"
     );
     MP3File mp3File = new MP3File(testFile);
 
@@ -192,9 +194,9 @@ public class NewInterfaceTest {
   @Test
   public void testNewInterfaceBasicReadandWriteID3v24() throws Exception {
     Exception e = null;
-    File testFile = AbstractTestCase.copyAudioToTmp(
+    File testFile = copyAudioToTmp(
       "testV1.mp3",
-      new File("testnewIntId3v24.mp3")
+      "testnewIntId3v24.mp3"
     );
     MP3File mp3File = new MP3File(testFile);
 
@@ -497,8 +499,8 @@ public class NewInterfaceTest {
     assertEquals(
       "releaseid",
       ((TagTextField) af
-          .getTag()
-          .getFirstField(FieldKey.MUSICBRAINZ_RELEASEID)).getContent()
+        .getTag()
+        .getFirstField(FieldKey.MUSICBRAINZ_RELEASEID)).getContent()
     );
     assertEquals(
       "asin123456" + "\u01ff",
@@ -529,11 +531,11 @@ public class NewInterfaceTest {
     } catch (java.lang.UnsupportedOperationException uoe) {
       e = uoe;
     }
-    assertTrue(e instanceof UnsupportedOperationException);
+    assertInstanceOf(UnsupportedOperationException.class, e);
 
     //Add new image correctly
     RandomAccessFile imageFile = new RandomAccessFile(
-      new File("testdata", "coverart.png"),
+      fileResource("testdata", "coverart.png"),
       "r"
     );
     byte[] imagedata = new byte[(int) imageFile.length()];
@@ -553,20 +555,20 @@ public class NewInterfaceTest {
     assertEquals(
       "image/png::18545",
       ((TagTextField) af
-          .getTag()
-          .getFirstField(FieldKey.COVER_ART)).getContent()
+        .getTag()
+        .getFirstField(FieldKey.COVER_ART)).getContent()
     );
 
-    assertTrue(tagField instanceof ID3v24Frame);
+    assertInstanceOf(ID3v24Frame.class, tagField);
     ID3v24Frame apicFrame = (ID3v24Frame) tagField;
-    assertTrue(apicFrame.getBody() instanceof FrameBodyAPIC);
+    assertInstanceOf(FrameBodyAPIC.class, apicFrame.getBody());
     FrameBodyAPIC apicframebody = (FrameBodyAPIC) apicFrame.getBody();
     assertFalse(apicframebody.isImageUrl());
     assertEquals(10, af.getTag().getFieldCount());
 
     //Add another image correctly
     imageFile = new RandomAccessFile(
-      new File("testdata", "coverart_small.png"),
+      fileResource("testdata", "coverart_small.png"),
       "r"
     );
     imagedata = new byte[(int) imageFile.length()];
@@ -604,7 +606,7 @@ public class NewInterfaceTest {
     List<TagField> imageFields = af.getTag().getFields(FieldKey.COVER_ART);
     tagField = imageFields.get(2);
     apicFrame = (ID3v24Frame) tagField;
-    assertTrue(apicFrame.getBody() instanceof FrameBodyAPIC);
+    assertInstanceOf(FrameBodyAPIC.class, apicFrame.getBody());
     apicframebody = (FrameBodyAPIC) apicFrame.getBody();
     assertTrue(apicframebody.isImageUrl());
     assertEquals("../testdata/coverart.jpg", apicframebody.getImageUrl());
@@ -615,7 +617,7 @@ public class NewInterfaceTest {
            Exception ex = null;
            try
            {
-               File testFile = AbstractTestCase.copyAudioToTmp("testV1withurlimage.mp3");
+               File testFile = copyAudioToTmp("testV1withurlimage.mp3");
                org.jaudiotagger.audio.AudioFile audioFile = org.jaudiotagger.audio.AudioFileIO.read(testFile);
                ID3v23Tag newTag = (ID3v23Tag)audioFile.getTag();
                assertEquals(1, newTag.getFields(FieldKey.COVER_ART).size());
@@ -637,9 +639,9 @@ public class NewInterfaceTest {
   @Test
   public void testNewInterfaceBasicReadandWriteID3v23() throws Exception {
     Exception e = null;
-    File testFile = AbstractTestCase.copyAudioToTmp(
+    File testFile = copyAudioToTmp(
       "testV1.mp3",
-      new File("testnewIntId3v23.mp3")
+      "testnewIntId3v23.mp3"
     );
     MP3File mp3File = new MP3File(testFile);
 
@@ -927,11 +929,11 @@ public class NewInterfaceTest {
     } catch (java.lang.UnsupportedOperationException uoe) {
       e = uoe;
     }
-    assertTrue(e instanceof UnsupportedOperationException);
+    assertInstanceOf(UnsupportedOperationException.class, e);
 
     //Add new image correctly
     RandomAccessFile imageFile = new RandomAccessFile(
-      new File("testdata", "coverart.png"),
+      fileResource("testdata", "coverart.png"),
       "r"
     );
     byte[] imagedata = new byte[(int) imageFile.length()];
@@ -944,7 +946,7 @@ public class NewInterfaceTest {
 
     //Add another image correctly
     imageFile = new RandomAccessFile(
-      new File("testdata", "coverart_small.png"),
+      fileResource("testdata", "coverart_small.png"),
       "r"
     );
     imagedata = new byte[(int) imageFile.length()];
@@ -959,9 +961,9 @@ public class NewInterfaceTest {
   @Test
   public void testNewInterfaceBasicReadandWriteID3v22() throws Exception {
     Exception e = null;
-    File testFile = AbstractTestCase.copyAudioToTmp(
+    File testFile = copyAudioToTmp(
       "testV1.mp3",
-      new File("testnewIntId3v22.mp3")
+      "testnewIntId3v22.mp3"
     );
     MP3File mp3File = new MP3File(testFile);
 
@@ -1244,11 +1246,11 @@ public class NewInterfaceTest {
     } catch (java.lang.UnsupportedOperationException uoe) {
       e = uoe;
     }
-    assertTrue(e instanceof UnsupportedOperationException);
+    assertInstanceOf(UnsupportedOperationException.class, e);
 
     //Add new image correctly
     RandomAccessFile imageFile = new RandomAccessFile(
-      new File("testdata", "coverart.png"),
+      fileResource("testdata", "coverart.png"),
       "r"
     );
     byte[] imagedata = new byte[(int) imageFile.length()];
@@ -1261,7 +1263,7 @@ public class NewInterfaceTest {
 
     //Add another image correctly
     imageFile = new RandomAccessFile(
-      new File("testdata", "coverart_small.png"),
+      fileResource("testdata", "coverart_small.png"),
       "r"
     );
     imagedata = new byte[(int) imageFile.length()];
@@ -1281,9 +1283,9 @@ public class NewInterfaceTest {
   @Test
   public void testSettingMultipleFramesofSameType() throws Exception {
     Exception e = null;
-    File testFile = AbstractTestCase.copyAudioToTmp(
+    File testFile = copyAudioToTmp(
       "testV1.mp3",
-      new File("testSetMultiple.mp3")
+      "testSetMultiple.mp3"
     );
     AudioFile af = AudioFileIO.read(testFile);
     MP3File mp3File = (MP3File) af;
@@ -1311,8 +1313,8 @@ public class NewInterfaceTest {
       //Add third Comment
       List<TagField> comments = af.getTag().getFields(FieldKey.COMMENT);
       ((FrameBodyCOMM) ((ID3v24Frame) comments.get(
-            1
-          )).getBody()).setDescription("test2");
+        1
+      )).getBody()).setDescription("test2");
       af.getTag().setField(FieldKey.COMMENT, "Comment3");
       af.commit();
       af = AudioFileIO.read(testFile);
@@ -1456,14 +1458,10 @@ public class NewInterfaceTest {
   }
 
   @Test
+  @EnabledIf("executeAlsoWithMissingResources") // to be configured in AbsractBaseTestCase
   public void testIterator() throws Exception {
-    File orig = new File("testdata", "test26.mp3");
-    if (!orig.isFile()) {
-      return;
-    }
-
     Exception e = null;
-    File testFile = AbstractTestCase.copyAudioToTmp("test26.mp3");
+    File testFile = copyAudioToTmp("test26.mp3");
     MP3File mp3File = new MP3File(testFile);
 
     assertEquals(0, mp3File.getID3v2Tag().getFieldCount());
@@ -1474,7 +1472,7 @@ public class NewInterfaceTest {
     } catch (Exception ex) {
       e = ex;
     }
-    assertTrue(e instanceof NoSuchElementException);
+    assertInstanceOf(NoSuchElementException.class, e);
 
     mp3File.getID3v2Tag().addField(FieldKey.ALBUM, "album");
     assertEquals(1, mp3File.getID3v2Tag().getFieldCount());
@@ -1487,7 +1485,7 @@ public class NewInterfaceTest {
     i = mp3File.getID3v2Tag().getFields();
     assertTrue(i.hasNext());
     Object o = i.next();
-    assertTrue(o instanceof ID3v23Frame);
+    assertInstanceOf(ID3v23Frame.class, o);
     assertEquals(
       "album",
       ((AbstractFrameBodyTextInfo) (((ID3v23Frame) o).getBody())).getFirstTextValue()
@@ -1498,7 +1496,7 @@ public class NewInterfaceTest {
     } catch (Exception ex) {
       e = ex;
     }
-    assertTrue(e instanceof NoSuchElementException);
+    assertInstanceOf(NoSuchElementException.class, e);
     assertFalse(i.hasNext());
 
     //Empty frame map and force adding of empty list
@@ -1518,9 +1516,9 @@ public class NewInterfaceTest {
   public void testGenres() {
     Exception ex = null;
     try {
-      File testFile = AbstractTestCase.copyAudioToTmp(
+      File testFile = copyAudioToTmp(
         "testV1.mp3",
-        new File("testBasicWrite.mp3")
+        "testBasicWrite.mp3"
       );
       org.jaudiotagger.audio.AudioFile audioFile =
         org.jaudiotagger.audio.AudioFileIO.read(testFile);
@@ -1554,21 +1552,16 @@ public class NewInterfaceTest {
   }
 
   @Test
+  @EnabledIf("executeAlsoWithMissingResources") // to be configured in AbsractBaseTestCase
   public void testRemoveFrameOfType() {
-    File orig = new File("testdata", "test30.mp3");
-    if (!orig.isFile()) {
-      return;
-    }
-
     Exception exceptionCaught = null;
-    File testFile = AbstractTestCase.copyAudioToTmp("test30.mp3");
+    File testFile = copyAudioToTmp("test30.mp3");
     MP3File mp3file = null;
     try {
       mp3file = new MP3File(testFile);
       //deleteField multiple frames starting make change to file
       mp3file.getID3v2Tag().removeFrameOfType("PRIV");
     } catch (Exception e) {
-      e.printStackTrace();
       exceptionCaught = e;
     }
     assertNull(exceptionCaught);

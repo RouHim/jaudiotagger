@@ -5,7 +5,6 @@ import static org.junit.jupiter.api.Assertions.*;
 import java.io.File;
 import java.io.RandomAccessFile;
 import java.util.List;
-import org.jaudiotagger.AbstractTestCase;
 import org.jaudiotagger.FilePermissionsTest;
 import org.jaudiotagger.audio.AudioFile;
 import org.jaudiotagger.audio.AudioFileIO;
@@ -18,8 +17,9 @@ import org.jaudiotagger.tag.id3.valuepair.ImageFormats;
 import org.jaudiotagger.tag.reference.PictureTypes;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.condition.EnabledIf;
 
-public class FlacWriteTest {
+public class FlacWriteTest extends FilePermissionsTest {
 
   @BeforeEach
   public void setUp() {
@@ -35,9 +35,9 @@ public class FlacWriteTest {
     try {
       //Put artifically low just to test it out
       TagOptionSingleton.getInstance().setWriteChunkSize(40000);
-      File testFile = AbstractTestCase.copyAudioToTmp(
+      File testFile = copyAudioToTmp(
         "test2.flac",
-        new File("test2write.flac")
+        "test2write.flac"
       );
       AudioFile f = AudioFileIO.read(testFile);
 
@@ -48,7 +48,7 @@ public class FlacWriteTest {
       assertEquals("2", f.getAudioHeader().getChannels());
       assertEquals("44100", f.getAudioHeader().getSampleRate());
 
-      assertTrue(f.getTag() instanceof FlacTag);
+      assertInstanceOf(FlacTag.class, f.getTag());
       FlacTag tag = (FlacTag) f.getTag();
       assertEquals(
         "reference libFLAC 1.1.4 20070213",
@@ -119,7 +119,7 @@ public class FlacWriteTest {
 
       //Add new image
       RandomAccessFile imageFile = new RandomAccessFile(
-        new File("testdata", "coverart.png"),
+        fileResource("testdata", "coverart.png"),
         "r"
       );
       byte[] imagedata = new byte[(int) imageFile.length()];
@@ -143,7 +143,7 @@ public class FlacWriteTest {
       f.commit();
       f = AudioFileIO.read(testFile);
       assertEquals(5, infoReader.countMetaBlocks(f.getFile()));
-      assertTrue(f.getTag() instanceof FlacTag);
+      assertInstanceOf(FlacTag.class, f.getTag());
 
       assertEquals(
         "reference libFLAC 1.1.4 20070213",
@@ -218,7 +218,6 @@ public class FlacWriteTest {
       System.out.println("NewFileSize:" + f.getFile().length());
       assertEquals(144202, f.getFile().length());
     } catch (Exception e) {
-      e.printStackTrace();
       exceptionCaught = e;
     }
     assertNull(exceptionCaught);
@@ -230,9 +229,9 @@ public class FlacWriteTest {
     try {
       //Put artifically low just to test it out
       TagOptionSingleton.getInstance().setWriteChunkSize(1000);
-      File testFile = AbstractTestCase.copyAudioToTmp(
+      File testFile = copyAudioToTmp(
         "test2.flac",
-        new File("test2write.flac")
+        "test2write.flac"
       );
       AudioFile f = AudioFileIO.read(testFile);
 
@@ -243,7 +242,7 @@ public class FlacWriteTest {
       assertEquals("2", f.getAudioHeader().getChannels());
       assertEquals("44100", f.getAudioHeader().getSampleRate());
 
-      assertTrue(f.getTag() instanceof FlacTag);
+      assertInstanceOf(FlacTag.class, f.getTag());
       FlacTag tag = (FlacTag) f.getTag();
       assertEquals(
         "reference libFLAC 1.1.4 20070213",
@@ -314,7 +313,7 @@ public class FlacWriteTest {
 
       //Add new image
       RandomAccessFile imageFile = new RandomAccessFile(
-        new File("testdata", "coverart.png"),
+        fileResource("testdata", "coverart.png"),
         "r"
       );
       byte[] imagedata = new byte[(int) imageFile.length()];
@@ -338,7 +337,7 @@ public class FlacWriteTest {
       f.commit();
       f = AudioFileIO.read(testFile);
       assertEquals(5, infoReader.countMetaBlocks(f.getFile()));
-      assertTrue(f.getTag() instanceof FlacTag);
+      assertInstanceOf(FlacTag.class, f.getTag());
 
       assertEquals(
         "reference libFLAC 1.1.4 20070213",
@@ -413,7 +412,6 @@ public class FlacWriteTest {
       System.out.println("NewFileSize:" + f.getFile().length());
       assertEquals(144202, f.getFile().length());
     } catch (Exception e) {
-      e.printStackTrace();
       exceptionCaught = e;
     }
     assertNull(exceptionCaught);
@@ -426,9 +424,9 @@ public class FlacWriteTest {
   public void testDeleteTagFile() {
     Exception exceptionCaught = null;
     try {
-      File testFile = AbstractTestCase.copyAudioToTmp(
+      File testFile = copyAudioToTmp(
         "test.flac",
-        new File("testdeletetag.flac")
+        "testdeletetag.flac"
       );
       AudioFile f = AudioFileIO.read(testFile);
 
@@ -437,14 +435,13 @@ public class FlacWriteTest {
       assertEquals("2", f.getAudioHeader().getChannels());
       assertEquals("44100", f.getAudioHeader().getSampleRate());
       assertEquals(2, ((FlacTag) f.getTag()).getImages().size());
-      assertTrue(f.getTag() instanceof FlacTag);
+      assertInstanceOf(FlacTag.class, f.getTag());
       assertFalse(f.getTag().isEmpty());
 
       AudioFileIO.delete(f);
       f = AudioFileIO.read(testFile);
       assertTrue(f.getTag().isEmpty());
     } catch (Exception e) {
-      e.printStackTrace();
       exceptionCaught = e;
     }
     assertNull(exceptionCaught);
@@ -457,9 +454,9 @@ public class FlacWriteTest {
   public void testWriteFileWithCueSheet() {
     Exception exceptionCaught = null;
     try {
-      File testFile = AbstractTestCase.copyAudioToTmp(
+      File testFile = copyAudioToTmp(
         "test3.flac",
-        new File("testWriteWithCueSheet.flac")
+        "testWriteWithCueSheet.flac"
       );
       AudioFile f = AudioFileIO.read(testFile);
       FlacInfoReader infoReader = new FlacInfoReader();
@@ -470,7 +467,6 @@ public class FlacWriteTest {
       infoReader = new FlacInfoReader();
       assertEquals("BLOCK", f.getTag().getFirst(FieldKey.ALBUM));
     } catch (Exception e) {
-      e.printStackTrace();
       exceptionCaught = e;
     }
     assertNull(exceptionCaught);
@@ -480,19 +476,13 @@ public class FlacWriteTest {
    * Test writing to file that contains an ID3 header
    */
   @Test
+  @EnabledIf("executeAlsoWithMissingResources") // to be configured in AbsractBaseTestCase
   public void testWriteFileWithId3Header() {
     Exception exceptionCaught = null;
     try {
-      File orig = new File("testdata", "test22.flac");
-      if (!orig.isFile()) {
-        System.out.println(
-          "Test cannot be run because test file not available"
-        );
-        return;
-      }
-      File testFile = AbstractTestCase.copyAudioToTmp(
+      File testFile = copyAudioToTmp(
         "test22.flac",
-        new File("testWriteFlacWithId3.flac")
+        "testWriteFlacWithId3.flac"
       );
       AudioFile f = AudioFileIO.read(testFile);
       FlacInfoReader infoReader = new FlacInfoReader();
@@ -504,7 +494,6 @@ public class FlacWriteTest {
       assertEquals(4, infoReader.countMetaBlocks(f.getFile()));
       assertEquals("BLOCK", f.getTag().getFirst(FieldKey.ALBUM));
     } catch (Exception e) {
-      e.printStackTrace();
       exceptionCaught = e;
     }
     assertNull(exceptionCaught);
@@ -514,20 +503,13 @@ public class FlacWriteTest {
    * Metadata size has increased so that shift required
    */
   @Test
+  @EnabledIf("executeAlsoWithMissingResources") // to be configured in AbsractBaseTestCase
   public void testWriteFileWithId3HeaderAudioShifted() {
     Exception exceptionCaught = null;
     try {
-      File orig = new File("testdata", "test22.flac");
-      if (!orig.isFile()) {
-        System.out.println(
-          "Test cannot be run because test file not available"
-        );
-        return;
-      }
-
-      File testFile = AbstractTestCase.copyAudioToTmp(
+      File testFile = copyAudioToTmp(
         "test22.flac",
-        new File("testWriteFlacWithId3Shifted.flac")
+        "testWriteFlacWithId3Shifted.flac"
       );
       AudioFile f = AudioFileIO.read(testFile);
 
@@ -536,7 +518,7 @@ public class FlacWriteTest {
       assertEquals("2", f.getAudioHeader().getChannels());
       assertEquals("44100", f.getAudioHeader().getSampleRate());
 
-      assertTrue(f.getTag() instanceof FlacTag);
+      assertInstanceOf(FlacTag.class, f.getTag());
       FlacTag tag = (FlacTag) f.getTag();
       assertEquals(
         "reference libFLAC 1.1.4 20070213",
@@ -562,7 +544,7 @@ public class FlacWriteTest {
 
       //Add new image
       RandomAccessFile imageFile = new RandomAccessFile(
-        new File("testdata", "coverart.png"),
+        fileResource("testdata", "coverart.png"),
         "r"
       );
       byte[] imagedata = new byte[(int) imageFile.length()];
@@ -582,7 +564,7 @@ public class FlacWriteTest {
       f.commit();
       f = AudioFileIO.read(testFile);
       assertEquals(5, infoReader.countMetaBlocks(f.getFile()));
-      assertTrue(f.getTag() instanceof FlacTag);
+      assertInstanceOf(FlacTag.class, f.getTag());
       assertEquals(
         "reference libFLAC 1.1.4 20070213",
         tag.getFirst(FieldKey.ENCODER)
@@ -595,7 +577,6 @@ public class FlacWriteTest {
       assertEquals("BLOCK", tag.getFirst(FieldKey.ARTIST));
       assertEquals(1, tag.getArtworkList().size());
     } catch (Exception e) {
-      e.printStackTrace();
       exceptionCaught = e;
     }
     assertNull(exceptionCaught);
@@ -603,9 +584,9 @@ public class FlacWriteTest {
 
   @Test
   public void testDeleteTag() throws Exception {
-    File testFile = AbstractTestCase.copyAudioToTmp(
+    File testFile = copyAudioToTmp(
       "test2.flac",
-      new File("testDelete.flac")
+      "testDelete.flac"
     );
     AudioFile f = AudioFileIO.read(testFile);
     AudioFileIO.delete(f);
@@ -616,9 +597,9 @@ public class FlacWriteTest {
 
   @Test
   public void testWriteMultipleFields() throws Exception {
-    File testFile = AbstractTestCase.copyAudioToTmp(
+    File testFile = copyAudioToTmp(
       "test.flac",
-      new File("testWriteMultiple.flac")
+      "testWriteMultiple.flac"
     );
     AudioFile f = AudioFileIO.read(testFile);
     List<TagField> tagFields = f.getTag().getFields(FieldKey.ALBUM_ARTIST_SORT);
@@ -636,9 +617,9 @@ public class FlacWriteTest {
   @Test
   public void testDeleteFields() throws Exception {
     //Delete using generic key
-    File testFile = AbstractTestCase.copyAudioToTmp(
+    File testFile = copyAudioToTmp(
       "test.flac",
-      new File("testWriteMultiple.flac")
+      "testWriteMultiple.flac"
     );
     AudioFile f = AudioFileIO.read(testFile);
     List<TagField> tagFields = f.getTag().getFields(FieldKey.ALBUM_ARTIST_SORT);
@@ -672,19 +653,13 @@ public class FlacWriteTest {
    * test read flac file with just streaminfo and padding header
    */
   @Test
+  @EnabledIf("executeAlsoWithMissingResources") // to be configured in AbsractBaseTestCase
   public void testWriteFileThatOnlyHadStreamAndPaddingInfoHeader() {
     Exception exceptionCaught = null;
     try {
-      File orig = new File("testdata", "test102.flac");
-      if (!orig.isFile()) {
-        System.out.println(
-          "Test cannot be run because test file not available"
-        );
-        return;
-      }
-      File testFile = AbstractTestCase.copyAudioToTmp(
+      File testFile = copyAudioToTmp(
         "test102.flac",
-        new File("test102.flac")
+        "test102.flac"
       );
       AudioFile f = AudioFileIO.read(testFile);
       FlacInfoReader infoReader = new FlacInfoReader();
@@ -698,7 +673,6 @@ public class FlacWriteTest {
       assertEquals(3, infoReader.countMetaBlocks(f.getFile()));
       assertEquals("fred", f.getTag().getFirst(FieldKey.ARTIST));
     } catch (Exception e) {
-      e.printStackTrace();
       exceptionCaught = e;
     }
     assertNull(exceptionCaught);
@@ -706,20 +680,20 @@ public class FlacWriteTest {
 
   @Test
   public void testWriteWriteProtectedFileWithCheckDisabled() throws Exception {
-    FilePermissionsTest.runWriteWriteProtectedFileWithCheckDisabled(
+    runWriteWriteProtectedFileWithCheckDisabled(
       "test2.flac"
     );
   }
 
   @Test
   public void testWriteWriteProtectedFileWithCheckEnabled() throws Exception {
-    FilePermissionsTest.runWriteWriteProtectedFileWithCheckEnabled(
+    runWriteWriteProtectedFileWithCheckEnabled(
       "test2.flac"
     );
   }
 
   @Test
   public void testWriteReadOnlyFileWithCheckDisabled() throws Exception {
-    FilePermissionsTest.runWriteReadOnlyFileWithCheckDisabled("test2.flac");
+    runWriteReadOnlyFileWithCheckDisabled("test2.flac");
   }
 }

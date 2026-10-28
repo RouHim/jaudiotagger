@@ -95,14 +95,10 @@ public abstract class AbstractChunk<T extends Chunk> extends AbstractTestCase {
    */
   @Test
   public void testChunkCreation() {
-    assertTrue(failOn(-1, null) instanceof IllegalArgumentException);
-    assertTrue(failOn(0, null) instanceof IllegalArgumentException);
-    assertTrue(
-      failOn(0, BigInteger.TEN.negate()) instanceof IllegalArgumentException
-    );
-    assertTrue(
-      failOn(0, BigInteger.ONE.negate()) instanceof IllegalArgumentException
-    );
+    assertInstanceOf(IllegalArgumentException.class, failOn(-1, null));
+    assertInstanceOf(IllegalArgumentException.class, failOn(0, null));
+    assertInstanceOf(IllegalArgumentException.class, failOn(0, BigInteger.TEN.negate()));
+    assertInstanceOf(IllegalArgumentException.class, failOn(0, BigInteger.ONE.negate()));
     assertNull(failOn(0, BigInteger.ZERO));
     assertNull(failOn(0, BigInteger.TEN));
     assertNull(failOn(100, BigInteger.TEN));

@@ -26,19 +26,13 @@ public class Issue173Test extends AbstractTestCase {
   public void testMp4GenresUsingGenericInterface() {
     TagOptionSingleton.getInstance().setWriteMp3GenresAsText(false);
 
-    File orig = new File("testdata", "test.m4a");
-    if (!orig.isFile()) {
-      System.err.println("Unable to test file - not available");
-      return;
-    }
-
     try {
       System.out.println(
         TagOptionSingleton.getInstance().isWriteMp4GenresAsText()
       );
       AudioFile mp4File = null;
       Mp4Tag tag = null;
-      File testFile = AbstractTestCase.copyAudioToTmp("test.m4a");
+      File testFile = copyAudioToTmp("test.m4a");
       mp4File = AudioFileIO.read(testFile);
       tag = (Mp4Tag) mp4File.getTag();
       //Set valid value
@@ -111,11 +105,6 @@ public class Issue173Test extends AbstractTestCase {
   public void testMp4GenresUsingMp4Interface() {
     TagOptionSingleton.getInstance().setWriteMp3GenresAsText(false);
 
-    File orig = new File("testdata", "test.m4a");
-    if (!orig.isFile()) {
-      System.err.println("Unable to test file - not available");
-      return;
-    }
 
     try {
       System.out.println(
@@ -123,7 +112,7 @@ public class Issue173Test extends AbstractTestCase {
       );
       AudioFile mp4File = null;
       Mp4Tag tag = null;
-      File testFile = AbstractTestCase.copyAudioToTmp("test.m4a");
+      File testFile = copyAudioToTmp("test.m4a");
       mp4File = AudioFileIO.read(testFile);
       tag = (Mp4Tag) mp4File.getTag();
       //Set valid value
@@ -147,11 +136,6 @@ public class Issue173Test extends AbstractTestCase {
   public void testMp4InvalidGenresUsingMp4Interface() {
     TagOptionSingleton.getInstance().setWriteMp3GenresAsText(false);
 
-    File orig = new File("testdata", "test.m4a");
-    if (!orig.isFile()) {
-      System.err.println("Unable to test file - not available");
-      return;
-    }
 
     try {
       System.out.println(
@@ -159,13 +143,13 @@ public class Issue173Test extends AbstractTestCase {
       );
       AudioFile mp4File = null;
       Mp4Tag tag = null;
-      File testFile = AbstractTestCase.copyAudioToTmp("test.m4a");
+      File testFile = copyAudioToTmp("test.m4a");
       mp4File = AudioFileIO.read(testFile);
       tag = (Mp4Tag) mp4File.getTag();
       //Set valid value
       tag.setField(Mp4FieldKey.GENRE, "Rocky");
     } catch (Exception ex) {
-      assertTrue(ex instanceof IllegalArgumentException);
+      assertInstanceOf(IllegalArgumentException.class, ex);
       assertEquals(
         ex.getMessage(),
         ErrorMessage.NOT_STANDARD_MP$_GENRE.getMsg()
@@ -175,18 +159,13 @@ public class Issue173Test extends AbstractTestCase {
 
   @Test
   public void testMp3ID3v24sGenresUsingGenericInterface() {
-    File orig = new File("testdata", "01.mp3");
-    if (!orig.isFile()) {
-      System.err.println("Unable to test file - not available");
-      return;
-    }
 
     try {
       TagOptionSingleton.getInstance().setID3V2Version(ID3V2Version.ID3_V24);
       TagOptionSingleton.getInstance().setWriteMp3GenresAsText(false);
       AudioFile mp3File = null;
       ID3v24Tag tag = null;
-      File testFile = AbstractTestCase.copyAudioToTmp("01.mp3");
+      File testFile = copyAudioToTmp("01.mp3");
       mp3File = AudioFileIO.read(testFile);
       mp3File.getTagOrCreateAndSetDefault();
       tag = (ID3v24Tag) mp3File.getTag();
@@ -195,24 +174,24 @@ public class Issue173Test extends AbstractTestCase {
       tag.setField(FieldKey.GENRE, "Rock");
       assertEquals("Rock", tag.getFirst(FieldKey.GENRE));
       FrameBodyTCON body = (FrameBodyTCON) ((AbstractID3v2Frame) tag.getFrame(
-          "TCON"
-        )).getBody();
+        "TCON"
+      )).getBody();
       assertEquals("17", body.getText());
 
       //Set Integral value directly, gets converted
       tag.setField(FieldKey.GENRE, "1");
       assertEquals("Classic Rock", tag.getFirst(FieldKey.GENRE));
       body = (FrameBodyTCON) ((AbstractID3v2Frame) tag.getFrame(
-          "TCON"
-        )).getBody();
+        "TCON"
+      )).getBody();
       assertEquals("1", body.getText());
 
       //Set Integral value > 125 directly, gets converted
       tag.setField(FieldKey.GENRE, "127");
       assertEquals("Drum & Bass", tag.getFirst(FieldKey.GENRE));
       body = (FrameBodyTCON) ((AbstractID3v2Frame) tag.getFrame(
-          "TCON"
-        )).getBody();
+        "TCON"
+      )).getBody();
       // because we explicitly set integer value, use it
       assertEquals("127", body.getText());
 
@@ -220,8 +199,8 @@ public class Issue173Test extends AbstractTestCase {
       tag.setField(FieldKey.GENRE, "Drum & Bass");
       assertEquals("Drum & Bass", tag.getFirst(FieldKey.GENRE));
       body = (FrameBodyTCON) ((AbstractID3v2Frame) tag.getFrame(
-          "TCON"
-        )).getBody();
+        "TCON"
+      )).getBody();
       // because we actually set string, write string instead of integer
       assertEquals("Drum & Bass", body.getText());
 
@@ -229,8 +208,8 @@ public class Issue173Test extends AbstractTestCase {
       tag.setField(FieldKey.GENRE, "250");
       assertEquals("250", tag.getFirst(FieldKey.GENRE));
       body = (FrameBodyTCON) ((AbstractID3v2Frame) tag.getFrame(
-          "TCON"
-        )).getBody();
+        "TCON"
+      )).getBody();
       assertEquals("250", body.getText());
 
       tag.setField(FieldKey.GENRE, "Rock");
@@ -239,8 +218,8 @@ public class Issue173Test extends AbstractTestCase {
       assertEquals("Rock", tag.getValue(FieldKey.GENRE, 0));
       assertEquals("Musical", tag.getValue(FieldKey.GENRE, 1));
       body = (FrameBodyTCON) ((AbstractID3v2Frame) tag.getFrame(
-          "TCON"
-        )).getBody();
+        "TCON"
+      )).getBody();
       assertEquals("17\u000077", body.getText());
       tag.setField(FieldKey.GENRE, "1");
       tag.addField(FieldKey.GENRE, "2");
@@ -251,8 +230,8 @@ public class Issue173Test extends AbstractTestCase {
       assertEquals("Classic Rock", results.get(0));
       assertEquals("Country", results.get(1));
       body = (FrameBodyTCON) ((AbstractID3v2Frame) tag.getFrame(
-          "TCON"
-        )).getBody();
+        "TCON"
+      )).getBody();
       assertEquals("1\u00002", body.getText());
       mp3File.commit();
       mp3File = AudioFileIO.read(testFile);
@@ -261,8 +240,8 @@ public class Issue173Test extends AbstractTestCase {
       assertEquals("Classic Rock", results.get(0));
       assertEquals("Country", results.get(1));
       body = (FrameBodyTCON) ((AbstractID3v2Frame) tag.getFrame(
-          "TCON"
-        )).getBody();
+        "TCON"
+      )).getBody();
       assertEquals("1\u00002", body.getText());
 
       tag.setField(FieldKey.GENRE, "Remix");
@@ -271,8 +250,8 @@ public class Issue173Test extends AbstractTestCase {
       assertEquals("Remix", tag.getValue(FieldKey.GENRE, 0));
       assertEquals("Cover", tag.getValue(FieldKey.GENRE, 1));
       body = (FrameBodyTCON) ((AbstractID3v2Frame) tag.getFrame(
-          "TCON"
-        )).getBody();
+        "TCON"
+      )).getBody();
       assertEquals("RX\u0000CR", body.getText());
       mp3File.commit();
       mp3File = AudioFileIO.read(testFile);
@@ -281,8 +260,8 @@ public class Issue173Test extends AbstractTestCase {
       assertEquals("Remix", tag.getValue(FieldKey.GENRE, 0));
       assertEquals("Cover", tag.getValue(FieldKey.GENRE, 1));
       body = (FrameBodyTCON) ((AbstractID3v2Frame) tag.getFrame(
-          "TCON"
-        )).getBody();
+        "TCON"
+      )).getBody();
       assertEquals("RX\u0000CR", body.getText());
       tag.addField(FieldKey.GENRE, "67");
       assertEquals("Cover", tag.getValue(FieldKey.GENRE, 1));
@@ -294,18 +273,13 @@ public class Issue173Test extends AbstractTestCase {
 
   @Test
   public void testMp3ID3v22sGenresUsingGenericInterface() {
-    File orig = new File("testdata", "01.mp3");
-    if (!orig.isFile()) {
-      System.err.println("Unable to test file - not available");
-      return;
-    }
 
     Exception e = null;
     try {
       TagOptionSingleton.getInstance().setID3V2Version(ID3V2Version.ID3_V22);
       AudioFile mp3File = null;
       ID3v22Tag tag = null;
-      File testFile = AbstractTestCase.copyAudioToTmp("01.mp3");
+      File testFile = copyAudioToTmp("01.mp3");
       mp3File = AudioFileIO.read(testFile);
       mp3File.getTagOrCreateAndSetDefault();
       tag = (ID3v22Tag) mp3File.getTag();
@@ -314,24 +288,24 @@ public class Issue173Test extends AbstractTestCase {
       tag.setField(FieldKey.GENRE, "Rock");
       assertEquals("Rock", tag.getFirst(FieldKey.GENRE));
       FrameBodyTCON body = (FrameBodyTCON) ((AbstractID3v2Frame) tag.getFrame(
-          "TCO"
-        )).getBody();
+        "TCO"
+      )).getBody();
       assertEquals("(17)", body.getText());
 
       //Set Integral value directly, gets converted
       tag.setField(FieldKey.GENRE, "1");
       assertEquals("Classic Rock", tag.getFirst(FieldKey.GENRE));
       body = (FrameBodyTCON) ((AbstractID3v2Frame) tag.getFrame(
-          "TCO"
-        )).getBody();
+        "TCO"
+      )).getBody();
       assertEquals("(1)", body.getText());
 
       //Set Integral value > 125 directly, gets converted
       tag.setField(FieldKey.GENRE, "127");
       assertEquals("Drum & Bass", tag.getFirst(FieldKey.GENRE));
       body = (FrameBodyTCON) ((AbstractID3v2Frame) tag.getFrame(
-          "TCO"
-        )).getBody();
+        "TCO"
+      )).getBody();
       // because we explicitly set integer value, use it
       assertEquals("(127)", body.getText());
 
@@ -339,8 +313,8 @@ public class Issue173Test extends AbstractTestCase {
       tag.setField(FieldKey.GENRE, "Drum & Bass");
       assertEquals("Drum & Bass", tag.getFirst(FieldKey.GENRE));
       body = (FrameBodyTCON) ((AbstractID3v2Frame) tag.getFrame(
-          "TCO"
-        )).getBody();
+        "TCO"
+      )).getBody();
       // because we actually set string, write string instead of integer
       assertEquals("Drum & Bass", body.getText());
 
@@ -348,8 +322,8 @@ public class Issue173Test extends AbstractTestCase {
       tag.setField(FieldKey.GENRE, "250");
       assertEquals("250", tag.getFirst(FieldKey.GENRE));
       body = (FrameBodyTCON) ((AbstractID3v2Frame) tag.getFrame(
-          "TCO"
-        )).getBody();
+        "TCO"
+      )).getBody();
       assertEquals("250", body.getText());
 
       tag.setField(FieldKey.GENRE, "Rock");
@@ -359,8 +333,8 @@ public class Issue173Test extends AbstractTestCase {
       assertEquals("Musical", tag.getValue(FieldKey.GENRE, 1));
 
       body = (FrameBodyTCON) ((AbstractID3v2Frame) tag.getFrame(
-          "TCO"
-        )).getBody();
+        "TCO"
+      )).getBody();
       assertEquals("(17)(77)", body.getText());
       tag.setField(FieldKey.GENRE, "1");
       tag.addField(FieldKey.GENRE, "2");
@@ -371,8 +345,8 @@ public class Issue173Test extends AbstractTestCase {
       assertEquals("Classic Rock", results.get(0));
       assertEquals("Country", results.get(1));
       body = (FrameBodyTCON) ((AbstractID3v2Frame) tag.getFrame(
-          "TCO"
-        )).getBody();
+        "TCO"
+      )).getBody();
       assertEquals("(1)(2)", body.getText());
       mp3File.commit();
       mp3File = AudioFileIO.read(testFile);
@@ -382,13 +356,13 @@ public class Issue173Test extends AbstractTestCase {
       assertEquals("Classic Rock", results.get(0));
       assertEquals("Country", results.get(1));
       body = (FrameBodyTCON) ((AbstractID3v2Frame) tag.getFrame(
-          "TCO"
-        )).getBody();
+        "TCO"
+      )).getBody();
       tag.setField(FieldKey.GENRE, "Remix");
       tag.addField(FieldKey.GENRE, "CR");
       body = (FrameBodyTCON) ((AbstractID3v2Frame) tag.getFrame(
-          "TCO"
-        )).getBody();
+        "TCO"
+      )).getBody();
       assertEquals("(RX)(CR)", body.getText());
       //            assertEquals("Remix",tag.getFirst(FieldKey.GENRE));
       //            assertEquals("Remix",tag.getValue(FieldKey.GENRE, 0));
@@ -397,8 +371,8 @@ public class Issue173Test extends AbstractTestCase {
       mp3File = AudioFileIO.read(testFile);
       tag = (ID3v22Tag) mp3File.getTag();
       body = (FrameBodyTCON) ((AbstractID3v2Frame) tag.getFrame(
-          "TCO"
-        )).getBody();
+        "TCO"
+      )).getBody();
       assertEquals("(RX)(CR)", body.getText());
     } catch (Exception ex) {
       e = ex;
@@ -408,11 +382,6 @@ public class Issue173Test extends AbstractTestCase {
 
   @Test
   public void testMp3ID3v23sGenresUsingGenericInterface() {
-    File orig = new File("testdata", "01.mp3");
-    if (!orig.isFile()) {
-      System.err.println("Unable to test file - not available");
-      return;
-    }
 
     Exception e = null;
     try {
@@ -420,7 +389,7 @@ public class Issue173Test extends AbstractTestCase {
       TagOptionSingleton.getInstance().setWriteMp3GenresAsText(false);
       AudioFile mp3File = null;
       ID3v23Tag tag = null;
-      File testFile = AbstractTestCase.copyAudioToTmp("01.mp3");
+      File testFile = copyAudioToTmp("01.mp3");
       mp3File = AudioFileIO.read(testFile);
       mp3File.getTagOrCreateAndSetDefault();
       tag = (ID3v23Tag) mp3File.getTag();
@@ -429,24 +398,24 @@ public class Issue173Test extends AbstractTestCase {
       tag.setField(FieldKey.GENRE, "Rock");
       assertEquals("Rock", tag.getFirst(FieldKey.GENRE));
       FrameBodyTCON body = (FrameBodyTCON) ((AbstractID3v2Frame) tag.getFrame(
-          "TCON"
-        )).getBody();
+        "TCON"
+      )).getBody();
       assertEquals("(17)", body.getText());
 
       //Set Integral value directly, gets converted
       tag.setField(FieldKey.GENRE, "1");
       assertEquals("Classic Rock", tag.getFirst(FieldKey.GENRE));
       body = (FrameBodyTCON) ((AbstractID3v2Frame) tag.getFrame(
-          "TCON"
-        )).getBody();
+        "TCON"
+      )).getBody();
       assertEquals("(1)", body.getText());
 
       //Set Integral value > 125 directly, gets converted
       tag.setField(FieldKey.GENRE, "127");
       assertEquals("Drum & Bass", tag.getFirst(FieldKey.GENRE));
       body = (FrameBodyTCON) ((AbstractID3v2Frame) tag.getFrame(
-          "TCON"
-        )).getBody();
+        "TCON"
+      )).getBody();
       // because we explicitly set integer value, use it
       assertEquals("(127)", body.getText());
 
@@ -454,8 +423,8 @@ public class Issue173Test extends AbstractTestCase {
       tag.setField(FieldKey.GENRE, "Drum & Bass");
       assertEquals("Drum & Bass", tag.getFirst(FieldKey.GENRE));
       body = (FrameBodyTCON) ((AbstractID3v2Frame) tag.getFrame(
-          "TCON"
-        )).getBody();
+        "TCON"
+      )).getBody();
       // because we actually set string, write string instead of integer
       assertEquals("Drum & Bass", body.getText());
 
@@ -463,8 +432,8 @@ public class Issue173Test extends AbstractTestCase {
       tag.setField(FieldKey.GENRE, "250");
       assertEquals("250", tag.getFirst(FieldKey.GENRE));
       body = (FrameBodyTCON) ((AbstractID3v2Frame) tag.getFrame(
-          "TCON"
-        )).getBody();
+        "TCON"
+      )).getBody();
       assertEquals("250", body.getText());
 
       tag.setField(FieldKey.GENRE, "Rock");
@@ -474,8 +443,8 @@ public class Issue173Test extends AbstractTestCase {
       assertEquals("Musical", tag.getValue(FieldKey.GENRE, 1));
 
       body = (FrameBodyTCON) ((AbstractID3v2Frame) tag.getFrame(
-          "TCON"
-        )).getBody();
+        "TCON"
+      )).getBody();
       assertEquals("(17)(77)", body.getText());
       tag.setField(FieldKey.GENRE, "1");
       tag.addField(FieldKey.GENRE, "2");
@@ -486,8 +455,8 @@ public class Issue173Test extends AbstractTestCase {
       assertEquals("Classic Rock", results.get(0));
       assertEquals("Country", results.get(1));
       body = (FrameBodyTCON) ((AbstractID3v2Frame) tag.getFrame(
-          "TCON"
-        )).getBody();
+        "TCON"
+      )).getBody();
       assertEquals("(1)(2)", body.getText());
       mp3File.commit();
       mp3File = AudioFileIO.read(testFile);
@@ -497,13 +466,13 @@ public class Issue173Test extends AbstractTestCase {
       assertEquals("Classic Rock", results.get(0));
       assertEquals("Country", results.get(1));
       body = (FrameBodyTCON) ((AbstractID3v2Frame) tag.getFrame(
-          "TCON"
-        )).getBody();
+        "TCON"
+      )).getBody();
       tag.setField(FieldKey.GENRE, "Remix");
       tag.addField(FieldKey.GENRE, "CR");
       body = (FrameBodyTCON) ((AbstractID3v2Frame) tag.getFrame(
-          "TCON"
-        )).getBody();
+        "TCON"
+      )).getBody();
       assertEquals("(RX)(CR)", body.getText());
       assertEquals("Remix", tag.getFirst(FieldKey.GENRE));
       assertEquals("Remix", tag.getValue(FieldKey.GENRE, 0));
@@ -512,26 +481,26 @@ public class Issue173Test extends AbstractTestCase {
       mp3File = AudioFileIO.read(testFile);
       tag = (ID3v23Tag) mp3File.getTag();
       body = (FrameBodyTCON) ((AbstractID3v2Frame) tag.getFrame(
-          "TCON"
-        )).getBody();
+        "TCON"
+      )).getBody();
       assertEquals("(RX)(CR)", body.getText());
 
       tag.setField(FieldKey.GENRE, "Cover");
       body = (FrameBodyTCON) ((AbstractID3v2Frame) tag.getFrame(
-          "TCON"
-        )).getBody();
+        "TCON"
+      )).getBody();
       assertEquals("(CR)", body.getText());
       tag.addField(FieldKey.GENRE, "FlapFlap");
       assertEquals("Cover", tag.getFirst(FieldKey.GENRE));
       body = (FrameBodyTCON) ((AbstractID3v2Frame) tag.getFrame(
-          "TCON"
-        )).getBody();
+        "TCON"
+      )).getBody();
       assertEquals("(CR)\u0000FlapFlap", body.getText());
       tag.setField(FieldKey.GENRE, "Country Shoegaze");
       assertEquals("Country Shoegaze", tag.getFirst(FieldKey.GENRE));
       body = (FrameBodyTCON) ((AbstractID3v2Frame) tag.getFrame(
-          "TCON"
-        )).getBody();
+        "TCON"
+      )).getBody();
       //TODO cannot handle setting v23 refinements in generic interface, but does that really matter
       //ID3v24Tag doesnt really have the convcept OutOfMemoryError refinements just multiple values
       assertEquals("Country Shoegaze", body.getText());

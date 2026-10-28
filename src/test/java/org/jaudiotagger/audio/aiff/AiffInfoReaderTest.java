@@ -1,14 +1,13 @@
 package org.jaudiotagger.audio.aiff;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-
 import java.io.*;
 import java.nio.channels.FileChannel;
 import java.nio.charset.StandardCharsets;
 import org.jaudiotagger.audio.exceptions.CannotReadException;
 import org.jaudiotagger.audio.generic.GenericAudioHeader;
 import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 public class AiffInfoReaderTest {
 
@@ -35,7 +34,7 @@ public class AiffInfoReaderTest {
         fc,
         aiff.getAbsolutePath()
       );
-      assertTrue(audioHeader instanceof AiffAudioHeader);
+      assertInstanceOf(AiffAudioHeader.class, audioHeader);
       final AiffAudioHeader aiffAudioHeader = (AiffAudioHeader) audioHeader;
       assertEquals(author, aiffAudioHeader.getAuthor());
       assertEquals(name, aiffAudioHeader.getName());
@@ -127,4 +126,5 @@ public class AiffInfoReaderTest {
     }
     return tempFile;
   }
+
 }

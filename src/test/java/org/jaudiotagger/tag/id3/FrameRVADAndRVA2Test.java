@@ -155,7 +155,7 @@ public class FrameRVADAndRVA2Test extends AbstractTestCase {
 
   @Test
   public void testSaveToFile() throws Exception {
-    File testFile = AbstractTestCase.copyAudioToTmp("testV1.mp3");
+    File testFile = copyAudioToTmp("testV1.mp3");
     MP3File mp3File = new MP3File(testFile);
 
     //Create and Save
@@ -171,7 +171,7 @@ public class FrameRVADAndRVA2Test extends AbstractTestCase {
       .getFrame(ID3v24Frames.FRAME_ID_RELATIVE_VOLUME_ADJUSTMENT2);
     assertNotNull(frame);
     FrameBodyRVA2 body = (FrameBodyRVA2) frame.getBody();
-    assertTrue(body instanceof FrameBodyRVA2);
+    assertInstanceOf(FrameBodyRVA2.class, body);
     assertNull(
       cmp(
         FrameBodyRVA2Test.TEST_BYTES,
@@ -182,7 +182,7 @@ public class FrameRVADAndRVA2Test extends AbstractTestCase {
 
   @Test
   public void testConvertV24ToV23() throws Exception {
-    File testFile = AbstractTestCase.copyAudioToTmp("testV1.mp3");
+    File testFile = copyAudioToTmp("testV1.mp3");
     MP3File mp3File = new MP3File(testFile);
 
     //Create and Save
@@ -204,7 +204,7 @@ public class FrameRVADAndRVA2Test extends AbstractTestCase {
       .getFrame(ID3v23Frames.FRAME_ID_V3_RELATIVE_VOLUME_ADJUSTMENT);
     assertNotNull(frame);
     FrameBodyRVAD body = (FrameBodyRVAD) frame.getBody();
-    assertTrue(body instanceof FrameBodyRVAD);
+    assertInstanceOf(FrameBodyRVAD.class, body);
     assertNull(
       cmp(
         FrameBodyRVA2Test.TEST_BYTES,
@@ -215,7 +215,7 @@ public class FrameRVADAndRVA2Test extends AbstractTestCase {
 
   @Test
   public void testConvertV24ToV22() throws Exception {
-    File testFile = AbstractTestCase.copyAudioToTmp("testV1.mp3");
+    File testFile = copyAudioToTmp("testV1.mp3");
     MP3File mp3File = new MP3File(testFile);
 
     //Create and Save
@@ -237,12 +237,12 @@ public class FrameRVADAndRVA2Test extends AbstractTestCase {
       .getFrame(ID3v22Frames.FRAME_ID_V2_RELATIVE_VOLUME_ADJUSTMENT);
     assertNotNull(frame);
     FrameBodyRVAD body = (FrameBodyRVAD) frame.getBody();
-    assertTrue(body instanceof FrameBodyRVAD);
+    assertInstanceOf(FrameBodyRVAD.class, body);
   }
 
   @Test
   public void testConvertV22ToV24() throws Exception {
-    File testFile = AbstractTestCase.copyAudioToTmp("testV1.mp3");
+    File testFile = copyAudioToTmp("testV1.mp3");
     MP3File mp3File = new MP3File(testFile);
 
     //Create and Save
@@ -266,7 +266,7 @@ public class FrameRVADAndRVA2Test extends AbstractTestCase {
       .getFrame(ID3v24Frames.FRAME_ID_RELATIVE_VOLUME_ADJUSTMENT2);
     assertNotNull(frame);
     FrameBodyRVA2 body = (FrameBodyRVA2) frame.getBody();
-    assertTrue(body instanceof FrameBodyRVA2);
+    assertInstanceOf(FrameBodyRVA2.class, body);
     assertNull(
       cmp(
         FrameBodyRVADTest.TEST_BYTES,

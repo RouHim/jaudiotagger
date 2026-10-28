@@ -19,7 +19,8 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
 
 import java.io.File;
-import org.jaudiotagger.AbstractTestCase;
+
+import org.jaudiotagger.AbstractBaseTestCase;
 import org.jaudiotagger.audio.mp3.MP3File;
 import org.jaudiotagger.tag.TagOptionSingleton;
 import org.jaudiotagger.tag.id3.framebody.FrameBodyTPE1;
@@ -28,7 +29,7 @@ import org.jaudiotagger.tag.id3.valuepair.TextEncoding;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-public class Unicode24TagTest {
+public class Unicode24TagTest extends AbstractBaseTestCase {
 
   /////////////////////////////////////////////////////////////////////////
   // TestCase classes to override
@@ -45,7 +46,8 @@ public class Unicode24TagTest {
   /**
    *
    */
-  protected void tearDown() {}
+  protected void tearDown() {
+  }
 
   /**
    *
@@ -62,9 +64,9 @@ public class Unicode24TagTest {
    */
   @Test
   public void testCreateISO8859EncodedSizeTerminatedString() throws Exception {
-    File testFile = AbstractTestCase.copyAudioToTmp(
+    File testFile = copyAudioToTmp(
       "testV1.mp3",
-      new File("testISO8859.mp3")
+      "testISO8859.mp3"
     );
     MP3File mp3File = new MP3File(testFile);
 
@@ -109,9 +111,9 @@ public class Unicode24TagTest {
   @Test
   public void testCreateUTF16BOMLEEncodedSizeTerminatedString()
     throws Exception {
-    File testFile = AbstractTestCase.copyAudioToTmp(
+    File testFile = copyAudioToTmp(
       "testV1.mp3",
-      new File("testutf16bomle.mp3")
+      "testutf16bomle.mp3"
     );
     MP3File mp3File = new MP3File(testFile);
 
@@ -158,9 +160,9 @@ public class Unicode24TagTest {
   public void testCreateUTF16BOMBEEncodedSizeTerminatedString()
     throws Exception {
     TagOptionSingleton.getInstance().setEncodeUTF16BomAsLittleEndian(false);
-    File testFile = AbstractTestCase.copyAudioToTmp(
+    File testFile = copyAudioToTmp(
       "testV1.mp3",
-      new File("testutf16bombe.mp3")
+      "testutf16bombe.mp3"
     );
     MP3File mp3File = new MP3File(testFile);
 
@@ -206,9 +208,9 @@ public class Unicode24TagTest {
   @Test
   public void testCreateUTF16BOMLEAutoEncodedSizeTerminatedString()
     throws Exception {
-    File testFile = AbstractTestCase.copyAudioToTmp(
+    File testFile = copyAudioToTmp(
       "testV1.mp3",
-      new File("testutf16-2.mp3")
+      "testutf16-2.mp3"
     );
     MP3File mp3File = new MP3File(testFile);
 
@@ -258,9 +260,9 @@ public class Unicode24TagTest {
    */
   @Test
   public void testCreateUTF8AutoEncodedSizeTerminatedString() throws Exception {
-    File testFile = AbstractTestCase.copyAudioToTmp(
+    File testFile = copyAudioToTmp(
       "testV1.mp3",
-      new File("testutf8.mp3")
+      "testutf8.mp3"
     );
     MP3File mp3File = new MP3File(testFile);
 
@@ -313,9 +315,9 @@ public class Unicode24TagTest {
    */
   @Test
   public void testCreateUTF16BEEncodedSizeTerminatedString() throws Exception {
-    File testFile = AbstractTestCase.copyAudioToTmp(
+    File testFile = copyAudioToTmp(
       "testV1.mp3",
-      new File("testutf16be.mp3")
+      "testutf16be.mp3"
     );
     MP3File mp3File = new MP3File(testFile);
 
@@ -365,9 +367,9 @@ public class Unicode24TagTest {
    */
   @Test
   public void testCreateUTF8EncodedSizeTerminatedString() throws Exception {
-    File testFile = AbstractTestCase.copyAudioToTmp(
+    File testFile = copyAudioToTmp(
       "testV1.mp3",
-      new File("testutf8enc.mp3")
+      "testutf8enc.mp3"
     );
     MP3File mp3File = new MP3File(testFile);
 
@@ -412,7 +414,7 @@ public class Unicode24TagTest {
 
   @Test
   public void testv24TagsWithUTF8EncodingMaintainedOnSave() throws Exception {
-    File testFile = AbstractTestCase.copyAudioToTmp(
+    File testFile = prependAudioToTmp(
       "issue109-2.id3",
       "testV1.mp3"
     );
@@ -447,7 +449,7 @@ public class Unicode24TagTest {
 
   @Test
   public void testv24TagsWithUTF8OverriddenByDefaultOnSave() throws Exception {
-    File testFile = AbstractTestCase.copyAudioToTmp(
+    File testFile = prependAudioToTmp(
       "issue109-2.id3",
       "testV1.mp3"
     );
@@ -488,7 +490,7 @@ public class Unicode24TagTest {
 
   @Test
   public void testv24TagsWithUTF8OverriddenByDefaultsOnSave() throws Exception {
-    File testFile = AbstractTestCase.copyAudioToTmp(
+    File testFile = prependAudioToTmp(
       "issue109-2.id3",
       "testV1.mp3"
     );

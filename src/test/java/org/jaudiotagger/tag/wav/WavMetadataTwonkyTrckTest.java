@@ -3,7 +3,6 @@ package org.jaudiotagger.tag.wav;
 import static org.junit.jupiter.api.Assertions.*;
 
 import java.io.File;
-import org.jaudiotagger.AbstractTestCase;
 import org.jaudiotagger.FilePermissionsTest;
 import org.jaudiotagger.audio.AudioFile;
 import org.jaudiotagger.audio.AudioFileIO;
@@ -18,8 +17,9 @@ import org.jaudiotagger.tag.TagOptionSingleton;
 import org.jaudiotagger.tag.id3.AbstractID3v2Tag;
 import org.jaudiotagger.tag.id3.ID3v23Tag;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.condition.EnabledIf;
 
-public class WavMetadataTwonkyTrckTest extends AbstractTestCase {
+public class WavMetadataTwonkyTrckTest extends FilePermissionsTest {
 
   /**
    * Read file with metadata added by MediaMonkey
@@ -36,7 +36,7 @@ public class WavMetadataTwonkyTrckTest extends AbstractTestCase {
     TagOptionSingleton.getInstance().setWriteWavForTwonky(true);
     Exception exceptionCaught = null;
     try {
-      File testFile = AbstractTestCase.copyAudioToTmp("test123.wav");
+      File testFile = copyAudioToTmp("test123.wav");
       AudioFile f = AudioFileIO.read(testFile);
       System.out.println(f.getAudioHeader());
       System.out.println(f.getTag());
@@ -44,7 +44,7 @@ public class WavMetadataTwonkyTrckTest extends AbstractTestCase {
       assertEquals("1", f.getAudioHeader().getChannels());
       assertEquals("22050", f.getAudioHeader().getSampleRate());
 
-      assertTrue(f.getTag() instanceof WavTag);
+      assertInstanceOf(WavTag.class, f.getTag());
       WavTag tag = (WavTag) f.getTag();
 
       //Ease of use methods for common fields
@@ -76,7 +76,6 @@ public class WavMetadataTwonkyTrckTest extends AbstractTestCase {
       assertEquals(0L, tag.getStartLocationInFileOfId3Chunk());
       assertEquals(0L, tag.getSizeOfID3TagIncludingChunkHeader());
     } catch (Exception e) {
-      e.printStackTrace();
       exceptionCaught = e;
     }
     assertNull(exceptionCaught);
@@ -100,9 +99,9 @@ public class WavMetadataTwonkyTrckTest extends AbstractTestCase {
     TagOptionSingleton.getInstance().setWriteWavForTwonky(true);
     Exception exceptionCaught = null;
     try {
-      File testFile = AbstractTestCase.copyAudioToTmp(
+      File testFile = copyAudioToTmp(
         "test123.wav",
-        new File("test123ModifyMetadataSaveBoth.wav")
+        "test123ModifyMetadataSaveBoth.wav"
       );
       AudioFile f = AudioFileIO.read(testFile);
       System.out.println(f.getAudioHeader());
@@ -111,7 +110,7 @@ public class WavMetadataTwonkyTrckTest extends AbstractTestCase {
       assertEquals("1", f.getAudioHeader().getChannels());
       assertEquals("22050", f.getAudioHeader().getSampleRate());
 
-      assertTrue(f.getTag() instanceof WavTag);
+      assertInstanceOf(WavTag.class, f.getTag());
       WavTag tag = (WavTag) f.getTag();
 
       assertTrue(tag.isExistingInfoTag());
@@ -137,7 +136,7 @@ public class WavMetadataTwonkyTrckTest extends AbstractTestCase {
 
       //Read modified metadata now in file
       f = AudioFileIO.read(testFile);
-      assertTrue(f.getTag() instanceof WavTag);
+      assertInstanceOf(WavTag.class, f.getTag());
       tag = (WavTag) f.getTag();
       System.out.println(tag.getInfoTag());
       assertEquals("fred", tag.getFirst(FieldKey.ARTIST));
@@ -162,7 +161,6 @@ public class WavMetadataTwonkyTrckTest extends AbstractTestCase {
       f = AudioFileIO.read(testFile);
       System.out.println(f.getTag());
     } catch (Exception e) {
-      e.printStackTrace();
       exceptionCaught = e;
     }
     assertNull(exceptionCaught);
@@ -183,9 +181,9 @@ public class WavMetadataTwonkyTrckTest extends AbstractTestCase {
     TagOptionSingleton.getInstance().setWriteWavForTwonky(true);
     Exception exceptionCaught = null;
     try {
-      File testFile = AbstractTestCase.copyAudioToTmp(
+      File testFile = copyAudioToTmp(
         "test123.wav",
-        new File("test123ModifyMoreMetadataInfoId3.wav")
+        "test123ModifyMoreMetadataInfoId3.wav"
       );
       AudioFile f = AudioFileIO.read(testFile);
       System.out.println(f.getAudioHeader());
@@ -195,7 +193,7 @@ public class WavMetadataTwonkyTrckTest extends AbstractTestCase {
       assertEquals("1", f.getAudioHeader().getChannels());
       assertEquals("22050", f.getAudioHeader().getSampleRate());
 
-      assertTrue(f.getTag() instanceof WavTag);
+      assertInstanceOf(WavTag.class, f.getTag());
       WavTag tag = (WavTag) f.getTag();
 
       assertEquals(
@@ -227,7 +225,7 @@ public class WavMetadataTwonkyTrckTest extends AbstractTestCase {
 
       //Read modified metadata now in file
       f = AudioFileIO.read(testFile);
-      assertTrue(f.getTag() instanceof WavTag);
+      assertInstanceOf(WavTag.class, f.getTag());
       tag = (WavTag) f.getTag();
       System.out.println(f.getTag());
 
@@ -261,7 +259,6 @@ public class WavMetadataTwonkyTrckTest extends AbstractTestCase {
       f = AudioFileIO.read(testFile);
       System.out.println(tag.getInfoTag());
     } catch (Exception e) {
-      e.printStackTrace();
       exceptionCaught = e;
     }
     assertNull(exceptionCaught);
@@ -279,9 +276,9 @@ public class WavMetadataTwonkyTrckTest extends AbstractTestCase {
     TagOptionSingleton.getInstance().setWriteWavForTwonky(true);
     Exception exceptionCaught = null;
     try {
-      File testFile = AbstractTestCase.copyAudioToTmp(
+      File testFile = copyAudioToTmp(
         "test123.wav",
-        new File("test123ModifyMoreMetadataId3Info.wav")
+        "test123ModifyMoreMetadataId3Info.wav"
       );
       AudioFile f = AudioFileIO.read(testFile);
       System.out.println(f.getAudioHeader());
@@ -291,7 +288,7 @@ public class WavMetadataTwonkyTrckTest extends AbstractTestCase {
       assertEquals("1", f.getAudioHeader().getChannels());
       assertEquals("22050", f.getAudioHeader().getSampleRate());
 
-      assertTrue(f.getTag() instanceof WavTag);
+      assertInstanceOf(WavTag.class, f.getTag());
       WavTag tag = (WavTag) f.getTag();
 
       assertEquals(
@@ -323,7 +320,7 @@ public class WavMetadataTwonkyTrckTest extends AbstractTestCase {
 
       //Read modified metadata now in file
       f = AudioFileIO.read(testFile);
-      assertTrue(f.getTag() instanceof WavTag);
+      assertInstanceOf(WavTag.class, f.getTag());
       tag = (WavTag) f.getTag();
       System.out.println(tag.getInfoTag());
       assertEquals(
@@ -367,7 +364,6 @@ public class WavMetadataTwonkyTrckTest extends AbstractTestCase {
       assertEquals(438L, tag.getInfoTag().getSizeOfTag());
       assertEquals(926668L, testFile.length());
     } catch (Exception e) {
-      e.printStackTrace();
       exceptionCaught = e;
     }
     assertNull(exceptionCaught);
@@ -385,9 +381,9 @@ public class WavMetadataTwonkyTrckTest extends AbstractTestCase {
     TagOptionSingleton.getInstance().setWriteWavForTwonky(true);
     Exception exceptionCaught = null;
     try {
-      File testFile = AbstractTestCase.copyAudioToTmp(
+      File testFile = copyAudioToTmp(
         "test123.wav",
-        new File("test123DeleteMetadata.wav")
+        "test123DeleteMetadata.wav"
       );
       AudioFile f = AudioFileIO.read(testFile);
       System.out.println(f.getAudioHeader());
@@ -395,7 +391,7 @@ public class WavMetadataTwonkyTrckTest extends AbstractTestCase {
       assertEquals("1", f.getAudioHeader().getChannels());
       assertEquals("22050", f.getAudioHeader().getSampleRate());
 
-      assertTrue(f.getTag() instanceof WavTag);
+      assertInstanceOf(WavTag.class, f.getTag());
       WavTag tag = (WavTag) f.getTag();
       assertTrue(tag.isInfoTag());
       assertTrue(tag.isID3Tag());
@@ -422,7 +418,7 @@ public class WavMetadataTwonkyTrckTest extends AbstractTestCase {
 
       //Read modified metadata now in file
       f = AudioFileIO.read(testFile);
-      assertTrue(f.getTag() instanceof WavTag);
+      assertInstanceOf(WavTag.class, f.getTag());
       tag = (WavTag) f.getTag();
       assertTrue(tag.isInfoTag());
       assertTrue(tag.isID3Tag());
@@ -436,7 +432,6 @@ public class WavMetadataTwonkyTrckTest extends AbstractTestCase {
       assertEquals(0L, tag.getStartLocationInFileOfId3Chunk());
       assertEquals(0L, tag.getSizeOfID3TagIncludingChunkHeader());
     } catch (Exception e) {
-      e.printStackTrace();
       exceptionCaught = e;
     }
     assertNull(exceptionCaught);
@@ -454,9 +449,9 @@ public class WavMetadataTwonkyTrckTest extends AbstractTestCase {
     TagOptionSingleton.getInstance().setWriteWavForTwonky(true);
     Exception exceptionCaught = null;
     try {
-      File testFile = AbstractTestCase.copyAudioToTmp(
+      File testFile = copyAudioToTmp(
         "test126.wav",
-        new File("test126DeleteId3Metadata.wav")
+        "test126DeleteId3Metadata.wav"
       );
       AudioFile f = AudioFileIO.read(testFile);
       System.out.println(f.getAudioHeader());
@@ -464,7 +459,7 @@ public class WavMetadataTwonkyTrckTest extends AbstractTestCase {
       assertEquals("1", f.getAudioHeader().getChannels());
       assertEquals("22050", f.getAudioHeader().getSampleRate());
 
-      assertTrue(f.getTag() instanceof WavTag);
+      assertInstanceOf(WavTag.class, f.getTag());
       WavTag tag = (WavTag) f.getTag();
       assertTrue(tag.isInfoTag());
       assertTrue(tag.isID3Tag());
@@ -485,7 +480,7 @@ public class WavMetadataTwonkyTrckTest extends AbstractTestCase {
 
       //Read modified metadata now in file
       f = AudioFileIO.read(testFile);
-      assertTrue(f.getTag() instanceof WavTag);
+      assertInstanceOf(WavTag.class, f.getTag());
       tag = (WavTag) f.getTag();
       assertTrue(tag.isInfoTag());
       assertTrue(tag.isID3Tag());
@@ -499,7 +494,6 @@ public class WavMetadataTwonkyTrckTest extends AbstractTestCase {
       assertEquals(0L, tag.getStartLocationInFileOfId3Chunk());
       assertEquals(0L, tag.getSizeOfID3TagIncludingChunkHeader());
     } catch (Exception e) {
-      e.printStackTrace();
       exceptionCaught = e;
     }
     assertNull(exceptionCaught);
@@ -520,7 +514,7 @@ public class WavMetadataTwonkyTrckTest extends AbstractTestCase {
     TagOptionSingleton.getInstance().setWriteWavForTwonky(true);
     Exception exceptionCaught = null;
     try {
-      File testFile = AbstractTestCase.copyAudioToTmp("test125.wav");
+      File testFile = copyAudioToTmp("test125.wav");
       AudioFile f = AudioFileIO.read(testFile);
       System.out.println(f.getAudioHeader());
       System.out.println(f.getTag());
@@ -528,7 +522,7 @@ public class WavMetadataTwonkyTrckTest extends AbstractTestCase {
       assertEquals("1", f.getAudioHeader().getChannels());
       assertEquals("22050", f.getAudioHeader().getSampleRate());
 
-      assertTrue(f.getTag() instanceof WavTag);
+      assertInstanceOf(WavTag.class, f.getTag());
       WavTag tag = (WavTag) f.getTag();
 
       //Ease of use methods for common fields
@@ -552,7 +546,7 @@ public class WavMetadataTwonkyTrckTest extends AbstractTestCase {
 
       assertTrue(tag.isID3Tag());
       AbstractID3v2Tag id3tag = tag.getID3Tag();
-      assertTrue(id3tag instanceof ID3v23Tag);
+      assertInstanceOf(ID3v23Tag.class, id3tag);
       assertEquals("id3artistName", id3tag.getFirst(FieldKey.ARTIST));
       assertEquals("id3albumName", id3tag.getFirst(FieldKey.ALBUM));
       assertEquals("test123", id3tag.getFirst(FieldKey.TITLE));
@@ -574,7 +568,6 @@ public class WavMetadataTwonkyTrckTest extends AbstractTestCase {
       assertEquals(926264L, tag.getStartLocationInFileOfId3Chunk());
       assertEquals(243L, tag.getSizeOfID3TagIncludingChunkHeader());
     } catch (Exception e) {
-      e.printStackTrace();
       exceptionCaught = e;
     }
     assertNull(exceptionCaught);
@@ -596,9 +589,9 @@ public class WavMetadataTwonkyTrckTest extends AbstractTestCase {
 
     Exception exceptionCaught = null;
     try {
-      File testFile = AbstractTestCase.copyAudioToTmp(
+      File testFile = copyAudioToTmp(
         "test125.wav",
-        new File("test125DeleteMetadata.wav")
+        "test125DeleteMetadata.wav"
       );
       AudioFile f = AudioFileIO.read(testFile);
       System.out.println(f.getAudioHeader());
@@ -606,7 +599,7 @@ public class WavMetadataTwonkyTrckTest extends AbstractTestCase {
       assertEquals("1", f.getAudioHeader().getChannels());
       assertEquals("22050", f.getAudioHeader().getSampleRate());
 
-      assertTrue(f.getTag() instanceof WavTag);
+      assertInstanceOf(WavTag.class, f.getTag());
       WavTag tag = (WavTag) f.getTag();
       assertTrue(tag.isInfoTag());
       assertTrue(tag.isID3Tag());
@@ -620,14 +613,13 @@ public class WavMetadataTwonkyTrckTest extends AbstractTestCase {
 
       //Read modified metadata now in file
       f = AudioFileIO.read(testFile);
-      assertTrue(f.getTag() instanceof WavTag);
+      assertInstanceOf(WavTag.class, f.getTag());
       tag = (WavTag) f.getTag();
       assertTrue(tag.isInfoTag());
       assertTrue(tag.isID3Tag());
       assertFalse(tag.isExistingInfoTag());
       assertFalse(tag.isExistingId3Tag());
     } catch (Exception e) {
-      e.printStackTrace();
       exceptionCaught = e;
     }
     assertNull(exceptionCaught);
@@ -645,7 +637,7 @@ public class WavMetadataTwonkyTrckTest extends AbstractTestCase {
           WavOptions.READ_INFO_ONLY
         );
         TagOptionSingleton.getInstance().setWriteWavForTwonky(true);
-        File testFile = AbstractTestCase.copyAudioToTmp("test125.wav");
+        File testFile = copyAudioToTmp("test125.wav");
         AudioFile f = AudioFileIO.read(testFile);
         Tag tag = f.getTag();
         //Ease of use methods for common fields
@@ -663,7 +655,7 @@ public class WavMetadataTwonkyTrckTest extends AbstractTestCase {
           WavOptions.READ_ID3_ONLY
         );
         TagOptionSingleton.getInstance().setWriteWavForTwonky(true);
-        File testFile = AbstractTestCase.copyAudioToTmp("test125.wav");
+        File testFile = copyAudioToTmp("test125.wav");
         AudioFile f = AudioFileIO.read(testFile);
         Tag tag = f.getTag();
         //Ease of use methods for common fields
@@ -681,7 +673,7 @@ public class WavMetadataTwonkyTrckTest extends AbstractTestCase {
           WavOptions.READ_ID3_UNLESS_ONLY_INFO
         );
         TagOptionSingleton.getInstance().setWriteWavForTwonky(true);
-        File testFile = AbstractTestCase.copyAudioToTmp("test125.wav");
+        File testFile = copyAudioToTmp("test125.wav");
         AudioFile f = AudioFileIO.read(testFile);
         Tag tag = f.getTag();
         //Ease of use methods for common fields
@@ -699,7 +691,7 @@ public class WavMetadataTwonkyTrckTest extends AbstractTestCase {
           WavOptions.READ_INFO_UNLESS_ONLY_ID3
         );
         TagOptionSingleton.getInstance().setWriteWavForTwonky(true);
-        File testFile = AbstractTestCase.copyAudioToTmp("test125.wav");
+        File testFile = copyAudioToTmp("test125.wav");
         AudioFile f = AudioFileIO.read(testFile);
         Tag tag = f.getTag();
         //Ease of use methods for common fields
@@ -712,7 +704,6 @@ public class WavMetadataTwonkyTrckTest extends AbstractTestCase {
         assertEquals("rock\0", tag.getFirst(FieldKey.GENRE));
       }
     } catch (Exception e) {
-      e.printStackTrace();
       exceptionCaught = e;
     }
     assertNull(exceptionCaught);
@@ -737,7 +728,7 @@ public class WavMetadataTwonkyTrckTest extends AbstractTestCase {
         );
 
         TagOptionSingleton.getInstance().setWriteWavForTwonky(true);
-        File testFile = AbstractTestCase.copyAudioToTmp("test123.wav");
+        File testFile = copyAudioToTmp("test123.wav");
         AudioFile f = AudioFileIO.read(testFile);
         Tag tag = f.getTag();
         //Ease of use methods for common fields
@@ -754,7 +745,7 @@ public class WavMetadataTwonkyTrckTest extends AbstractTestCase {
         TagOptionSingleton.getInstance().setWavOptions(
           WavOptions.READ_ID3_ONLY
         );
-        File testFile = AbstractTestCase.copyAudioToTmp("test123.wav");
+        File testFile = copyAudioToTmp("test123.wav");
         AudioFile f = AudioFileIO.read(testFile);
         Tag tag = f.getTag();
         //Ease of use methods for common fields
@@ -776,7 +767,7 @@ public class WavMetadataTwonkyTrckTest extends AbstractTestCase {
         );
         TagOptionSingleton.getInstance().setWriteWavForTwonky(true);
 
-        File testFile = AbstractTestCase.copyAudioToTmp("test123.wav");
+        File testFile = copyAudioToTmp("test123.wav");
         AudioFile f = AudioFileIO.read(testFile);
         Tag tag = f.getTag();
         //Ease of use methods for common fields
@@ -798,7 +789,7 @@ public class WavMetadataTwonkyTrckTest extends AbstractTestCase {
         );
         TagOptionSingleton.getInstance().setWriteWavForTwonky(true);
 
-        File testFile = AbstractTestCase.copyAudioToTmp("test123.wav");
+        File testFile = copyAudioToTmp("test123.wav");
         AudioFile f = AudioFileIO.read(testFile);
         Tag tag = f.getTag();
         //Ease of use methods for common fields
@@ -811,7 +802,6 @@ public class WavMetadataTwonkyTrckTest extends AbstractTestCase {
         assertEquals("rock\0", tag.getFirst(FieldKey.GENRE));
       }
     } catch (Exception e) {
-      e.printStackTrace();
       exceptionCaught = e;
     }
     assertNull(exceptionCaught);
@@ -833,9 +823,9 @@ public class WavMetadataTwonkyTrckTest extends AbstractTestCase {
 
     Exception exceptionCaught = null;
     try {
-      File testFile = AbstractTestCase.copyAudioToTmp(
+      File testFile = copyAudioToTmp(
         "test123.wav",
-        new File("test123ModifyMetadataSaveActive.wav")
+        "test123ModifyMetadataSaveActive.wav"
       );
       AudioFile f = AudioFileIO.read(testFile);
       System.out.println(f.getAudioHeader());
@@ -843,7 +833,7 @@ public class WavMetadataTwonkyTrckTest extends AbstractTestCase {
       assertEquals("1", f.getAudioHeader().getChannels());
       assertEquals("22050", f.getAudioHeader().getSampleRate());
 
-      assertTrue(f.getTag() instanceof WavTag);
+      assertInstanceOf(WavTag.class, f.getTag());
       WavTag tag = (WavTag) f.getTag();
 
       assertTrue(tag.isExistingInfoTag());
@@ -869,7 +859,7 @@ public class WavMetadataTwonkyTrckTest extends AbstractTestCase {
 
       //Read modified metadata now in file
       f = AudioFileIO.read(testFile);
-      assertTrue(f.getTag() instanceof WavTag);
+      assertInstanceOf(WavTag.class, f.getTag());
       tag = (WavTag) f.getTag();
       System.out.println(tag.getInfoTag());
       assertEquals("fred", tag.getFirst(FieldKey.ARTIST));
@@ -894,7 +884,6 @@ public class WavMetadataTwonkyTrckTest extends AbstractTestCase {
       f = AudioFileIO.read(testFile);
       System.out.println(f.getTag());
     } catch (Exception e) {
-      e.printStackTrace();
       exceptionCaught = e;
     }
     assertNull(exceptionCaught);
@@ -916,9 +905,9 @@ public class WavMetadataTwonkyTrckTest extends AbstractTestCase {
 
     Exception exceptionCaught = null;
     try {
-      File testFile = AbstractTestCase.copyAudioToTmp(
+      File testFile = copyAudioToTmp(
         "test123.wav",
-        new File("test123ModifyMoreMetadataSaveActive.wav")
+        "test123ModifyMoreMetadataSaveActive.wav"
       );
       AudioFile f = AudioFileIO.read(testFile);
       System.out.println(f.getAudioHeader());
@@ -926,7 +915,7 @@ public class WavMetadataTwonkyTrckTest extends AbstractTestCase {
       assertEquals("1", f.getAudioHeader().getChannels());
       assertEquals("22050", f.getAudioHeader().getSampleRate());
 
-      assertTrue(f.getTag() instanceof WavTag);
+      assertInstanceOf(WavTag.class, f.getTag());
       WavTag tag = (WavTag) f.getTag();
 
       assertEquals(
@@ -958,7 +947,7 @@ public class WavMetadataTwonkyTrckTest extends AbstractTestCase {
 
       //Read modified metadata now in file
       f = AudioFileIO.read(testFile);
-      assertTrue(f.getTag() instanceof WavTag);
+      assertInstanceOf(WavTag.class, f.getTag());
       tag = (WavTag) f.getTag();
       System.out.println(tag.getInfoTag());
       assertEquals(
@@ -983,7 +972,6 @@ public class WavMetadataTwonkyTrckTest extends AbstractTestCase {
       assertEquals(0L, tag.getStartLocationInFileOfId3Chunk());
       assertEquals(0L, tag.getSizeOfID3TagIncludingChunkHeader());
     } catch (Exception e) {
-      e.printStackTrace();
       exceptionCaught = e;
     }
     assertNull(exceptionCaught);
@@ -1005,9 +993,9 @@ public class WavMetadataTwonkyTrckTest extends AbstractTestCase {
 
     Exception exceptionCaught = null;
     try {
-      File testFile = AbstractTestCase.copyAudioToTmp(
+      File testFile = copyAudioToTmp(
         "test123.wav",
-        new File("test123ModifyMetadataSaveExistingActive.wav")
+        "test123ModifyMetadataSaveExistingActive.wav"
       );
       AudioFile f = AudioFileIO.read(testFile);
       System.out.println(f.getAudioHeader());
@@ -1015,7 +1003,7 @@ public class WavMetadataTwonkyTrckTest extends AbstractTestCase {
       assertEquals("1", f.getAudioHeader().getChannels());
       assertEquals("22050", f.getAudioHeader().getSampleRate());
 
-      assertTrue(f.getTag() instanceof WavTag);
+      assertInstanceOf(WavTag.class, f.getTag());
       WavTag tag = (WavTag) f.getTag();
 
       assertTrue(tag.isExistingInfoTag());
@@ -1041,7 +1029,7 @@ public class WavMetadataTwonkyTrckTest extends AbstractTestCase {
 
       //Read modified metadata now in file
       f = AudioFileIO.read(testFile);
-      assertTrue(f.getTag() instanceof WavTag);
+      assertInstanceOf(WavTag.class, f.getTag());
       tag = (WavTag) f.getTag();
       System.out.println(tag.getInfoTag());
       assertEquals("fred", tag.getFirst(FieldKey.ARTIST));
@@ -1066,7 +1054,6 @@ public class WavMetadataTwonkyTrckTest extends AbstractTestCase {
       f = AudioFileIO.read(testFile);
       System.out.println(f.getTag());
     } catch (Exception e) {
-      e.printStackTrace();
       exceptionCaught = e;
     }
     assertNull(exceptionCaught);
@@ -1088,9 +1075,9 @@ public class WavMetadataTwonkyTrckTest extends AbstractTestCase {
 
     Exception exceptionCaught = null;
     try {
-      File testFile = AbstractTestCase.copyAudioToTmp(
+      File testFile = copyAudioToTmp(
         "test123.wav",
-        new File("test123ModifyMetadataSaveExistingActiveId3.wav")
+        "test123ModifyMetadataSaveExistingActiveId3.wav"
       );
       AudioFile f = AudioFileIO.read(testFile);
       System.out.println(f.getAudioHeader());
@@ -1098,7 +1085,7 @@ public class WavMetadataTwonkyTrckTest extends AbstractTestCase {
       assertEquals("1", f.getAudioHeader().getChannels());
       assertEquals("22050", f.getAudioHeader().getSampleRate());
 
-      assertTrue(f.getTag() instanceof WavTag);
+      assertInstanceOf(WavTag.class, f.getTag());
       WavTag tag = (WavTag) f.getTag();
 
       assertTrue(tag.isExistingInfoTag());
@@ -1125,7 +1112,7 @@ public class WavMetadataTwonkyTrckTest extends AbstractTestCase {
 
       //Read modified metadata now in file
       f = AudioFileIO.read(testFile);
-      assertTrue(f.getTag() instanceof WavTag);
+      assertInstanceOf(WavTag.class, f.getTag());
       tag = (WavTag) f.getTag();
       System.out.println(tag.getInfoTag());
       assertEquals("fred", tag.getFirst(FieldKey.ARTIST));
@@ -1150,7 +1137,6 @@ public class WavMetadataTwonkyTrckTest extends AbstractTestCase {
       f = AudioFileIO.read(testFile);
       System.out.println(f.getTag());
     } catch (Exception e) {
-      e.printStackTrace();
       exceptionCaught = e;
     }
     assertNull(exceptionCaught);
@@ -1171,9 +1157,9 @@ public class WavMetadataTwonkyTrckTest extends AbstractTestCase {
 
     Exception exceptionCaught = null;
     try {
-      File testFile = AbstractTestCase.copyAudioToTmp(
+      File testFile = copyAudioToTmp(
         "test123.wav",
-        new File("test123ModifyMetadataSaveActiveId3.wav")
+        "test123ModifyMetadataSaveActiveId3.wav"
       );
       AudioFile f = AudioFileIO.read(testFile);
       System.out.println(f.getAudioHeader());
@@ -1181,7 +1167,7 @@ public class WavMetadataTwonkyTrckTest extends AbstractTestCase {
       assertEquals("1", f.getAudioHeader().getChannels());
       assertEquals("22050", f.getAudioHeader().getSampleRate());
 
-      assertTrue(f.getTag() instanceof WavTag);
+      assertInstanceOf(WavTag.class, f.getTag());
       WavTag tag = (WavTag) f.getTag();
 
       assertTrue(tag.isExistingInfoTag());
@@ -1208,7 +1194,7 @@ public class WavMetadataTwonkyTrckTest extends AbstractTestCase {
 
       //Read modified metadata now in file
       f = AudioFileIO.read(testFile);
-      assertTrue(f.getTag() instanceof WavTag);
+      assertInstanceOf(WavTag.class, f.getTag());
       tag = (WavTag) f.getTag();
       System.out.println(tag.getInfoTag());
       assertEquals("fred", tag.getFirst(FieldKey.ARTIST));
@@ -1232,7 +1218,6 @@ public class WavMetadataTwonkyTrckTest extends AbstractTestCase {
       f = AudioFileIO.read(testFile);
       System.out.println(f.getTag());
     } catch (Exception e) {
-      e.printStackTrace();
       exceptionCaught = e;
     }
     assertNull(exceptionCaught);
@@ -1254,9 +1239,9 @@ public class WavMetadataTwonkyTrckTest extends AbstractTestCase {
 
     Exception exceptionCaught = null;
     try {
-      File testFile = AbstractTestCase.copyAudioToTmp(
+      File testFile = copyAudioToTmp(
         "test126.wav",
-        new File("test126ModifyMetadataSaveActiveId3.wav")
+        "test126ModifyMetadataSaveActiveId3.wav"
       );
       AudioFile f = AudioFileIO.read(testFile);
       System.out.println(f.getAudioHeader());
@@ -1264,7 +1249,7 @@ public class WavMetadataTwonkyTrckTest extends AbstractTestCase {
       assertEquals("1", f.getAudioHeader().getChannels());
       assertEquals("22050", f.getAudioHeader().getSampleRate());
 
-      assertTrue(f.getTag() instanceof WavTag);
+      assertInstanceOf(WavTag.class, f.getTag());
       WavTag tag = (WavTag) f.getTag();
 
       assertFalse(tag.isExistingInfoTag());
@@ -1285,7 +1270,7 @@ public class WavMetadataTwonkyTrckTest extends AbstractTestCase {
 
       //Read modified metadata now in file
       f = AudioFileIO.read(testFile);
-      assertTrue(f.getTag() instanceof WavTag);
+      assertInstanceOf(WavTag.class, f.getTag());
       tag = (WavTag) f.getTag();
       System.out.println(tag.getInfoTag());
 
@@ -1310,7 +1295,6 @@ public class WavMetadataTwonkyTrckTest extends AbstractTestCase {
       f = AudioFileIO.read(testFile);
       System.out.println(f.getTag());
     } catch (Exception e) {
-      e.printStackTrace();
       exceptionCaught = e;
     }
     assertNull(exceptionCaught);
@@ -1329,9 +1313,9 @@ public class WavMetadataTwonkyTrckTest extends AbstractTestCase {
 
     Exception exceptionCaught = null;
     try {
-      File testFile = AbstractTestCase.copyAudioToTmp(
+      File testFile = copyAudioToTmp(
         "test125.wav",
-        new File("test125ID3OddNumberedActive.wav")
+        "test125ID3OddNumberedActive.wav"
       );
       AudioFile f = AudioFileIO.read(testFile);
       System.out.println(f.getAudioHeader());
@@ -1340,7 +1324,7 @@ public class WavMetadataTwonkyTrckTest extends AbstractTestCase {
       assertEquals("1", f.getAudioHeader().getChannels());
       assertEquals("22050", f.getAudioHeader().getSampleRate());
 
-      assertTrue(f.getTag() instanceof WavTag);
+      assertInstanceOf(WavTag.class, f.getTag());
       WavTag tag = (WavTag) f.getTag();
 
       assertEquals(
@@ -1373,7 +1357,6 @@ public class WavMetadataTwonkyTrckTest extends AbstractTestCase {
       System.out.println(f.getTag());
       assertEquals("a nice long artist s", tag.getFirst(FieldKey.ARTIST));
     } catch (Exception e) {
-      e.printStackTrace();
       exceptionCaught = e;
     }
     assertNull(exceptionCaught);
@@ -1391,9 +1374,9 @@ public class WavMetadataTwonkyTrckTest extends AbstractTestCase {
     TagOptionSingleton.getInstance().setWriteWavForTwonky(true);
     Exception exceptionCaught = null;
     try {
-      File testFile = AbstractTestCase.copyAudioToTmp(
+      File testFile = copyAudioToTmp(
         "test125.wav",
-        new File("test125ID3OddNumberedBoth.wav")
+        "test125ID3OddNumberedBoth.wav"
       );
       AudioFile f = AudioFileIO.read(testFile);
       System.out.println(f.getAudioHeader());
@@ -1402,7 +1385,7 @@ public class WavMetadataTwonkyTrckTest extends AbstractTestCase {
       assertEquals("1", f.getAudioHeader().getChannels());
       assertEquals("22050", f.getAudioHeader().getSampleRate());
 
-      assertTrue(f.getTag() instanceof WavTag);
+      assertInstanceOf(WavTag.class, f.getTag());
       WavTag tag = (WavTag) f.getTag();
 
       assertEquals("id3artistName", tag.getFirst(FieldKey.ARTIST));
@@ -1462,7 +1445,6 @@ public class WavMetadataTwonkyTrckTest extends AbstractTestCase {
 
       assertEquals("a nice long artist s", tag.getFirst(FieldKey.ARTIST));
     } catch (Exception e) {
-      e.printStackTrace();
       exceptionCaught = e;
     }
     assertNull(exceptionCaught);
@@ -1472,12 +1454,8 @@ public class WavMetadataTwonkyTrckTest extends AbstractTestCase {
    * This file has three bytes of padding data at end of file
    */
   @Test
+  @EnabledIf("executeAlsoWithMissingResources") // to be configured in AbsractBaseTestCase
   public void testReadFileWithPaddingAtEndOfListInfoMetadata() {
-    File orig = new File("testdata", "test146.wav");
-    if (!orig.isFile()) {
-      System.err.println("Unable to test file - not available");
-      return;
-    }
 
     TagOptionSingleton.getInstance().setWavOptions(WavOptions.READ_INFO_ONLY);
     TagOptionSingleton.getInstance().setWavSaveOptions(
@@ -1490,7 +1468,7 @@ public class WavMetadataTwonkyTrckTest extends AbstractTestCase {
 
     Exception exceptionCaught = null;
     try {
-      File testFile = AbstractTestCase.copyAudioToTmp("test146.wav");
+      File testFile = copyAudioToTmp("test146.wav");
       AudioFile f = AudioFileIO.read(testFile);
       System.out.println(f.getAudioHeader());
       System.out.println(f.getTag());
@@ -1506,19 +1484,14 @@ public class WavMetadataTwonkyTrckTest extends AbstractTestCase {
       assertEquals("Coffee Pot, Part 2", f.getTag().getFirst(FieldKey.TITLE));
       assertEquals("Hippy", f.getTag().getFirst(FieldKey.ALBUM));
     } catch (Exception e) {
-      e.printStackTrace();
       exceptionCaught = e;
     }
     assertNull(exceptionCaught);
   }
 
   @Test
+  @EnabledIf("executeAlsoWithMissingResources") // to be configured in AbsractBaseTestCase
   public void testNaimRip() {
-    File orig = new File("testdata", "test149.wav");
-    if (!orig.isFile()) {
-      System.err.println("Unable to test file - not available");
-      return;
-    }
 
     TagOptionSingleton.getInstance().setWavOptions(
       WavOptions.READ_ID3_UNLESS_ONLY_INFO
@@ -1529,12 +1502,11 @@ public class WavMetadataTwonkyTrckTest extends AbstractTestCase {
 
     Exception exceptionCaught = null;
     try {
-      File testFile = AbstractTestCase.copyAudioToTmp("test149.wav");
+      File testFile = copyAudioToTmp("test149.wav");
       AudioFile f = AudioFileIO.read(testFile);
       System.out.println(f.getAudioHeader());
       System.out.println(f.getTag());
     } catch (Exception e) {
-      e.printStackTrace();
       exceptionCaught = e;
     }
     assertNull(exceptionCaught);
@@ -1542,11 +1514,6 @@ public class WavMetadataTwonkyTrckTest extends AbstractTestCase {
 
   @Test
   public void testCreationOfDefaultTag() {
-    File orig = new File("testdata", "test126.wav");
-    if (!orig.isFile()) {
-      System.err.println("Unable to test file - not available");
-      return;
-    }
 
     TagOptionSingleton.getInstance().setWavOptions(
       WavOptions.READ_ID3_UNLESS_ONLY_INFO
@@ -1554,26 +1521,21 @@ public class WavMetadataTwonkyTrckTest extends AbstractTestCase {
     TagOptionSingleton.getInstance().setWriteWavForTwonky(true);
     Exception exceptionCaught = null;
     try {
-      File testFile = AbstractTestCase.copyAudioToTmp("test126.wav");
+      File testFile = copyAudioToTmp("test126.wav");
       AudioFile f = AudioFileIO.read(testFile);
       System.out.println(f.getAudioHeader());
       System.out.println(f.getTag());
 
       f.createDefaultTag();
     } catch (Exception e) {
-      e.printStackTrace();
       exceptionCaught = e;
     }
     assertNull(exceptionCaught);
   }
 
   @Test
+  @EnabledIf("executeAlsoWithMissingResources") // to be configured in AbsractBaseTestCase
   public void testRip2() {
-    File orig = new File("testdata", "test500.wav");
-    if (!orig.isFile()) {
-      System.err.println("Unable to test file - not available");
-      return;
-    }
 
     TagOptionSingleton.getInstance().setWavOptions(
       WavOptions.READ_ID3_UNLESS_ONLY_INFO
@@ -1584,7 +1546,7 @@ public class WavMetadataTwonkyTrckTest extends AbstractTestCase {
 
     Exception exceptionCaught = null;
     try {
-      File testFile = AbstractTestCase.copyAudioToTmp("test500.wav");
+      File testFile = copyAudioToTmp("test500.wav");
       AudioFile f = AudioFileIO.read(testFile);
 
       System.out.println(f.getAudioHeader());
@@ -1595,19 +1557,14 @@ public class WavMetadataTwonkyTrckTest extends AbstractTestCase {
       System.out.println(f.getAudioHeader());
       System.out.println(f.getTag());
     } catch (Exception e) {
-      e.printStackTrace();
       exceptionCaught = e;
     }
     assertNull(exceptionCaught);
   }
 
   @Test
+  @EnabledIf("executeAlsoWithMissingResources") // to be configured in AbsractBaseTestCase
   public void testRip3() {
-    File orig = new File("testdata", "test501.wav");
-    if (!orig.isFile()) {
-      System.err.println("Unable to test file - not available");
-      return;
-    }
 
     TagOptionSingleton.getInstance().setWavOptions(
       WavOptions.READ_ID3_UNLESS_ONLY_INFO
@@ -1619,25 +1576,20 @@ public class WavMetadataTwonkyTrckTest extends AbstractTestCase {
 
     Exception exceptionCaught = null;
     try {
-      File testFile = AbstractTestCase.copyAudioToTmp("test501.wav");
+      File testFile = copyAudioToTmp("test501.wav");
       AudioFile f = AudioFileIO.read(testFile);
 
       System.out.println(f.getAudioHeader());
       System.out.println(f.getTag());
     } catch (Exception e) {
-      e.printStackTrace();
       exceptionCaught = e;
     }
     assertNull(exceptionCaught);
   }
 
   @Test
+  @EnabledIf("executeAlsoWithMissingResources") // to be configured in AbsractBaseTestCase
   public void testRip4() {
-    File orig = new File("testdata", "test502.wav");
-    if (!orig.isFile()) {
-      System.err.println("Unable to test file - not available");
-      return;
-    }
 
     TagOptionSingleton.getInstance().setWavOptions(
       WavOptions.READ_ID3_UNLESS_ONLY_INFO
@@ -1648,13 +1600,12 @@ public class WavMetadataTwonkyTrckTest extends AbstractTestCase {
 
     Exception exceptionCaught = null;
     try {
-      File testFile = AbstractTestCase.copyAudioToTmp("test502.wav");
+      File testFile = copyAudioToTmp("test502.wav");
       AudioFile f = AudioFileIO.read(testFile);
 
       System.out.println(f.getAudioHeader());
       System.out.println(f.getTag());
     } catch (Exception e) {
-      e.printStackTrace();
       exceptionCaught = e;
     }
     assertNull(exceptionCaught);
@@ -1664,12 +1615,8 @@ public class WavMetadataTwonkyTrckTest extends AbstractTestCase {
    * When chunk header has negative size we know something has gone wrong and should throw exception accordingly
    */
   @Test
+  @EnabledIf("executeAlsoWithMissingResources") // to be configured in AbsractBaseTestCase
   public void testWavWithCorruptDataAfterDataChunkHeaderSize() {
-    File orig = new File("testdata", "test503.wav");
-    if (!orig.isFile()) {
-      System.err.println("Unable to test file - not available");
-      return;
-    }
 
     TagOptionSingleton.getInstance().setWavOptions(
       WavOptions.READ_ID3_UNLESS_ONLY_INFO
@@ -1681,25 +1628,20 @@ public class WavMetadataTwonkyTrckTest extends AbstractTestCase {
 
     Exception exceptionCaught = null;
     try {
-      File testFile = AbstractTestCase.copyAudioToTmp("test503.wav");
+      File testFile = copyAudioToTmp("test503.wav");
       AudioFile f = AudioFileIO.read(testFile);
 
       System.out.println(f.getAudioHeader());
       System.out.println(f.getTag());
     } catch (Exception e) {
-      e.printStackTrace();
       exceptionCaught = e;
     }
     assert (exceptionCaught instanceof CannotReadException);
   }
 
   @Test
+  @EnabledIf("executeAlsoWithMissingResources") // to be configured in AbsractBaseTestCase
   public void testCleanAndThenWriteWavWithCorruptDataChunkHeaderSize() {
-    File orig = new File("testdata", "test504.wav");
-    if (!orig.isFile()) {
-      System.err.println("Unable to test file - not available");
-      return;
-    }
 
     TagOptionSingleton.getInstance().setWavOptions(
       WavOptions.READ_ID3_UNLESS_ONLY_INFO
@@ -1709,15 +1651,14 @@ public class WavMetadataTwonkyTrckTest extends AbstractTestCase {
     );
 
     Exception exceptionCaught = null;
-    File testFile = AbstractTestCase.copyAudioToTmp(
+    File testFile = copyAudioToTmp(
       "test504.wav",
-      new File("test504clean.wav")
+      "test504clean.wav"
     );
     try {
       AudioFile f = AudioFileIO.read(testFile);
       System.out.println(f.getAudioHeader());
     } catch (Exception e) {
-      e.printStackTrace();
       exceptionCaught = e;
     }
 
@@ -1734,19 +1675,14 @@ public class WavMetadataTwonkyTrckTest extends AbstractTestCase {
       System.out.println(f.getAudioHeader());
       System.out.println(f.getTag());
     } catch (Exception e) {
-      e.printStackTrace();
       exceptionCaught2 = e;
     }
     assertNull(exceptionCaught2);
   }
 
   @Test
+  @EnabledIf("executeAlsoWithMissingResources") // to be configured in AbsractBaseTestCase
   public void testWavRead() {
-    File orig = new File("testdata", "test505.wav");
-    if (!orig.isFile()) {
-      System.err.println("Unable to test file - not available");
-      return;
-    }
 
     TagOptionSingleton.getInstance().setWavOptions(
       WavOptions.READ_ID3_UNLESS_ONLY_INFO
@@ -1758,24 +1694,19 @@ public class WavMetadataTwonkyTrckTest extends AbstractTestCase {
 
     Exception exceptionCaught = null;
     try {
-      File testFile = AbstractTestCase.copyAudioToTmp("test505.wav");
+      File testFile = copyAudioToTmp("test505.wav");
       AudioFile f = AudioFileIO.read(testFile);
 
       System.out.println(f.getAudioHeader());
       System.out.println(f.getTag());
     } catch (Exception e) {
-      e.printStackTrace();
       exceptionCaught = e;
     }
   }
 
   @Test
+  @EnabledIf("executeAlsoWithMissingResources") // to be configured in AbsractBaseTestCase
   public void testWavReadNew() {
-    File orig = new File("testdata", "test506.wav");
-    if (!orig.isFile()) {
-      System.err.println("Unable to test file - not available");
-      return;
-    }
 
     TagOptionSingleton.getInstance().setWavOptions(
       WavOptions.READ_ID3_UNLESS_ONLY_INFO
@@ -1787,7 +1718,7 @@ public class WavMetadataTwonkyTrckTest extends AbstractTestCase {
 
     Exception exceptionCaught = null;
     try {
-      File testFile = AbstractTestCase.copyAudioToTmp("test506.wav");
+      File testFile = copyAudioToTmp("test506.wav");
       AudioFile f = AudioFileIO.read(testFile);
 
       System.out.println(f.getAudioHeader());
@@ -1797,38 +1728,33 @@ public class WavMetadataTwonkyTrckTest extends AbstractTestCase {
       f.commit();
       f = AudioFileIO.read(testFile);
     } catch (Exception e) {
-      e.printStackTrace();
       exceptionCaught = e;
     }
-    assertTrue(exceptionCaught instanceof CannotReadException);
+    assertInstanceOf(CannotReadException.class, exceptionCaught);
   }
 
   @Test
   public void testWriteWriteProtectedFileWithCheckDisabled() throws Exception {
-    FilePermissionsTest.runWriteWriteProtectedFileWithCheckDisabled(
+    runWriteWriteProtectedFileWithCheckDisabled(
       "test123.wav"
     );
   }
 
   @Test
   public void testWriteWriteProtectedFileWithCheckEnabled() throws Exception {
-    FilePermissionsTest.runWriteWriteProtectedFileWithCheckEnabled(
+    runWriteWriteProtectedFileWithCheckEnabled(
       "test123.wav"
     );
   }
 
   @Test
   public void testWriteReadOnlyFileWithCheckDisabled() throws Exception {
-    FilePermissionsTest.runWriteReadOnlyFileWithCheckDisabled("test123.wav");
+    runWriteReadOnlyFileWithCheckDisabled("test123.wav");
   }
 
   @Test
+  @EnabledIf("executeAlsoWithMissingResources") // to be configured in AbsractBaseTestCase
   public void testReadJacobPavluk() {
-    File orig = new File("testdata", "GreenLight.wav");
-    if (!orig.isFile()) {
-      System.err.println("Unable to test file - not available");
-      return;
-    }
 
     TagOptionSingleton.getInstance().setWavOptions(
       WavOptions.READ_ID3_UNLESS_ONLY_INFO
@@ -1843,7 +1769,7 @@ public class WavMetadataTwonkyTrckTest extends AbstractTestCase {
 
     Exception exceptionCaught = null;
     try {
-      File testFile = AbstractTestCase.copyAudioToTmp("GreenLight.wav");
+      File testFile = copyAudioToTmp("GreenLight.wav");
       AudioFile f = AudioFileIO.read(testFile);
       System.out.println(f.getAudioHeader());
       System.out.println(f.getTag());
@@ -1854,7 +1780,6 @@ public class WavMetadataTwonkyTrckTest extends AbstractTestCase {
       System.out.println(f.getAudioHeader());
       System.out.println(f.getTag());
     } catch (Exception e) {
-      e.printStackTrace();
       exceptionCaught = e;
     }
   }
@@ -1869,21 +1794,17 @@ public class WavMetadataTwonkyTrckTest extends AbstractTestCase {
     TagOptionSingleton.getInstance().setWavOptions(
       WavOptions.READ_ID3_UNLESS_ONLY_INFO_AND_SYNC
     );
-    File testFile = AbstractTestCase.copyAudioToTmp(
+    File testFile = copyAudioToTmp(
       "bug153.wav",
-      new File("bug153.wav")
+      "bug153.wav"
     );
     AudioFile f = AudioFileIO.read(testFile);
     assertEquals("7", f.getTag().getFirst(FieldKey.TRACK));
   }
 
   @Test
+  @EnabledIf("executeAlsoWithMissingResources") // to be configured in AbsractBaseTestCase
   public void testWavRead2() {
-    File orig = new File("testdata", "test160.wav");
-    if (!orig.isFile()) {
-      System.err.println("Unable to test file - not available");
-      return;
-    }
 
     TagOptionSingleton.getInstance().setWavOptions(
       WavOptions.READ_ID3_UNLESS_ONLY_INFO
@@ -1894,7 +1815,7 @@ public class WavMetadataTwonkyTrckTest extends AbstractTestCase {
 
     Exception exceptionCaught = null;
     try {
-      File testFile = AbstractTestCase.copyAudioToTmp("test160.wav");
+      File testFile = copyAudioToTmp("test160.wav");
       AudioFile f = AudioFileIO.read(testFile);
 
       System.out.println(f.getAudioHeader());
@@ -1904,9 +1825,8 @@ public class WavMetadataTwonkyTrckTest extends AbstractTestCase {
       f.commit();
       f = AudioFileIO.read(testFile);
     } catch (Exception e) {
-      e.printStackTrace();
       exceptionCaught = e;
     }
-    assertTrue(exceptionCaught instanceof CannotReadException);
+    assertInstanceOf(CannotReadException.class, exceptionCaught);
   }
 }

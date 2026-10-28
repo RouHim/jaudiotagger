@@ -10,7 +10,8 @@ import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
-import org.jaudiotagger.AbstractTestCase;
+
+import org.jaudiotagger.AbstractBaseTestCase;
 import org.jaudiotagger.audio.AudioFile;
 import org.jaudiotagger.audio.AudioFileIO;
 import org.jaudiotagger.tag.FieldKey;
@@ -18,7 +19,7 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-public class ConcurrentWritesTest {
+public class ConcurrentWritesTest extends AbstractBaseTestCase {
 
   private static final int THREADS = 100;
   private final File[] files = new File[THREADS];
@@ -26,11 +27,9 @@ public class ConcurrentWritesTest {
   @BeforeEach
   public void setUp() {
     for (int counter = 0; counter < THREADS; counter++) {
-      files[counter] = AbstractTestCase.copyAudioToTmp(
+      files[counter] = copyAudioToTmp(
         "testV25.mp3",
-        new File(
-          ConcurrentWritesTest.class.getSimpleName() + "-" + counter + ".mp3"
-        )
+        ConcurrentWritesTest.class.getSimpleName() + "-" + counter + ".mp3"
       );
     }
   }
@@ -55,13 +54,7 @@ public class ConcurrentWritesTest {
     }
   }
 
-  private static class WriteFileCallable implements Callable<Boolean> {
-
-    private final File file;
-
-    public WriteFileCallable(File file) {
-      this.file = file;
-    }
+  private record WriteFileCallable(File file) implements Callable<Boolean> {
 
     public Boolean call() throws Exception {
       AudioFile audiofile = AudioFileIO.read(file);

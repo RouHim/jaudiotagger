@@ -19,15 +19,10 @@ public class Issue123Test extends AbstractTestCase {
 
   @Test
   public void testWriteJRiverAlbumArtistOgg() {
-    File orig = new File("testdata", "test.ogg");
-    if (!orig.isFile()) {
-      System.err.println("Unable to test file - not available");
-      return;
-    }
 
     Exception ex = null;
     try {
-      File testFile = AbstractTestCase.copyAudioToTmp("test.ogg");
+      File testFile = copyAudioToTmp("test.ogg");
       AudioFile af = AudioFileIO.read(testFile);
       assertNotNull(af.getTag());
       System.out.println(af.getTag());
@@ -240,7 +235,6 @@ public class Issue123Test extends AbstractTestCase {
         "tommy"
       );
     } catch (Exception e) {
-      e.printStackTrace();
       ex = e;
     }
     assertNull(ex);
@@ -248,15 +242,10 @@ public class Issue123Test extends AbstractTestCase {
 
   @Test
   public void testWriteJRiverAlbumArtistFlac() {
-    File orig = new File("testdata", "test.flac");
-    if (!orig.isFile()) {
-      System.err.println("Unable to test file - not available");
-      return;
-    }
 
     Exception ex = null;
     try {
-      File testFile = AbstractTestCase.copyAudioToTmp("test.flac");
+      File testFile = copyAudioToTmp("test.flac");
       AudioFile af = AudioFileIO.read(testFile);
       assertNotNull(af.getTag());
       System.out.println(af.getTag());
@@ -468,7 +457,6 @@ public class Issue123Test extends AbstractTestCase {
         "tommy"
       );
     } catch (Exception e) {
-      e.printStackTrace();
       ex = e;
     }
     assertNull(ex);
@@ -476,15 +464,10 @@ public class Issue123Test extends AbstractTestCase {
 
   @Test
   public void testReadJRiverAlbumArtistOgg() {
-    File orig = new File("testdata", "test.ogg");
-    if (!orig.isFile()) {
-      System.err.println("Unable to test file - not available");
-      return;
-    }
 
     Exception ex = null;
     try {
-      File testFile = AbstractTestCase.copyAudioToTmp("test.ogg");
+      File testFile = copyAudioToTmp("test.ogg");
       AudioFile af = AudioFileIO.read(testFile);
       assertNotNull(af.getTag());
       System.out.println(af.getTag());
@@ -627,7 +610,6 @@ public class Issue123Test extends AbstractTestCase {
         "tommy"
       );
     } catch (Exception e) {
-      e.printStackTrace();
       ex = e;
     }
     assertNull(ex);
@@ -635,15 +617,10 @@ public class Issue123Test extends AbstractTestCase {
 
   @Test
   public void testReadJRiverAlbumArtistFlac() {
-    File orig = new File("testdata", "test.flac");
-    if (!orig.isFile()) {
-      System.err.println("Unable to test file - not available");
-      return;
-    }
 
     Exception ex = null;
     try {
-      File testFile = AbstractTestCase.copyAudioToTmp("test.flac");
+      File testFile = copyAudioToTmp("test.flac");
       AudioFile af = AudioFileIO.read(testFile);
       assertNotNull(af.getTag());
       TagOptionSingleton.getInstance().setVorbisAlbumArtistSaveOptions(
@@ -791,7 +768,6 @@ public class Issue123Test extends AbstractTestCase {
         "tommy"
       );
     } catch (Exception e) {
-      e.printStackTrace();
       ex = e;
     }
     assertNull(ex);

@@ -18,22 +18,16 @@ public class Issue220Test extends AbstractTestCase {
    */
   @Test
   public void testReadMp4WithoutUdta() {
-    File orig = new File("testdata", "test41.m4a");
-    if (!orig.isFile()) {
-      System.err.println("Unable to test file - not available");
-      return;
-    }
 
     File testFile = null;
     Exception exceptionCaught = null;
     try {
-      testFile = AbstractTestCase.copyAudioToTmp("test41.m4a");
+      testFile = copyAudioToTmp("test41.m4a");
 
       //Read File okay
       AudioFile af = AudioFileIO.read(testFile);
       assertTrue(af.getTag().isEmpty());
     } catch (Exception e) {
-      e.printStackTrace();
       exceptionCaught = e;
     }
 
@@ -45,16 +39,11 @@ public class Issue220Test extends AbstractTestCase {
    */
   @Test
   public void testWriteMp4WithoutUdta() {
-    File orig = new File("testdata", "test41.m4a");
-    if (!orig.isFile()) {
-      System.err.println("Unable to test file - not available");
-      return;
-    }
 
     File testFile = null;
     Exception exceptionCaught = null;
     try {
-      testFile = AbstractTestCase.copyAudioToTmp("test41.m4a");
+      testFile = copyAudioToTmp("test41.m4a");
 
       MP4Util.Movie mp4 = MP4Util.parseFullMovie(testFile);
       String json = new JSONObject(mp4.getMoov().toString()).toString(2);
@@ -85,7 +74,6 @@ public class Issue220Test extends AbstractTestCase {
       assertEquals("genre", af.getTag().getFirst(FieldKey.GENRE));
       assertEquals("year", af.getTag().getFirst(FieldKey.YEAR));
     } catch (Exception e) {
-      e.printStackTrace();
       exceptionCaught = e;
     }
 
@@ -98,16 +86,11 @@ public class Issue220Test extends AbstractTestCase {
    */
   @Test
   public void testReadMp4WithUdtaAndMetaHierachy() {
-    File orig = new File("testdata", "test42.m4a");
-    if (!orig.isFile()) {
-      System.err.println("Unable to test file - not available");
-      return;
-    }
 
     File testFile = null;
     Exception exceptionCaught = null;
     try {
-      testFile = AbstractTestCase.copyAudioToTmp("test42.m4a");
+      testFile = copyAudioToTmp("test42.m4a");
 
       //Read File okay
       AudioFile af = AudioFileIO.read(testFile);
@@ -115,7 +98,6 @@ public class Issue220Test extends AbstractTestCase {
       assertEquals("album", af.getTag().getFirst(FieldKey.ALBUM));
       assertEquals("test42", af.getTag().getFirst(FieldKey.TITLE));
     } catch (Exception e) {
-      e.printStackTrace();
       exceptionCaught = e;
     }
 
@@ -128,16 +110,11 @@ public class Issue220Test extends AbstractTestCase {
    */
   @Test
   public void testWriteMp4WithUdtaAndMetaHierachy() {
-    File orig = new File("testdata", "test42.m4a");
-    if (!orig.isFile()) {
-      System.err.println("Unable to test file - not available");
-      return;
-    }
 
     File testFile = null;
     Exception exceptionCaught = null;
     try {
-      testFile = AbstractTestCase.copyAudioToTmp("test42.m4a");
+      testFile = copyAudioToTmp("test42.m4a");
 
       //Read File okay
       AudioFile af = AudioFileIO.read(testFile);
@@ -156,7 +133,6 @@ public class Issue220Test extends AbstractTestCase {
       assertEquals("KARENTAYLORGENRE", af.getTag().getFirst(FieldKey.GENRE));
       assertEquals("12345678", af.getTag().getFirst(FieldKey.AMAZON_ID));
     } catch (Exception e) {
-      e.printStackTrace();
       exceptionCaught = e;
     }
 
@@ -168,16 +144,11 @@ public class Issue220Test extends AbstractTestCase {
    */
   @Test
   public void testWriteMp4WithUdtaAfterTrackSmaller() {
-    File orig = new File("testdata", "test44.m4a");
-    if (!orig.isFile()) {
-      System.err.println("Unable to test file - not available");
-      return;
-    }
 
     File testFile = null;
     Exception exceptionCaught = null;
     try {
-      testFile = AbstractTestCase.copyAudioToTmp("test44.m4a");
+      testFile = copyAudioToTmp("test44.m4a");
 
       //Read File okay
       AudioFile af = AudioFileIO.read(testFile);
@@ -190,7 +161,6 @@ public class Issue220Test extends AbstractTestCase {
       af = AudioFileIO.read(testFile);
       assertEquals("ti", af.getTag().getFirst(FieldKey.TITLE));
     } catch (Exception e) {
-      e.printStackTrace();
       exceptionCaught = e;
     }
 
@@ -202,16 +172,11 @@ public class Issue220Test extends AbstractTestCase {
    */
   @Test
   public void testWriteMp4WithUdtaAfterTrack() {
-    File orig = new File("testdata", "test44.m4a");
-    if (!orig.isFile()) {
-      System.err.println("Unable to test file - not available");
-      return;
-    }
 
     File testFile = null;
     Exception exceptionCaught = null;
     try {
-      testFile = AbstractTestCase.copyAudioToTmp("test44.m4a");
+      testFile = copyAudioToTmp("test44.m4a");
 
       //Read File okay
       AudioFile af = AudioFileIO.read(testFile);
@@ -232,7 +197,6 @@ public class Issue220Test extends AbstractTestCase {
       assertEquals("genre", af.getTag().getFirst(FieldKey.GENRE));
       assertEquals("year", af.getTag().getFirst(FieldKey.YEAR));
     } catch (Exception e) {
-      e.printStackTrace();
       exceptionCaught = e;
     }
 

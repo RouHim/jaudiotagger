@@ -1,8 +1,5 @@
 package org.jaudiotagger.issues;
 
-import static org.junit.jupiter.api.Assertions.assertNull;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-
 import java.io.File;
 import org.jaudiotagger.AbstractTestCase;
 import org.jaudiotagger.audio.AudioFile;
@@ -11,13 +8,15 @@ import org.jaudiotagger.tag.Tag;
 import org.jaudiotagger.tag.id3.ID3v23Tag;
 import org.junit.jupiter.api.Test;
 
+import static org.junit.jupiter.api.Assertions.*;
+
 public class Issue185Test extends AbstractTestCase {
 
   @Test
   public void testDefaultTagMp3() {
     Exception exceptionCaught = null;
     try {
-      File testFile = AbstractTestCase.copyAudioToTmp("testV1.mp3");
+      File testFile = copyAudioToTmp("testV1.mp3");
       AudioFile af = AudioFileIO.read(testFile);
 
       //No Tag
@@ -25,20 +24,20 @@ public class Issue185Test extends AbstractTestCase {
 
       //Tag Created
       Tag tag = af.createDefaultTag();
-      assertTrue(tag instanceof ID3v23Tag);
+      assertInstanceOf(ID3v23Tag.class, tag);
 
       //but not setField in tag itself
       assertNull(af.getTag());
 
       //Now setField
       af.setTag(tag);
-      assertTrue(af.getTag() instanceof ID3v23Tag);
+      assertInstanceOf(ID3v23Tag.class, af.getTag());
 
       //Save changes
       af.commit();
 
       af = AudioFileIO.read(testFile);
-      assertTrue(af.getTag() instanceof ID3v23Tag);
+      assertInstanceOf(ID3v23Tag.class, af.getTag());
     } catch (Exception e) {
       exceptionCaught = e;
     }
@@ -49,7 +48,7 @@ public class Issue185Test extends AbstractTestCase {
   public void testDefaultTagMp3AndCreate() {
     Exception exceptionCaught = null;
     try {
-      File testFile = AbstractTestCase.copyAudioToTmp("testV1.mp3");
+      File testFile = copyAudioToTmp("testV1.mp3");
       AudioFile af = AudioFileIO.read(testFile);
 
       //No Tag
@@ -57,14 +56,14 @@ public class Issue185Test extends AbstractTestCase {
 
       //Tag Created and setField
       Tag tag = af.getTagOrCreateAndSetDefault();
-      assertTrue(tag instanceof ID3v23Tag);
-      assertTrue(af.getTag() instanceof ID3v23Tag);
+      assertInstanceOf(ID3v23Tag.class, tag);
+      assertInstanceOf(ID3v23Tag.class, af.getTag());
 
       //Save changes
       af.commit();
 
       af = AudioFileIO.read(testFile);
-      assertTrue(af.getTag() instanceof ID3v23Tag);
+      assertInstanceOf(ID3v23Tag.class, af.getTag());
     } catch (Exception e) {
       exceptionCaught = e;
     }

@@ -10,6 +10,7 @@ import org.jaudiotagger.tag.FieldKey;
 import org.jaudiotagger.tag.mp4.Mp4FieldKey;
 import org.jaudiotagger.tag.mp4.Mp4Tag;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.condition.EnabledIf;
 
 public class Issue277Test extends AbstractTestCase {
 
@@ -17,17 +18,13 @@ public class Issue277Test extends AbstractTestCase {
    * Set isCompilation
    */
   @Test
+  @EnabledIf("executeAlsoWithMissingResources") // to be configured in AbsractBaseTestCase
   public void testSetIsCompilation() {
-    File orig = new File("testdata", "test1.m4a");
-    if (!orig.isFile()) {
-      System.err.println("Unable to test file - not available");
-      return;
-    }
 
     File testFile = null;
     Exception exceptionCaught = null;
     try {
-      testFile = AbstractTestCase.copyAudioToTmp("test1.m4a");
+      testFile = copyAudioToTmp("test1.m4a");
 
       AudioFile af = AudioFileIO.read(testFile);
       assertEquals(0, af.getTag().getFields(FieldKey.IS_COMPILATION).size());
@@ -51,17 +48,13 @@ public class Issue277Test extends AbstractTestCase {
    * Set isCompilation new way
    */
   @Test
+  @EnabledIf("executeAlsoWithMissingResources") // to be configured in AbsractBaseTestCase
   public void testSetIsCompilation2() {
-    File orig = new File("testdata", "test1.m4a");
-    if (!orig.isFile()) {
-      System.err.println("Unable to test file - not available");
-      return;
-    }
 
     File testFile = null;
     Exception exceptionCaught = null;
     try {
-      testFile = AbstractTestCase.copyAudioToTmp("test1.m4a");
+      testFile = copyAudioToTmp("test1.m4a");
 
       AudioFile af = AudioFileIO.read(testFile);
       assertEquals(0, af.getTag().getFields(FieldKey.IS_COMPILATION).size());
@@ -85,17 +78,13 @@ public class Issue277Test extends AbstractTestCase {
    * Set isCompilation and rating fields
    */
   @Test
+  @EnabledIf("executeAlsoWithMissingResources") // to be configured in AbsractBaseTestCase
   public void testSetRating() {
-    File orig = new File("testdata", "test1.m4a");
-    if (!orig.isFile()) {
-      System.err.println("Unable to test file - not available");
-      return;
-    }
 
     File testFile = null;
     Exception exceptionCaught = null;
     try {
-      testFile = AbstractTestCase.copyAudioToTmp("test1.m4a");
+      testFile = copyAudioToTmp("test1.m4a");
 
       AudioFile af = AudioFileIO.read(testFile);
       Mp4Tag tag = (Mp4Tag) af.getTag();
@@ -118,17 +107,13 @@ public class Issue277Test extends AbstractTestCase {
    * Set rating is one byte but not true and false so should fail
    */
   @Test
+  @EnabledIf("executeAlsoWithMissingResources") // to be configured in AbsractBaseTestCase
   public void testSetRating2() {
-    File orig = new File("testdata", "test1.m4a");
-    if (!orig.isFile()) {
-      System.err.println("Unable to test file - not available");
-      return;
-    }
 
     File testFile = null;
     Exception exceptionCaught = null;
     try {
-      testFile = AbstractTestCase.copyAudioToTmp("test1.m4a");
+      testFile = copyAudioToTmp("test1.m4a");
 
       AudioFile af = AudioFileIO.read(testFile);
       Mp4Tag tag = (Mp4Tag) af.getTag();
