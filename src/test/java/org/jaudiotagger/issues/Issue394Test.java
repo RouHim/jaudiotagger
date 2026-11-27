@@ -23,7 +23,6 @@ public class Issue394Test extends AbstractTestCase {
       Tag v1Tag = new ID3v1Tag((AbstractTag) tag);
     } catch (Exception e) {
       caught = e;
-      e.printStackTrace();
     }
     assertNull(caught);
   }

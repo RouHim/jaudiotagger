@@ -28,7 +28,7 @@ public class Issue298Test extends AbstractTestCase {
     File testFile = null;
     Exception exceptionCaught = null;
     try {
-      testFile = AbstractTestCase.copyAudioToTmp("testV1.mp3");
+      testFile = copyAudioToTmp("testV1.mp3");
 
       //Read File okay
       AudioFile af = AudioFileIO.read(testFile);
@@ -455,8 +455,8 @@ public class Issue298Test extends AbstractTestCase {
 
       {
         TagField tagField = af.getTag().getFirstField(FieldKey.CUSTOM1);
-        assertTrue(tagField instanceof ID3v24Frame);
-        assertTrue(((ID3v24Frame) tagField).getBody() instanceof FrameBodyCOMM);
+        assertInstanceOf(ID3v24Frame.class, tagField);
+        assertInstanceOf(FrameBodyCOMM.class, ((ID3v24Frame) tagField).getBody());
       }
       af.commit();
       af = AudioFileIO.read(testFile);
@@ -524,46 +524,45 @@ public class Issue298Test extends AbstractTestCase {
       );
       {
         TagField tagField = af.getTag().getFirstField(FieldKey.CUSTOM1);
-        assertTrue(tagField instanceof ID3v24Frame);
-        assertTrue(((ID3v24Frame) tagField).getBody() instanceof FrameBodyCOMM);
+        assertInstanceOf(ID3v24Frame.class, tagField);
+        assertInstanceOf(FrameBodyCOMM.class, ((ID3v24Frame) tagField).getBody());
         FrameBodyCOMM body = (FrameBodyCOMM) ((ID3v24Frame) tagField).getBody();
         assertEquals(FrameBodyCOMM.MM_CUSTOM1, body.getDescription());
         assertEquals(Languages.MEDIA_MONKEY_ID, body.getLanguage());
       }
       {
         TagField tagField = af.getTag().getFirstField(FieldKey.CUSTOM2);
-        assertTrue(tagField instanceof ID3v24Frame);
-        assertTrue(((ID3v24Frame) tagField).getBody() instanceof FrameBodyCOMM);
+        assertInstanceOf(ID3v24Frame.class, tagField);
+        assertInstanceOf(FrameBodyCOMM.class, ((ID3v24Frame) tagField).getBody());
         FrameBodyCOMM body = (FrameBodyCOMM) ((ID3v24Frame) tagField).getBody();
         assertEquals(FrameBodyCOMM.MM_CUSTOM2, body.getDescription());
         assertEquals(Languages.MEDIA_MONKEY_ID, body.getLanguage());
       }
       {
         TagField tagField = af.getTag().getFirstField(FieldKey.CUSTOM3);
-        assertTrue(tagField instanceof ID3v24Frame);
-        assertTrue(((ID3v24Frame) tagField).getBody() instanceof FrameBodyCOMM);
+        assertInstanceOf(ID3v24Frame.class, tagField);
+        assertInstanceOf(FrameBodyCOMM.class, ((ID3v24Frame) tagField).getBody());
         FrameBodyCOMM body = (FrameBodyCOMM) ((ID3v24Frame) tagField).getBody();
         assertEquals(FrameBodyCOMM.MM_CUSTOM3, body.getDescription());
         assertEquals(Languages.MEDIA_MONKEY_ID, body.getLanguage());
       }
       {
         TagField tagField = af.getTag().getFirstField(FieldKey.CUSTOM4);
-        assertTrue(tagField instanceof ID3v24Frame);
-        assertTrue(((ID3v24Frame) tagField).getBody() instanceof FrameBodyCOMM);
+        assertInstanceOf(ID3v24Frame.class, tagField);
+        assertInstanceOf(FrameBodyCOMM.class, ((ID3v24Frame) tagField).getBody());
         FrameBodyCOMM body = (FrameBodyCOMM) ((ID3v24Frame) tagField).getBody();
         assertEquals(FrameBodyCOMM.MM_CUSTOM4, body.getDescription());
         assertEquals(Languages.MEDIA_MONKEY_ID, body.getLanguage());
       }
       {
         TagField tagField = af.getTag().getFirstField(FieldKey.CUSTOM5);
-        assertTrue(tagField instanceof ID3v24Frame);
-        assertTrue(((ID3v24Frame) tagField).getBody() instanceof FrameBodyCOMM);
+        assertInstanceOf(ID3v24Frame.class, tagField);
+        assertInstanceOf(FrameBodyCOMM.class, ((ID3v24Frame) tagField).getBody());
         FrameBodyCOMM body = (FrameBodyCOMM) ((ID3v24Frame) tagField).getBody();
         assertEquals(FrameBodyCOMM.MM_CUSTOM5, body.getDescription());
         assertEquals(Languages.MEDIA_MONKEY_ID, body.getLanguage());
       }
     } catch (Exception e) {
-      e.printStackTrace();
       exceptionCaught = e;
     }
 
@@ -578,7 +577,7 @@ public class Issue298Test extends AbstractTestCase {
     File testFile = null;
     Exception exceptionCaught = null;
     try {
-      testFile = AbstractTestCase.copyAudioToTmp("testV1.mp3");
+      testFile = copyAudioToTmp("testV1.mp3");
 
       //Read File okay
       AudioFile af = AudioFileIO.read(testFile);
@@ -1040,7 +1039,6 @@ public class Issue298Test extends AbstractTestCase {
       assertEquals("2", af.getTag().getFirst(FieldKey.MOVEMENT_TOTAL));
       assertEquals("Movement", af.getTag().getFirst(FieldKey.MOVEMENT));
     } catch (Exception e) {
-      e.printStackTrace();
       exceptionCaught = e;
     }
 
@@ -1055,7 +1053,7 @@ public class Issue298Test extends AbstractTestCase {
     File testFile = null;
     Exception exceptionCaught = null;
     try {
-      testFile = AbstractTestCase.copyAudioToTmp("testV1.mp3");
+      testFile = copyAudioToTmp("testV1.mp3");
 
       //Read File okay
       AudioFile af = AudioFileIO.read(testFile);
@@ -1483,7 +1481,6 @@ public class Issue298Test extends AbstractTestCase {
         af.getTag().getFirst(FieldKey.ITUNES_GROUPING)
       );
     } catch (Exception e) {
-      e.printStackTrace();
       exceptionCaught = e;
     }
 
@@ -1498,7 +1495,7 @@ public class Issue298Test extends AbstractTestCase {
     File testFile = null;
     Exception exceptionCaught = null;
     try {
-      testFile = AbstractTestCase.copyAudioToTmp("test.ogg");
+      testFile = copyAudioToTmp("test.ogg");
 
       //Read File okay
       AudioFile af = AudioFileIO.read(testFile);
@@ -1928,7 +1925,6 @@ public class Issue298Test extends AbstractTestCase {
         af.getTag().getFirst(FieldKey.MUSICBRAINZ_WORK)
       );
     } catch (Exception e) {
-      e.printStackTrace();
       exceptionCaught = e;
     }
 
@@ -1943,7 +1939,7 @@ public class Issue298Test extends AbstractTestCase {
     File testFile = null;
     Exception exceptionCaught = null;
     try {
-      testFile = AbstractTestCase.copyAudioToTmp("test.flac");
+      testFile = copyAudioToTmp("test.flac");
 
       //Read File okay
       AudioFile af = AudioFileIO.read(testFile);
@@ -2452,7 +2448,6 @@ public class Issue298Test extends AbstractTestCase {
         af.getTag().getFirst(FieldKey.MUSICBRAINZ_WORK)
       );
     } catch (Exception e) {
-      e.printStackTrace();
       exceptionCaught = e;
     }
 
@@ -2467,7 +2462,7 @@ public class Issue298Test extends AbstractTestCase {
     File testFile = null;
     Exception exceptionCaught = null;
     try {
-      testFile = AbstractTestCase.copyAudioToTmp("test1.wma");
+      testFile = copyAudioToTmp("test1.wma");
 
       //Read File okay
       AudioFile af = AudioFileIO.read(testFile);
@@ -2899,7 +2894,6 @@ public class Issue298Test extends AbstractTestCase {
         af.getTag().getFirst(FieldKey.MUSICBRAINZ_WORK)
       );
     } catch (Exception e) {
-      e.printStackTrace();
       exceptionCaught = e;
     }
 
@@ -2914,7 +2908,7 @@ public class Issue298Test extends AbstractTestCase {
     File testFile = null;
     Exception exceptionCaught = null;
     try {
-      testFile = AbstractTestCase.copyAudioToTmp("test.m4a");
+      testFile = copyAudioToTmp("test.m4a");
 
       //Read File okay
       AudioFile af = AudioFileIO.read(testFile);
@@ -3349,7 +3343,6 @@ public class Issue298Test extends AbstractTestCase {
         af.getTag().getFirst(FieldKey.MUSICBRAINZ_WORK)
       );
     } catch (Exception e) {
-      e.printStackTrace();
       exceptionCaught = e;
     }
 

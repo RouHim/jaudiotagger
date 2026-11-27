@@ -14,9 +14,9 @@ public class Issue420Test extends AbstractTestCase {
 
   @Test
   public void testReadingFieldsThatOnlyExistInID3v1tag() throws Exception {
-    File testFile = AbstractTestCase.copyAudioToTmp(
+    File testFile = copyAudioToTmp(
       "testV1.mp3",
-      new File("testReadingFieldsThatOnlyExistInID3v1tag.mp3")
+      "testReadingFieldsThatOnlyExistInID3v1tag.mp3"
     );
     MP3File mp3File = new MP3File(testFile);
     assertFalse(mp3File.hasID3v1Tag());

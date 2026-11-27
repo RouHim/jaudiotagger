@@ -9,6 +9,7 @@ import org.jaudiotagger.audio.AudioFile;
 import org.jaudiotagger.audio.AudioFileIO;
 import org.jaudiotagger.tag.FieldKey;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.condition.EnabledIf;
 
 public class Issue383Test extends AbstractTestCase {
 
@@ -17,16 +18,11 @@ public class Issue383Test extends AbstractTestCase {
    * also report incorrect length, however think problem is audio does continue until 6:08 but is just quiet sound
    */
   @Test
+  @EnabledIf("executeAlsoWithMissingResources") // to be configured in AbsractBaseTestCase
   public void testIssueIncorrectTrackLength() {
     Exception caught = null;
     try {
-      File orig = new File("testdata", "test106.mp3");
-      if (!orig.isFile()) {
-        System.err.println("Unable to test file - not available");
-        return;
-      }
-
-      File testFile = AbstractTestCase.copyAudioToTmp("test106.mp3");
+      File testFile = copyAudioToTmp("test106.mp3");
       AudioFile af = AudioFileIO.read(testFile);
       assertEquals(af.getAudioHeader().getTrackLength(), 368);
     } catch (Exception e) {
@@ -40,16 +36,11 @@ public class Issue383Test extends AbstractTestCase {
    * such as Media Monkey show correct value.
    */
   @Test
+  @EnabledIf("executeAlsoWithMissingResources") // to be configured in AbsractBaseTestCase
   public void testIssue() {
     Exception caught = null;
     try {
-      File orig = new File("testdata", "test107.mp3");
-      if (!orig.isFile()) {
-        System.err.println("Unable to test file - not available");
-        return;
-      }
-
-      File testFile = AbstractTestCase.copyAudioToTmp("test107.mp3");
+      File testFile = copyAudioToTmp("test107.mp3");
       AudioFile af = AudioFileIO.read(testFile);
       assertEquals(af.getTag().getFirst(FieldKey.TRACK), "01");
       assertEquals(af.getAudioHeader().getTrackLength(), 4372);

@@ -68,7 +68,7 @@ public class FrameWXXXTest extends AbstractTestCase {
       exceptionCaught = e;
     }
     assertNull(exceptionCaught);
-    assertTrue(frame.getBody() instanceof FrameBodyWXXX);
+    assertInstanceOf(FrameBodyWXXX.class, frame.getBody());
     assertEquals(ID3v24Frames.FRAME_ID_USER_DEFINED_URL, frame.getIdentifier());
     assertEquals(TextEncoding.ISO_8859_1, frame.getBody().getTextEncoding());
     assertFalse(
@@ -82,7 +82,7 @@ public class FrameWXXXTest extends AbstractTestCase {
 
   @Test
   public void testSaveToFile() throws Exception {
-    File testFile = AbstractTestCase.copyAudioToTmp("testV1.mp3");
+    File testFile = copyAudioToTmp("testV1.mp3");
     MP3File mp3File = new MP3File(testFile);
 
     //Create and Save
@@ -96,7 +96,7 @@ public class FrameWXXXTest extends AbstractTestCase {
     ID3v24Frame frame = (ID3v24Frame) mp3File
       .getID3v2Tag()
       .getFrame(ID3v24Frames.FRAME_ID_USER_DEFINED_URL);
-    assertTrue(frame.getBody() instanceof FrameBodyWXXX);
+    assertInstanceOf(FrameBodyWXXX.class, frame.getBody());
     assertEquals(ID3v24Frames.FRAME_ID_USER_DEFINED_URL, frame.getIdentifier());
     assertEquals(TextEncoding.ISO_8859_1, frame.getBody().getTextEncoding());
     assertFalse(
@@ -118,7 +118,7 @@ public class FrameWXXXTest extends AbstractTestCase {
       exceptionCaught = e;
     }
     assertNull(exceptionCaught);
-    assertTrue(frame.getBody() instanceof FrameBodyWXXX);
+    assertInstanceOf(FrameBodyWXXX.class, frame.getBody());
     assertEquals(ID3v24Frames.FRAME_ID_USER_DEFINED_URL, frame.getIdentifier());
     assertEquals(TextEncoding.ISO_8859_1, frame.getBody().getTextEncoding());
     assertFalse(
@@ -140,7 +140,7 @@ public class FrameWXXXTest extends AbstractTestCase {
    */
   @Test
   public void testSaveUnicodeToFile() throws Exception {
-    File testFile = AbstractTestCase.copyAudioToTmp("testV1.mp3");
+    File testFile = copyAudioToTmp("testV1.mp3");
     MP3File mp3File = new MP3File(testFile);
 
     //Create and Save
@@ -154,7 +154,7 @@ public class FrameWXXXTest extends AbstractTestCase {
     ID3v24Frame frame = (ID3v24Frame) mp3File
       .getID3v2Tag()
       .getFrame(ID3v24Frames.FRAME_ID_USER_DEFINED_URL);
-    assertTrue(frame.getBody() instanceof FrameBodyWXXX);
+    assertInstanceOf(FrameBodyWXXX.class, frame.getBody());
     assertEquals(ID3v24Frames.FRAME_ID_USER_DEFINED_URL, frame.getIdentifier());
     assertEquals(TextEncoding.ISO_8859_1, frame.getBody().getTextEncoding());
     assertFalse(
@@ -176,7 +176,7 @@ public class FrameWXXXTest extends AbstractTestCase {
    */
   @Test
   public void testSaveUnicodeToFile2() throws Exception {
-    File testFile = AbstractTestCase.copyAudioToTmp("testV1.mp3");
+    File testFile = copyAudioToTmp("testV1.mp3");
     MP3File mp3File = new MP3File(testFile);
 
     //Create and Save
@@ -190,7 +190,7 @@ public class FrameWXXXTest extends AbstractTestCase {
     ID3v24Frame frame = (ID3v24Frame) mp3File
       .getID3v2Tag()
       .getFrame(ID3v24Frames.FRAME_ID_USER_DEFINED_URL);
-    assertTrue(frame.getBody() instanceof FrameBodyWXXX);
+    assertInstanceOf(FrameBodyWXXX.class, frame.getBody());
     assertEquals(ID3v24Frames.FRAME_ID_USER_DEFINED_URL, frame.getIdentifier());
     assertEquals(TextEncoding.ISO_8859_1, frame.getBody().getTextEncoding());
     assertFalse(

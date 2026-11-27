@@ -121,9 +121,9 @@ public class FrameTDATTest extends AbstractTestCase {
 
   @Test
   public void testReadingID3AsV24Generic() throws Exception {
-    File testFile = AbstractTestCase.copyAudioToTmp(
+    File testFile = copyAudioToTmp(
       "testV1.mp3",
-      new File("id3asv24.mp3")
+      "id3asv24.mp3"
     );
     TagOptionSingleton.getInstance().setID3V2Version(ID3V2Version.ID3_V23);
     AudioFile af = AudioFileIO.read(testFile);

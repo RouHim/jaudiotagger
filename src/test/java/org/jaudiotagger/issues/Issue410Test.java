@@ -17,13 +17,7 @@ public class Issue410Test extends AbstractTestCase {
   public void testIssue() {
     Exception caught = null;
     try {
-      File orig = new File("testdata", "01.mp3");
-      if (!orig.isFile()) {
-        System.err.println("Unable to test file - not available");
-        return;
-      }
-
-      File testFile = AbstractTestCase.copyAudioToTmp("01.mp3");
+      File testFile = copyAudioToTmp("01.mp3");
       AudioFile af = AudioFileIO.read(testFile);
       af.getTagOrCreateAndSetDefault().setField(FieldKey.LANGUAGE, "English");
       af.commit();
@@ -41,7 +35,6 @@ public class Issue410Test extends AbstractTestCase {
       assertEquals("eng", af.getTag().getFirst(FieldKey.LANGUAGE));
     } catch (Exception e) {
       caught = e;
-      e.printStackTrace();
     }
     assertNull(caught);
   }

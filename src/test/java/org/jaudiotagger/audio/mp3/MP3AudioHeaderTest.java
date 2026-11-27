@@ -20,18 +20,20 @@ import static org.junit.jupiter.api.Assertions.*;
 import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import org.jaudiotagger.AbstractTestCase;
+
+import org.jaudiotagger.AbstractBaseTestCase;
 import org.jaudiotagger.audio.exceptions.InvalidAudioFrameException;
 import org.jaudiotagger.tag.FieldKey;
 import org.jaudiotagger.tag.TagOptionSingleton;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.condition.EnabledIf;
 
-public class MP3AudioHeaderTest {
+public class MP3AudioHeaderTest extends AbstractBaseTestCase {
 
   @Test
   public void testReadV1L3VbrOld() {
     Exception exceptionCaught = null;
-    File testFile = AbstractTestCase.copyAudioToTmp("testV1vbrOld0.mp3");
+    File testFile = copyAudioToTmp("testV1vbrOld0.mp3");
     MP3AudioHeader mp3AudioHeader = null;
     try {
       mp3AudioHeader = new MP3File(testFile).getMP3AudioHeader();
@@ -70,7 +72,7 @@ public class MP3AudioHeaderTest {
   @Test
   public void testReadV1L3VbrNew() {
     Exception exceptionCaught = null;
-    File testFile = AbstractTestCase.copyAudioToTmp("testV1vbrNew0.mp3");
+    File testFile = copyAudioToTmp("testV1vbrNew0.mp3");
     MP3AudioHeader mp3AudioHeader = null;
     try {
       mp3AudioHeader = new MP3File(testFile).getMP3AudioHeader();
@@ -109,7 +111,7 @@ public class MP3AudioHeaderTest {
   @Test
   public void testReadV1L3Cbr128() {
     Exception exceptionCaught = null;
-    File testFile = AbstractTestCase.copyAudioToTmp("testV1Cbr128.mp3");
+    File testFile = copyAudioToTmp("testV1Cbr128.mp3");
     MP3AudioHeader mp3AudioHeader = null;
     try {
       mp3AudioHeader = new MP3File(testFile).getMP3AudioHeader();
@@ -148,7 +150,7 @@ public class MP3AudioHeaderTest {
   @Test
   public void testReadV1L3Cbr192() {
     Exception exceptionCaught = null;
-    File testFile = AbstractTestCase.copyAudioToTmp("testV1Cbr192.mp3");
+    File testFile = copyAudioToTmp("testV1Cbr192.mp3");
     MP3AudioHeader mp3AudioHeader = null;
     try {
       mp3AudioHeader = new MP3File(testFile).getMP3AudioHeader();
@@ -187,7 +189,7 @@ public class MP3AudioHeaderTest {
   @Test
   public void testReadV2L3VbrOld() {
     Exception exceptionCaught = null;
-    File testFile = AbstractTestCase.copyAudioToTmp("testV2vbrOld0.mp3");
+    File testFile = copyAudioToTmp("testV2vbrOld0.mp3");
     MP3AudioHeader mp3AudioHeader = null;
     try {
       mp3AudioHeader = new MP3File(testFile).getMP3AudioHeader();
@@ -226,7 +228,7 @@ public class MP3AudioHeaderTest {
   @Test
   public void testReadV2L3MonoVbrNew() {
     Exception exceptionCaught = null;
-    File testFile = AbstractTestCase.copyAudioToTmp("testV2vbrNew0.mp3");
+    File testFile = copyAudioToTmp("testV2vbrNew0.mp3");
     MP3AudioHeader mp3AudioHeader = null;
     try {
       mp3AudioHeader = new MP3File(testFile).getMP3AudioHeader();
@@ -265,7 +267,7 @@ public class MP3AudioHeaderTest {
   @Test
   public void testReadV1L2Stereo() {
     Exception exceptionCaught = null;
-    File testFile = AbstractTestCase.copyAudioToTmp("testV1L2stereo.mp3");
+    File testFile = copyAudioToTmp("testV1L2stereo.mp3");
     MP3AudioHeader mp3AudioHeader = null;
     try {
       mp3AudioHeader = new MP3File(testFile).getMP3AudioHeader();
@@ -304,7 +306,7 @@ public class MP3AudioHeaderTest {
   @Test
   public void testReadV1L2Mono() {
     Exception exceptionCaught = null;
-    File testFile = AbstractTestCase.copyAudioToTmp("testV1L2mono.mp3");
+    File testFile = copyAudioToTmp("testV1L2mono.mp3");
     MP3AudioHeader mp3AudioHeader = null;
     try {
       mp3AudioHeader = new MP3File(testFile).getMP3AudioHeader();
@@ -343,7 +345,7 @@ public class MP3AudioHeaderTest {
   @Test
   public void testReadV25L3VbrOld() {
     Exception exceptionCaught = null;
-    File testFile = AbstractTestCase.copyAudioToTmp("testV25vbrOld0.mp3");
+    File testFile = copyAudioToTmp("testV25vbrOld0.mp3");
     MP3AudioHeader mp3AudioHeader = null;
     try {
       mp3AudioHeader = new MP3File(testFile).getMP3AudioHeader();
@@ -382,7 +384,7 @@ public class MP3AudioHeaderTest {
   @Test
   public void testReadV25L3() {
     Exception exceptionCaught = null;
-    File testFile = AbstractTestCase.copyAudioToTmp("testV25.mp3");
+    File testFile = copyAudioToTmp("testV25.mp3");
     MP3AudioHeader mp3AudioHeader = null;
     try {
       mp3AudioHeader = new MP3File(testFile).getMP3AudioHeader();
@@ -421,7 +423,7 @@ public class MP3AudioHeaderTest {
   @Test
   public void testReadV25L3VbrNew() {
     Exception exceptionCaught = null;
-    File testFile = AbstractTestCase.copyAudioToTmp("testV25vbrNew0.mp3");
+    File testFile = copyAudioToTmp("testV25vbrNew0.mp3");
     MP3AudioHeader mp3AudioHeader = null;
     try {
       mp3AudioHeader = new MP3File(testFile).getMP3AudioHeader();
@@ -460,7 +462,7 @@ public class MP3AudioHeaderTest {
   @Test
   public void testReadV2L2() {
     Exception exceptionCaught = null;
-    File testFile = AbstractTestCase.copyAudioToTmp("testV2L2.mp3");
+    File testFile = copyAudioToTmp("testV2L2.mp3");
     MP3AudioHeader mp3AudioHeader = null;
     try {
       mp3AudioHeader = new MP3File(testFile).getMP3AudioHeader();
@@ -502,7 +504,7 @@ public class MP3AudioHeaderTest {
   @Test
   public void testReadV2L3Stereo() {
     Exception exceptionCaught = null;
-    File testFile = AbstractTestCase.copyAudioToTmp("testV2L3Stereo.mp3");
+    File testFile = copyAudioToTmp("testV2L3Stereo.mp3");
     MP3AudioHeader mp3AudioHeader = null;
     try {
       mp3AudioHeader = new MP3File(testFile).getMP3AudioHeader();
@@ -547,14 +549,14 @@ public class MP3AudioHeaderTest {
   @Test
   public void testIssue79() {
     Exception exceptionCaught = null;
-    File testFile = AbstractTestCase.copyAudioToTmp("Issue79.mp3");
+    File testFile = copyAudioToTmp("Issue79.mp3");
     MP3AudioHeader mp3AudioHeader = null;
     try {
       mp3AudioHeader = new MP3File(testFile).getMP3AudioHeader();
     } catch (Exception e) {
       exceptionCaught = e;
     }
-    assertTrue(exceptionCaught instanceof InvalidAudioFrameException);
+    assertInstanceOf(InvalidAudioFrameException.class, exceptionCaught);
   }
 
   /**
@@ -564,14 +566,14 @@ public class MP3AudioHeaderTest {
   @Test
   public void testIssue81() {
     Exception exceptionCaught = null;
-    File testFile = AbstractTestCase.copyAudioToTmp("Issue81.mp3");
+    File testFile = copyAudioToTmp("Issue81.mp3");
     MP3AudioHeader mp3AudioHeader = null;
     try {
       mp3AudioHeader = new MP3File(testFile).getMP3AudioHeader();
     } catch (Exception e) {
       exceptionCaught = e;
     }
-    assertTrue(exceptionCaught instanceof InvalidAudioFrameException);
+    assertInstanceOf(InvalidAudioFrameException.class, exceptionCaught);
   }
 
   /**
@@ -580,12 +582,11 @@ public class MP3AudioHeaderTest {
   @Test
   public void testIssue199() {
     Exception exceptionCaught = null;
-    File testFile = AbstractTestCase.copyAudioToTmp("testV2L2.mp3");
+    File testFile = copyAudioToTmp("testV2L2.mp3");
     MP3AudioHeader mp3AudioHeader = null;
     try {
       mp3AudioHeader = new MP3File(testFile).getMP3AudioHeader();
     } catch (Exception e) {
-      e.printStackTrace();
       exceptionCaught = e;
     }
     assertNull(exceptionCaught);
@@ -617,7 +618,6 @@ public class MP3AudioHeaderTest {
       timeIn = timeInFormat.parse(String.valueOf(lengthMoreThanHour));
       assertEquals("01:06:40", timeOutOverAnHourFormat.format(timeIn));
     } catch (Exception e) {
-      e.printStackTrace();
       exceptionCaught = e;
     }
     assertNull(exceptionCaught);
@@ -629,19 +629,14 @@ public class MP3AudioHeaderTest {
    * read incorrectly
    */
   @Test
+  @EnabledIf("executeAlsoWithMissingResources") // to be configured in AbsractBaseTestCase
   public void testIssue110() {
-    File orig = new File("testdata", "test28.mp3");
-    if (!orig.isFile()) {
-      return;
-    }
-
     Exception exceptionCaught = null;
-    File testFile = AbstractTestCase.copyAudioToTmp("test28.mp3");
+    File testFile = copyAudioToTmp("test28.mp3");
     MP3AudioHeader mp3AudioHeader = null;
     try {
       mp3AudioHeader = new MP3File(testFile).getMP3AudioHeader();
     } catch (Exception e) {
-      e.printStackTrace();
       exceptionCaught = e;
     }
     assertNull(exceptionCaught);
@@ -666,19 +661,14 @@ public class MP3AudioHeaderTest {
   }
 
   @Test
+  @EnabledIf("executeAlsoWithMissingResources") // to be configured in AbsractBaseTestCase
   public void testReadVRBIFrame() {
-    File orig = new File("testdata", "test30.mp3");
-    if (!orig.isFile()) {
-      return;
-    }
-
     Exception exceptionCaught = null;
-    File testFile = AbstractTestCase.copyAudioToTmp("test30.mp3");
+    File testFile = copyAudioToTmp("test30.mp3");
     MP3AudioHeader mp3AudioHeader = null;
     try {
       mp3AudioHeader = new MP3File(testFile).getMP3AudioHeader();
     } catch (Exception e) {
-      e.printStackTrace();
       exceptionCaught = e;
     }
     assertNull(exceptionCaught);
@@ -704,14 +694,10 @@ public class MP3AudioHeaderTest {
   }
 
   @Test
+  @EnabledIf("executeAlsoWithMissingResources") // to be configured in AbsractBaseTestCase
   public void testWriteToFileWithVRBIFrame() {
-    File orig = new File("testdata", "test30.mp3");
-    if (!orig.isFile()) {
-      return;
-    }
-
     Exception exceptionCaught = null;
-    File testFile = AbstractTestCase.copyAudioToTmp("test30.mp3");
+    File testFile = copyAudioToTmp("test30.mp3");
     MP3AudioHeader mp3AudioHeader = null;
     MP3File mp3file = null;
     try {
@@ -730,7 +716,6 @@ public class MP3AudioHeaderTest {
       mp3file = new MP3File(testFile);
       mp3AudioHeader = mp3file.getMP3AudioHeader();
     } catch (Exception e) {
-      e.printStackTrace();
       exceptionCaught = e;
     }
     //change has been made and VBRI Frame is left intact

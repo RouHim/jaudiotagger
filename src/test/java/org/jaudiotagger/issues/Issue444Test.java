@@ -15,6 +15,7 @@ import org.jaudiotagger.tag.id3.ID3v24Tag;
 import org.jaudiotagger.tag.id3.TyerTdatAggregatedFrame;
 import org.jaudiotagger.tag.reference.ID3V2Version;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.condition.EnabledIf;
 
 public class Issue444Test extends AbstractTestCase {
 
@@ -22,7 +23,7 @@ public class Issue444Test extends AbstractTestCase {
   public void testFullDateWrittenToID3v24() {
     try {
       TagOptionSingleton.getInstance().setID3V2Version(ID3V2Version.ID3_V24);
-      File testFile = AbstractTestCase.copyAudioToTmp("testV1vbrNew0.mp3");
+      File testFile = copyAudioToTmp("testV1vbrNew0.mp3");
       AudioFile af = AudioFileIO.read(testFile);
       af.getTagOrCreateAndSetDefault();
       af.getTag().setField(FieldKey.YEAR, "2004-10-12");
@@ -40,7 +41,7 @@ public class Issue444Test extends AbstractTestCase {
   public void testFullDateWrittenToID3v23NeedsToBeSplitIntoFrames() {
     try {
       TagOptionSingleton.getInstance().setID3V2Version(ID3V2Version.ID3_V23);
-      File testFile = AbstractTestCase.copyAudioToTmp("testV1vbrNew0.mp3");
+      File testFile = copyAudioToTmp("testV1vbrNew0.mp3");
       AudioFile af = AudioFileIO.read(testFile);
       af.getTagOrCreateAndSetDefault();
       af.getTag().setField(FieldKey.YEAR, "2004-10-12");
@@ -52,8 +53,8 @@ public class Issue444Test extends AbstractTestCase {
 
       TyerTdatAggregatedFrame aggframe =
         (TyerTdatAggregatedFrame) (((ID3v23Tag) af.getTag()).getFrame(
-            "TYERTDAT"
-          ));
+          "TYERTDAT"
+        ));
       Iterator<AbstractID3v2Frame> i = aggframe.getFrames().iterator();
       assertEquals("2004", i.next().getContent());
       assertEquals("1210", i.next().getContent());
@@ -66,8 +67,8 @@ public class Issue444Test extends AbstractTestCase {
       assertNull(((ID3v23Tag) af.getTag()).getFrame("TDAT"));
       assertNotNull(((ID3v23Tag) af.getTag()).getFrame("TYERTDAT"));
       aggframe = (TyerTdatAggregatedFrame) (((ID3v23Tag) af.getTag()).getFrame(
-          "TYERTDAT"
-        ));
+        "TYERTDAT"
+      ));
       i = aggframe.getFrames().iterator();
       assertEquals("2004", i.next().getContent());
       assertEquals("1210", i.next().getContent());
@@ -80,7 +81,7 @@ public class Issue444Test extends AbstractTestCase {
   public void testYearAndMonthWrittenToID3v23NeedsToBeSplitIntoFrames() {
     try {
       TagOptionSingleton.getInstance().setID3V2Version(ID3V2Version.ID3_V23);
-      File testFile = AbstractTestCase.copyAudioToTmp("testV1vbrNew0.mp3");
+      File testFile = copyAudioToTmp("testV1vbrNew0.mp3");
       AudioFile af = AudioFileIO.read(testFile);
       af.getTagOrCreateAndSetDefault();
       af.getTag().setField(FieldKey.YEAR, "2004-10");
@@ -92,8 +93,8 @@ public class Issue444Test extends AbstractTestCase {
 
       TyerTdatAggregatedFrame aggframe =
         (TyerTdatAggregatedFrame) (((ID3v23Tag) af.getTag()).getFrame(
-            "TYERTDAT"
-          ));
+          "TYERTDAT"
+        ));
       Iterator<AbstractID3v2Frame> i = aggframe.getFrames().iterator();
       assertEquals("2004", i.next().getContent());
       assertEquals("0110", i.next().getContent());
@@ -106,8 +107,8 @@ public class Issue444Test extends AbstractTestCase {
       assertNull(((ID3v23Tag) af.getTag()).getFrame("TDAT"));
       assertNotNull(((ID3v23Tag) af.getTag()).getFrame("TYERTDAT"));
       aggframe = (TyerTdatAggregatedFrame) (((ID3v23Tag) af.getTag()).getFrame(
-          "TYERTDAT"
-        ));
+        "TYERTDAT"
+      ));
       i = aggframe.getFrames().iterator();
       assertEquals("2004", i.next().getContent());
       assertEquals("0110", i.next().getContent());
@@ -120,7 +121,7 @@ public class Issue444Test extends AbstractTestCase {
   public void testYearWrittenToID3v23NeedsToBePutInTyerFrame() {
     try {
       TagOptionSingleton.getInstance().setID3V2Version(ID3V2Version.ID3_V23);
-      File testFile = AbstractTestCase.copyAudioToTmp("testV1vbrNew0.mp3");
+      File testFile = copyAudioToTmp("testV1vbrNew0.mp3");
       AudioFile af = AudioFileIO.read(testFile);
       af.getTagOrCreateAndSetDefault();
       af.getTag().setField(FieldKey.YEAR, "2004");
@@ -147,7 +148,7 @@ public class Issue444Test extends AbstractTestCase {
     Exception e = null;
     try {
       TagOptionSingleton.getInstance().setID3V2Version(ID3V2Version.ID3_V23);
-      File testFile = AbstractTestCase.copyAudioToTmp("testV1vbrNew0.mp3");
+      File testFile = copyAudioToTmp("testV1vbrNew0.mp3");
       AudioFile af = AudioFileIO.read(testFile);
       af.getTagOrCreateAndSetDefault();
       af.getTag().setField(FieldKey.YEAR, "20");
@@ -160,16 +161,12 @@ public class Issue444Test extends AbstractTestCase {
   }
 
   @Test
+  @EnabledIf("executeAlsoWithMissingResources") // to be configured in AbsractBaseTestCase
   public void testDuplicates() {
-    File orig = new File("testdata", "test106.mp3");
-    if (!orig.isFile()) {
-      System.err.println("Unable to test file - not available");
-      return;
-    }
 
     Exception e = null;
     try {
-      File testFile = AbstractTestCase.copyAudioToTmp("test106.mp3");
+      File testFile = copyAudioToTmp("test106.mp3");
       AudioFile af = AudioFileIO.read(testFile);
     } catch (Exception ex) {
       ex.printStackTrace();

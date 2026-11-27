@@ -23,9 +23,9 @@ public class FrameBodyTMCLTest extends AbstractTestCase {
    */
   @Test
   public void testWritePerformersIDv24() throws Exception {
-    File testFile = AbstractTestCase.copyAudioToTmp(
+    File testFile = copyAudioToTmp(
       "testV1.mp3",
-      new File("testWritePerformersv24.mp3")
+      "testWritePerformersv24.mp3"
     );
     AudioFile f = AudioFileIO.read(testFile);
     assertNull(f.getTag());
@@ -55,9 +55,9 @@ public class FrameBodyTMCLTest extends AbstractTestCase {
 
   @Test
   public void testWritePerformersAndDeleteIDv24() throws Exception {
-    File testFile = AbstractTestCase.copyAudioToTmp(
+    File testFile = copyAudioToTmp(
       "testV1.mp3",
-      new File("testWritePerformersAndDeletev24.mp3")
+      "testWritePerformersAndDeletev24.mp3"
     );
     AudioFile f = AudioFileIO.read(testFile);
     assertNull(f.getTag());
@@ -83,9 +83,9 @@ public class FrameBodyTMCLTest extends AbstractTestCase {
 
   @Test
   public void testWritePerformersIDv23() throws Exception {
-    File testFile = AbstractTestCase.copyAudioToTmp(
+    File testFile = copyAudioToTmp(
       "testV1.mp3",
-      new File("testWritePerformersv23.mp3")
+      "testWritePerformersv23.mp3"
     );
     AudioFile f = AudioFileIO.read(testFile);
     assertNull(f.getTag());
@@ -115,9 +115,9 @@ public class FrameBodyTMCLTest extends AbstractTestCase {
 
   @Test
   public void testWritePerformersIDv22() throws Exception {
-    File testFile = AbstractTestCase.copyAudioToTmp(
+    File testFile = copyAudioToTmp(
       "testV1.mp3",
-      new File("testWritePerformersv22.mp3")
+      "testWritePerformersv22.mp3"
     );
     AudioFile f = AudioFileIO.read(testFile);
     assertNull(f.getTag());
@@ -152,9 +152,9 @@ public class FrameBodyTMCLTest extends AbstractTestCase {
    */
   @Test
   public void testWritePerformersIDv24v2() throws Exception {
-    File testFile = AbstractTestCase.copyAudioToTmp(
+    File testFile = copyAudioToTmp(
       "testV1.mp3",
-      new File("testWritePerformersv24.mp3")
+      "testWritePerformersv24.mp3"
     );
     AudioFile f = AudioFileIO.read(testFile);
     assertNull(f.getTag());
@@ -189,9 +189,9 @@ public class FrameBodyTMCLTest extends AbstractTestCase {
    */
   @Test
   public void testWritePerformersIDv24v3() throws Exception {
-    File testFile = AbstractTestCase.copyAudioToTmp(
+    File testFile = copyAudioToTmp(
       "testV1.mp3",
-      new File("testWritePerformersv24.mp3")
+      "testWritePerformersv24.mp3"
     );
     AudioFile f = AudioFileIO.read(testFile);
     assertNull(f.getTag());
@@ -231,9 +231,9 @@ public class FrameBodyTMCLTest extends AbstractTestCase {
 
   @Test
   public void testWritePerformersIDv23v2() throws Exception {
-    File testFile = AbstractTestCase.copyAudioToTmp(
+    File testFile = copyAudioToTmp(
       "testV1.mp3",
-      new File("testWritePerformersv23.mp3")
+      "testWritePerformersv23.mp3"
     );
     AudioFile f = AudioFileIO.read(testFile);
     assertNull(f.getTag());
@@ -263,9 +263,9 @@ public class FrameBodyTMCLTest extends AbstractTestCase {
 
   @Test
   public void testWritePerformersIDv23v3() throws Exception {
-    File testFile = AbstractTestCase.copyAudioToTmp(
+    File testFile = copyAudioToTmp(
       "testV1.mp3",
-      new File("testWritePerformersv23.mp3")
+      "testWritePerformersv23.mp3"
     );
     AudioFile f = AudioFileIO.read(testFile);
     assertNull(f.getTag());
@@ -305,9 +305,9 @@ public class FrameBodyTMCLTest extends AbstractTestCase {
 
   @Test
   public void testWritePerformersIDv22v2() throws Exception {
-    File testFile = AbstractTestCase.copyAudioToTmp(
+    File testFile = copyAudioToTmp(
       "testV1.mp3",
-      new File("testWritePerformersv22.mp3")
+      "testWritePerformersv22.mp3"
     );
     AudioFile f = AudioFileIO.read(testFile);
     assertNull(f.getTag());
@@ -337,9 +337,9 @@ public class FrameBodyTMCLTest extends AbstractTestCase {
 
   @Test
   public void testWritePerformersIDv22v3() throws Exception {
-    File testFile = AbstractTestCase.copyAudioToTmp(
+    File testFile = copyAudioToTmp(
       "testV1.mp3",
-      new File("testWritePerformersv22.mp3")
+      "testWritePerformersv22.mp3"
     );
     AudioFile f = AudioFileIO.read(testFile);
     assertNull(f.getTag());
@@ -379,9 +379,9 @@ public class FrameBodyTMCLTest extends AbstractTestCase {
 
   @Test
   public void testWriteMultiplePeopleIDv24() throws Exception {
-    File testFile = AbstractTestCase.copyAudioToTmp(
+    File testFile = copyAudioToTmp(
       "testV1.mp3",
-      new File("testWriteMultiplePeoplev24.mp3")
+      "testWriteMultiplePeoplev24.mp3"
     );
     AudioFile f = AudioFileIO.read(testFile);
     assertNull(f.getTag());
@@ -422,9 +422,9 @@ public class FrameBodyTMCLTest extends AbstractTestCase {
 
   @Test
   public void testWriteMultiplePeopleIDv23() throws Exception {
-    File testFile = AbstractTestCase.copyAudioToTmp(
+    File testFile = copyAudioToTmp(
       "testV1.mp3",
-      new File("testWriteMultiplePeoplev23.mp3")
+      "testWriteMultiplePeoplev23.mp3"
     );
     AudioFile f = AudioFileIO.read(testFile);
     assertNull(f.getTag());
@@ -465,9 +465,9 @@ public class FrameBodyTMCLTest extends AbstractTestCase {
 
   @Test
   public void testWriteMultiplePeopleIDv22() throws Exception {
-    File testFile = AbstractTestCase.copyAudioToTmp(
+    File testFile = copyAudioToTmp(
       "testV1.mp3",
-      new File("testWriteMultiplePeoplev22.mp3")
+      "testWriteMultiplePeoplev22.mp3"
     );
     AudioFile f = AudioFileIO.read(testFile);
     assertNull(f.getTag());

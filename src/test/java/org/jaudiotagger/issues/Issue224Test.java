@@ -15,33 +15,28 @@ import org.jaudiotagger.tag.id3.ID3v23Frame;
 import org.jaudiotagger.tag.id3.ID3v23Tag;
 import org.jaudiotagger.tag.id3.framebody.FrameBodyAPIC;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.condition.EnabledIf;
 
 public class Issue224Test extends AbstractTestCase {
 
   @Test
+  @EnabledIf("executeAlsoWithMissingResources") // to be configured in AbsractBaseTestCase
   public void testReadInvalidPicture() {
     String genre = null;
 
-    File orig = new File("testdata", "test31.mp3");
-    if (!orig.isFile()) {
-      return;
-    }
-
     Exception exceptionCaught = null;
     try {
-      File testFile = AbstractTestCase.copyAudioToTmp("test31.mp3");
+      File testFile = copyAudioToTmp("test31.mp3");
       AudioFile f = AudioFileIO.read(testFile);
       Tag tag = f.getTag();
       assertEquals(11, tag.getFieldCount());
-      assertTrue(tag instanceof ID3v23Tag);
+      assertInstanceOf(ID3v23Tag.class, tag);
       ID3v23Tag id3v23Tag = (ID3v23Tag) tag;
       TagField coverArtField = id3v23Tag.getFirstField(
         org.jaudiotagger.tag.id3.ID3v23FieldKey.COVER_ART.getFieldName()
       );
-      assertTrue(coverArtField instanceof ID3v23Frame);
-      assertTrue(
-        ((ID3v23Frame) coverArtField).getBody() instanceof FrameBodyAPIC
-      );
+      assertInstanceOf(ID3v23Frame.class, coverArtField);
+      assertInstanceOf(FrameBodyAPIC.class, ((ID3v23Frame) coverArtField).getBody());
       FrameBodyAPIC body =
         (FrameBodyAPIC) ((ID3v23Frame) coverArtField).getBody();
       byte[] imageRawData = body.getImageData();
@@ -65,7 +60,6 @@ public class Issue224Test extends AbstractTestCase {
       assertEquals("FREDDY", body.getDescription());
       f.commit();
     } catch (Exception e) {
-      e.printStackTrace();
       exceptionCaught = e;
     }
     assertNull(exceptionCaught);

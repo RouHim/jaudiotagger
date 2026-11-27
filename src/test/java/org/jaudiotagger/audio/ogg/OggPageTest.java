@@ -7,11 +7,12 @@ import java.io.File;
 import java.io.RandomAccessFile;
 import java.nio.ByteBuffer;
 import java.util.Date;
-import org.jaudiotagger.AbstractTestCase;
+
+import org.jaudiotagger.AbstractBaseTestCase;
 import org.jaudiotagger.audio.ogg.util.OggPageHeader;
 import org.junit.jupiter.api.Test;
 
-public class OggPageTest {
+public class OggPageTest extends AbstractBaseTestCase {
 
   @Test
   public void testReadOggPagesNew() {
@@ -19,9 +20,9 @@ public class OggPageTest {
     Exception exceptionCaught = null;
     int count = 0;
     try {
-      File testFile = AbstractTestCase.copyAudioToTmp(
+      File testFile = copyAudioToTmp(
         "test.ogg",
-        new File("testReadAllOggPages.ogg")
+        "testReadAllOggPages.ogg"
       );
       RandomAccessFile raf = new RandomAccessFile(testFile, "r");
       OggPageHeader lastPageHeader = null;
@@ -52,7 +53,6 @@ public class OggPageTest {
       System.out.println(raf.length() + ":" + raf.getFilePointer());
       assertEquals(raf.length(), raf.getFilePointer());
     } catch (Exception e) {
-      e.printStackTrace();
       exceptionCaught = e;
     }
     assertNull(exceptionCaught);
@@ -69,9 +69,9 @@ public class OggPageTest {
     Exception exceptionCaught = null;
     int count = 0;
     try {
-      File testFile = AbstractTestCase.copyAudioToTmp(
+      File testFile = copyAudioToTmp(
         "test.ogg",
-        new File("testReadAllOggPages.ogg")
+        "testReadAllOggPages.ogg"
       );
       RandomAccessFile raf = new RandomAccessFile(testFile, "r");
 
@@ -98,7 +98,6 @@ public class OggPageTest {
       }
       assertEquals(raf.length(), raf.getFilePointer());
     } catch (Exception e) {
-      e.printStackTrace();
       exceptionCaught = e;
     }
     assertNull(exceptionCaught);
@@ -114,9 +113,9 @@ public class OggPageTest {
     Exception exceptionCaught = null;
     int count = 0;
     try {
-      File testFile = AbstractTestCase.copyAudioToTmp(
+      File testFile = copyAudioToTmp(
         "testlargeimage.ogg",
-        new File("testReadAllOggPagesLargeFile.ogg")
+        "testReadAllOggPagesLargeFile.ogg"
       );
       RandomAccessFile raf = new RandomAccessFile(testFile, "r");
 
@@ -130,7 +129,6 @@ public class OggPageTest {
       }
       assertEquals(raf.length(), raf.getFilePointer());
     } catch (Exception e) {
-      e.printStackTrace();
       exceptionCaught = e;
     }
     assertNull(exceptionCaught);
@@ -145,9 +143,9 @@ public class OggPageTest {
     Exception exceptionCaught = null;
     int count = 0;
     try {
-      File testFile = AbstractTestCase.copyAudioToTmp(
+      File testFile = copyAudioToTmp(
         "testlargeimage.ogg",
-        new File("testReadAllOggPagesLargeFile.ogg")
+        "testReadAllOggPagesLargeFile.ogg"
       );
       RandomAccessFile raf = new RandomAccessFile(testFile, "r");
       OggPageHeader lastPageHeader = null;
@@ -165,7 +163,6 @@ public class OggPageTest {
       }
       assertEquals(raf.length(), raf.getFilePointer());
     } catch (Exception e) {
-      e.printStackTrace();
       exceptionCaught = e;
     }
     assertNull(exceptionCaught);

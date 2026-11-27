@@ -15,18 +15,11 @@ public class AsfKeyMappingTest {
    */
   @Test
   public void testTagFieldKeyMappingComplete() {
-    Exception exceptionCaught = null;
     Tag tag = new AsfTag();
-    try {
-      for (FieldKey curr : FieldKey.values()) {
-        if (curr != FieldKey.ITUNES_GROUPING) {
-          tag.getFields(curr);
-        }
+    for (FieldKey curr : FieldKey.values()) {
+      if (curr != FieldKey.ITUNES_GROUPING) {
+        tag.getFields(curr);
       }
-    } catch (Exception e) {
-      e.printStackTrace();
-      exceptionCaught = e;
     }
-    assertNull(exceptionCaught);
   }
 }

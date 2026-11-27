@@ -3,6 +3,8 @@ package org.jaudiotagger.tag.wma;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 import java.io.File;
+
+import org.jaudiotagger.AbstractBaseTestCase;
 import org.jaudiotagger.AbstractTestCase;
 import org.jaudiotagger.audio.AudioFile;
 import org.jaudiotagger.audio.AudioFileIO;
@@ -15,7 +17,7 @@ import org.junit.jupiter.api.BeforeEach;
  *
  * @author Christian Laireiter
  */
-public abstract class WmaTestCase {
+public abstract class WmaTestCase extends AbstractBaseTestCase {
 
   /**
    * Stores the audio file instance of {@link #testFile}.<br>
@@ -73,12 +75,12 @@ public abstract class WmaTestCase {
     assertNotNull(sourceTestFile);
     File result = null;
     if (!Utils.isBlank(fileName)) {
-      result = AbstractTestCase.copyAudioToTmp(
+      result = copyAudioToTmp(
         sourceTestFile,
-        new File(fileName)
+        fileName
       );
     } else {
-      result = AbstractTestCase.copyAudioToTmp(sourceTestFile);
+      result = copyAudioToTmp(sourceTestFile);
     }
     return result;
   }

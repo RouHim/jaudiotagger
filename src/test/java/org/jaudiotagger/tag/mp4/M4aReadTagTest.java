@@ -11,7 +11,8 @@ import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.util.List;
 import javax.imageio.ImageIO;
-import org.jaudiotagger.AbstractTestCase;
+
+import org.jaudiotagger.AbstractBaseTestCase;
 import org.jaudiotagger.audio.AudioFile;
 import org.jaudiotagger.audio.AudioFileIO;
 import org.jaudiotagger.audio.exceptions.CannotReadVideoException;
@@ -26,8 +27,9 @@ import org.jcodec.containers.mp4.MP4Util;
 import org.jcodec.containers.mp4.boxes.EsdsBox;
 import org.json.JSONObject;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.condition.EnabledIf;
 
-public class M4aReadTagTest {
+public class M4aReadTagTest extends AbstractBaseTestCase {
 
   /**
    * Test to read all metadata from an Apple iTunes encoded m4a file
@@ -36,7 +38,7 @@ public class M4aReadTagTest {
   public void testReadFile() {
     Exception exceptionCaught = null;
     try {
-      File testFile = AbstractTestCase.copyAudioToTmp("test.m4a");
+      File testFile = copyAudioToTmp("test.m4a");
       AudioFile f = AudioFileIO.read(testFile);
       Tag tag = f.getTag();
 
@@ -134,32 +136,32 @@ public class M4aReadTagTest {
       assertEquals(
         "1/10",
         ((Mp4TagTextNumberField) mp4tag
-            .get(Mp4FieldKey.TRACK)
-            .get(0)).getContent()
+          .get(Mp4FieldKey.TRACK)
+          .get(0)).getContent()
       );
       assertEquals(
         Short.valueOf("0"),
         ((Mp4TagTextNumberField) mp4tag
-            .get(Mp4FieldKey.TRACK)
-            .get(0)).getNumbers().get(0)
+          .get(Mp4FieldKey.TRACK)
+          .get(0)).getNumbers().get(0)
       );
       assertEquals(
         Short.valueOf("1"),
         ((Mp4TagTextNumberField) mp4tag
-            .get(Mp4FieldKey.TRACK)
-            .get(0)).getNumbers().get(1)
+          .get(Mp4FieldKey.TRACK)
+          .get(0)).getNumbers().get(1)
       );
       assertEquals(
         Short.valueOf("10"),
         ((Mp4TagTextNumberField) mp4tag
-            .get(Mp4FieldKey.TRACK)
-            .get(0)).getNumbers().get(2)
+          .get(Mp4FieldKey.TRACK)
+          .get(0)).getNumbers().get(2)
       );
       assertEquals(
         Short.valueOf("0"),
         ((Mp4TagTextNumberField) mp4tag
-            .get(Mp4FieldKey.TRACK)
-            .get(0)).getNumbers().get(3)
+          .get(Mp4FieldKey.TRACK)
+          .get(0)).getNumbers().get(3)
       );
       assertEquals(
         Short.valueOf("1"),
@@ -168,8 +170,8 @@ public class M4aReadTagTest {
       assertEquals(
         Short.valueOf("10"),
         ((Mp4TrackField) mp4tag.getFirstField(
-            Mp4FieldKey.TRACK
-          )).getTrackTotal()
+          Mp4FieldKey.TRACK
+        )).getTrackTotal()
       );
 
       //Not sure why there are 4 values, only understand 2nd and third
@@ -177,38 +179,38 @@ public class M4aReadTagTest {
       assertEquals(
         "1/10",
         ((Mp4TagTextNumberField) mp4tag
-            .get(Mp4FieldKey.DISCNUMBER)
-            .get(0)).getContent()
+          .get(Mp4FieldKey.DISCNUMBER)
+          .get(0)).getContent()
       );
       assertEquals(
         Short.valueOf("0"),
         ((Mp4TagTextNumberField) mp4tag.getFirstField(
-            Mp4FieldKey.DISCNUMBER
-          )).getNumbers().get(0)
+          Mp4FieldKey.DISCNUMBER
+        )).getNumbers().get(0)
       );
       assertEquals(
         Short.valueOf("1"),
         ((Mp4TagTextNumberField) mp4tag.getFirstField(
-            Mp4FieldKey.DISCNUMBER
-          )).getNumbers().get(1)
+          Mp4FieldKey.DISCNUMBER
+        )).getNumbers().get(1)
       );
       assertEquals(
         Short.valueOf("10"),
         ((Mp4TagTextNumberField) mp4tag.getFirstField(
-            Mp4FieldKey.DISCNUMBER
-          )).getNumbers().get(2)
+          Mp4FieldKey.DISCNUMBER
+        )).getNumbers().get(2)
       );
       assertEquals(
         Short.valueOf("1"),
         ((Mp4DiscNoField) mp4tag.getFirstField(
-            Mp4FieldKey.DISCNUMBER
-          )).getDiscNo()
+          Mp4FieldKey.DISCNUMBER
+        )).getDiscNo()
       );
       assertEquals(
         Short.valueOf("10"),
         ((Mp4DiscNoField) mp4tag.getFirstField(
-            Mp4FieldKey.DISCNUMBER
-          )).getDiscTotal()
+          Mp4FieldKey.DISCNUMBER
+        )).getDiscTotal()
       );
 
       assertEquals("composer", mp4tag.getFirst(Mp4FieldKey.COMPOSER));
@@ -298,7 +300,6 @@ public class M4aReadTagTest {
       );
       assertNotNull(bi);
     } catch (Exception e) {
-      e.printStackTrace();
       exceptionCaught = e;
     }
     assertNull(exceptionCaught);
@@ -309,15 +310,9 @@ public class M4aReadTagTest {
    */
   @Test
   public void testReadFileFromMediaMonkey306() {
-    File orig = new File("testdata", "test38.m4a");
-    if (!orig.isFile()) {
-      System.err.println("Unable to test file - not available");
-      return;
-    }
-
     Exception exceptionCaught = null;
     try {
-      File testFile = AbstractTestCase.copyAudioToTmp("test38.m4a");
+      File testFile = copyAudioToTmp("test38.m4a");
       AudioFile f = AudioFileIO.read(testFile);
       Tag tag = f.getTag();
 
@@ -400,32 +395,32 @@ public class M4aReadTagTest {
       assertEquals(
         "1/10",
         ((Mp4TagTextNumberField) mp4tag
-            .get(Mp4FieldKey.TRACK)
-            .get(0)).getContent()
+          .get(Mp4FieldKey.TRACK)
+          .get(0)).getContent()
       );
       assertEquals(
         Short.valueOf("0"),
         ((Mp4TagTextNumberField) mp4tag
-            .get(Mp4FieldKey.TRACK)
-            .get(0)).getNumbers().get(0)
+          .get(Mp4FieldKey.TRACK)
+          .get(0)).getNumbers().get(0)
       );
       assertEquals(
         Short.valueOf("1"),
         ((Mp4TagTextNumberField) mp4tag
-            .get(Mp4FieldKey.TRACK)
-            .get(0)).getNumbers().get(1)
+          .get(Mp4FieldKey.TRACK)
+          .get(0)).getNumbers().get(1)
       );
       assertEquals(
         Short.valueOf("10"),
         ((Mp4TagTextNumberField) mp4tag
-            .get(Mp4FieldKey.TRACK)
-            .get(0)).getNumbers().get(2)
+          .get(Mp4FieldKey.TRACK)
+          .get(0)).getNumbers().get(2)
       );
       assertEquals(
         Short.valueOf("0"),
         ((Mp4TagTextNumberField) mp4tag
-            .get(Mp4FieldKey.TRACK)
-            .get(0)).getNumbers().get(3)
+          .get(Mp4FieldKey.TRACK)
+          .get(0)).getNumbers().get(3)
       );
       assertEquals(
         Short.valueOf("1"),
@@ -434,8 +429,8 @@ public class M4aReadTagTest {
       assertEquals(
         Short.valueOf("10"),
         ((Mp4TrackField) mp4tag.getFirstField(
-            Mp4FieldKey.TRACK
-          )).getTrackTotal()
+          Mp4FieldKey.TRACK
+        )).getTrackTotal()
       );
 
       //Not sure why there are 4 values, only understand 2nd and third
@@ -443,38 +438,38 @@ public class M4aReadTagTest {
       assertEquals(
         "1/10",
         ((Mp4TagTextNumberField) mp4tag
-            .get(Mp4FieldKey.DISCNUMBER)
-            .get(0)).getContent()
+          .get(Mp4FieldKey.DISCNUMBER)
+          .get(0)).getContent()
       );
       assertEquals(
         Short.valueOf("0"),
         ((Mp4TagTextNumberField) mp4tag.getFirstField(
-            Mp4FieldKey.DISCNUMBER
-          )).getNumbers().get(0)
+          Mp4FieldKey.DISCNUMBER
+        )).getNumbers().get(0)
       );
       assertEquals(
         Short.valueOf("1"),
         ((Mp4TagTextNumberField) mp4tag.getFirstField(
-            Mp4FieldKey.DISCNUMBER
-          )).getNumbers().get(1)
+          Mp4FieldKey.DISCNUMBER
+        )).getNumbers().get(1)
       );
       assertEquals(
         Short.valueOf("10"),
         ((Mp4TagTextNumberField) mp4tag.getFirstField(
-            Mp4FieldKey.DISCNUMBER
-          )).getNumbers().get(2)
+          Mp4FieldKey.DISCNUMBER
+        )).getNumbers().get(2)
       );
       assertEquals(
         Short.valueOf("1"),
         ((Mp4DiscNoField) mp4tag.getFirstField(
-            Mp4FieldKey.DISCNUMBER
-          )).getDiscNo()
+          Mp4FieldKey.DISCNUMBER
+        )).getDiscNo()
       );
       assertEquals(
         Short.valueOf("10"),
         ((Mp4DiscNoField) mp4tag.getFirstField(
-            Mp4FieldKey.DISCNUMBER
-          )).getDiscTotal()
+          Mp4FieldKey.DISCNUMBER
+        )).getDiscTotal()
       );
 
       assertEquals("composer", mp4tag.getFirst(Mp4FieldKey.COMPOSER));
@@ -574,7 +569,6 @@ public class M4aReadTagTest {
       assertEquals("Slow", mp4tag.getFirst(Mp4FieldKey.MM_TEMPO));
       assertEquals("Dinner", mp4tag.getFirst(Mp4FieldKey.MM_OCCASION));
     } catch (Exception e) {
-      e.printStackTrace();
       exceptionCaught = e;
     }
     assertNull(exceptionCaught);
@@ -585,15 +579,10 @@ public class M4aReadTagTest {
    */
   @Test
   public void testReadFileFromWinamp5531() {
-    File orig = new File("testdata", "test39.m4a");
-    if (!orig.isFile()) {
-      System.err.println("Unable to test file - not available");
-      return;
-    }
 
     Exception exceptionCaught = null;
     try {
-      File testFile = AbstractTestCase.copyAudioToTmp("test39.m4a");
+      File testFile = copyAudioToTmp("test39.m4a");
       AudioFile f = AudioFileIO.read(testFile);
       Tag tag = f.getTag();
 
@@ -642,7 +631,6 @@ public class M4aReadTagTest {
       //These fields added by winamp
       assertEquals("publisher", mp4tag.getFirst(Mp4FieldKey.WINAMP_PUBLISHER));
     } catch (Exception e) {
-      e.printStackTrace();
       exceptionCaught = e;
     }
     assertNull(exceptionCaught);
@@ -658,7 +646,7 @@ public class M4aReadTagTest {
   public void testReadFile2() {
     Exception exceptionCaught = null;
     try {
-      File testFile = AbstractTestCase.copyAudioToTmp("test2.m4a");
+      File testFile = copyAudioToTmp("test2.m4a");
       AudioFile f = AudioFileIO.read(testFile);
       Tag tag = f.getTag();
 
@@ -745,32 +733,32 @@ public class M4aReadTagTest {
       assertEquals(
         "1/10",
         ((Mp4TagTextNumberField) mp4tag
-            .get(Mp4FieldKey.TRACK)
-            .get(0)).getContent()
+          .get(Mp4FieldKey.TRACK)
+          .get(0)).getContent()
       );
       assertEquals(
         Short.valueOf("0"),
         ((Mp4TagTextNumberField) mp4tag
-            .get(Mp4FieldKey.TRACK)
-            .get(0)).getNumbers().get(0)
+          .get(Mp4FieldKey.TRACK)
+          .get(0)).getNumbers().get(0)
       );
       assertEquals(
         Short.valueOf("1"),
         ((Mp4TagTextNumberField) mp4tag
-            .get(Mp4FieldKey.TRACK)
-            .get(0)).getNumbers().get(1)
+          .get(Mp4FieldKey.TRACK)
+          .get(0)).getNumbers().get(1)
       );
       assertEquals(
         Short.valueOf("10"),
         ((Mp4TagTextNumberField) mp4tag
-            .get(Mp4FieldKey.TRACK)
-            .get(0)).getNumbers().get(2)
+          .get(Mp4FieldKey.TRACK)
+          .get(0)).getNumbers().get(2)
       );
       assertEquals(
         Short.valueOf("0"),
         ((Mp4TagTextNumberField) mp4tag
-            .get(Mp4FieldKey.TRACK)
-            .get(0)).getNumbers().get(3)
+          .get(Mp4FieldKey.TRACK)
+          .get(0)).getNumbers().get(3)
       );
 
       //Not sure why there are 4 values, only understand 2nd and third
@@ -778,26 +766,26 @@ public class M4aReadTagTest {
       assertEquals(
         "1/10",
         ((Mp4TagTextNumberField) mp4tag
-            .get(Mp4FieldKey.DISCNUMBER)
-            .get(0)).getContent()
+          .get(Mp4FieldKey.DISCNUMBER)
+          .get(0)).getContent()
       );
       assertEquals(
         Short.valueOf("0"),
         ((Mp4TagTextNumberField) mp4tag
-            .get(Mp4FieldKey.DISCNUMBER)
-            .get(0)).getNumbers().get(0)
+          .get(Mp4FieldKey.DISCNUMBER)
+          .get(0)).getNumbers().get(0)
       );
       assertEquals(
         Short.valueOf("1"),
         ((Mp4TagTextNumberField) mp4tag
-            .get(Mp4FieldKey.DISCNUMBER)
-            .get(0)).getNumbers().get(1)
+          .get(Mp4FieldKey.DISCNUMBER)
+          .get(0)).getNumbers().get(1)
       );
       assertEquals(
         Short.valueOf("10"),
         ((Mp4TagTextNumberField) mp4tag
-            .get(Mp4FieldKey.DISCNUMBER)
-            .get(0)).getNumbers().get(2)
+          .get(Mp4FieldKey.DISCNUMBER)
+          .get(0)).getNumbers().get(2)
       );
 
       assertEquals("composer", mp4tag.getFirst(Mp4FieldKey.COMPOSER));
@@ -911,7 +899,6 @@ public class M4aReadTagTest {
       );
       assertNotNull(bi);
     } catch (Exception e) {
-      e.printStackTrace();
       exceptionCaught = e;
     }
     assertNull(exceptionCaught);
@@ -924,7 +911,7 @@ public class M4aReadTagTest {
   public void testReadFileWithNoMetaFreeAtom() {
     Exception exceptionCaught = null;
     try {
-      File testFile = AbstractTestCase.copyAudioToTmp("test3.m4a");
+      File testFile = copyAudioToTmp("test3.m4a");
       AudioFile f = AudioFileIO.read(testFile);
       Tag tag = f.getTag();
 
@@ -1011,32 +998,32 @@ public class M4aReadTagTest {
       assertEquals(
         "1/10",
         ((Mp4TagTextNumberField) mp4tag
-            .get(Mp4FieldKey.TRACK)
-            .get(0)).getContent()
+          .get(Mp4FieldKey.TRACK)
+          .get(0)).getContent()
       );
       assertEquals(
         Short.valueOf("0"),
         ((Mp4TagTextNumberField) mp4tag
-            .get(Mp4FieldKey.TRACK)
-            .get(0)).getNumbers().get(0)
+          .get(Mp4FieldKey.TRACK)
+          .get(0)).getNumbers().get(0)
       );
       assertEquals(
         Short.valueOf("1"),
         ((Mp4TagTextNumberField) mp4tag
-            .get(Mp4FieldKey.TRACK)
-            .get(0)).getNumbers().get(1)
+          .get(Mp4FieldKey.TRACK)
+          .get(0)).getNumbers().get(1)
       );
       assertEquals(
         Short.valueOf("10"),
         ((Mp4TagTextNumberField) mp4tag
-            .get(Mp4FieldKey.TRACK)
-            .get(0)).getNumbers().get(2)
+          .get(Mp4FieldKey.TRACK)
+          .get(0)).getNumbers().get(2)
       );
       assertEquals(
         Short.valueOf("0"),
         ((Mp4TagTextNumberField) mp4tag
-            .get(Mp4FieldKey.TRACK)
-            .get(0)).getNumbers().get(3)
+          .get(Mp4FieldKey.TRACK)
+          .get(0)).getNumbers().get(3)
       );
       assertEquals(
         Short.valueOf("1"),
@@ -1045,8 +1032,8 @@ public class M4aReadTagTest {
       assertEquals(
         Short.valueOf("10"),
         ((Mp4TrackField) mp4tag.getFirstField(
-            Mp4FieldKey.TRACK
-          )).getTrackTotal()
+          Mp4FieldKey.TRACK
+        )).getTrackTotal()
       );
 
       //Not sure why there are 4 values, only understand 2nd and third
@@ -1054,38 +1041,38 @@ public class M4aReadTagTest {
       assertEquals(
         "1/10",
         ((Mp4TagTextNumberField) mp4tag
-            .get(Mp4FieldKey.DISCNUMBER)
-            .get(0)).getContent()
+          .get(Mp4FieldKey.DISCNUMBER)
+          .get(0)).getContent()
       );
       assertEquals(
         Short.valueOf("0"),
         ((Mp4TagTextNumberField) mp4tag.getFirstField(
-            Mp4FieldKey.DISCNUMBER
-          )).getNumbers().get(0)
+          Mp4FieldKey.DISCNUMBER
+        )).getNumbers().get(0)
       );
       assertEquals(
         Short.valueOf("1"),
         ((Mp4TagTextNumberField) mp4tag.getFirstField(
-            Mp4FieldKey.DISCNUMBER
-          )).getNumbers().get(1)
+          Mp4FieldKey.DISCNUMBER
+        )).getNumbers().get(1)
       );
       assertEquals(
         Short.valueOf("10"),
         ((Mp4TagTextNumberField) mp4tag.getFirstField(
-            Mp4FieldKey.DISCNUMBER
-          )).getNumbers().get(2)
+          Mp4FieldKey.DISCNUMBER
+        )).getNumbers().get(2)
       );
       assertEquals(
         Short.valueOf("1"),
         ((Mp4DiscNoField) mp4tag.getFirstField(
-            Mp4FieldKey.DISCNUMBER
-          )).getDiscNo()
+          Mp4FieldKey.DISCNUMBER
+        )).getDiscNo()
       );
       assertEquals(
         Short.valueOf("10"),
         ((Mp4DiscNoField) mp4tag.getFirstField(
-            Mp4FieldKey.DISCNUMBER
-          )).getDiscTotal()
+          Mp4FieldKey.DISCNUMBER
+        )).getDiscTotal()
       );
 
       assertEquals("composer", mp4tag.getFirst(Mp4FieldKey.COMPOSER));
@@ -1176,7 +1163,6 @@ public class M4aReadTagTest {
       );
       assertNotNull(bi);
     } catch (Exception e) {
-      e.printStackTrace();
       exceptionCaught = e;
     }
     assertNull(exceptionCaught);
@@ -1186,15 +1172,11 @@ public class M4aReadTagTest {
    * This is just an audio file , despite having three tracks
    */
   @Test
+  @EnabledIf("executeAlsoWithMissingResources") // to be configured in AbsractBaseTestCase
   public void testDetectMultiTrackAudio() {
-    File orig = new File("testdata", "test7.mp4");
-    if (!orig.isFile()) {
-      return;
-    }
-
     Exception exceptionCaught = null;
     try {
-      File testFile = AbstractTestCase.copyAudioToTmp("test7.mp4");
+      File testFile = copyAudioToTmp("test7.mp4");
       MP4Util.Movie mp4 = MP4Util.parseFullMovie(testFile);
       String json = new JSONObject(mp4.getMoov().toString()).toString(2);
       System.out.println(json);
@@ -1212,15 +1194,11 @@ public class M4aReadTagTest {
    * This is just an audio file , despite having three tracks
    */
   @Test
+  @EnabledIf("executeAlsoWithMissingResources") // to be configured in AbsractBaseTestCase
   public void testDetectMultiTrackAudio2() {
-    File orig = new File("testdata", "test86.mp4");
-    if (!orig.isFile()) {
-      return;
-    }
-
     Exception exceptionCaught = null;
     try {
-      File testFile = AbstractTestCase.copyAudioToTmp("test86.mp4");
+      File testFile = copyAudioToTmp("test86.mp4");
       MP4Util.Movie mp4 = MP4Util.parseFullMovie(testFile);
       String json = new JSONObject(mp4.getMoov().toString()).toString(2);
       System.out.println(json);
@@ -1238,15 +1216,11 @@ public class M4aReadTagTest {
    * This is a video file, detected via its vmhd atom
    */
   @Test
+  @EnabledIf("executeAlsoWithMissingResources") // to be configured in AbsractBaseTestCase
   public void testDetectVideo() {
-    File orig = new File("testdata", "test87.mp4");
-    if (!orig.isFile()) {
-      return;
-    }
-
     Exception exceptionCaught = null;
     try {
-      File testFile = AbstractTestCase.copyAudioToTmp("test87.mp4");
+      File testFile = copyAudioToTmp("test87.mp4");
 
       MP4Util.Movie mp4 = MP4Util.parseFullMovie(testFile);
       String json = new JSONObject(mp4.getMoov().toString()).toString(2);
@@ -1259,7 +1233,7 @@ public class M4aReadTagTest {
     }
 
     assertNotNull(exceptionCaught);
-    assertTrue(exceptionCaught instanceof CannotReadVideoException);
+    assertInstanceOf(CannotReadVideoException.class, exceptionCaught);
   }
 
   /**
@@ -1269,7 +1243,7 @@ public class M4aReadTagTest {
   public void testMonoLowbitRateReadFile() {
     Exception exceptionCaught = null;
     try {
-      File testFile = AbstractTestCase.copyAudioToTmp("test5.m4a");
+      File testFile = copyAudioToTmp("test5.m4a");
       AudioFile f = AudioFileIO.read(testFile);
       Tag tag = f.getTag();
 
@@ -1291,7 +1265,6 @@ public class M4aReadTagTest {
         audioheader.getProfile()
       );
     } catch (Exception e) {
-      e.printStackTrace();
       exceptionCaught = e;
     }
     assertNull(exceptionCaught);
@@ -1303,14 +1276,12 @@ public class M4aReadTagTest {
    * @throws Exception
    */
   @Test
+  @EnabledIf("executeAlsoWithMissingResources") // to be configured in AbsractBaseTestCase
   public void testIssue156() throws Exception {
     Exception exceptionCaught = null;
     try {
-      File orig = new File("testdata", "test13.m4a");
-      if (!orig.isFile()) {
-        return;
-      }
-      File testFile = AbstractTestCase.copyAudioToTmp("test13.m4a");
+      File orig = fileResource("testdata", "test13.m4a");
+      File testFile = copyAudioToTmp("test13.m4a");
 
       AudioFile f = AudioFileIO.read(testFile);
       Tag tag = f.getTag();
@@ -1335,14 +1306,13 @@ public class M4aReadTagTest {
       assertEquals("", tag.getFirst(FieldKey.BPM));
       assertEquals("", tag.getFirst(FieldKey.IS_COMPILATION));
     } catch (IOException e) {
-      e.printStackTrace();
       exceptionCaught = e;
     }
 
     try {
-      File testFile = AbstractTestCase.copyAudioToTmp(
+      File testFile = copyAudioToTmp(
         "test3.m4a",
-        new File("testIssue156.m4a")
+        "testIssue156.m4a"
       );
       AudioFile f = AudioFileIO.read(testFile);
       Tag tag = f.getTag();
@@ -1353,13 +1323,13 @@ public class M4aReadTagTest {
       //Allow calling getFirst() on binary fields, although value actually currently makes not much sense
       assertEquals("COVERART_JPEG:8445bytes", tag.getFirst(FieldKey.COVER_ART));
     } catch (IOException e) {
-      e.printStackTrace();
       exceptionCaught = e;
     }
     assertNull(exceptionCaught);
   }
 
   @Test
+  @EnabledIf("executeAlsoWithMissingResources") // to be configured in AbsractBaseTestCase
   public void testIssue163() {
     Exception exceptionCaught = null;
     try {
@@ -1380,11 +1350,7 @@ public class M4aReadTagTest {
         System.out.println("ISO-8859-1 byte value is " + (bb.get(0) & 0xFF));
       }
 
-      File orig = new File("testdata", "unable_to_read.m4a");
-      if (!orig.isFile()) {
-        return;
-      }
-      File testFile = AbstractTestCase.copyAudioToTmp("unable_to_read.m4a");
+      File testFile = copyAudioToTmp("unable_to_read.m4a");
 
       AudioFile f = AudioFileIO.read(testFile);
       Tag tag = f.getTag();
@@ -1398,7 +1364,6 @@ public class M4aReadTagTest {
       tag.getFirst(FieldKey.YEAR);
       System.out.println(tag);
     } catch (Exception e) {
-      e.printStackTrace();
       exceptionCaught = e;
     }
     assertNull(exceptionCaught);
@@ -1411,7 +1376,6 @@ public class M4aReadTagTest {
       assertNull(GenreTypes.getInstanceOf().getIdForValue("fred"));
       Mp4GenreField.isValidGenre("fred");
     } catch (Exception e) {
-      e.printStackTrace();
       exceptionCaught = e;
     }
     assertNull(exceptionCaught);
@@ -1424,7 +1388,7 @@ public class M4aReadTagTest {
   public void testIssue182() throws Exception {
     Exception exceptionCaught = null;
     try {
-      File testFile = AbstractTestCase.copyAudioToTmp("test16.m4a");
+      File testFile = copyAudioToTmp("test16.m4a");
 
       AudioFile f = AudioFileIO.read(testFile);
       Mp4Tag tag = (Mp4Tag) f.getTag();
@@ -1435,7 +1399,6 @@ public class M4aReadTagTest {
       assertEquals("Suerte", tag.getFirst(FieldKey.ARTIST));
       assertEquals("Kogani", tag.getFirst(FieldKey.TITLE));
     } catch (IOException e) {
-      e.printStackTrace();
       exceptionCaught = e;
     }
     assertNull(exceptionCaught);
@@ -1447,15 +1410,11 @@ public class M4aReadTagTest {
    * @throws Exception
    */
   @Test
+  @EnabledIf("executeAlsoWithMissingResources") // to be configured in AbsractBaseTestCase
   public void testIssue198() throws Exception {
-    File orig = new File("testdata", "test27.m4a");
-    if (!orig.isFile()) {
-      return;
-    }
-
     Exception exceptionCaught = null;
     try {
-      File testFile = AbstractTestCase.copyAudioToTmp("test27.m4a");
+      File testFile = copyAudioToTmp("test27.m4a");
 
       AudioFile f = AudioFileIO.read(testFile);
       Mp4Tag tag = (Mp4Tag) f.getTag();
@@ -1471,7 +1430,6 @@ public class M4aReadTagTest {
       assertEquals(1, tag.get(Mp4FieldKey.CDDB_TRACKNUMBER).size());
       assertEquals(1, tag.get(Mp4FieldKey.CDDB_IDS).size());
     } catch (IOException e) {
-      e.printStackTrace();
       exceptionCaught = e;
     }
     assertNull(exceptionCaught);
@@ -1483,16 +1441,12 @@ public class M4aReadTagTest {
    * @throws Exception
    */
   @Test
+  @EnabledIf("executeAlsoWithMissingResources") // to be configured in AbsractBaseTestCase
   public void testIssue227() throws Exception {
-    File orig = new File("testdata", "test31.m4a");
-    if (!orig.isFile()) {
-      return;
-    }
-
     Exception exceptionCaught = null;
     try {
       //Read Image
-      File testFile = AbstractTestCase.copyAudioToTmp("test31.m4a");
+      File testFile = copyAudioToTmp("test31.m4a");
 
       AudioFile f = AudioFileIO.read(testFile);
       Mp4Tag tag = (Mp4Tag) f.getTag();
@@ -1526,7 +1480,6 @@ public class M4aReadTagTest {
       assertEquals(Mp4FieldType.COVERART_PNG, artwork.getFieldType());
       assertEquals("C3", tag.getFirst(FieldKey.COMPOSER_SORT));
     } catch (IOException e) {
-      e.printStackTrace();
       exceptionCaught = e;
     }
     assertNull(exceptionCaught);
@@ -1542,7 +1495,7 @@ public class M4aReadTagTest {
     Exception exceptionCaught = null;
     try {
       //Read Image
-      File testFile = AbstractTestCase.copyAudioToTmp("test32.m4a");
+      File testFile = copyAudioToTmp("test32.m4a");
 
       AudioFile f = AudioFileIO.read(testFile);
       Mp4Tag tag = (Mp4Tag) f.getTag();
@@ -1559,46 +1512,36 @@ public class M4aReadTagTest {
         f.getAudioHeader().getEncodingType()
       );
     } catch (IOException e) {
-      e.printStackTrace();
       exceptionCaught = e;
     }
     assertNull(exceptionCaught);
   }
 
   @Test
+  @EnabledIf("executeAlsoWithMissingResources") // to be configured in AbsractBaseTestCase
   public void testNumericGenres() throws Exception {
-    File orig = new File("testdata", "test75.m4a");
-    if (!orig.isFile()) {
-      System.err.println("Unable to test file - not available");
-      return;
-    }
 
     Exception exceptionCaught = null;
     try {
       assertTrue(Mp4GenreField.isValidGenre("Rock"));
 
       //Read Image
-      File testFile = AbstractTestCase.copyAudioToTmp("test75.m4a");
+      File testFile = copyAudioToTmp("test75.m4a");
       RandomAccessFile raf = new RandomAccessFile(testFile, "r");
       Mp4Tag tagReader = new Mp4TagReader().read(raf);
       assertEquals("Rock", tagReader.getFirst(FieldKey.GENRE));
     } catch (IOException e) {
-      e.printStackTrace();
       exceptionCaught = e;
     }
   }
 
   @Test
+  @EnabledIf("executeAlsoWithMissingResources") // to be configured in AbsractBaseTestCase
   public void testReadFile3() throws Exception {
-    File orig = new File("testdata", "test84.m4a");
-    if (!orig.isFile()) {
-      System.err.println("Unable to test file - not available");
-      return;
-    }
 
     Exception exceptionCaught = null;
     try {
-      File testFile = AbstractTestCase.copyAudioToTmp("test84.m4a");
+      File testFile = copyAudioToTmp("test84.m4a");
       AudioFile f = AudioFileIO.read(testFile);
       Tag tag = f.getTag();
       assertEquals("6", tag.getFirst(FieldKey.TRACK));
@@ -1615,70 +1558,54 @@ public class M4aReadTagTest {
       assertEquals("8", tag.getFirst(FieldKey.TRACK));
       assertEquals("12", tag.getFirst(FieldKey.TRACK_TOTAL));
     } catch (IOException e) {
-      e.printStackTrace();
       exceptionCaught = e;
     }
     assertNull(exceptionCaught);
   }
 
   @Test
+  @EnabledIf("executeAlsoWithMissingResources") // to be configured in AbsractBaseTestCase
   public void testReadFile4() throws Exception {
-    File orig = new File("testdata", "test86.m4a");
-    if (!orig.isFile()) {
-      System.err.println("Unable to test file - not available");
-      return;
-    }
 
     Exception exceptionCaught = null;
     try {
-      File testFile = AbstractTestCase.copyAudioToTmp("test86.m4a");
+      File testFile = copyAudioToTmp("test86.m4a");
       AudioFile f = AudioFileIO.read(testFile);
       Tag tag = f.getTag();
       assertEquals("Away From The Sun", tag.getFirst(FieldKey.TITLE));
       System.out.println(f.getAudioHeader());
       System.out.println(tag);
     } catch (IOException e) {
-      e.printStackTrace();
       exceptionCaught = e;
     }
     assertNull(exceptionCaught);
   }
 
   @Test
+  @EnabledIf("executeAlsoWithMissingResources") // to be configured in AbsractBaseTestCase
   public void testReadAudioBook() throws Exception {
-    File orig = new File("testdata", "test147.m4a");
-    if (!orig.isFile()) {
-      System.err.println("Unable to test file - not available");
-      return;
-    }
-
+    File orig = fileResource("testdata", "test147.m4a");
     MP4Util.Movie mp4 = MP4Util.parseFullMovie(orig);
     String json = new JSONObject(mp4.getMoov().toString()).toString(2);
     System.out.println(json);
 
     Exception exceptionCaught = null;
     try {
-      File testFile = AbstractTestCase.copyAudioToTmp("test147.m4a");
+      File testFile = copyAudioToTmp("test147.m4a");
       AudioFile f = AudioFileIO.read(testFile);
       Tag tag = f.getTag();
     } catch (Exception e) {
-      e.printStackTrace();
       exceptionCaught = e;
     }
     //assertNull(exceptionCaught);
   }
 
   @Test
+  @EnabledIf("executeAlsoWithMissingResources") // to be configured in AbsractBaseTestCase
   public void testWriteHighTrackNo() throws Exception {
-    File orig = new File("testdata", "test84.m4a");
-    if (!orig.isFile()) {
-      System.err.println("Unable to test file - not available");
-      return;
-    }
-
     Exception exceptionCaught = null;
     try {
-      File testFile = AbstractTestCase.copyAudioToTmp("test84.m4a");
+      File testFile = copyAudioToTmp("test84.m4a");
       AudioFile f = AudioFileIO.read(testFile);
       Tag tag = f.getTag();
       assertEquals("6", tag.getFirst(FieldKey.TRACK));
@@ -1696,7 +1623,6 @@ public class M4aReadTagTest {
       assertEquals("6", tag.getFirst(FieldKey.TRACK_TOTAL));
       assertEquals("6", tag.getFirst(FieldKey.TRACK));
     } catch (IOException e) {
-      e.printStackTrace();
       exceptionCaught = e;
     }
     assertNull(exceptionCaught);

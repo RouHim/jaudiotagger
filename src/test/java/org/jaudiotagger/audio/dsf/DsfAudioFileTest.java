@@ -3,7 +3,8 @@ package org.jaudiotagger.audio.dsf;
 import static org.junit.jupiter.api.Assertions.*;
 
 import java.io.File;
-import org.jaudiotagger.AbstractTestCase;
+
+import org.jaudiotagger.AbstractBaseTestCase;
 import org.jaudiotagger.audio.AudioFile;
 import org.jaudiotagger.audio.AudioFileIO;
 import org.jaudiotagger.audio.AudioHeader;
@@ -16,21 +17,16 @@ import org.jaudiotagger.tag.id3.ID3v24Tag;
 import org.jaudiotagger.tag.reference.ID3V2Version;
 import org.junit.jupiter.api.Test;
 
-public class DsfAudioFileTest {
+public class DsfAudioFileTest extends AbstractBaseTestCase {
 
   @Test
   public void testReadDsfTag() {
     Exception exceptionCaught = null;
 
-    File orig = new File("testdata", "test122.dsf");
-    if (!orig.isFile()) {
-      System.err.println("Unable to test file - not available");
-      return;
-    }
 
-    File testFile = AbstractTestCase.copyAudioToTmp(
+    File testFile = copyAudioToTmp(
       "test122.dsf",
-      new File("test122read.dsf")
+      "test122read.dsf"
     );
     try {
       AudioFile f = AudioFileIO.read(testFile);
@@ -52,7 +48,6 @@ public class DsfAudioFileTest {
       assertEquals("comments", tag.getFirst(FieldKey.COMMENT));
       assertEquals("Publisher", tag.getFirst(FieldKey.RECORD_LABEL));
     } catch (Exception e) {
-      e.printStackTrace();
       exceptionCaught = e;
     }
     assertNull(exceptionCaught);
@@ -62,15 +57,10 @@ public class DsfAudioFileTest {
   public void testWriteDsfTag() {
     Exception exceptionCaught = null;
 
-    File orig = new File("testdata", "test122.dsf");
-    if (!orig.isFile()) {
-      System.err.println("Unable to test file - not available");
-      return;
-    }
 
-    File testFile = AbstractTestCase.copyAudioToTmp(
+    File testFile = copyAudioToTmp(
       "test122.dsf",
-      new File("test122write.dsf")
+      "test122write.dsf"
     );
     try {
       AudioFile f = AudioFileIO.read(testFile);
@@ -91,7 +81,6 @@ public class DsfAudioFileTest {
       assertEquals("comments", tag.getFirst(FieldKey.COMMENT));
       assertEquals("Publisher", tag.getFirst(FieldKey.RECORD_LABEL));
     } catch (Exception e) {
-      e.printStackTrace();
       exceptionCaught = e;
     }
     assertNull(exceptionCaught);
@@ -101,15 +90,10 @@ public class DsfAudioFileTest {
   public void testDeleteDsfTag() {
     Exception exceptionCaught = null;
 
-    File orig = new File("testdata", "test122.dsf");
-    if (!orig.isFile()) {
-      System.err.println("Unable to test file - not available");
-      return;
-    }
 
-    File testFile = AbstractTestCase.copyAudioToTmp(
+    File testFile = copyAudioToTmp(
       "test122.dsf",
-      new File("test122delete.dsf")
+      "test122delete.dsf"
     );
     try {
       AudioFile f = AudioFileIO.read(testFile);
@@ -122,7 +106,6 @@ public class DsfAudioFileTest {
       tag = f.getTag();
       System.out.println(tag);
     } catch (Exception e) {
-      e.printStackTrace();
       exceptionCaught = e;
     }
     assertNull(exceptionCaught);
@@ -132,15 +115,10 @@ public class DsfAudioFileTest {
   public void testReadDsfNoTag() {
     Exception exceptionCaught = null;
 
-    File orig = new File("testdata", "test156.dsf");
-    if (!orig.isFile()) {
-      System.err.println("Unable to test file - not available");
-      return;
-    }
 
-    File testFile = AbstractTestCase.copyAudioToTmp(
+    File testFile = copyAudioToTmp(
       "test156.dsf",
-      new File("test156read.dsf")
+      "test156read.dsf"
     );
     try {
       AudioFile f = AudioFileIO.read(testFile);
@@ -155,7 +133,6 @@ public class DsfAudioFileTest {
       Tag tag = f.getTag();
       assertNull(tag);
     } catch (Exception e) {
-      e.printStackTrace();
       exceptionCaught = e;
     }
     assertNull(exceptionCaught);
@@ -165,15 +142,10 @@ public class DsfAudioFileTest {
   public void testWriteDsfNoTag() {
     Exception exceptionCaught = null;
 
-    File orig = new File("testdata", "test156.dsf");
-    if (!orig.isFile()) {
-      System.err.println("Unable to test file - not available");
-      return;
-    }
 
-    File testFile = AbstractTestCase.copyAudioToTmp(
+    File testFile = copyAudioToTmp(
       "test156.dsf",
-      new File("test156write.dsf")
+      "test156write.dsf"
     );
     try {
       AudioFile f = AudioFileIO.read(testFile);
@@ -189,7 +161,6 @@ public class DsfAudioFileTest {
       System.out.println(tag);
       assertEquals("fred", tag.getFirst(FieldKey.ARTIST));
     } catch (Exception e) {
-      e.printStackTrace();
       exceptionCaught = e;
     }
     assertNull(exceptionCaught);
@@ -199,15 +170,10 @@ public class DsfAudioFileTest {
   public void testDeleteDsfNoTag() {
     Exception exceptionCaught = null;
 
-    File orig = new File("testdata", "test156.dsf");
-    if (!orig.isFile()) {
-      System.err.println("Unable to test file - not available");
-      return;
-    }
 
-    File testFile = AbstractTestCase.copyAudioToTmp(
+    File testFile = copyAudioToTmp(
       "test156.dsf",
-      new File("test156delete.dsf")
+      "test156delete.dsf"
     );
     try {
       AudioFile f = AudioFileIO.read(testFile);
@@ -221,7 +187,6 @@ public class DsfAudioFileTest {
       tag = f.getTag();
       System.out.println(tag);
     } catch (Exception e) {
-      e.printStackTrace();
       exceptionCaught = e;
     }
     assertNull(exceptionCaught);
@@ -229,43 +194,32 @@ public class DsfAudioFileTest {
 
   @Test
   public void testCreateDefaultTag() throws Exception {
-    File orig = new File("testdata", "test122.dsf");
-    if (!orig.isFile()) {
-      System.err.println("Unable to test file - not available");
-      return;
-    }
 
     {
       TagOptionSingleton.getInstance().setID3V2Version(ID3V2Version.ID3_V24);
-      File testFile = AbstractTestCase.copyAudioToTmp(
+      File testFile = copyAudioToTmp(
         "test122.dsf",
-        new File("test122read.dsf")
+        "test122read.dsf"
       );
-      assertTrue(
-        AudioFileIO.read(testFile).createDefaultTag() instanceof ID3v24Tag
-      );
+      assertInstanceOf(ID3v24Tag.class, AudioFileIO.read(testFile).createDefaultTag());
     }
 
     {
       TagOptionSingleton.getInstance().setID3V2Version(ID3V2Version.ID3_V23);
-      File testFile = AbstractTestCase.copyAudioToTmp(
+      File testFile = copyAudioToTmp(
         "test122.dsf",
-        new File("test122read.dsf")
+        "test122read.dsf"
       );
-      assertTrue(
-        AudioFileIO.read(testFile).createDefaultTag() instanceof ID3v23Tag
-      );
+      assertInstanceOf(ID3v23Tag.class, AudioFileIO.read(testFile).createDefaultTag());
     }
 
     {
       TagOptionSingleton.getInstance().setID3V2Version(ID3V2Version.ID3_V22);
-      File testFile = AbstractTestCase.copyAudioToTmp(
+      File testFile = copyAudioToTmp(
         "test122.dsf",
-        new File("test122read.dsf")
+        "test122read.dsf"
       );
-      assertTrue(
-        AudioFileIO.read(testFile).createDefaultTag() instanceof ID3v22Tag
-      );
+      assertInstanceOf(ID3v22Tag.class, AudioFileIO.read(testFile).createDefaultTag());
     }
 
     TagOptionSingleton.getInstance().setToDefault();
@@ -275,7 +229,7 @@ public class DsfAudioFileTest {
     @Test
     public void testRemoveTagData() throws Exception
     {
-        File dir = new File("C:\\Users\\Paul\\Music\\1983 - David Bowie - Let's Dance [SACD DSF][2003]");
+        File dir = "C:\\Users\\Paul\\Music\\1983 - David Bowie - Let's Dance [SACD DSF][2003]";
         for(File file:dir.listFiles())
         {
             AudioFile af = AudioFileIO.read(file);

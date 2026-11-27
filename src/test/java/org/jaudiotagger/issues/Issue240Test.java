@@ -11,26 +11,23 @@ import org.jaudiotagger.audio.AudioFileIO;
 import org.jaudiotagger.tag.FieldKey;
 import org.jaudiotagger.tag.mp4.Mp4Tag;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.condition.EnabledIf;
 
 public class Issue240Test extends AbstractTestCase {
 
   @Test
+  @EnabledIf("executeAlsoWithMissingResources") // to be configured in AbsractBaseTestCase
   public void testWritelargeDataToFile() {
-    File orig = new File("testdata", "test34.m4a");
-    if (!orig.isFile()) {
-      return;
-    }
-
     Exception exceptionCaught = null;
     try {
-      File testFile = AbstractTestCase.copyAudioToTmp("test34.m4a");
+      File testFile = copyAudioToTmp("test34.m4a");
 
       AudioFile af = AudioFileIO.read(testFile);
       assertEquals(0, af.getTag().getFields(FieldKey.COVER_ART).size());
 
       //Add new image
       RandomAccessFile imageFile = new RandomAccessFile(
-        new File("testdata", "coverart.png"),
+        fileResource("testdata", "coverart.png"),
         "r"
       );
       byte[] imagedata = new byte[(int) imageFile.length()];

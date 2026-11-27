@@ -9,20 +9,16 @@ import org.jaudiotagger.audio.AudioFileIO;
 import org.jcodec.containers.mp4.MP4Util;
 import org.json.JSONObject;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.condition.EnabledIf;
 
 public class Issue387Test extends AbstractTestCase {
 
   @Test
+  @EnabledIf("executeAlsoWithMissingResources") // to be configured in AbsractBaseTestCase
   public void testIssue() {
     Exception caught = null;
     try {
-      File orig = new File("testdata", "test100.mp4");
-      if (!orig.isFile()) {
-        System.err.println("Unable to test file - not available");
-        return;
-      }
-
-      File testFile = AbstractTestCase.copyAudioToTmp("test100.mp4");
+      File testFile = copyAudioToTmp("test100.mp4");
       AudioFile af = AudioFileIO.read(testFile);
       System.out.println(af.getAudioHeader());
       af.getTagOrCreateAndSetDefault();
@@ -33,7 +29,6 @@ public class Issue387Test extends AbstractTestCase {
       System.out.println(json);
     } catch (Exception e) {
       caught = e;
-      e.printStackTrace();
     }
     assertNull(caught);
   }

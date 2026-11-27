@@ -4,7 +4,8 @@ import static org.junit.jupiter.api.Assertions.*;
 
 import java.io.File;
 import java.io.IOException;
-import org.jaudiotagger.AbstractTestCase;
+
+import org.jaudiotagger.AbstractBaseTestCase;
 import org.jaudiotagger.audio.exceptions.CannotReadException;
 import org.jaudiotagger.audio.exceptions.InvalidAudioFrameException;
 import org.jaudiotagger.audio.exceptions.ReadOnlyFileException;
@@ -18,7 +19,7 @@ import org.jaudiotagger.tag.id3.valuepair.TextEncoding;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-public class Unicode24NullTerminatedTagTest {
+public class Unicode24NullTerminatedTagTest extends AbstractBaseTestCase {
 
   /////////////////////////////////////////////////////////////////////////
   // TestCase classes to override
@@ -35,7 +36,8 @@ public class Unicode24NullTerminatedTagTest {
   /**
    *
    */
-  protected void tearDown() {}
+  protected void tearDown() {
+  }
 
   /**
    *
@@ -55,14 +57,14 @@ public class Unicode24NullTerminatedTagTest {
   public void testUTF8WithNullTerminator()
     throws IOException, TagException, ReadOnlyFileException, InvalidAudioFrameException, CannotReadException, RuntimeException {
     MP3File mp3File = new MP3File(
-      AbstractTestCase.copyAudioToTmp("testV24-comments-utf8.mp3")
+      copyAudioToTmp("testV24-comments-utf8.mp3")
     );
     AbstractID3v2Tag id3v2Tag = mp3File.getID3v2Tag();
     assertNotNull(id3v2Tag);
     AbstractID3v2Frame frame = (AbstractID3v2Frame) id3v2Tag.getFrame("COMM");
     assertNotNull(frame);
     AbstractTagFrameBody frameBody = frame.getBody();
-    assertTrue(frameBody instanceof FrameBodyCOMM);
+    assertInstanceOf(FrameBodyCOMM.class, frameBody);
     FrameBodyCOMM commFrameBody = (FrameBodyCOMM) frameBody;
 
     //String borodin = "\u0411\u043e\u0440\u043e\u0434\u0438\u043d";
@@ -97,7 +99,7 @@ public class Unicode24NullTerminatedTagTest {
    */
   @Test
   public void testCreateISO8859EncodedNullTerminatedString() throws Exception {
-    File testFile = AbstractTestCase.copyAudioToTmp("testV1.mp3");
+    File testFile = copyAudioToTmp("testV1.mp3");
     MP3File mp3File = new MP3File(testFile);
 
     ID3v24Frame frame = new ID3v24Frame(ID3v24Frames.FRAME_ID_USER_DEFINED_URL);
@@ -143,7 +145,7 @@ public class Unicode24NullTerminatedTagTest {
   @Test
   public void testCreateUTF16BOMLEEncodedNullTerminatedString()
     throws Exception {
-    File testFile = AbstractTestCase.copyAudioToTmp("testV1.mp3");
+    File testFile = copyAudioToTmp("testV1.mp3");
     MP3File mp3File = new MP3File(testFile);
 
     ID3v24Frame frame = new ID3v24Frame(ID3v24Frames.FRAME_ID_USER_DEFINED_URL);
@@ -190,7 +192,7 @@ public class Unicode24NullTerminatedTagTest {
   public void testCreateUTF16BOMBEEncodedNullTerminatedString()
     throws Exception {
     TagOptionSingleton.getInstance().setEncodeUTF16BomAsLittleEndian(false);
-    File testFile = AbstractTestCase.copyAudioToTmp("testV1.mp3");
+    File testFile = copyAudioToTmp("testV1.mp3");
     MP3File mp3File = new MP3File(testFile);
 
     ID3v24Frame frame = new ID3v24Frame(ID3v24Frames.FRAME_ID_USER_DEFINED_URL);
@@ -236,7 +238,7 @@ public class Unicode24NullTerminatedTagTest {
   @Test
   public void testCreateUTF16AutoEncodedNullTerminatedString()
     throws Exception {
-    File testFile = AbstractTestCase.copyAudioToTmp("testV1.mp3");
+    File testFile = copyAudioToTmp("testV1.mp3");
     MP3File mp3File = new MP3File(testFile);
 
     ID3v24Frame frame = new ID3v24Frame(ID3v24Frames.FRAME_ID_USER_DEFINED_URL);
@@ -286,7 +288,7 @@ public class Unicode24NullTerminatedTagTest {
    */
   @Test
   public void testCreateUTF16BEEncodedNullTerminatedString() throws Exception {
-    File testFile = AbstractTestCase.copyAudioToTmp("testV1.mp3");
+    File testFile = copyAudioToTmp("testV1.mp3");
     MP3File mp3File = new MP3File(testFile);
 
     ID3v24Frame frame = new ID3v24Frame(ID3v24Frames.FRAME_ID_USER_DEFINED_URL);
@@ -337,7 +339,7 @@ public class Unicode24NullTerminatedTagTest {
    */
   @Test
   public void testCreateUTF8EncodedNullTerminatedString() throws Exception {
-    File testFile = AbstractTestCase.copyAudioToTmp("testV1.mp3");
+    File testFile = copyAudioToTmp("testV1.mp3");
     MP3File mp3File = new MP3File(testFile);
 
     ID3v24Frame frame = new ID3v24Frame(ID3v24Frames.FRAME_ID_USER_DEFINED_URL);

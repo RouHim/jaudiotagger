@@ -19,18 +19,12 @@ public class Issue417Test extends AbstractTestCase {
   public void testWOARMultiples() {
     Exception caught = null;
     try {
-      File orig = new File("testdata", "01.mp3");
-      if (!orig.isFile()) {
-        System.err.println("Unable to test file - not available");
-        return;
-      }
-
-      File testFile = AbstractTestCase.copyAudioToTmp("01.mp3");
+      File testFile = copyAudioToTmp("01.mp3");
       AudioFile af = AudioFileIO.read(testFile);
       af
         .getTagOrCreateAndSetDefault()
         .setField(FieldKey.URL_OFFICIAL_ARTIST_SITE, "http://test1.html");
-      assertTrue(af.getTag() instanceof ID3v23Tag);
+      assertInstanceOf(ID3v23Tag.class, af.getTag());
       af.commit();
       af = AudioFileIO.read(testFile);
       assertEquals(
@@ -74,7 +68,6 @@ public class Issue417Test extends AbstractTestCase {
       );
     } catch (Exception e) {
       caught = e;
-      e.printStackTrace();
     }
     assertNull(caught);
   }
